@@ -1,9 +1,10 @@
 import {Routes, Route} from "react-router-dom"
+import LoginForm from "./components/Login/LoginForm";
 
 function App() {
   return (
     <Routes>
-      {/* <Route path="" element={<IndexPage />} /> */}
+      { <Route path="/login" element={<LoginForm />} /> }
     </Routes>
   );
 }

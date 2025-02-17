@@ -1,8 +1,15 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: "http://localhost:8080/",
-    headers: {
-        "Content-Type" : "application/json",
-    },
-});
+const domain = "http://localhost:8080/mymy";
+
+const Api = {
+    login: async (id, pwd) => {
+        const user = {
+            id: id,
+            pwd: pwd,
+        };
+        return await axios.post(domain + "/login", user);
+    }
+}
+
+export default Api;
