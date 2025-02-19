@@ -30,13 +30,33 @@ const Api = {
         })
     }, 
 
-    AuthOk: async(authNum, id) => {
-        return await axios.post(domain + "/find_pwd/auth", null, {
+    authOk: async(authNum, id) => {
+        return await axios.post(domain + "/mail_auth", null, {
             params: {
                 userAuth: authNum,
                 id: id,
             }
         })
+    }, 
+
+    checkId: async(id) => {
+        return await axios.post(domain + "/id_check", null, {
+            params: {
+                id: id,
+            }
+        })
+    },
+
+    signupMail: async(email) => {
+        return await axios.post(domain + "/signup_email_send", null, {
+            params: {
+                toEmail: email
+            }
+        })
+    },
+
+    signup: async(userData) => {
+        return await axios.post(domain + "/signup", userData)
     }
 }
 

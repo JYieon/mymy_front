@@ -36,7 +36,7 @@ const FindPassword = () => {
             }
         } else if (buttonText === "인증") {
             // 인증번호 확인: 공백 제거 후 비교
-            const res = await Api.AuthOk(authNum, id);
+            const res = await Api.authOk(authNum, id);
 
             //const cleanedAuthNum = authNum.trim();  // 사용자가 입력한 인증번호에서 공백 제거
             //const cleanedAuthNumOk = String(authNumOk).trim();  // 서버에서 받은 인증번호를 문자열로 변환 후 공백 제거
@@ -66,7 +66,7 @@ const FindPassword = () => {
         setError(""); // 에러 초기화
 
         // 비밀번호 재설정 완료 후 다른 페이지로 이동
-        navigate(`/reset_password?id=${id}`);  // "/reset-password" 페이지로 이동
+        navigate(`/reset_password`);  // "/reset-password" 페이지로 이동
     };
 
     return (
