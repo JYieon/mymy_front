@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import Api from "../../api/Api";
+import Api from "../../Api/Api";
 
 const LoginForm = () => {
     const [id, setId] = useState("");
@@ -44,7 +43,7 @@ const LoginForm = () => {
                 {error && <div style={{color:"red"}}>{error}</div>}
                 <button>로그인</button>
             </form>
-            <Link to="">아이디/비밀번호 찾기</Link>
+            <Link to="/find">아이디/비밀번호 찾기</Link>
             <Link to="">회원가입</Link>
         </div>
     )
