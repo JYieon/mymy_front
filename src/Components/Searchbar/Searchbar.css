@@ -1,0 +1,13 @@
+.SearchbarForm{
+    display: flex;
+    border-radius: 100px;
+    
+    & >input[type="text"] {
+        background-color: none;
+    }
+
+    & >input[type="submit"] {
+        background-color: #00284C;
+        color: white;
+    }
+}
