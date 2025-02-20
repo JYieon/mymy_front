@@ -11,7 +11,10 @@ import FindAccountPage from "./Pages/Account/FindAccountPage";
 import FindIdPage from "./Pages/Account/FindIdPage";
 import FindPwPage from "./Pages/Account/FindPwPage";
 import AccoutLayout from "./Pages/Account/AccountLayout";
-
+import Detail from "./Components/Board/Detail";
+import BoardWrite from "./Components/Board/BoardWrite";
+import BoardList from "./Components/Board/BoardList";
+import BoardModify from "./Components/Board/BoardModify";
 function App() {
   return (
     <Routes>
@@ -25,6 +28,14 @@ function App() {
           <Route path="Diary" element={<DiaryBoardPage />}/>
           <Route path="Bookmark" element={<BookmarkBoardPage />}/>
         </Route>
+        {/* 게시글 리스트 */}
+        <Route path="/board/list" element={<BoardList />} />
+        {/* 게시글 작성 페이지 */}
+        <Route path="/board/write" element={<BoardWrite />} />
+        {/* ✅ 게시판 상세 페이지 추가 (query parameter 활용) */}
+        <Route path="board/detail/:boardNo" element={<Detail />} />
+         {/* 수정 폼 라우트 추가 */}
+         <Route path="/board/modifyForm/:boardNo" element={<BoardModify />} />
         {/* 계정 (로그인,회원가입,계정 찾기) */}
         <Route path="/account" element={<AccoutLayout/>}>
           <Route path="login" element={<LoginPage />}/>
