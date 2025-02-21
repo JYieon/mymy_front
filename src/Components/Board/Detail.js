@@ -2,6 +2,7 @@ import BoardApi from "../../api/BoardApi";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Reply from "./Reply";
 
 const Detail = () => {
     const { boardNo } = useParams(); 
@@ -29,29 +30,36 @@ const Detail = () => {
         fetchData();
     }, [boardNo]);
 
-    // ✅ 좋아요 상태 확인
-    const checkLike = async () => {
-        try {
-            const res = await BoardApi.checkLike(boardNo);
-            setLiked(res.data); // true: 좋아요 상태, false: 비활성화 상태
-        } catch (error) {
-            console.error("좋아요 상태 확인 실패", error);
-        }
-    };
+   // ✅ 좋아요 상태 확인
+const checkLike = async () => {
+    try {
+        const res = await BoardApi.checkLike(boardNo);
+        setLiked(res.liked);         // 좋아요 상태
+        setData((prev) => ({         // 게시글 데이터에 좋아요 개수 반영
+            ...prev,
+            boardLikes: res.likes
+        }));
+    } catch (error) {
+        console.error("❌ 좋아요 상태 확인 실패:", error);
+    }
+};
 
-    // ✅ 좋아요 토글
-    const toggleLike = async () => {
-        try {
-            const res = await BoardApi.toggleLike(boardNo);
-            if (res.status === 200) {
-                setLiked(res.data.liked); // true 또는 false 반환
-                setData({ ...data, boardLikes: res.data.likes });
-            }
-        } catch (error) {
-            console.error("좋아요 토글 실패", error);
-        }
-    };
+const toggleLike = async () => {
+    try {
+        const res = await BoardApi.toggleLike(boardNo);
+        console.log("✅ 좋아요 토글 결과:", res);  // 디버깅용
 
+        if (res) {
+            setLiked(res.liked);  // true/false
+            setData((prev) => ({
+                ...prev,
+                boardLikes: res.likes  // 좋아요 수 업데이트
+            }));
+        }
+    } catch (error) {
+        console.error("❌ 좋아요 토글 실패:", error);
+    }
+};
     // ✅ 북마크 상태 확인
     const checkBookmark = async () => {
         try {
@@ -110,7 +118,7 @@ const toggleBookmark = async () => {
             <hr />
             {/* ✅ 좋아요 버튼 */}
             <button onClick={toggleLike}>
-                {liked ? "❤️ 좋아요 취소" : "🤍 좋아요"} ({data.boardLikes})
+                {liked ? "❤️ 좋아요" : "🤍 좋아요"} ({data.boardLikes})
             </button>
 
             {/* ✅ 북마크 버튼 */}
@@ -121,6 +129,10 @@ const toggleBookmark = async () => {
             {/* ✅ 수정 및 삭제 버튼 */}
             <a href={`/board/modifyForm/${data.boardNo}`} className="btn btn-warning">수정</a>
             <button onClick={() => deletePost(data.boardNo)}>삭제</button>
+             <hr />
+
+            {/* ✅ 댓글 섹션 추가 */}
+            <Reply boardNo={boardNo} />
         </div>
     );
 };

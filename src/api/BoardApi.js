@@ -3,6 +3,7 @@ import axios from "axios";
 const domain = "http://localhost:8080/mymy/board";
 
 const BoardApi = {
+    
     // ✅ 게시글 상세 조회
     detail: async (boardNo) => {
         return await axios.get(`${domain}/detail?boardNo=${boardNo}`);
@@ -46,26 +47,31 @@ const BoardApi = {
         }
     },
 
-    // ✅ 좋아요 상태 확인
-    checkLike: async (boardNo) => {
-        try {
-            return await axios.get(`${domain}/like/check?boardNo=${boardNo}`);
-        } catch (error) {
-            console.error("❌ BoardApi checkLike 에러:", error);
-            throw error;
-        }
-    },
+    // ✅ 좋아요 상태와 개수 확인
+checkLike: async (boardNo) => {
+    try {
+        const res = await axios.get(`${domain}/like/check?boardNo=${boardNo}`);
+        return res.data; // { liked: true/false, likes: number } 형태로 반환
+    } catch (error) {
+        console.error("❌ BoardApi checkLike 에러:", error);
+        throw error;
+    }
+},
 
-    // ✅ 좋아요 토글
-    toggleLike: async (boardNo) => {
-        try {
-            return await axios.post(`${domain}/like?boardNo=${boardNo}`);
-        } catch (error) {
-            console.error("❌ BoardApi toggleLike 에러:", error);
-            throw error;
-        }
-    },
-
+// ✅ 좋아요 토글
+toggleLike: async (boardNo) => {
+    try {
+        const res = await axios.post(
+            `${domain}/like/toggle`,
+            { boardNo: boardNo },
+            { headers: { "Content-Type": "application/json" } }
+        );
+        return res.data;  // { liked: true/false, likes: number }
+    } catch (error) {
+        console.error("❌ BoardApi toggleLike 에러:", error);
+        throw error;
+    }
+},
     // ✅ 북마크 상태 확인
     checkBookmark: async (boardNo) => {
         try {
@@ -89,8 +95,55 @@ toggleBookmark: async (boardNo) => {
         console.error("❌ BoardApi toggleBookmark 에러:", error);
         throw error;
     }
-}
+},
+// ✅ 북마크된 게시글 목록 불러오기
+getBookmarkList: async () => {
+    try {
+        const response = await axios.get(`${domain}/bookmark/list`, {
+            params: { id: "a" }
+        });
+        console.log("📚 북마크 리스트 응답 데이터:", response.data); // 디버깅 로그 추가
+        return response.data;  // ✅ 배열 반환 (boardList 또는 빈 배열)
+    } catch (error) {
+        console.error("❌ BoardApi getBookmarkList 에러:", error);
+        return [];
+    }
+},
 
+// ✅ 댓글 목록 조회
+getReplies: async (boardNo) => {
+    try {
+        const response = await axios.get(`${domain}/replyList/${boardNo}`);
+        return response;
+    } catch (error) {
+        console.error("❌ BoardApi getReplies 에러:", error);
+        throw error;
+    }
+},
+
+// ✅ 댓글 작성
+addReply: async (replyData) => {
+    try {
+        const response = await axios.post(`${domain}/addReply`, replyData, {
+            headers: { "Content-Type": "application/json" },
+        });
+        return response;
+    } catch (error) {
+        console.error("❌ BoardApi addReply 에러:", error);
+        throw error;
+    }
+},
+
+// ✅ 댓글 삭제
+deleteReply: async (replyNo) => {
+    try {
+        const response = await axios.delete(`${domain}/deleteReply/${replyNo}`);
+        return response;
+    } catch (error) {
+        console.error("❌ BoardApi deleteReply 에러:", error);
+        throw error;
+    }
+},
 };
 
 export default BoardApi;

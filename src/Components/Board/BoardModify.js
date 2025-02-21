@@ -67,9 +67,13 @@ const BoardModify = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
     
-            if (res.data.url) {
-                console.log("✅ 이미지 업로드 성공:", res.data.url);
-                $("#summernote").summernote("insertImage", res.data.url);
+            if (res.data.fileName) {
+                // ✅ 게시글 작성 시와 동일하게 이미지 URL 구성
+                let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
+                console.log("✅ 이미지 업로드 성공:", imageUrl);
+                $("#summernote").summernote("insertImage", imageUrl);
+            } else {
+                alert("이미지 업로드 실패");
             }
         } catch (err) {
             console.error("❌ 이미지 업로드 실패:", err);

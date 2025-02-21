@@ -57,9 +57,8 @@ const BoardWrite = () => {
       });
 
       if (res.data.fileName) {
-        let imageUrl = res.data.url.replace("/upload/", "/mymy/upload/");
-            console.log("✅ 이미지 URL: ", imageUrl);
-            $("#summernote").summernote("insertImage", imageUrl);
+        let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
+        $(editorRef.current).summernote("insertImage", imageUrl);
       }
     } catch (err) {
       console.error("❌ 이미지 업로드 실패:", err);
