@@ -8,19 +8,13 @@ const BoardList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    // 썸네일 추출 함수 (이미지 없으면 기본 이미지)
-    const extractThumbnail = (content) => {
-        const match = content?.match(/<img.*?src=["'](.*?)["']/);
-        return match ? match[1] : "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
-    };
-
     // 게시글 목록 불러오기
     const fetchBoardList = async (page) => {
         try {
             const response = await axios.get(`http://localhost:8080/mymy/board/list?page=${page}`);
-            setBoardList(response.data.boardList);
-            setCurrentPage(response.data.currentPage);
-            setTotalPages(response.data.totalPages);
+            setBoardList(response.data.boardList);  // 게시글 데이터터
+            setCurrentPage(response.data.currentPage);  // 현재 페이지
+            setTotalPages(response.data.totalPages);    // 전체 페이지 수수
         } catch (error) {
             console.error("게시글 목록 불러오기 실패:", error);
         }
@@ -43,13 +37,13 @@ const BoardList = () => {
                     <div key={post.boardNo} className="board-item">
                         <Link to={`/board/detail/${post.boardNo}`}>
                             <img
-                                src={extractThumbnail(post.content)}
+                                src={post.thumbnail || "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg"}
                                 alt="썸네일"
                                 className="thumbnail"
                             />
                             <h3>{post.boardOpen === 0 ? "🔒 " : ""}{post.title}</h3>
                             <p>작성자: {post.id}</p>
-                            <p>조회수: {post.boardCnt} | 댓글: {post.boardLikes}</p>
+                            <p>조회수: {post.boardCnt} | 좋아요: {post.boardLikes}</p>
                         </Link>
                     </div>
                 ))}
@@ -76,7 +70,7 @@ const BoardList = () => {
 
             {/* 글쓰기 버튼 */}
             <Link to="/board/write" className="btn btn-primary">
-                ✍️ 글쓰기
+                 글쓰기
             </Link>
         </div>
     );

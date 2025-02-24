@@ -7,7 +7,7 @@ const Reply = ({ boardNo }) => {
     const [replyContent, setReplyContent] = useState({});
     const [showReplyInput, setShowReplyInput] = useState({});
 
-    // ✅ 댓글 목록 불러오기
+    // 댓글 목록 불러오기
     useEffect(() => {
         const fetchReplies = async () => {
             try {
@@ -22,7 +22,7 @@ const Reply = ({ boardNo }) => {
         fetchReplies();
     }, [boardNo]);
 
-    // ✅ 트리 구조 생성 (계층형)
+    // 트리 구조 생성 (계층형)
     const buildReplyTree = (replies) => {
         const map = {};
         const roots = [];
@@ -42,7 +42,7 @@ const Reply = ({ boardNo }) => {
         return roots;
     };
 
-    // ✅ 댓글 작성 (부모 댓글 번호에 따라 대댓글 작성 가능)
+    // 댓글 작성 (부모 댓글 번호에 따라 대댓글 작성 가능)
     const handleAddReply = async (parentNo = 0) => {
         const content = replyContent[parentNo] || newReply;
 
@@ -69,7 +69,7 @@ const Reply = ({ boardNo }) => {
         }
     };
 
-    // ✅ 댓글 삭제
+    // 댓글 삭제
     const handleDeleteReply = async (replyNo) => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
@@ -82,7 +82,7 @@ const Reply = ({ boardNo }) => {
         }
     };
 
-    // ✅ 대댓글 입력창 토글
+    // 대댓글 입력창 토글
     const toggleReplyInput = (repNo) => {
         setShowReplyInput((prev) => ({
             ...prev,
@@ -90,7 +90,7 @@ const Reply = ({ boardNo }) => {
         }));
     };
 
-    // ✅ 시간 형식 변환 함수
+    // 시간 형식 변환 함수
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleString("ko-KR", {
@@ -103,7 +103,7 @@ const Reply = ({ boardNo }) => {
         });
     };
 
-    // ✅ 댓글 렌더링 (재귀)
+    // 댓글 렌더링 (재귀)
     const renderReplies = (replies, depth = 0) => {
         return replies.map(reply => (
             <div key={reply.repNo} style={{ marginLeft: `${depth * 20}px`, padding: "10px", border: "1px solid #ddd", borderRadius: "5px", marginBottom: "10px" }}>

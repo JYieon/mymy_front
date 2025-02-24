@@ -6,28 +6,28 @@ const BookmarkList = () => {
     const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
     const navigate = useNavigate();
 
-    // ✅ 북마크 목록 불러오기
+    // 북마크 목록 불러오기
     const fetchBookmarks = async () => {
         try {
             const bookmarkData = await BoardApi.getBookmarkList();
-            console.log("✅ 가져온 북마크 데이터:", bookmarkData);
+            // console.log("✅ 가져온 북마크 데이터:", bookmarkData);
             setBookmarks(bookmarkData); // 배열 상태 업데이트
         } catch (error) {
-            console.error("❌ 북마크 목록 불러오기 실패:", error);
+           // console.error("❌ 북마크 목록 불러오기 실패:", error);
         }
     };
 
-    // ✅ 북마크 해제
+    // 북마크 해제
     const handleRemoveBookmark = async (boardNo) => {
         if (window.confirm("북마크를 해제하시겠습니까?")) {
             try {
                 const success = await BoardApi.toggleBookmark(boardNo);
                 if (success) {
-                    alert("✅ 북마크가 해제되었습니다.");
+                    alert("북마크가 해제되었습니다.");
                     fetchBookmarks(); // 북마크 목록 새로고침
                 }
             } catch (error) {
-                console.error("❌ 북마크 해제 실패:", error);
+                // console.error("❌ 북마크 해제 실패:", error);
             }
         }
     };
