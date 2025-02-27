@@ -10,7 +10,7 @@ const MainPage=()=>{
                 </div>
                 <div className="Bottom Section">
                     <div className="Test">
-                    <Link to="test">고양이 테스트</Link></div>
+                    <Link to="TravellerTest/main">고양이 테스트</Link></div>
                     <div className="Lastest">최신 게시글</div>
                 </div>
 

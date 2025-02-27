@@ -1,5 +1,5 @@
 
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 import RegiCom from "./RegiCom";
 import { initalState, reduser } from "../../Reducer/AccountRed";
 
@@ -21,6 +21,24 @@ const RegiCon=()=>{
        dispatch({type:'CHANGE_INPUT',value,name,form:"Register"});
     }
 
+    const FirstForm=useRef(null);
+    const SecondForm=useRef(null);
+    
+    const onClick=()=>{
+        if (SecondForm.current.style.display==="none")
+            {
+                SecondForm.current.style.display="block";
+                FirstForm.current.style.display="none";
+            }
+        else{
+            SecondForm.current.style="display:none;"
+            FirstForm.current.style.display="block";
+
+        }
+
+         
+    }
+
     const mySubmit=(e)=>{
         e.preventDefault(); //submit 눌렀을 때 페이지 넘어감 방지?
         console.log('stay that page:',e.target)
@@ -29,7 +47,7 @@ const RegiCon=()=>{
     }
 
     return(
-        <RegiCom mySubmit={mySubmit} onChangeInput={onChangeInput}/>
+        <RegiCom mySubmit={mySubmit} onChangeInput={onChangeInput} SecondForm={SecondForm} FirstForm={FirstForm} onClick={onClick}/>
     )
 };
 

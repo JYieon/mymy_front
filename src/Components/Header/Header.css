@@ -21,13 +21,13 @@ body {
 
 .Logo {
     font-family: 'ADLaMDisplay-Regular';
-    font-size: 20px;
+    font-size: 25px;
 }
 
 
 Header {
     /* width: 100vw; */
-    height: 50px;
+    height: auto;
     display: flex;
     background-color: white;
 
