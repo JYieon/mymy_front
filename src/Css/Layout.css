@@ -7,7 +7,7 @@
     text-decoration: none;
     color: #00284C;
 }
-
+/* 그림자 */
 .Shadow {
     background-color: white;
     box-shadow: 0px 10px 20px  gray ;

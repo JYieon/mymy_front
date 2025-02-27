@@ -1,7 +1,7 @@
 const RegiCom=({mySubmit,onChangeInput})=>{
     return (
         <>
-            <form className="UserInfo" onSubmit={mySubmit}>
+            <form className="Register Form" onSubmit={mySubmit}>
                 <input type="text" name="Name" placeholder="이름" onChange={onChangeInput}/>
                 <input type="tel" name="Tel" placeholder="010-0000-0000" onChange={onChangeInput}/>
                 <div className="Warning Tel">올바른 전화번호 양식이 아닙니다.</div>

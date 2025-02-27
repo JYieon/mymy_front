@@ -10,7 +10,6 @@ const ResisterPage=()=>{
             더 많은 기능들을<br/>
             이용해보세요.
         </div>
-
         <RegiCon/>
         <KakaoSyncCom/>
     </>)
