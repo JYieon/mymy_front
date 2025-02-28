@@ -1,13 +1,23 @@
 .SearchbarForm{
     display: flex;
+    justify-content: space-around;
+    width: 400px;
     border-radius: 100px;
     
-    & >input[type="text"] {
+    & > input[type="search"] {
         background-color: none;
+        width: 60%;
     }
 
-    & >input[type="submit"] {
+    & > input[type="submit"] {
         background-color: #00284C;
         color: white;
+        width: 20%;
+    }
+
+    & > .Fillter {
+        width: 20%;
+        /* font-size: 15px; */
+        text-align: center;
     }
 }

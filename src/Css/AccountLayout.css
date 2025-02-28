@@ -4,14 +4,30 @@
     background: linear-gradient(to right,#00284C 50%,white);
 }
 /* 폼 */
-input {
-    border: none;
-    padding: 8px;
-    border-radius: 100px;
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
+form{
+    width: 200px; height: auto;
+    margin: 50px 10px;
+    & *{
+        border: none;
+        display: flex;
+        flex-direction: column;
+     }
+
+     & input {
+        margin: 0px auto 10px;
+        padding: 10px;
+        border-radius: 100px;
+     }
+
+     & .anotherOption {
+        padding: 2px;
+        margin: 0 auto;
+     }
+
+
 }
+
+
 
 /* 캐치프레이즈 */
 .Catchphrase {
@@ -28,4 +44,10 @@ input {
     text-decoration: none;
     color: white;
     font-size: 10px;
+}
+
+/* 카카오톡 로그인 */
+.KakaoLogo {
+    width: 150px
+
 }
