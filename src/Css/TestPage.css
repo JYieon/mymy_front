@@ -1,0 +1,18 @@
+.TestStartBtn {
+    text-decoration: none;
+    margin: 0 auto;
+    background-color: white;
+    padding: 10px 50px;
+    border-radius: 10px;
+}
+
+.TestThumbnail {
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+}
+
+.TestTitle {
+    text-align: center;
+    color: white;
+}

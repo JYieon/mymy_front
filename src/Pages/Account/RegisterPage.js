@@ -11,7 +11,6 @@ const ResisterPage=()=>{
             이용해보세요.
         </div>
         <RegiCon/>
-        <KakaoSyncCom/>
     </>)
 };
 
