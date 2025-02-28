@@ -14,6 +14,7 @@ import AccoutLayout from "./Pages/Account/AccountLayout";
 import MyPage from "./Pages/Account/MyPage";
 import TestMainPage from "./Pages/TestPage/TestMainPage";
 import TestLayout from "./Pages/TestPage/TestLayout";
+import MateBoardPage from "./Pages/Board/MateBoardPage";
 
 function App() {
   return (
@@ -24,10 +25,11 @@ function App() {
         <Route index element={<MainPage />}/>
 
         {/* 게시판 */}
-        <Route path="/Board" element={<SidebarCom />}>
-          <Route path="Plan" element={<PlanBoardPage />}/>
-          <Route path="Diary" element={<DiaryBoardPage />}/>
-          <Route path="Bookmark" element={<BookmarkBoardPage />}/>
+        <Route path="/board" element={<SidebarCom />}>
+          <Route path="plan" element={<PlanBoardPage />}/>
+          <Route path="diary" element={<DiaryBoardPage />}/>
+          <Route path="bookmark" element={<BookmarkBoardPage />}/>
+          <Route path="mate" element={<MateBoardPage />}/>
         </Route>
 
         {/* 여행자 테스트 */}
@@ -38,7 +40,7 @@ function App() {
         </Route>
 
         {/* 계정 (로그인,회원가입,계정 찾기) */}
-        <Route path="/account" element={<AccoutLayout/>}>
+        <Route path="/Account" element={<AccoutLayout/>}>
           <Route path="login" element={<LoginPage />}/>
           <Route path="myPage" element={<MyPage/>}/>
           <Route path="register" element={<ResisterPage />}/>

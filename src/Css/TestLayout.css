@@ -3,7 +3,7 @@
     height: 70vmax;
     border-radius: 10px;
     margin: 20px auto;
-
+    background-color: #00284C;
     display: flex;
     flex-direction: column;
 }
