@@ -16,6 +16,7 @@ import BoardWrite from "./Components/Board/BoardWrite";
 import BoardList from "./Components/Board/BoardList";
 import BoardModify from "./Components/Board/BoardModify";
 import BookmarkList from "./Components/Board/BookmarkList";
+import TimelinePage from "./Pages/TimelinePage";
 function App() {
   return (
     <Routes>
@@ -33,12 +34,13 @@ function App() {
         <Route path="/board/list" element={<BoardList />} />
         {/* 게시글 작성 페이지 */}
         <Route path="/board/write" element={<BoardWrite />} />
-        {/* ✅ 게시판 상세 페이지 추가 (query parameter 활용) */}
+        {/* 게시판 상세 페이지 추가 (query parameter 활용) */}
         <Route path="board/detail/:boardNo" element={<Detail />} />
         {/* 수정 폼 라우트 추가 */}
          <Route path="/board/modifyForm/:boardNo" element={<BoardModify />} />
-        {/* ✅ 북마크 리스트 추가 */}
+        {/* 북마크 리스트 추가 */}
          <Route path="/board/bookmarkList" element={<BookmarkList />} />
+        
         {/* 계정 (로그인,회원가입,계정 찾기) */}
         <Route path="/account" element={<AccoutLayout/>}>
           <Route path="login" element={<LoginPage />}/>
@@ -50,6 +52,10 @@ function App() {
             <Route path="pw" element={<FindPwPage/>}/>
           </Route>
         </Route>
+
+        {/* 타임라인 경로 변경 */} 
+        <Route path="/timeline" element={<TimelinePage />} /> 
+
       </Route>
     </Routes>
   );
