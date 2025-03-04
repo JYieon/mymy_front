@@ -3,10 +3,7 @@
     width: 100vw;
     height: 100vh;
     background: linear-gradient(to right,#00284C 50%,white);
-    display: flex;
-    flex-direction: column;
 }
-
 /* 폼 */
 form{
     width: 200px; height: auto;
@@ -50,3 +47,10 @@ form{
     font-size: 10px;
 }
 
+
+
+/* 카카오톡 로그인 */
+.KakaoLogo {
+    width: 150px
+
+}

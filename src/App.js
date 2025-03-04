@@ -15,6 +15,7 @@ import MyPage from "./Pages/Account/MyPage";
 import TestMainPage from "./Pages/TestPage/TestMainPage";
 import TestLayout from "./Pages/TestPage/TestLayout";
 import MateBoardPage from "./Pages/Board/MateBoardPage";
+import WritePage from "./Pages/WritePage";
 
 function App() {
   return (
@@ -32,7 +33,11 @@ function App() {
           <Route path="mate" element={<MateBoardPage />}/>
         </Route>
 
+        {/* 글작성 */}
+        <Route path="/write" element={<WritePage />}/>
+
         {/* 여행자 테스트 */}
+        {/* 뭔가 단어선정이 애매한 느낌? 나중에 대화 */}
         <Route path="/TravellerTest" element={<TestLayout/>}>
           <Route path="main" element={<TestMainPage/>}/>
           <Route path="test" element={<DiaryBoardPage />}/>

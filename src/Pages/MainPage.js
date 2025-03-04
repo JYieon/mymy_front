@@ -9,7 +9,7 @@ const MainPage=()=>{
                     <div className="Text">MY TRIP</div>
                 </div>
                 <div className="Bottom Section">
-                    <div className="Test">
+                    <div className="GotoTest">
                     <Link to="TravellerTest/main">고양이 테스트</Link></div>
                     <div className="Lastest">최신 게시글</div>
                 </div>

@@ -8,7 +8,8 @@ const SidebarCom=()=>{
                 <div>
                     <img src="https://picsum.photos/200/200" alt="can't read Img" className="UserProfilePic"/>
                 </div>
-                <div className="UserName">TestUser</div>
+                
+                <Link to="user/아이디" className="UserName">TestUser</Link>
                 <div className="UserLevel">고양이</div>
                 <div className="UserFollower">팔로잉 팔로워</div>
                 <Link to="/mypage/myContent">내가 쓴 글</Link>

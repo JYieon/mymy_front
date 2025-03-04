@@ -29,8 +29,9 @@ const BoardThumbnailListCom=()=>{
             <Link to="/page/1">1</Link>
             ]
             <Link to="/Board/BookMark/next">이전</Link>
-        </div>
 
+        </div>
+        <Link to="../../write">글쓰기</Link>
 
     </>)
 };
