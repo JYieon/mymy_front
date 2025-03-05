@@ -12,9 +12,7 @@ import FindIdPage from "./Pages/Account/FindIdPage";
 import FindPwPage from "./Pages/Account/FindPwPage";
 import AccoutLayout from "./Pages/Account/AccountLayout";
 import MyPage from "./Pages/Account/MyPage";
-
 import MateBoardPage from "./Pages/Board/MateBoardPage";
-import WritePage from "./Pages/WritePage";
 import TestPage from "./Pages/TestPage/TestPage";
 
 import Detail from "./Components/Board/Detail";
@@ -38,9 +36,6 @@ function App() {
           <Route path="bookmark" element={<BookmarkBoardPage />}/>
           <Route path="mate" element={<MateBoardPage />}/>
         </Route>
-
-        {/* 글작성 */}
-        <Route path="/write" element={<WritePage />}/>
 
         {/* 여행자 테스트 */}
         {/* 뭔가 단어선정이 애매한 느낌? 나중에 대화 */}
