@@ -91,6 +91,21 @@ const HeaderCom=()=>{
                             {/* 이후 수정 필요 */}
                             <Link to="/account/logout" className="link" onClick={onClick}>로그아웃</Link>
                         </li>
+                        <li className="HeaderNav">
+                            <svg className="Alarm" width="20px" height="20px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 5C3 2.23858 5.23858 0 8 0C10.7614 0 13 2.23858 13 5V8L15 10V12H1V10L3 8V5Z" fill="#000000"/>
+<path d="M7.99999 16C6.69378 16 5.58254 15.1652 5.1707 14H10.8293C10.4175 15.1652 9.30621 16 7.99999 16Z" fill="#000000"/>
+                            </svg>
+                            <ul className="AlarmList">
+                                {/* 임시 주소 */}
+                                <li>
+                                    <Link to="/게시글" className="Menu">내가 쓴 댓글에 답글이 달렸습니다.</Link>
+                                </li>
+                                <li>
+                                    <Link to="/게시글" className="Menu">내가 쓴 댓글에 답글이 달렸습니다.</Link>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </header>

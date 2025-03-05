@@ -35,7 +35,7 @@ Header {
 
 .HeaderNav {
     display: inline-table;
-    & > .MenuList {
+    & > .MenuList, .AlarmList {
         width: auto;
         position: absolute;
         z-index: 100;
@@ -48,4 +48,24 @@ Header {
 
 .LogoutState {
     display: block;
+}
+
+.AlarmList {
+    padding: 5px;
+    width: 100%;
+    background-color:white;
+    border-style:groove;
+    border-radius: 10px;
+    display: none;
+    .Menu {
+        color: black;
+        font-size: 20px;
+        font-weight: 400;
+        text-decoration: none;
+        &:hover {
+            color: lightgrey;
+
+        }
+        
+    }
 }
