@@ -29,6 +29,7 @@ const HeaderCom=()=>{
                 <nav>
                     {/* 로그아웃 상태에서 표시 되는 헤더 */}
                     <ul className="LogoutState" ref={Logout}>
+                        <button onClick={onClick}>로그인 임시 버튼</button>
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
@@ -54,8 +55,9 @@ const HeaderCom=()=>{
                         </li>
                     </ul>
                     {/* 로그인 상태에서 표시 되는 헤더 */}
-                    {/* 이후 수정 필요 */}
                     <ul className="LoginState" ref={Login} >
+                    <button onClick={onClick}>로그아웃 임시 버튼</button>
+
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
