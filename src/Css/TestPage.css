@@ -16,3 +16,17 @@
     text-align: center;
     color: white;
 }
+
+.StartPage {
+    /* display: block; */
+    display: none;
+
+}
+
+.MainPage {
+    /* display: none; */
+}
+
+.ResultPage {
+    /* display: none; */
+}
