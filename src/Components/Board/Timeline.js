@@ -101,8 +101,8 @@ const Timeline = () => {
         fetchTimeline();
     }, []);
 
-    return (
-        <div>
+    return (<>
+        <div className="Timeline Wrap">
             <h2>📅 여행 타임라인</h2>
 
             {/* 여행 장소 및 기간 입력 */}
@@ -188,7 +188,7 @@ const Timeline = () => {
                 <p>등록된 일정이 없습니다.</p>
             )}
         </div>
-    );
+        </>);
 };
 
 export default Timeline;
