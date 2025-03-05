@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import KoKaoLogin from "../../Assets/KakaoTalk_20250220_134840509_01.png"
+
 const LoginPage=()=>{
     return(<>
         <div className="Catchphrase">
@@ -7,7 +8,7 @@ const LoginPage=()=>{
             내가 쓴 계획들을<br/>
             다시 확인하세요.
         </div>
-        <form className="Login Form">
+        <form className="Login Form" >
             <input type="text" placeholder="아이디"/>
             <input type="password" placeholder="비밀번호"/>
 

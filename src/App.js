@@ -14,7 +14,6 @@ import AccoutLayout from "./Pages/Account/AccountLayout";
 import MyPage from "./Pages/Account/MyPage";
 import MateBoardPage from "./Pages/Board/MateBoardPage";
 import TestPage from "./Pages/TestPage/TestPage";
-
 import Detail from "./Components/Board/Detail";
 import BoardWrite from "./Components/Board/BoardWrite";
 import BoardList from "./Components/Board/BoardList";

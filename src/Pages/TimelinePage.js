@@ -7,7 +7,7 @@ const TimelinePage = () => {
     return (
         <div>
             <h1>📅 여행 타임라인</h1>
-            <div className="Wrap">
+            <div className="TimelineWrap">
                 <KakaoMapCom/>
                 <Timeline />
             </div>

@@ -41,3 +41,11 @@ Header {
         z-index: 100;
     }
 }
+
+.LoginState {
+    display: none;
+}
+
+.LogoutState {
+    display: block;
+}

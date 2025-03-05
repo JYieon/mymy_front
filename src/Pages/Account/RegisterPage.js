@@ -1,6 +1,7 @@
 // import { Link } from "react-router-dom";
 import KakaoSyncCom from "../../Components/KakaoSync/KakaoSyncCom";
-import RegiCon from "../../Components/RegisterForm/RegiCon";
+import RegiCom from "../../Components/RegisterForm/RegiCom";
+
 import "../../Css/RegisterPage.css"
 
 const ResisterPage=()=>{
@@ -10,7 +11,7 @@ const ResisterPage=()=>{
             더 많은 기능들을<br/>
             이용해보세요.
         </div>
-        <RegiCon/>
+        <RegiCom/>
     </>)
 };
 
