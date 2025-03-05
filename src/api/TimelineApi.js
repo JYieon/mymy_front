@@ -3,7 +3,7 @@ import axios from "axios";
 const domain = "http://localhost:8080/mymy/timeline";
 
 const TimelineApi = {
-    // ✅ 타임라인 저장 (일정 추가)
+    // 타임라인 저장 (일정 추가)
     addTimeline: async (timelineData) => {
         console.log("📤 전송 데이터:", timelineData);
         try {
@@ -22,7 +22,7 @@ const TimelineApi = {
         }
     },
 
-    // ✅ 특정 게시글의 타임라인 불러오기
+    // 특정 게시글의 타임라인 불러오기
     getTimeline: async (boardNo) => {
         try {
             const response = await axios.get(`${domain}/${boardNo}`);

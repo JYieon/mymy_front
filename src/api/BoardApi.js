@@ -4,6 +4,13 @@ const domain = "http://localhost:8080/mymy/board";
 
 const BoardApi = {
 
+    // 게시글 목록 조회 (카테고리 추가)
+    getBoardList: async (page, category) => {
+        return await axios.get(`${domain}/list`, {
+            params: { page: page, category: category },
+        });
+    },
+
     // 게시글 상세 조회
     detail: async (boardNo) => {
         return await axios.get(`${domain}/detail?boardNo=${boardNo}`);

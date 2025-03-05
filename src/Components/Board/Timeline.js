@@ -8,10 +8,10 @@ const Timeline = () => {
     const [timeline, setTimeline] = useState({}); // 날짜별 일정 데이터
     const [selectedDate, setSelectedDate] = useState(""); // 선택한 날짜
     const [newTodo, setNewTodo] = useState({ time: "", title: "", description: "" }); // 새로운 일정 입력 필드
-    const boardNo = 58; // ✅ 임의의 게시글 번호
-    const id = "a"; // ✅ 임의의 사용자 ID
+    const boardNo = 58; // 임의의 게시글 번호
+    const id = "a"; // 임의의 사용자 ID
 
-    // ✅ 타임라인 불러오기 (서버에서 데이터 가져오기)
+    // 타임라인 불러오기 (서버에서 데이터 가져오기)
     const fetchTimeline = async () => {
         try {
             const response = await TimelineApi.getTimeline(boardNo);
@@ -19,7 +19,7 @@ const Timeline = () => {
     
             if (response.length > 0) {
                 const loadedTimeline = response.reduce((acc, item) => {
-                    const todoData = JSON.parse(item.todo || "{}"); // ✅ JSON 변환 (빈 객체 처리)
+                    const todoData = JSON.parse(item.todo || "{}"); // JSON 변환 (빈 객체 처리)
                     
                     // 🔥 `startDt` 키가 아닌 `todo` 내 날짜를 기준으로 저장
                     Object.keys(todoData).forEach((dateKey) => {
@@ -38,7 +38,7 @@ const Timeline = () => {
         }
     };
 
-    // ✅ 타임라인 저장 (서버로 전송)
+    // 타임라인 저장 (서버로 전송)
     const handleSaveTimeline = async () => {
         if (!location || !startDate || !endDate) {
             alert("여행 장소와 날짜를 입력해주세요.");
@@ -50,20 +50,20 @@ const Timeline = () => {
             id: id,
             startDt: Object.keys(timeline)[0] || startDate,
             endDt: endDate,
-            todo: JSON.stringify(timeline), // ✅ JSON 문자열 변환
+            todo: JSON.stringify(timeline), // JSON 문자열 변환
             location: location,
         };
 
         try {
             await TimelineApi.addTimeline(newTimeline);
-            alert("✅ 타임라인이 저장되었습니다!");
-            fetchTimeline(); // ✅ 저장 후 자동으로 새로고침
+            alert("타임라인이 저장되었습니다!");
+            fetchTimeline(); // 저장 후 자동으로 새로고침
         } catch (error) {
             console.error("❌ 타임라인 저장 실패:", error);
         }
     };
 
-    // ✅ 날짜 리스트 생성 함수 (startDate ~ endDate 범위)
+    // 날짜 리스트 생성 함수 (startDate ~ endDate 범위)
     const generateDateList = () => {
         let dates = [];
         let start = new Date(startDate);
@@ -76,12 +76,12 @@ const Timeline = () => {
         return dates;
     };
 
-    // ✅ 날짜 클릭 시 해당 날짜의 TODO 입력 창 활성화
+    // 날짜 클릭 시 해당 날짜의 TODO 입력 창 활성화
     const handleDateClick = (date) => {
         setSelectedDate(date);
     };
 
-    // ✅ TODO 추가 함수 (선택한 날짜의 일정 추가)
+    // TODO 추가 함수 (선택한 날짜의 일정 추가)
     const handleAddTodo = () => {
         if (!selectedDate || !newTodo.time || !newTodo.title || !newTodo.description) {
             alert("모든 항목을 입력해주세요.");
@@ -96,7 +96,7 @@ const Timeline = () => {
         setNewTodo({ time: "", title: "", description: "" }); // 입력 필드 초기화
     };
 
-    // ✅ 최초 1회만 타임라인 불러오기 (무한 루프 방지)
+    // 최초 1회만 타임라인 불러오기 (무한 루프 방지)
     useEffect(() => {
         fetchTimeline();
     }, []);
