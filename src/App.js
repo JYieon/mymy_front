@@ -30,10 +30,21 @@ function App() {
 
         {/* 게시판 */}
         <Route path="/board" element={<SidebarCom />}>
-          <Route path="plan" element={<PlanBoardPage />}/>
+          {/* <Route path="plan" element={<PlanBoardPage />}/>
           <Route path="diary" element={<DiaryBoardPage />}/>
           <Route path="bookmark" element={<BookmarkBoardPage />}/>
-          <Route path="mate" element={<MateBoardPage />}/>
+          <Route path="mate" element={<MateBoardPage />}/> */}
+
+          {/* 게시글 리스트 */}
+          <Route path="list" element={<BoardList />} />
+          {/* 게시글 작성 페이지 */}
+          <Route path="write" element={<BoardWrite />} />
+          {/* 게시판 상세 페이지 추가 (query parameter 활용) */}
+          <Route path="detail/:boardNo" element={<Detail />} />
+          {/* 수정 폼 라우트 추가 */}
+          <Route path="modifyForm/:boardNo" element={<BoardModify />} />
+          {/* 북마크 리스트 추가 */}
+          <Route path="bookmarkList" element={<BookmarkList />} />
         </Route>
 
         {/* 여행자 테스트 */}
@@ -42,16 +53,7 @@ function App() {
         <Route path="/test" element={<TestPage/>}/>
         
 
-        {/* 게시글 리스트 */}
-        <Route path="/board/list" element={<BoardList />} />
-        {/* 게시글 작성 페이지 */}
-        <Route path="/board/write" element={<BoardWrite />} />
-        {/* 게시판 상세 페이지 추가 (query parameter 활용) */}
-        <Route path="board/detail/:boardNo" element={<Detail />} />
-        {/* 수정 폼 라우트 추가 */}
-         <Route path="/board/modifyForm/:boardNo" element={<BoardModify />} />
-        {/* 북마크 리스트 추가 */}
-         <Route path="/board/bookmarkList" element={<BookmarkList />} />
+        
         
         {/* 계정 (로그인,회원가입,계정 찾기) */}
         <Route path="/Account" element={<AccoutLayout/>}>
