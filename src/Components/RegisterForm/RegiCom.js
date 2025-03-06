@@ -33,7 +33,7 @@ const RegiCom=()=>{
             SecondForm.current.style="display:none;"
             FirstForm.current.style.display="block";
 
-        }
+        };
 
          
     }

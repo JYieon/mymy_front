@@ -18,15 +18,15 @@
 }
 
 .StartPage {
-    /* display: block; */
-    display: none;
+    display: block;
+    /* display: none; */
 
 }
 
 .MainPage {
-    /* display: none; */
+    display: none;
 }
 
 .ResultPage {
-    /* display: none; */
+    display: none;
 }
