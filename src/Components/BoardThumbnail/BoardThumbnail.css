@@ -1,0 +1,54 @@
+.ThumbnailPic {
+    border-radius: 20px;
+    width: 300px; height: 200px;
+    display: table-cell;
+    vertical-align: middle;
+    
+}
+
+.BookmarkBtn {
+    fill:white;
+    left: 85%;
+    top: 80%; 
+    display: table-cell;
+    position: absolute;
+    &:hover {
+        fill: blueviolet;
+    }
+}
+
+.Thumbnail {
+    display: table;
+    position: relative;
+
+}
+
+.Content {
+    width: 30%;
+    padding: 20px 10px;
+
+    display: flex;
+    flex-direction: column;
+    & *{
+        margin: 0 auto;
+        padding: 3px;
+
+    }
+}
+
+.TitleText {
+    font-size: 20px;
+}
+
+.ContentInfo {
+    font: 15px;
+    font-weight: 400;
+    color: gray;  
+}
+
+.WriterInfo {
+    display: flex;
+}
+.WriterPic {
+    border-radius: 100%;
+}

@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const domain = "http://localhost:8080/mymy";
+const domain = "http://localhost:8080/mymy/auth";
 
-const Api = {
+const AuthApi = {
     login: async (id, pwd) => {
         const user = {
             id: id,
@@ -57,7 +57,15 @@ const Api = {
 
     signup: async(userData) => {
         return await axios.post(domain + "/signup", userData)
+    },
+
+    kakaoLogin: async() => {
+        return await axios.get(domain + "/kakao")
+    },
+
+    kakaoCallback: async(code) => {
+        return await axios.get(domain + `/kakao/callback?code=${code}`)
     }
 }
 
-export default Api;
+export default AuthApi;

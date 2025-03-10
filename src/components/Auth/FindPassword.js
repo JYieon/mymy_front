@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";  // useNavigate 추가
-import Api from "../../Api/Api";
+import Api from "../../Api/AuthApi";
 
 const FindPassword = () => {
     const [id, setId] = useState("");           // 아이디

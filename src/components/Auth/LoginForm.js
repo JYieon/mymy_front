@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Api from "../../Api/Api";
+import Api from "../../Api/AuthApi";
 
 const LoginForm = () => {
     const [id, setId] = useState("");
@@ -24,7 +24,6 @@ const LoginForm = () => {
                 // 로그인 성공 후, 토큰 저장
                 console.log("로그인 성공");
                 localStorage.setItem("accessToken", res.data.accessToken);
-                
             } 
     
         } catch (err) {

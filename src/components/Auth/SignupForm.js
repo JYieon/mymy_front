@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";  
-import Api from "../../Api/Api";
+import Api from "../../Api/AuthApi";
 
 const SignupForm = () => {
     const [id, setId] = useState("");           // 아이디
@@ -194,13 +194,14 @@ const SignupForm = () => {
 
     return (
         <div>
-            <form className="signup-form" onSubmit={handleSignup}>
+            <form className="UserInfo" onSubmit={handleSignup}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <input
                         type="text"
+                        name="Id"
                         value={id}
-                        onChange={(e) => setId(e.target.value)}
                         placeholder="아이디"
+                        onChange={(e) => setId(e.target.value)}
                     />
                     <button type="button" onClick={handleCheckId}>
                         중복 확인
@@ -210,26 +211,29 @@ const SignupForm = () => {
 
                 <input
                     type="password"
+                    name="Pwd"
                     value={pwd}
-                    onChange={(e) => setPwd(e.target.value)}
                     placeholder="비밀번호 (8자 이상, 숫자 포함)"
+                    onChange={(e) => setPwd(e.target.value)}
                 />
                 {pwdError && <div style={{ color: "red" }}>{pwdError}</div>} {/* 오류 메시지 표시 */}
 
                 {/* 비밀번호 확인 입력 */}
                 <input
                     type="password"
+                    name="Pwd2"
                     value={pwd2}
-                    onChange={(e) => setPwd2(e.target.value)}
                     placeholder="비밀번호 확인"
+                    onChange={(e) => setPwd2(e.target.value)}
                 />
                 {pwdMatchError && <div style={{ color: "red" }}>{pwdMatchError}</div>} {/* 불일치 메시지 표시 */}
 
                 <input
                     type="text"
+                    name="Name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
                     placeholder="이름"
+                    onChange={(e) => setName(e.target.value)}
                 /><br />
 
                 <input
@@ -240,19 +244,21 @@ const SignupForm = () => {
                 /><br />
 
                 <input
-                    type="text"
+                    type="tel"
+                    name="Tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
                     pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"
                     maxLength="13"
                     placeholder="010-0000-0000"
+                    onChange={(e) => setPhone(e.target.value)}
                 /><br />
 
                 <input
                     type="email"
+                    name="Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="이메일"
+                    onChange={(e) => setEmail(e.target.value)}
                 /><br />
 
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
