@@ -23,11 +23,11 @@ const SidebarCom=()=>{
                         </li>
                     </ul>
                 </div>
-                <Link to="user/아이디" className="UserName">TestUser</Link>
-                <div className="UserLevel">고양이</div>
-                <div className="UserFollower">팔로잉 팔로워</div>
-                <Link to="/mypage/myContent">내가 쓴 글</Link>
-                <Link to="/account/logout">로그아웃</Link>
+                <Link to="user/아이디" className="link UserName">TestUser</Link>
+                <div className="link UserLevel">고양이</div>
+                <div className="link UserFollower">팔로잉 팔로워</div>
+                <Link to="/mypage/myContent" className="link">내가 쓴 글</Link>
+                <Link to="/account/logout" className="link Logout">로그아웃</Link>
             </div>
 
             {/* 메뉴 카테고리 */}
@@ -53,8 +53,8 @@ const SidebarCom=()=>{
                     {/* 채팅 목록 */}
                     <li className="link">채팅
                         <ul className="MenuList">
-                            <li><Link to="/board/Chat" className="Menu">내 채팅</Link></li>
-                            <li><Link to="/Planboard" className="Menu">송금</Link></li>
+                            <li><Link to="/board/Chat" className="Menu">채널 목록</Link></li>
+                            <li><Link to="../chat/newChat" className="Menu">채팅방 만들기</Link></li>
                         </ul>
                         <hr className="ContourLine"/>
                     </li>

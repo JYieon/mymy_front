@@ -21,6 +21,8 @@ import BoardModify from "./Components/Board/BoardModify";
 import BookmarkList from "./Components/Board/BookmarkList";
 import TimelinePage from "./Pages/TimelinePage";
 import ResultPage from "./Pages/TestPage/ResultPage";
+import NewChatPage from "./Pages/Chat/NewChatPage";
+import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
 function App() {
   return (
     <Routes>
@@ -48,14 +50,18 @@ function App() {
           <Route path="bookmarkList" element={<BookmarkList />} />
         </Route>
 
+
+         {/* 채팅 */}
+        <Route path="/chat" element={<SidebarCom/>}>
+          <Route path="newChat" element={<NewChatPage/>}/>
+          <Route path="groupChat" element={<GroupChatPage/>}/>
+
+        </Route>
+
         {/* 여행자 테스트 */}
-        {/* 뭔가 단어선정이 애매한 느낌? 나중에 대화 */}
 
         <Route path="/test" element={<TestPage/>}/>
         <Route path="/test/result" element={<ResultPage/>}/>
-        
-
-        
         
         {/* 계정 (로그인,회원가입,계정 찾기) */}
         <Route path="/Account" element={<AccoutLayout/>}>
