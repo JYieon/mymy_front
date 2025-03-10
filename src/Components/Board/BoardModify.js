@@ -94,7 +94,7 @@ const BoardModify = () => {
         try {
             const res = await BoardApi.modify(postData);
             if (res.status === 200) {
-                alert("✅ 게시글이 성공적으로 수정되었습니다!");
+                alert("게시글이 성공적으로 수정되었습니다!");
                 navigate(`/board/detail/${boardNo}`);
             }
         } catch (error) {
