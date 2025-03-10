@@ -10,7 +10,7 @@ const BookmarkList = () => {
     const fetchBookmarks = async () => {
         try {
             const bookmarkData = await BoardApi.getBookmarkList();
-            // console.log("✅ 가져온 북마크 데이터:", bookmarkData);
+            // console.log("가져온 북마크 데이터:", bookmarkData);
             setBookmarks(bookmarkData); // 배열 상태 업데이트
         } catch (error) {
            // console.error("❌ 북마크 목록 불러오기 실패:", error);

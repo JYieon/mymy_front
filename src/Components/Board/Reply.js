@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import BoardApi from "../../api/BoardApi";
+import MateBoardApi from "../../api/MateBoardApi";
 
-const Reply = ({ boardNo }) => {
+const Reply = ({ boardNo, category }) => {
     const [replies, setReplies] = useState([]);
     const [newReply, setNewReply] = useState("");
     const [replyContent, setReplyContent] = useState({});
     const [showReplyInput, setShowReplyInput] = useState({});
 
+    // **어떤 API를 사용할지 선택**
+    const api = category === 3 ? MateBoardApi : BoardApi;
+
     // 댓글 목록 불러오기
     useEffect(() => {
         const fetchReplies = async () => {
             try {
-                const res = await BoardApi.getReplies(boardNo);
+                const res = await api.getReplies(boardNo);
                 const tree = buildReplyTree(res.data);
                 setReplies(tree);
             } catch (error) {
@@ -20,9 +24,9 @@ const Reply = ({ boardNo }) => {
         };
 
         fetchReplies();
-    }, [boardNo]);
+    }, [boardNo, api]);
 
-    // 트리 구조 생성 (계층형)
+    // 대댓글 트리 구조 생성
     const buildReplyTree = (replies) => {
         const map = {};
         const roots = [];
@@ -42,7 +46,7 @@ const Reply = ({ boardNo }) => {
         return roots;
     };
 
-    // 댓글 작성 (부모 댓글 번호에 따라 대댓글 작성 가능)
+    // 댓글 작성 (대댓글 포함)
     const handleAddReply = async (parentNo = 0) => {
         const content = replyContent[parentNo] || newReply;
 
@@ -55,11 +59,11 @@ const Reply = ({ boardNo }) => {
             boardNo: boardNo,
             repContent: content,
             parentNo: parentNo,
-            id: "a" // 임시 아이디
+            id: "a" // 임시 아이디 (로그인 연동 후 변경)
         };
 
         try {
-            await BoardApi.addReply(replyData);
+            await api.addReply(replyData);
             alert("댓글이 작성되었습니다.");
             setReplyContent({ ...replyContent, [parentNo]: "" });
             setNewReply("");
@@ -73,7 +77,7 @@ const Reply = ({ boardNo }) => {
     const handleDeleteReply = async (replyNo) => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
-                await BoardApi.deleteReply(replyNo);
+                await api.deleteReply(replyNo);
                 alert("댓글이 삭제되었습니다.");
                 window.location.reload();
             } catch (error) {
@@ -90,7 +94,7 @@ const Reply = ({ boardNo }) => {
         }));
     };
 
-    // 시간 형식 변환 함수
+    // 날짜 포맷 변경
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleString("ko-KR", {
@@ -103,11 +107,11 @@ const Reply = ({ boardNo }) => {
         });
     };
 
-    // 댓글 렌더링 (재귀)
+    // 댓글 렌더링 (재귀 호출)
     const renderReplies = (replies, depth = 0) => {
         return replies.map(reply => (
             <div key={reply.repNo} style={{ marginLeft: `${depth * 20}px`, padding: "10px", border: "1px solid #ddd", borderRadius: "5px", marginBottom: "10px" }}>
-                 <p>
+                <p>
                     <strong>{reply.id}</strong> | {formatDate(reply.repDate)} <br />
                     {reply.repContent}
                 </p>
@@ -146,9 +150,9 @@ const Reply = ({ boardNo }) => {
                 placeholder="댓글을 입력하세요"
                 style={{ width: "100%", height: "80px" }}
             />
-           <button onClick={() => handleAddReply(0)}>댓글 등록</button>
-</div>
-);
+            <button onClick={() => handleAddReply(0)}>댓글 등록</button>
+        </div>
+    );
 };
 
 export default Reply;

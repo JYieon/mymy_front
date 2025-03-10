@@ -3,7 +3,21 @@ import axios from "axios";
 const domain = "http://localhost:8080/mymy/board";
 
 const BoardApi = {
-
+    
+    //기록 게시판 검색
+    searchBoardList: async (page, category, searchType, keyword) => {
+        console.log("계획 검색 요청:",{page, category, searchType, keyword});
+        return await axios.get(`${domain}/search`, {
+            params: { page, category, searchType, keyword },
+        }).then(response => {
+            //console.log("검색 API 응답 데이터:", response.data);  // 응답 확인
+            return response.data;
+        }).catch(error => {
+            console.error("❌ 검색 API 요청 실패:", error);
+            throw error;
+        });
+    },
+    
     // 게시글 목록 조회 (카테고리 추가)
     getBoardList: async (page, category) => {
         return await axios.get(`${domain}/list`, {
@@ -18,7 +32,7 @@ const BoardApi = {
 
     // 게시글 저장 (글쓰기)
     writeSave: async (postData) => {
-        console.log("📤 전송 데이터:", postData);
+        //console.log("전송 데이터:", postData);
         try {
             return await axios.post(`${domain}/writeSave`, postData, {
                 headers: {
@@ -35,7 +49,6 @@ const BoardApi = {
     // 게시글 수정
     modify: async (postData) => {
         try {
-            console.log("📤 수정 요청 데이터:", postData);
             return await axios.post(`${domain}/modify`, postData, {
                 headers: { "Content-Type": "application/json" },
             });
@@ -121,8 +134,8 @@ const BoardApi = {
             const response = await axios.get(`${domain}/bookmark/list`, {
                 params: { id: "a" }
             });
-            console.log("📚 북마크 리스트 응답 데이터:", response.data); // 디버깅 로그 추가
-            return response.data;  // ✅ 배열 반환 (boardList 또는 빈 배열)
+            // console.log("북마크 리스트 응답 데이터:", response.data); // 디버깅 로그 추가
+            return response.data;  // 배열 반환 (boardList 또는 빈 배열)
         } catch (error) {
             console.error("❌ BoardApi getBookmarkList 에러:", error);
             return [];
