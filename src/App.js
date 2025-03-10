@@ -20,6 +20,7 @@ import BoardList from "./Components/Board/BoardList";
 import BoardModify from "./Components/Board/BoardModify";
 import BookmarkList from "./Components/Board/BookmarkList";
 import TimelinePage from "./Pages/TimelinePage";
+import ResultPage from "./Pages/TestPage/ResultPage";
 function App() {
   return (
     <Routes>
@@ -51,6 +52,7 @@ function App() {
         {/* 뭔가 단어선정이 애매한 느낌? 나중에 대화 */}
 
         <Route path="/test" element={<TestPage/>}/>
+        <Route path="/test/result" element={<ResultPage/>}/>
         
 
         
