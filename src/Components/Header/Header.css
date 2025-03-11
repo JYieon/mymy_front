@@ -1,0 +1,43 @@
+/* 로고 폰트 */
+@font-face {
+    font-family: 'ADLaMDisplay-Regular';
+    src: url('../../Assets/ADLaMDisplay-Regular.ttf') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* 본문 폰트 */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Pretendard-Regular';
+    font-weight: 600;
+}
+
+.Logo {
+    font-family: 'ADLaMDisplay-Regular';
+    font-size: 25px;
+}
+
+
+Header {
+    /* width: 100vw; */
+    height: auto;
+    display: flex;
+    background-color: white;
+
+}
+
+.HeaderNav {
+    display: inline-table;
+    & > .MenuList {
+        width: auto;
+        position: absolute;
+        z-index: 100;
+    }
+}

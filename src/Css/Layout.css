@@ -1,0 +1,14 @@
+.LayoutWrap {
+    display:  flex;
+    margin: 0 -8px;
+}
+
+.link {
+    text-decoration: none;
+    color: #00284C;
+}
+
+.Shadow {
+    background-color: white;
+    box-shadow: 0px 10px 20px  gray ;
+}

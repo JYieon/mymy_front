@@ -1,0 +1,53 @@
+.AccountLayout{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to right,#00284C 50%,white);
+}
+/* 폼 */
+form{
+    width: 200px; height: auto;
+    margin: 50px 10px;
+    & *{
+        border: none;
+        display: flex;
+        flex-direction: column;
+     }
+
+     & input {
+        margin: 0px auto 10px;
+        padding: 10px;
+        border-radius: 100px;
+     }
+
+     & .anotherOption {
+        padding: 2px;
+        margin: 0 auto;
+     }
+
+
+}
+
+
+
+/* 캐치프레이즈 */
+.Catchphrase {
+    color: white;
+    font-weight: 900px;
+    font-size: 50px;
+    display: flex;
+}
+
+/* 다른 옵션 (계정 찾기, 다른 옵션) */
+.anotherOption {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: white;
+    font-size: 10px;
+}
+
+/* 카카오톡 로그인 */
+.KakaoLogo {
+    width: 150px
+
+}
