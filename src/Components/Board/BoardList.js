@@ -139,11 +139,11 @@ const BoardList = () => {
             </div>
 
             {/* 글쓰기 버튼 추가 */}
-            <button className="write-post-btn" onClick={handleWritePost}>✍ 게시글 작성</button>
+            <button className="write-post-btn" onClick={handleWritePost}>게시글 작성</button>
 
             {(category === 1 || category === 2) && (
                 <div className="search-container">
-                    <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+                    <select value={searchType} className="Fillter" onChange={(e) => setSearchType(e.target.value)}>
                         <option value="title">제목</option>
                         <option value="content">게시글</option>
                         <option value="titleContent">제목 + 게시글</option>

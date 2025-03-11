@@ -36,3 +36,13 @@
     height: 200px;
     object-fit: cover;
 }
+
+.write-post-btn{
+    border: none;
+    background-color: #00284C;
+    color: white;
+}
+
+.Search-Type-Selector {
+
+}
