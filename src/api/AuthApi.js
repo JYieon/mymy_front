@@ -65,6 +65,10 @@ const AuthApi = {
 
     kakaoCallback: async(code) => {
         return await axios.get(domain + `/kakao/callback?code=${code}`)
+    },
+
+    kakaoLogout: async() => {
+        return await axios.get(domain + "/kakao/logout")
     }
 }
 

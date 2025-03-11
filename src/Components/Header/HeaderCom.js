@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Header.css"
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import AuthApi from "../../api/AuthApi";
 
 const HeaderCom=()=>{
 
@@ -8,8 +9,8 @@ const HeaderCom=()=>{
     const Logout=useRef(null);
     const Login=useRef(null);
     
-    const onClick=()=>{
-        if (Login.current.style.display==="none")
+    useEffect(()=>{
+        if (localStorage.getItem("accessToken"))
             {
                 Login.current.style.display="block";
                 Logout.current.style.display="none";
@@ -19,6 +20,17 @@ const HeaderCom=()=>{
             Logout.current.style.display="block";
 
         }    
+    }, [])
+
+    const onClickLogout = async () => {
+        if(localStorage.getItem("kakao")){
+            const res = await AuthApi.kakaoLogout();
+            localStorage.removeItem("accessToken") ;
+            window.location.href = res.data
+        }else{
+            localStorage.removeItem("accessToken") ;
+            window.location.href = "/";
+        }
     };
 
     return (
@@ -29,7 +41,6 @@ const HeaderCom=()=>{
                 <nav>
                     {/* 로그아웃 상태에서 표시 되는 헤더 */}
                     <ul className="LogoutState" ref={Logout}>
-                        <button onClick={onClick}>로그인 임시 버튼</button>
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
@@ -56,7 +67,6 @@ const HeaderCom=()=>{
                     </ul>
                     {/* 로그인 상태에서 표시 되는 헤더 */}
                     <ul className="LoginState" ref={Login} >
-                    <button onClick={onClick}>로그아웃 임시 버튼</button>
 
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
@@ -89,7 +99,7 @@ const HeaderCom=()=>{
                         </li>
                         <li className="HeaderNav">
                             {/* 이후 수정 필요 */}
-                            <Link to="/account/logout" className="link" onClick={onClick}>로그아웃</Link>
+                            <button className="link" onClick={onClickLogout}>로그아웃</button>
                         </li>
                         <li className="HeaderNav">
                             <svg className="Alarm" width="20px" height="20px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

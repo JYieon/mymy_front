@@ -145,7 +145,7 @@ const SignupForm = () => {
                 }
             } catch (err) {
                 console.error("인증번호 발송 오류:", err);
-                setError("인증번호 발송에 실패했습니다.");
+                setAuthError("인증번호 발송에 실패했습니다.");
             }
         } else if (buttonStatus === "인증") {
             try {

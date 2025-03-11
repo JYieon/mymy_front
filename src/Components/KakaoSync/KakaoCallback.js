@@ -15,6 +15,7 @@ const KakaoCallback = (props) => {
             .then((res) => { //백에서 완료후 우리사이트 전용 토큰 넘겨주는게 성공했다면
             console.log(res);
             localStorage.setItem("accessToken", res.data.accessToken);
+            localStorage.setItem("kakao", "kakaoLogin");
             //로그인이 성공하면 이동할 페이지
             navigate("/");
         });
