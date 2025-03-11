@@ -1,4 +1,3 @@
-
 import { useReducer, useRef } from "react";
 import RegiCom from "./RegiCom";
 import { initalState, reduser } from "../../Reducer/AccountRed";
@@ -41,9 +40,8 @@ const RegiCon=()=>{
 
     const mySubmit=(e)=>{
         e.preventDefault(); //submit 눌렀을 때 페이지 넘어감 방지?
-        console.log('stay that page:',e.target)
-        console.log('e.target.class',e.target.className)
-    
+        // console.log('stay that page:',e.target)
+        // console.log('e.target.class:',e.target.className)
     }
 
     return(

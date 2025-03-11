@@ -1,0 +1,38 @@
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.category-buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 5px;
+}
+
+.category-buttons a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.board-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.board-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.board-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}

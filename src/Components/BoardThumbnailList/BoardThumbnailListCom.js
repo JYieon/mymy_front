@@ -8,9 +8,11 @@ const BoardThumbnailListCom=()=>{
     
     const TitleList=["aaa","bbb","ccc",'ddd','eee','fff',"hhh","jjj"]
     const Title="title";
-
+    let num=0;
     DummyData.forEach(data=>{
-        
+        num++;
+        if (num%6==0)
+            console.log("data > ",data,"\nnum",num)
     })
     return(<>
         <div className="Thumbnail List">
@@ -27,8 +29,9 @@ const BoardThumbnailListCom=()=>{
             <Link to="/page/1">1</Link>
             ]
             <Link to="/Board/BookMark/next">이전</Link>
-        </div>
 
+        </div>
+        <Link to="../../write">글쓰기</Link>
 
     </>)
 };

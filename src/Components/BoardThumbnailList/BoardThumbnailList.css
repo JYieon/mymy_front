@@ -4,7 +4,8 @@
     flex-wrap: wrap;
     overflow: hidden;
     justify-content: space-around;
-    & *{
-        /* position: absolute; */
-    }
+}
+
+.bar {
+    text-align: center;
 }

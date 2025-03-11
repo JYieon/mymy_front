@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import "../../Css/AccountLayout.css"
+import styles from "../../Css/AccountLayout.module.css"
+
 const AccoutLayout=()=>{
     return(
         <>
-            <div className="AccountLayout Wrap">
+            <div className={styles.AccountLayout}>
                 <Outlet/>
             </div>
         </>
