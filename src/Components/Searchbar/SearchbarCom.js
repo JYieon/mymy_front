@@ -2,8 +2,8 @@ import "./Searchbar.css";
 const Searchbar=()=>{
     return(<>
         <form className="SearchbarForm Shadow">
-            
-            <input type="search" name="SearchInput" placeholder="입력"/>
+            <div className="Fillter">제목+글</div>
+            <input type="search" name="Search" placeholder="검색어를 입력해주세요."/>
             <input type="submit" value="검색"/>
         </form>
     </>)

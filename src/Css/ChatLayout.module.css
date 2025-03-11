@@ -1,0 +1,45 @@
+
+.form {
+    display:flex;
+    flex-direction: column;
+    & *{
+        margin: 10px auto;
+    }
+}
+
+input[type="submit"] {
+    background-color: #00284C;
+    color: white;
+    border-style: none;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 40px;
+}
+
+.GroupChatName {
+    padding: 10px;
+    width: 60%;
+    border-radius: 10px;
+    border-color: #00284C;    
+}
+
+
+hr {
+    width: 80%;
+}
+
+.Pre {
+    list-style: square;
+    font-size: 20px;
+    margin: 10px auto;
+}
+.Title {
+    text-align: center;
+    color: #00284C;
+    font-weight: 900;
+}
+
+.Subtitle {
+    text-align: center;
+}

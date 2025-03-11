@@ -1,5 +1,11 @@
-.Wrap {
+.List {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    overflow: hidden;
+    justify-content: space-around;
+}
+
+.bar {
+    text-align: center;
 }

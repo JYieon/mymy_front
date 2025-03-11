@@ -1,3 +1,5 @@
+
+
 const DiaryBoardPage=()=>{
     return (<>
         DairyBoardPage
