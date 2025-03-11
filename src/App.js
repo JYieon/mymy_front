@@ -20,68 +20,66 @@ import BoardList from "./Components/Board/BoardList";
 import BoardModify from "./Components/Board/BoardModify";
 import BookmarkList from "./Components/Board/BookmarkList";
 import TimelinePage from "./Pages/TimelinePage";
+import ResultPage from "./Pages/TestPage/ResultPage";
+import NewChatPage from "./Pages/Chat/NewChatPage";
+import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
 import MateBoardList from "./Components/Board/MateBoardList";
 import MateBoardWrite from "./Components/Board/MateBoardWrite";
 import MateBoardDetail from "./Components/Board/MateBoardDetail";
 import MateBoardModify from "./Components/Board/MateBoardModify";
 
-import ResultPage from "./Pages/TestPage/ResultPage";
-import NewChatPage from "./Pages/Chat/NewChatPage";
-import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
 function App() {
   return (
     <Routes>
       {/* 기본 레이아웃 (헤더) */}
       <Route path="/" element={<Layout />}>
-        {/* 메인 페이지 */}
-        <Route index element={<MainPage />} />
-        
       {/* 메인 페이지 */}
         <Route index element={<MainPage />}/>
-
-        {/* 게시판 */}
-        <Route path="/board" element={<SidebarCom />}>
-          {/* <Route path="plan" element={<PlanBoardPage />} />
-          <Route path="diary" element={<DiaryBoardPage />} />
-          <Route path="bookmark" element={<BookmarkBoardPage />} />
-          <Route path="mate" element={<MateBoardPage />}/> */}
-
-          
-        {/* 게시글 리스트 */}
-          <Route path="list" element={<BoardList />} />
-          {/* 게시글 작성 페이지 */}
-          <Route path="write" element={<BoardWrite />} />
-          {/* 게시판 상세 페이지 */}
-          <Route path="/detail/:boardNo" element={<Detail />} />
-          {/* 수정 폼 라우트 */}
-         <Route path="modifyForm/:boardNo" element={<BoardModify />} />
-          {/* 북마크 리스트 */}
-         <Route path="bookmarkList" element={<BookmarkList />} />
-        </Route>
-
 
          {/* 채팅 */}
         <Route path="/chat" element={<SidebarCom/>}>
           <Route path="newChat" element={<NewChatPage/>}/>
           <Route path="groupChat" element={<GroupChatPage/>}/>
-
         </Route>
 
         {/* 여행자 테스트 */}
 
         <Route path="/test" element={<TestPage/>}/>
         <Route path="/test/result" element={<ResultPage/>}/>
+        
+        {/* 계정 (로그인,회원가입,계정 찾기) */}
+        <Route path="/Account" element={<AccoutLayout/>}>
+          <Route path="login" element={<LoginPage />}/>
+          <Route path="myPage" element={<MyPage/>}/>
+          <Route path="register" element={<ResisterPage />}/>
+        </Route>
+
+        {/* 게시판 */}
+        <Route path="/board" element={<SidebarCom />}>
+        {/* 게시글 리스트 */}
+          <Route path="/board/list" element={<BoardList />} />
+          {/* 게시글 작성 페이지 */}
+          <Route path="/board/write" element={<BoardWrite />} />
+          {/* 게시판 상세 페이지 */}
+          <Route path="/board/detail/:boardNo" element={<Detail />} />
+          {/* 수정 폼 라우트 */}
+          <Route path="/board/modifyForm/:boardNo" element={<BoardModify />} />
+          {/* 북마크 리스트 */}
+          <Route path="/board/bookmarkList" element={<BookmarkList />} />
+        </Route>
+      
+
 
         {/* 여행메이트 게시판 */}
-        <Route path="/mateboard/list" element={<MateBoardList />} />
-        <Route path="/mateboard/write" element={<MateBoardWrite />} />
-        <Route path="/mateboard/detail/:boardNo" element={<MateBoardDetail />} />
-        <Route path="/mateboard/modify/:boardNo" element={<MateBoardModify />} />
-
+        <Route path="/mateboard" element={<SidebarCom/>}>
+          <Route path="/mateboard/list" element={<MateBoardList />} />
+          <Route path="/mateboard/write" element={<MateBoardWrite />} />
+          <Route path="/mateboard/detail/:boardNo" element={<MateBoardDetail />} />
+          <Route path="/mateboard/modify/:boardNo" element={<MateBoardModify />} />
+        </Route>
         {/* 계정 (로그인, 회원가입, 계정 찾기) */}
-        <Route path="/Account" element={<AccoutLayout />}>
+        <Route path="/account" element={<AccoutLayout />}>
           <Route path="login" element={<LoginPage />} />
-          <Route path="myPage" element={<MyPage/>}/>
           <Route path="register" element={<ResisterPage />} />
           {/* 계정 찾기 */}
           <Route path="find">

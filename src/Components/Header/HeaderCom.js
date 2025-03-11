@@ -33,16 +33,16 @@ const HeaderCom=()=>{
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
-                                    <Link to="/Board/BookMark" className="Menu">북마크</Link>
+                                    <Link to="/board/bookmarkList" className="Menu">북마크</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Plan" className="Menu">여행 계획</Link>
+                                    <Link to="/board/list?category=1" className="Menu">여행 계획</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Diary" className="Menu">여행 기록</Link>
+                                    <Link to="/board/list?category=2" className="Menu">여행 기록</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Mate" className="Menu">여행 메이트</Link>
+                                    <Link to="/mateboard/list" className="Menu">여행 메이트</Link>
                                 </li>
                             </ul>
                         </li>
@@ -61,16 +61,16 @@ const HeaderCom=()=>{
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
-                                    <Link to="/Board/BookMark" className="Menu">북마크</Link>
+                                    <Link to="/board/bookmarkList" className="Menu">북마크</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Plan" className="Menu">여행 계획</Link>
+                                    <Link to="/board/list?category=1" className="Menu">여행 계획</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Diary" className="Menu">여행 기록</Link>
+                                    <Link to="/board/list?category=2" className="Menu">여행 기록</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Mate" className="Menu">여행 메이트</Link>
+                                    <Link to="/mateboard/list" className="Menu">여행 메이트</Link>
                                 </li>
                             </ul>
                         </li>

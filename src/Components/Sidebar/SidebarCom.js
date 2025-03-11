@@ -45,7 +45,7 @@ const SidebarCom=()=>{
                             <li><Link to="/board/bookmarkList" className="Menu">북마크</Link></li>
                             <li><Link to="/board/list?category=1" className="Menu">여행 계획</Link></li>
                             <li><Link to="/board/list?category=2" className="Menu">여행 기록</Link></li>
-                            <li><Link to="/board/mate" className="Menu">여행 메이트</Link></li>
+                            <li><Link to="/mateboard/list" className="Menu">여행 메이트</Link></li>
                         </ul>
                         <hr className="ContourLine"/>
                     </li>
