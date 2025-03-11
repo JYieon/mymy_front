@@ -13,7 +13,7 @@ const BookmarkList = () => {
             // console.log("가져온 북마크 데이터:", bookmarkData);
             setBookmarks(bookmarkData); // 배열 상태 업데이트
         } catch (error) {
-           // console.error("❌ 북마크 목록 불러오기 실패:", error);
+           // console.error("북마크 목록 불러오기 실패:", error);
         }
     };
 
@@ -27,7 +27,7 @@ const BookmarkList = () => {
                     fetchBookmarks(); // 북마크 목록 새로고침
                 }
             } catch (error) {
-                // console.error("❌ 북마크 해제 실패:", error);
+                // console.error("북마크 해제 실패:", error);
             }
         }
     };

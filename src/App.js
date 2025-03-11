@@ -16,7 +16,7 @@ import BoardWrite from "./Components/Board/BoardWrite";
 import BoardList from "./Components/Board/BoardList";
 import BoardModify from "./Components/Board/BoardModify";
 import BookmarkList from "./Components/Board/BookmarkList";
-import TimelinePage from "./Pages/TimelinePage";
+import Timeline from "./Components/Board/Timeline";
 import MateBoardList from "./Components/Board/MateBoardList";
 import MateBoardWrite from "./Components/Board/MateBoardWrite";
 import MateBoardDetail from "./Components/Board/MateBoardDetail";
@@ -67,7 +67,7 @@ function App() {
         </Route>
 
         {/* 타임라인 경로 */}
-        <Route path="/timeline" element={<TimelinePage />} />
+        <Route path="/timeline/:boardNo" element={<Timeline />} />
       </Route>
     </Routes>
   );

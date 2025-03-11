@@ -40,7 +40,7 @@ const BoardModify = () => {
                     $(editorRef.current).summernote("code", content || "");
                 }
             } catch (error) {
-                console.error("❌ 게시글 불러오기 실패:", error);
+                console.error("게시글 불러오기 실패:", error);
             }
         };
 
@@ -66,7 +66,7 @@ const BoardModify = () => {
                 $(editorRef.current).summernote("insertImage", imageUrl);
             }
         } catch (err) {
-            alert("❌ 이미지 업로드 실패");
+            alert("이미지 업로드 실패");
         }
     };
 
@@ -98,7 +98,7 @@ const BoardModify = () => {
                 navigate(`/board/detail/${boardNo}`);
             }
         } catch (error) {
-            alert("❌ 게시글 수정에 실패했습니다.");
+            alert("게시글 수정에 실패했습니다.");
         }
     };
 

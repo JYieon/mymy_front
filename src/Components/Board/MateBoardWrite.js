@@ -17,14 +17,14 @@ const MateBoardWrite = () => {
             id: "a", // 임시 ID (추후 로그인 연동 시 변경)
         };
 
-        console.log("📤 전송할 데이터:", postData);  // 🚀 전송 전 데이터 확인
+        console.log("전송할 데이터:", postData);  // 전송 전 데이터 확인
 
         try {
             await MateBoardApi.writeMateBoard(postData);
             alert("게시글이 등록되었습니다!");
             navigate("/mateboard/list"); // 목록으로 이동
         } catch (error) {
-            alert("❌ 게시글 작성에 실패했습니다.");
+            alert("게시글 작성에 실패했습니다.");
         }
     };
 

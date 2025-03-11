@@ -1,194 +1,224 @@
 import React, { useState, useEffect } from "react";
-import TimelineApi from "../../api/TimelineApi"; // ✅ Timeline API 불러오기
+import { useParams } from "react-router-dom";
+import { addTimeline, getTimeline, updateTimelineTodo } from "../../api/TimelineApi"; // API 호출
 
 const Timeline = () => {
-    const [location, setLocation] = useState(""); // 여행 장소
-    const [startDate, setStartDate] = useState(""); // 시작 날짜
-    const [endDate, setEndDate] = useState(""); // 종료 날짜
-    const [timeline, setTimeline] = useState({}); // 날짜별 일정 데이터
-    const [selectedDate, setSelectedDate] = useState(""); // 선택한 날짜
-    const [newTodo, setNewTodo] = useState({ time: "", title: "", description: "" }); // 새로운 일정 입력 필드
-    const boardNo = 58; // 임의의 게시글 번호
-    const id = "a"; // 임의의 사용자 ID
+    const { boardNo } = useParams();
 
-    // 타임라인 불러오기 (서버에서 데이터 가져오기)
-    const fetchTimeline = async () => {
-        try {
-            const response = await TimelineApi.getTimeline(boardNo);
-            console.log("📥 불러온 타임라인 데이터:", response);
-    
-            if (response.length > 0) {
-                const loadedTimeline = response.reduce((acc, item) => {
-                    const todoData = JSON.parse(item.todo || "{}"); // JSON 변환 (빈 객체 처리)
-                    
-                    // 🔥 `startDt` 키가 아닌 `todo` 내 날짜를 기준으로 저장
-                    Object.keys(todoData).forEach((dateKey) => {
-                        acc[dateKey] = todoData[dateKey];
-                    });
-    
-                    return acc;
-                }, {});
-    
-                setTimeline(loadedTimeline);
-            } else {
-                setTimeline({});
-            }
-        } catch (error) {
-            console.error("❌ 타임라인 불러오기 실패:", error);
-        }
-    };
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [location, setLocation] = useState("");
+    const [selectedDate, setSelectedDate] = useState("");
+    const [todoList, setTodoList] = useState({});
 
-    // 타임라인 저장 (서버로 전송)
-    const handleSaveTimeline = async () => {
-        if (!location || !startDate || !endDate) {
-            alert("여행 장소와 날짜를 입력해주세요.");
-            return;
-        }
-
-        const newTimeline = {
-            boardNo: boardNo,
-            id: id,
-            startDt: Object.keys(timeline)[0] || startDate,
-            endDt: endDate,
-            todo: JSON.stringify(timeline), // JSON 문자열 변환
-            location: location,
-        };
-
-        try {
-            await TimelineApi.addTimeline(newTimeline);
-            alert("타임라인이 저장되었습니다!");
-            fetchTimeline(); // 저장 후 자동으로 새로고침
-        } catch (error) {
-            console.error("❌ 타임라인 저장 실패:", error);
-        }
-    };
-
-    // 날짜 리스트 생성 함수 (startDate ~ endDate 범위)
-    const generateDateList = () => {
-        let dates = [];
-        let start = new Date(startDate);
-        let end = new Date(endDate);
-
-        while (start <= end) {
-            dates.push(new Date(start).toISOString().split("T")[0]); // YYYY-MM-DD 형식
-            start.setDate(start.getDate() + 1);
-        }
-        return dates;
-    };
-
-    // 날짜 클릭 시 해당 날짜의 TODO 입력 창 활성화
-    const handleDateClick = (date) => {
-        setSelectedDate(date);
-    };
-
-    // TODO 추가 함수 (선택한 날짜의 일정 추가)
-    const handleAddTodo = () => {
-        if (!selectedDate || !newTodo.time || !newTodo.title || !newTodo.description) {
-            alert("모든 항목을 입력해주세요.");
-            return;
-        }
-
-        setTimeline((prev) => {
-            const updatedTodos = prev[selectedDate] ? [...prev[selectedDate], newTodo] : [newTodo];
-            return { ...prev, [selectedDate]: updatedTodos };
-        });
-
-        setNewTodo({ time: "", title: "", description: "" }); // 입력 필드 초기화
-    };
-
-    // 최초 1회만 타임라인 불러오기 (무한 루프 방지)
     useEffect(() => {
         fetchTimeline();
     }, []);
 
-    return (
-        <div>
-            <h2>📅 여행 타임라인</h2>
+    // 타임라인 데이터 가져오기
+    const fetchTimeline = async () => {
+        try {
+            const response = await getTimeline(boardNo);
+            if (response.data) {
+                setStartDate(response.data.startDt);
+                setEndDate(response.data.endDt);
+                setLocation(response.data.location);
+                setTodoList(JSON.parse(response.data.todo) || {});
+            }
+        } catch (error) {
+            console.error("오류 발생:", error);
+        }
+    };
 
-            {/* 여행 장소 및 기간 입력 */}
-            <div>
-                <label>📍 여행 장소:</label>
-                <input
-                    type="text"
-                    placeholder="여행 장소 입력"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                />
-                <br />
-                <label>📅 여행 기간:</label>
-                <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                />
-                <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                />
-                <br />
-                <button onClick={handleSaveTimeline}>📝 타임라인 저장</button>
+    // 일정 추가
+    const handleAddTask = () => {
+        if (!selectedDate) {
+            alert("먼저 날짜를 선택하세요!");
+            return;
+        }
+        setTodoList((prev) => ({
+            ...prev,
+            [selectedDate]: [...(prev[selectedDate] || []), { startTime: "", endTime: "", task: "" }]
+        }));
+    };
+
+    // 입력값 변경
+    const handleChange = (index, field, value) => {
+        if (!selectedDate) return;
+        const newTodoList = [...(todoList[selectedDate] || [])];
+        newTodoList[index][field] = value;
+        setTodoList((prev) => ({
+            ...prev,
+            [selectedDate]: newTodoList
+        }));
+    };
+
+    // 일정 삭제 기능
+    const handleDeleteTask = (index) => {
+        if (!selectedDate) return;
+        const newTodoList = [...(todoList[selectedDate] || [])];
+        newTodoList.splice(index, 1);
+        setTodoList((prev) => ({
+            ...prev,
+            [selectedDate]: newTodoList
+        }));
+    };
+
+    // 일정 처음 저장 (DB 반영)
+    const handleSaveTasks = async () => {
+        const data = {
+            boardNo,
+            id: "a", // 임의 ID
+            startDt: startDate,
+            endDt: endDate,
+            location,
+            todo: JSON.stringify(todoList),
+        };
+
+        try {
+            await addTimeline(data);
+            alert("여행 일정이 저장되었습니다!");
+            fetchTimeline();
+        } catch (error) {
+            console.error("저장 중 오류 발생:", error);
+        }
+    };
+
+    // 일정 전체 수정 (todo만 덮어쓰기)
+    const handleUpdateTasks = async () => {
+        const data = {
+            boardNo: boardNo,
+            todo: JSON.stringify(todoList), 
+        };
+
+        try {
+            const response = await updateTimelineTodo(data);
+            alert("일정이 수정되었습니다!");
+            fetchTimeline();
+        } catch (error) {
+            console.error("수정 중 오류 발생:", error.response ? error.response.data : error.message);
+        }
+    };
+
+
+    // 선택한 날짜의 일정 가져오기
+    const selectedTasks = todoList[selectedDate] || [];
+
+    return (
+        <div style={styles.container}>
+            <h2 style={styles.title}>🛫 여행 타임라인 계획</h2>
+            <div style={styles.dateSelection}>
+                <label style={styles.label}>📅 여행 시작 날짜: </label>
+                <input type="date" value={startDate} disabled style={styles.input} />
+                <label style={styles.label}>📅 여행 종료 날짜: </label>
+                <input type="date" value={endDate} disabled style={styles.input} />
+                <label style={styles.label}>📍 여행 장소: </label>
+                <input type="text" value={location} disabled style={styles.input} />
             </div>
 
-            <hr />
+            <div style={styles.dateSelection}>
+                <label style={styles.label}>📅 일정 추가할 날짜: </label>
+                <input type="date" value={selectedDate} min={startDate} max={endDate} onChange={(e) => setSelectedDate(e.target.value)} style={styles.input} />
+            </div>
 
-            {/* 날짜 목록 (기간을 선택하면 버튼 생성) */}
-            <h3>📆 날짜별 일정 추가</h3>
-            {generateDateList().map((date) => (
-                <button key={date} onClick={() => handleDateClick(date)}>
-                    {date}
-                </button>
-            ))}
-
-            <hr />
-
-            {/* 선택한 날짜에 대한 TODO 입력 창 */}
-            {selectedDate && (
-                <div>
-                    <h3>📅 {selectedDate} 일정 추가</h3>
-                    <input
-                        type="time"
-                        value={newTodo.time}
-                        onChange={(e) => setNewTodo({ ...newTodo, time: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="일정 제목"
-                        value={newTodo.title}
-                        onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="일정 설명"
-                        value={newTodo.description}
-                        onChange={(e) => setNewTodo({ ...newTodo, description: e.target.value })}
-                    />
-                    <button onClick={handleAddTodo}>➕ 추가</button>
-                </div>
-            )}
-
-            <hr />
-
-            {/* 등록된 일정 목록 */}
-            <h3>📆 등록된 타임라인</h3>
-            {Object.keys(timeline).length > 0 ? (
-                Object.keys(timeline).map((date) => (
-                    <div key={date}>
-                        <h4>📅 {date}</h4>
-                        {timeline[date].length > 0 ? (
-                            timeline[date].map((todo, index) => (
-                                <p key={index}>⏰ {todo.time} - {todo.title} ({todo.description})</p>
-                            ))
-                        ) : (
-                            <p>일정 없음</p>
-                        )}
+            <div style={styles.todoSection}>
+                <h3>📍 일정 추가 ({selectedDate || "날짜 선택"})</h3>
+                {selectedTasks.map((todo, index) => (
+                    <div key={index} style={styles.todoItem}>
+                        <input type="time" value={todo.startTime} onChange={(e) => handleChange(index, "startTime", e.target.value)} style={styles.timeInput} />
+                        <span style={styles.timeDash}>~</span>
+                        <input type="time" value={todo.endTime} onChange={(e) => handleChange(index, "endTime", e.target.value)} style={styles.timeInput} />
+                        <input type="text" value={todo.task} placeholder="예: 관광지 방문" onChange={(e) => handleChange(index, "task", e.target.value)} style={styles.taskInput} />
+                        <button style={styles.deleteButton} onClick={() => handleDeleteTask(index)}>🗑 삭제</button>
                     </div>
-                ))
-            ) : (
-                <p>등록된 일정이 없습니다.</p>
-            )}
+                ))}
+                <button style={styles.addButton} onClick={handleAddTask}>+ 일정 추가</button>
+                <button style={styles.saveButton} onClick={handleSaveTasks}>💾 저장</button>
+                <button style={styles.updateButton} onClick={handleUpdateTasks}>🔄 수정</button>
+            </div>
         </div>
     );
+};
+
+const styles = {
+    container: {
+        width: "60%",
+        margin: "auto",
+        padding: "20px",
+        borderRadius: "10px",
+        background: "#f9f9f9",
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+        textAlign: "center",
+    },
+    title: {
+        fontSize: "24px",
+        marginBottom: "20px",
+    },
+    dateSelection: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: "20px",
+    },
+    label: {
+        fontSize: "16px",
+        marginBottom: "5px",
+    },
+    input: {
+        padding: "8px",
+        margin: "5px",
+        border: "1px solid #ddd",
+        borderRadius: "5px",
+        width: "60%",
+        textAlign: "center",
+    },
+    todoSection: {
+        background: "#fff",
+        padding: "15px",
+        borderRadius: "10px",
+        marginTop: "20px",
+        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+    },
+    todoItem: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "10px",
+    },
+    timeInput: {
+        padding: "5px",
+        border: "1px solid #ddd",
+        borderRadius: "5px",
+        width: "25%",
+    },
+    timeDash: {
+        margin: "0 10px",
+        fontSize: "18px",
+    },
+    taskInput: {
+        padding: "5px",
+        marginLeft: "5px",
+        border: "1px solid #ddd",
+        borderRadius: "5px",
+        width: "40%",
+    },
+    addButton: {
+        background: "#4CAF50",
+        color: "white",
+        padding: "10px 15px",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginRight: "10px",
+    },
+    saveButton: {
+        background: "#007bff",
+        color: "white",
+        padding: "10px 15px",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+    },
 };
 
 export default Timeline;

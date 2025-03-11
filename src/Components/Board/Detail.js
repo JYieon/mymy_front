@@ -22,7 +22,7 @@ const Detail = () => {
                     setHashtags(res.data.hashtags); // 해시태그
                 }
             } catch (error) {
-                console.error("❌ 게시글 불러오기 실패:", error);
+                console.error("게시글 불러오기 실패:", error);
             }
         };
 

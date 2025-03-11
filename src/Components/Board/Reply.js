@@ -19,7 +19,7 @@ const Reply = ({ boardNo, category }) => {
                 const tree = buildReplyTree(res.data);
                 setReplies(tree);
             } catch (error) {
-                console.error("❌ 댓글 불러오기 실패:", error);
+                console.error("댓글 불러오기 실패:", error);
             }
         };
 
@@ -69,7 +69,7 @@ const Reply = ({ boardNo, category }) => {
             setNewReply("");
             window.location.reload();
         } catch (error) {
-            console.error("❌ 댓글 작성 실패:", error);
+            console.error("댓글 작성 실패:", error);
         }
     };
 
@@ -81,7 +81,7 @@ const Reply = ({ boardNo, category }) => {
                 alert("댓글이 삭제되었습니다.");
                 window.location.reload();
             } catch (error) {
-                console.error("❌ 댓글 삭제 실패:", error);
+                console.error("댓글 삭제 실패:", error);
             }
         }
     };
