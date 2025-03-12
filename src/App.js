@@ -21,6 +21,7 @@ import MateBoardList from "./Components/Board/MateBoardList";
 import MateBoardWrite from "./Components/Board/MateBoardWrite";
 import MateBoardDetail from "./Components/Board/MateBoardDetail";
 import MateBoardModify from "./Components/Board/MateBoardModify";
+import KakaoMap from "./Components/Board/KakaoMap";
 
 function App() {
   return (
@@ -68,6 +69,9 @@ function App() {
 
         {/* 타임라인 경로 */}
         <Route path="/timeline/:boardNo" element={<Timeline />} />
+
+        {/* 카카오맵
+        <Route path="/map" element={<KakaoMap />} /> */}
       </Route>
     </Routes>
   );
