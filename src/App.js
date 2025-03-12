@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import {Routes, Route} from "react-router-dom"
+
 import MainPage from "./Pages/MainPage";
 import Layout from "./Pages/Common/Layout";
 import PlanBoardPage from "./Pages/Board/PlanBoardPage";
@@ -11,6 +12,13 @@ import FindAccountPage from "./Pages/Account/FindAccountPage";
 import FindIdPage from "./Pages/Account/FindIdPage";
 import FindPwPage from "./Pages/Account/FindPwPage";
 import AccoutLayout from "./Pages/Account/AccountLayout";
+
+// import KakaoLogin from "./Components/Auth/KakaoLogin";
+import KakaoCallback from "./Components/KakaoSync/KakaoCallback";
+import ChatRoom from "./Components/Auth/ChttingRoom";
+import ChatList from "./Components/Auth/ChatList";
+import ChatCreate from "./Components/Auth/ChatCreate";
+
 import MyPage from "./Pages/Account/MyPage";
 import MateBoardPage from "./Pages/Board/MateBoardPage";
 import TestPage from "./Pages/TestPage/TestPage";
@@ -31,7 +39,19 @@ import MateBoardModify from "./Components/Board/MateBoardModify";
 function App() {
   return (
     <Routes>
-      {/* 기본 레이아웃 (헤더) */}
+        {/* <Route path="/login" element={<LoginForm />} /> 
+      <Route path="/find" element={<Find />} /> 
+      <Route path="/find_password" element={<FindPassword />} /> 
+      <Route path="/reset_password" element={<ResetPassword />} /> 
+      <Route path="/signup" element={<SignupForm />} /> */}
+
+    {/* <Route path="/kakao-test" element={<KakaoLogin />}/> */}
+    <Route path="/auth/kakao/callback" element={<KakaoCallback />}/>
+    <Route path="/chatting/:roomNum" element={<ChatRoom />}/>
+    <Route path="/chatlist" element={<ChatList />}/>
+    <Route path="/chat-create" element={<ChatCreate />}/>
+
+    {/* 기본 레이아웃 (헤더) */}
       <Route path="/" element={<Layout />}>
       {/* 메인 페이지 */}
         <Route index element={<MainPage />}/>

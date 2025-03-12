@@ -1,4 +1,3 @@
-
 import { useReducer, useRef } from "react";
 import RegiCom from "./RegiCom";
 import { initalState, reduser } from "../../Reducer/AccountRed";
