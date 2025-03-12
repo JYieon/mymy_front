@@ -8,13 +8,13 @@
     text-decoration: none;
     padding: 10px 20px;
     margin: 0 10px;
-    border: 1px solid #007bff;
-    color: #007bff;
+    border: 1px solid #00284C;;
+    color: #00284C;;
     border-radius: 5px;
 }
 
 .category-buttons a.active {
-    background-color: #007bff;
+    background-color: #00284C;
     color: white;
 }
 
@@ -41,8 +41,52 @@
     border: none;
     background-color: #00284C;
     color: white;
+    width: 120px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 100px;
+
 }
 
-.Search-Type-Selector {
 
+.search-container {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-around;
+    width: 600px;
+    border-radius: 100px;
+
+    & *{
+        border: none;
+        border-radius: 100px;
+        padding: 10px 20px;
+        margin: 0px 10px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 600;
+
+    }
+    .Search-Keyword {
+        text-align: start;
+        width: 300px;
+        font-weight: 400;
+
+    }
+
+    .Search-Type-Selector {
+        width: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 15px;
+        padding: 0;
+        color: gray;
+    }
+    .Search-Button {
+        background-color: #00284C;
+        color: white;
+        width: 80px;
+    }
 }

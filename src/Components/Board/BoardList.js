@@ -130,7 +130,7 @@ const BoardList = () => {
 
     return (
         <div className="board-container">
-            <h1>📄 {category === 1 ? "계획 게시글 목록" : "기록 게시글 목록"}</h1>
+            <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
 
             <div className="category-buttons">
                 <button className={category === 1 ? "active" : ""} onClick={() => handleCategoryChange(1)}>계획 게시글</button>
@@ -138,20 +138,19 @@ const BoardList = () => {
                 <button className={category === 3 ? "active" : ""} onClick={() => handleCategoryChange(3)}>여행 메이트 게시글</button>
             </div>
 
-            {/* 글쓰기 버튼 추가 */}
-            <button className="write-post-btn" onClick={handleWritePost}>게시글 작성</button>
 
             {(category === 1 || category === 2) && (
-                <div className="search-container">
-                    <select value={searchType} className="Fillter" onChange={(e) => setSearchType(e.target.value)}>
+                <div className="search-container Shadow">
+                    <select value={searchType} className="Search-Type-Selector" onChange={(e) => setSearchType(e.target.value)}>
                         <option value="title">제목</option>
                         <option value="content">게시글</option>
                         <option value="titleContent">제목 + 게시글</option>
                         <option value="user">사용자 (ID + 닉네임)</option>
                         {category === 2 && <option value="tag">해시태그</option>}
                     </select>
-                    <input type="text" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-                    <button onClick={handleSearch}>🔍 검색</button>
+                    <input type="text" className="Search-Keyword" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+
+                    <button className="Search-Button" onClick={handleSearch}>검색</button>
                 </div>
             )}
 
@@ -165,6 +164,9 @@ const BoardList = () => {
                     </div>
                 ))}
             </div>
+            
+            {/* 글쓰기 버튼 추가 */}
+            <button className="write-post-btn" onClick={handleWritePost}>게시글 작성</button>
 
             {totalPages > 1 && (
                 <div className="pagination">
