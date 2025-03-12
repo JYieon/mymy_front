@@ -17,31 +17,31 @@ const Detail = () => {
             try {
                 const res = await BoardApi.detail(boardNo);
                 if (res.status === 200) {
-                    console.log("📥 받은 데이터:", res.data);
+                    // vconsole.log("받은 데이터:", res.data);
                     setData(res.data.post);         // 게시글 정보
                     setHashtags(res.data.hashtags); // 해시태그
                 }
             } catch (error) {
-                console.error("❌ 게시글 불러오기 실패:", error);
+                console.error("게시글 불러오기 실패:", error);
             }
         };
 
         fetchData();
     }, [boardNo]);
 
-    // 해시태그 불러오기
-    const fetchHashtags = async () => {
-        try {
-            const res = await BoardApi.getTags(boardNo);
-            if (res.status === 200) {
-                setHashtags(res.data); // 해시태그 상태 설정
-            }
-        } catch (error) {
-            console.error("해시태그 불러오기 실패", error);
-        }
+    // 해시태그 클릭 시 해당 해시태그 검색 기능 추가
+    const handleTagClick = (tag) => {
+        navigate(`/board/list?category=2&searchType=tag&keyword=${encodeURIComponent(tag)}`);
     };
 
     // 좋아요 상태 확인
+    useEffect(() => {
+        if (data?.boardCategory === 2) {
+            checkLike();
+            checkBookmark();
+        }
+    }, [data]);
+
     const checkLike = async () => {
         try {
             const res = await BoardApi.checkLike(boardNo);
@@ -103,6 +103,15 @@ const Detail = () => {
         }
     };
 
+    // 수정 버튼 클릭 시 해당 카테고리의 글쓰기 페이지로 이동
+    const handleModify = () => {
+        if (data.boardCategory === 1) {
+            navigate(`/board/modifyForm/${data.boardNo}`); // 계획 게시글 수정
+        } else if (data.boardCategory === 2) {
+            navigate(`/board/modifyForm/${data.boardNo}`); // 기록 게시글 수정
+        }
+    };
+
     // 로딩 처리
     if (!data) {
         return <p>로딩 중...</p>;
@@ -116,19 +125,24 @@ const Detail = () => {
             <p>조회수: {data.boardCnt}</p>
             <hr />
 
-            {/* 계획 게시글(카테고리=1)일 경우, 조회수 & 좋아요 & 북마크 숨김 */}
-            {data.boardCategory !== 1 && <p>조회수: {data.boardCnt}</p>}
-
             {/* 게시글 본문 렌더링 */}
             <div dangerouslySetInnerHTML={{ __html: data.content }} />
 
-            {/* 해시태그 표시 */}
+            {/* 해시태그 표시 & 클릭 기능 추가 (기록 게시글만 표시) */}
             {data.boardCategory === 2 && (
                 <div>
                     <h4>📌 해시태그:</h4>
-                    {hashtags && hashtags.length > 0 ? (
+                    {hashtags.length > 0 ? (
                         hashtags.map((tag, index) => (
-                            <span key={index} style={{ marginRight: "10px", color: "#007bff" }}>
+                            <span 
+                                key={index} 
+                                style={{ 
+                                    marginRight: "10px", 
+                                    color: "#007bff", 
+                                    cursor: "pointer"
+                                }}
+                                onClick={() => handleTagClick(tag)}
+                            >
                                 #{tag}
                             </span>
                         ))
@@ -140,11 +154,11 @@ const Detail = () => {
 
             <hr />
 
-            {/* 📌 계획 게시글(카테고리=1)일 경우, 좋아요 & 북마크 & 댓글 & 삭제 기능 숨김 */}
-            {data.boardCategory !== 1 && (
-                <>
+            {/* 기록 게시글(2)만 좋아요 & 북마크 가능 */}
+            {data.boardCategory === 2 && (
+                <div style={{ marginBottom: "20px" }}>
                     {/* 좋아요 버튼 */}
-                    <button onClick={toggleLike}>
+                    <button onClick={toggleLike} style={{ marginRight: "10px" }}>
                         {liked ? "❤️ 좋아요" : "🤍 좋아요"} ({data.boardLikes})
                     </button>
 
@@ -152,17 +166,23 @@ const Detail = () => {
                     <button onClick={toggleBookmark}>
                         {bookmarked ? "🔖 북마크 삭제" : "📌 북마크 추가"}
                     </button>
+                </div>
+            )}
 
-                    {/* 수정 및 삭제 버튼 */}
-                    <a href={`/board/modifyForm/${data.boardNo}`} className="btn btn-warning" style={{ marginRight: "10px" }}>
-                        수정
-                    </a>
-                    <button onClick={deletePost} className="btn btn-danger">
-                        삭제
-                    </button>
+            {/* 계획 & 기록 게시글 모두 수정 & 삭제 가능 */}
+            <div style={{ marginBottom: "20px" }}>
+                <button onClick={handleModify} style={{ marginRight: "10px" }}>
+                    수정
+                </button>
+                <button onClick={deletePost} style={{ backgroundColor: "red", color: "white" }}>
+                    삭제
+                </button>
+            </div>
 
+            {/* 기록 게시글(2)만 댓글 가능 */}
+            {data.boardCategory === 2 && (
+                <>
                     <hr />
-
                     {/* 댓글 섹션 */}
                     <Reply boardNo={boardNo} />
                 </>
