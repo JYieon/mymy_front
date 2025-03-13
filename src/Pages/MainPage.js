@@ -9,8 +9,8 @@ const MainPage=()=>{
                     <div className="Text">MY TRIP</div>
                 </div>
                 <div className="Bottom Section">
-                    <div className="Test">
-                    <Link to="test">고양이 테스트</Link></div>
+                    <div className="GotoTest">
+                    <Link to="/test">고양이 테스트</Link></div>
                     <div className="Lastest">최신 게시글</div>
                 </div>
 
