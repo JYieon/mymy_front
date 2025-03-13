@@ -13,7 +13,7 @@ const AuthApi = {
 
     sendMail: async (id, email) => {
         console.log(id, email)
-        return await axios.post(domain + "/find_pwd", null, {
+        return await axios.post(domain + "/find/pwd", null, {
             params: {
                 id: id,
                 email: email,
@@ -22,7 +22,7 @@ const AuthApi = {
     },
 
     resetPassword: async(id, newPwd) => {
-        return await axios.post(domain + "/reset_pwd", null, {
+        return await axios.post(domain + "/reset/pwd", null, {
             params: {
                 id: id,
                 pwd: newPwd,
@@ -31,7 +31,7 @@ const AuthApi = {
     }, 
 
     authOk: async(authNum, id) => {
-        return await axios.post(domain + "/mail_auth", null, {
+        return await axios.post(domain + "/mail/auth", null, {
             params: {
                 userAuth: authNum,
                 id: id,
@@ -40,15 +40,23 @@ const AuthApi = {
     }, 
 
     checkId: async(id) => {
-        return await axios.post(domain + "/id_check", null, {
+        return await axios.get(domain + "/check/id", {
             params: {
                 id: id,
             }
         })
     },
 
+    checkNick: async(nick) => {
+        return await axios.get(domain + "/check/nick", {
+            params: {
+                nick: nick,
+            }
+        })
+    },
+
     signupMail: async(email) => {
-        return await axios.post(domain + "/signup_email_send", null, {
+        return await axios.post(domain + "/signup/email/send", null, {
             params: {
                 toEmail: email
             }
