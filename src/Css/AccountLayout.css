@@ -1,0 +1,31 @@
+.AccountLayout{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to right,#00284C 50%,white);
+}
+/* 폼 */
+input {
+    border: none;
+    padding: 8px;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+/* 캐치프레이즈 */
+.Catchphrase {
+    color: white;
+    font-weight: 900px;
+    font-size: 50px;
+    display: flex;
+}
+
+/* 다른 옵션 (계정 찾기, 다른 옵션) */
+.anotherOption {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: white;
+    font-size: 10px;
+}

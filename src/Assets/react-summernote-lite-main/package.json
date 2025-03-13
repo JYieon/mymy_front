@@ -1,0 +1,49 @@
+{
+  "name": "react-summernote-lite",
+  "version": "1.3.5",
+  "description": "Summernote lite without bootstrap for react (Super simple WYSIWYG editor)",
+  "module": "dist/esm.min.js",
+  "main": "dist/cjs.min.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && rollup -c --bundleConfigAsCjs && cp ./lib/dist/summernote-lite.min.css ./dist/summernote-lite.min.css && cp -r ./lib/dist/font ./dist/font && cp -r ./lib/dist/lang ./dist/lang"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deflexable/react-summernote-lite.git"
+  },
+  "peerDependencies": {
+    "jquery": "^2.2.0 || ^3.0.0",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "keywords": [
+    "javascript",
+    "wysiwyg",
+    "summernote",
+    "wysiwyg-editor",
+    "summernote-lite",
+    "react",
+    "react-summernote-lite"
+  ],
+  "author": "Anthony Onabanjo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deflexable/react-summernote-lite/issues"
+  },
+  "homepage": "https://github.com/deflexable/react-summernote-lite#readme",
+  "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "@babel/preset-react": "^7.23.3",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "postcss": "^8.4.35",
+    "postcss-import": "^16.0.0",
+    "postcss-preset-env": "^9.3.0",
+    "rollup": "^4.10.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
