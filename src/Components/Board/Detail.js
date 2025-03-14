@@ -10,9 +10,11 @@ const Detail = () => {
     const [liked, setLiked] = useState(false); // 좋아요 상태
     const [bookmarked, setBookmarked] = useState(false); // 북마크 상태
     const [hashtags, setHashtags] = useState([]); // 해시태그 상태
+    const token = localStorage.getItem("accessToken")
 
     // 게시글 상세 정보 불러오기
     useEffect(() => {
+        console.log("게시글 상세 정보 불러오기")
         const fetchData = async () => {
             try {                
                 const res = await BoardApi.detail(boardNo);
@@ -20,30 +22,35 @@ const Detail = () => {
                     console.log("받은 데이터:", res.data);
                     setData(res.data.post);         // 게시글 정보
                     setHashtags(res.data.hashtags); // 해시태그
+                    checkBookmark();
+                    checkLike();
                 }
             } catch (error) {
-                console.error("❌ 게시글 불러오기 실패:", error);
+                console.error("게시글 불러오기 실패:", error);
             }
         };
 
         fetchData();
-    }, [boardNo]);
+    }, []);
 
     // 해시태그 클릭 시 해당 해시태그 검색 기능 추가
     const handleTagClick = (tag) => {
+        console.log("해시태그 클릭 시 해당 해시태그 검색 기능 추가")
         navigate(`/board/list?category=2&searchType=tag&keyword=${encodeURIComponent(tag)}`);
     };
 
     // 좋아요 상태 확인
     useEffect(() => {
+        console.log("좋아요 상태 확인")
         if (data?.boardCategory === 2) {
             checkLike();
             checkBookmark();
         }
-    }, [data]);
+    }, [liked]);
 
     const checkLike = async () => {
         try {
+            console.log("checkLike")
             const res = await BoardApi.checkLike(boardNo);
             setLiked(res.liked);
             setData((prev) => ({ ...prev, boardLikes: res.likes }));
@@ -55,6 +62,7 @@ const Detail = () => {
     // 좋아요 토글
     const toggleLike = async () => {
         try {
+            console.log("toggleLike")
             const res = await BoardApi.toggleLike(boardNo);
             if (res) {
                 setLiked(res.liked);
@@ -68,7 +76,8 @@ const Detail = () => {
     // 북마크 상태 확인
     const checkBookmark = async () => {
         try {
-            const res = await BoardApi.checkBookmark(boardNo);
+            console.log("checkBookmark")
+            const res = await BoardApi.checkBookmark(boardNo, token);
             setBookmarked(res.data);
         } catch (error) {
             console.error("북마크 상태 확인 실패", error);
@@ -78,7 +87,8 @@ const Detail = () => {
     // 북마크 토글
     const toggleBookmark = async () => {
         try {
-            const success = await BoardApi.toggleBookmark(boardNo);
+            console.log("toggleBookmark")
+            const success = await BoardApi.toggleBookmark(boardNo, token);
             if (success) {
                 setBookmarked(!bookmarked);
             }
@@ -89,6 +99,7 @@ const Detail = () => {
 
     // 게시글 삭제
     const deletePost = async () => {
+        console.log("deletePost")
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
                 const res = await BoardApi.delete(boardNo);
@@ -105,6 +116,7 @@ const Detail = () => {
 
     // 수정 버튼 클릭 시 해당 카테고리의 글쓰기 페이지로 이동
     const handleModify = () => {
+        console.log("handleModify")
         if (data.boardCategory === 1) {
             navigate(`/board/modifyForm/${data.boardNo}`); // 계획 게시글 수정
         } else if (data.boardCategory === 2) {

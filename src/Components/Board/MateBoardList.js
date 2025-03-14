@@ -32,15 +32,15 @@ const MateBoardList = () => {
         try {
             const boardList = await MateBoardApi.searchMateBoardList(page, 3, searchType, keyword.trim());
     
-            // console.log("✅ 검색 API 응답 결과 (boardList):", boardList);
+            // console.log("boardList:", boardList);
     
             if (!boardList || boardList.length === 0) {
-                // console.warn("⚠️ 검색 결과 없음!");
+                // console.warn("검색 결과 없음!");
                 alert("검색 결과가 없습니다.");
                 setBoardList([]);
             } else {
-                // console.log("✅ 검색 결과 (boardList):", boardList);
-                setBoardList([...boardList]);  // ✅ 배열 복사 후 상태 업데이트
+                // console.log("boardList:", boardList);
+                setBoardList([...boardList]);  // 배열 복사 후 상태 업데이트
             }
     
             setPage(1);

@@ -7,6 +7,7 @@ const MateBoardDetail = () => {
     const { boardNo } = useParams();
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
+    const token = localStorage.getItem("accessToken");
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -14,7 +15,7 @@ const MateBoardDetail = () => {
                 const data = await MateBoardApi.getMateBoardDetail(boardNo);
                 setPost(data);
             } catch (error) {
-                console.error("❌ 게시글 상세 조회 실패:", error);
+                console.error("게시글 상세 조회 실패:", error);
             }
         };
 
@@ -29,7 +30,7 @@ const MateBoardDetail = () => {
                 alert("게시글이 삭제되었습니다.");
                 navigate("/mateboard/list"); // 삭제 후 목록 페이지로 이동
             } catch (error) {
-                console.error("❌ 게시글 삭제 실패:", error);
+                console.error("게시글 삭제 실패:", error);
                 alert("게시글 삭제 중 오류가 발생했습니다.");
             }
         }
@@ -58,7 +59,7 @@ const MateBoardDetail = () => {
             </div>
 
             {/* 댓글 컴포넌트 추가 (category=3 전달) */}
-            <Reply boardNo={boardNo} category={3} />
+            <Reply boardNo={boardNo} />
         </div>
     );
 };

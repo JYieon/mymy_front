@@ -19,7 +19,7 @@ const MateBoardModify = () => {
                     setContent(data.content.replace(/<br\s*\/?>/g, "\n"));
                 }
             } catch (error) {
-                console.error("❌ 게시글 수정 데이터 불러오기 실패:", error);
+                console.error("게시글 수정 데이터 불러오기 실패:", error);
             }
         };
         fetchPost();
@@ -44,7 +44,7 @@ const MateBoardModify = () => {
                 navigate(`/mateboard/detail/${boardNo}`);
             }
         } catch (error) {
-            console.error("❌ 게시글 수정 실패:", error);
+            console.error("게시글 수정 실패:", error);
             alert("게시글 수정 중 오류가 발생했습니다.");
         }
     };

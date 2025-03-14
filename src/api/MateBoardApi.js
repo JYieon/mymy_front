@@ -4,12 +4,15 @@ const domain = "http://localhost:8080/mymy/mateboard";
 
 const MateBoardApi = {
     // 게시글 작성
-    writeMateBoard: async (postData) => {
+    writeMateBoard: async (postData, token) => {
         try {
-            const response = await axios.post(`${domain}/write`, postData, {
-                headers: { "Content-Type": "application/json" },
+            return await axios.post(`${domain}/write`, postData, {
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`, 
+                
+                },
             });
-            return response.data;
         } catch (error) {
             console.error("❌ MateBoardApi writeMateBoard 에러:", error);
             throw error;
@@ -61,6 +64,48 @@ const MateBoardApi = {
             throw error;
         }
     },
+
+      // 댓글 목록 조회
+      getReplies: async (boardNo) => {
+        try {
+            const response = await axios.get(`${domain}/replyList/${boardNo}`);
+            return response.data;
+        } catch (error) {
+            console.error("❌ MateBoardApi getReplies 에러:", error);
+            throw error;
+        }
+    },
+
+    // 댓글 작성
+    addReply: async (replyData, token) => {
+        try {
+            return await axios.post(`${domain}/addReply`, replyData, {
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`  // 토큰을 헤더에 포함
+                }
+            });
+        } catch (error) {
+            console.error("❌ MateBoardApi addReply 에러:", error);
+            throw error;
+        }
+    },
+
+    // 댓글 삭제
+    deleteReply: async (replyNo, token) => {
+        try {
+            const response = await axios.delete(`${domain}/deleteReply/${replyNo}`, {
+                headers: { 
+                    "Authorization": `Bearer ${token}`  // 토큰을 헤더에 포함
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error("❌ MateBoardApi deleteReply 에러:", error);
+            throw error;
+        }
+    },
+
 
     // 검색 기능
     searchMateBoardList: async (page, category, searchType, keyword) => {

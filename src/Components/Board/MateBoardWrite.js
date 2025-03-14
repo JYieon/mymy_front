@@ -6,6 +6,7 @@ const MateBoardWrite = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const token = localStorage.getItem("accessToken");
 
     // 게시글 작성 요청
     const handleSubmit = async (e) => {
@@ -14,17 +15,28 @@ const MateBoardWrite = () => {
         const postData = {
             title,
             content,
-            id: "a", // 임시 ID (추후 로그인 연동 시 변경)
         };
 
-        console.log("📤 전송할 데이터:", postData);  // 🚀 전송 전 데이터 확인
+        // 토큰 가져오기
+        const token = localStorage.getItem("accessToken");
+
+        // 토큰이 없으면 로그인 화면으로 이동
+        if (!token) {
+            alert("로그인 후 이용 부탁드립니다.");
+            window.location.href = "/login";
+            return;
+        }
 
         try {
-            await MateBoardApi.writeMateBoard(postData);
-            alert("게시글이 등록되었습니다!");
-            navigate("/mateboard/list"); // 목록으로 이동
+            // 토큰을 Authorization 헤더에 포함시켜 API 요청
+            const res = await MateBoardApi.writeMateBoard(postData, token);
+            if (res.status === 200) {
+                alert("게시글이 등록되었습니다!");
+                navigate("/mateboard/list"); // 목록으로 이동
+            }
         } catch (error) {
-            alert("❌ 게시글 작성에 실패했습니다.");
+            alert("게시글 작성에 실패했습니다.");
+            console.error(error);
         }
     };
 

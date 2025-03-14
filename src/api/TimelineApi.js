@@ -3,32 +3,47 @@ import axios from "axios";
 const domain = "http://localhost:8080/mymy/timeline";
 
 const TimelineApi = {
-    // 타임라인 저장 (일정 추가)
-    addTimeline: async (timelineData) => {
-        console.log("📤 전송 데이터:", timelineData);
+    // 타임라인 추가
+    addTimeline: async (timelineData, token) => {
         try {
-            // todo 필드가 객체라면 JSON 문자열로 변환
-            if (typeof timelineData.todo !== "string") {
-                timelineData.todo = JSON.stringify(timelineData.todo);
-            }
-
-            const response = await axios.post(`${domain}/add`, timelineData, {
-                headers: { "Content-Type": "application/json" },
+            return await axios.post(`${domain}/add`, timelineData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
             });
-            return response;
         } catch (error) {
-            console.error("❌ TimelineApi addTimeline 에러:", error);
+            console.error("❌ addTimeline 에러:", error);
             throw error;
         }
     },
 
-    // 특정 게시글의 타임라인 불러오기
+    // 타임라인 조회
     getTimeline: async (boardNo) => {
+            return await axios.get(`${domain}/${boardNo}`, {
+            });
+    },
+
+    // 타임라인 삭제
+    deleteTimeline: async (timelineId) => {
         try {
-            const response = await axios.get(`${domain}/${boardNo}`);
-            return response.data;
+            return await axios.delete(`${domain}/delete/${timelineId}`);
         } catch (error) {
-            console.error("❌ TimelineApi getTimeline 에러:", error);
+            console.error("❌ deleteTimeline 에러:", error);
+            throw error;
+        }
+    },
+
+    // 타임라인 일정 수정
+    updateTimelineTodo: async (data) => {
+        try {
+            return await axios.post(`${domain}/updateTodo`, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        } catch (error) {
+            console.error("❌ updateTimelineTodo 에러:", error);
             throw error;
         }
     },
