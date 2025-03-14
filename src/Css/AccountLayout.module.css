@@ -14,6 +14,11 @@
     background: linear-gradient(to right,#00284C 50%,white);
 }
 
+.link {
+    color: white;
+    text-decoration: none;
+    margin: 20px;
+}
 /* 폼 */
 
 .form{
@@ -146,3 +151,5 @@
         cursor: pointer;
      }
 }
+
+/* 계정 찾기 */
