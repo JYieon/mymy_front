@@ -11,19 +11,6 @@ import FindAccountPage from "./Pages/Account/FindAccountPage";
 import FindIdPage from "./Pages/Account/FindIdPage";
 import FindPwPage from "./Pages/Account/FindPwPage";
 import AccoutLayout from "./Pages/Account/AccountLayout";
-
-import MainPage from "./Pages/MainPage";
-import Layout from "./Pages/Common/Layout";
-import PlanBoardPage from "./Pages/Board/PlanBoardPage";
-import DiaryBoardPage from "./Pages/Board/DiaryBoardPage";
-import BookmarkBoardPage from "./Pages/Board/BookmarkBoardPage";
-import LoginPage from "./Pages/Account/LoginPage";
-import SidebarCom from "./Components/Sidebar/SidebarCom";
-import ResisterPage from "./Pages/Account/RegisterPage";
-import FindAccountPage from "./Pages/Account/FindAccountPage";
-import FindIdPage from "./Pages/Account/FindIdPage";
-import FindPwPage from "./Pages/Account/FindPwPage";
-import AccoutLayout from "./Pages/Account/AccountLayout";
 // import TestMainPage from "./Pages/TestPage/TestMainPage";
 // import TestLayout from "./Pages/TestPage/TestLayout";
 
@@ -32,7 +19,9 @@ import KakaoCallback from "./Components/KakaoSync/KakaoCallback";
 import ChatRoom from "./Components/Auth/ChttingRoom";
 import ChatList from "./Components/Auth/ChatList";
 import ChatCreate from "./Components/Auth/ChatCreate";
-
+import MyPage from "./component/mypage/mypage";
+import AlarmSettings from "./component/alarm/alarmsettings";
+import Alarm from "./component/alarm/alarm"
 import MyPage from "./Pages/Account/MyPage";
 import MateBoardPage from "./Pages/Board/MateBoardPage";
 import TestPage from "./Pages/TestPage/TestPage";
@@ -45,9 +34,11 @@ import TimelinePage from "./Pages/TimelinePage";
 import ResultPage from "./Pages/TestPage/ResultPage";
 import NewChatPage from "./Pages/Chat/NewChatPage";
 import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
->>>>>>> main
+
 
 function App() {
+  const loggedInUser = "aaa"; //  로그인된 사용자 (테스트용)
+  const userId="aaa";
   return (
     <Routes>
       {/* <Route path="/login" element={<LoginForm />} /> 
@@ -111,6 +102,19 @@ function App() {
             <Route path="pw" element={<FindPwPage/>}/>
           </Route>
         </Route>
+        {/* 마이페이지 관련 라우트 */}
+        <Route path="mypage" element={<SidebarCom />}>
+          <Route path="/mypage/modify" element={<MyPage  />}/>
+          <Route path="/mypage/alarm" element={<AlarmSettings  />}/>
+          <Route path="/mypage/modify" element={<MyPage />}/> 
+          <Route path="/mypage/alarm" element={<Alarm  />}/>   
+          <Route path="/mypage/alarm/settings/:userId" element={<AlarmSettings  />}/>
+          {/*  팔로잉 / 팔로워 목록 페이지 추가 */}
+          <Route path="following/:userId" element={<FollowingList />} />
+          <Route path="followers/:userId" element={<FollowerList />} />
+        </Route>
+        {/* 특정 유저 프로필 페이지 */}
+        <Route path="/profile/:userId" element={<UserProfile loggedInUser={loggedInUser || userId} />} />
 
         {/* 타임라인 경로 변경 */} 
         <Route path="/timeline" element={<TimelinePage />} /> 
