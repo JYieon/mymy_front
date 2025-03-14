@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addTimeline, getTimeline, updateTimelineTodo } from "../../api/TimelineApi"; // API 호출
+import TimelineApi from "../../api/TimelineApi"; // API 호출
 
 const Timeline = () => {
     const { boardNo } = useParams();
-
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [location, setLocation] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
     const [todoList, setTodoList] = useState({});
+    const token = localStorage.getItem("accessToken");
+
+    useEffect(() => {
+        if (!token) {
+            window.location.href = "/login";
+        }
+    }, [token]);
 
     useEffect(() => {
         fetchTimeline();
@@ -18,7 +24,7 @@ const Timeline = () => {
     // 타임라인 데이터 가져오기
     const fetchTimeline = async () => {
         try {
-            const response = await getTimeline(boardNo);
+            const response = await TimelineApi.getTimeline(boardNo);
             if (response.data) {
                 setStartDate(response.data.startDt);
                 setEndDate(response.data.endDt);
@@ -68,7 +74,7 @@ const Timeline = () => {
     const handleSaveTasks = async () => {
         const data = {
             boardNo,
-            id: "a", // 임의 ID
+            token: token,
             startDt: startDate,
             endDt: endDate,
             location,
@@ -76,7 +82,7 @@ const Timeline = () => {
         };
 
         try {
-            await addTimeline(data);
+            await TimelineApi.addTimeline(data, token);
             alert("여행 일정이 저장되었습니다!");
             fetchTimeline();
         } catch (error) {
@@ -88,18 +94,17 @@ const Timeline = () => {
     const handleUpdateTasks = async () => {
         const data = {
             boardNo: boardNo,
-            todo: JSON.stringify(todoList), 
+            todo: JSON.stringify(todoList),
         };
 
         try {
-            const response = await updateTimelineTodo(data);
+            const response = await TimelineApi.updateTimelineTodo(data);
             alert("일정이 수정되었습니다!");
             fetchTimeline();
         } catch (error) {
             console.error("수정 중 오류 발생:", error.response ? error.response.data : error.message);
         }
     };
-
 
     // 선택한 날짜의 일정 가져오기
     const selectedTasks = todoList[selectedDate] || [];
@@ -109,27 +114,67 @@ const Timeline = () => {
             <h2 style={styles.title}>🛫 여행 타임라인 계획</h2>
             <div style={styles.dateSelection}>
                 <label style={styles.label}>📅 여행 시작 날짜: </label>
-                <input type="date" value={startDate} disabled style={styles.input} />
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)} // startDate 업데이트
+                    style={styles.input}
+                />
                 <label style={styles.label}>📅 여행 종료 날짜: </label>
-                <input type="date" value={endDate} disabled style={styles.input} />
+                <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)} // endDate 업데이트
+                    style={styles.input}
+                />
                 <label style={styles.label}>📍 여행 장소: </label>
-                <input type="text" value={location} disabled style={styles.input} />
+                <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)} // location 업데이트
+                    style={styles.input}
+                />
             </div>
 
             <div style={styles.dateSelection}>
                 <label style={styles.label}>📅 일정 추가할 날짜: </label>
-                <input type="date" value={selectedDate} min={startDate} max={endDate} onChange={(e) => setSelectedDate(e.target.value)} style={styles.input} />
+                <input
+                    type="date"
+                    value={selectedDate}
+                    min={startDate}
+                    max={endDate}
+                    onChange={(e) => setSelectedDate(e.target.value)} // selectedDate 업데이트
+                    style={styles.input}
+                />
             </div>
 
             <div style={styles.todoSection}>
                 <h3>📍 일정 추가 ({selectedDate || "날짜 선택"})</h3>
                 {selectedTasks.map((todo, index) => (
                     <div key={index} style={styles.todoItem}>
-                        <input type="time" value={todo.startTime} onChange={(e) => handleChange(index, "startTime", e.target.value)} style={styles.timeInput} />
+                        <input
+                            type="time"
+                            value={todo.startTime}
+                            onChange={(e) => handleChange(index, "startTime", e.target.value)}
+                            style={styles.timeInput}
+                        />
                         <span style={styles.timeDash}>~</span>
-                        <input type="time" value={todo.endTime} onChange={(e) => handleChange(index, "endTime", e.target.value)} style={styles.timeInput} />
-                        <input type="text" value={todo.task} placeholder="예: 관광지 방문" onChange={(e) => handleChange(index, "task", e.target.value)} style={styles.taskInput} />
-                        <button style={styles.deleteButton} onClick={() => handleDeleteTask(index)}>🗑 삭제</button>
+                        <input
+                            type="time"
+                            value={todo.endTime}
+                            onChange={(e) => handleChange(index, "endTime", e.target.value)}
+                            style={styles.timeInput}
+                        />
+                        <input
+                            type="text"
+                            value={todo.task}
+                            placeholder="예: 관광지 방문"
+                            onChange={(e) => handleChange(index, "task", e.target.value)}
+                            style={styles.taskInput}
+                        />
+                        <button style={styles.deleteButton} onClick={() => handleDeleteTask(index)}>
+                            🗑 삭제
+                        </button>
                     </div>
                 ))}
                 <button style={styles.addButton} onClick={handleAddTask}>+ 일정 추가</button>

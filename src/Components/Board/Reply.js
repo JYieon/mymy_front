@@ -7,6 +7,7 @@ const Reply = ({ boardNo, category }) => {
     const [newReply, setNewReply] = useState("");
     const [replyContent, setReplyContent] = useState({});
     const [showReplyInput, setShowReplyInput] = useState({});
+    const token = localStorage.getItem("accessToken");
 
     // **어떤 API를 사용할지 선택**
     const api = category === 3 ? MateBoardApi : BoardApi;
@@ -59,15 +60,24 @@ const Reply = ({ boardNo, category }) => {
             boardNo: boardNo,
             repContent: content,
             parentNo: parentNo,
-            id: "a" // 임시 아이디 (로그인 연동 후 변경)
         };
+        console.log(replyData);
 
         try {
-            await api.addReply(replyData);
-            alert("댓글이 작성되었습니다.");
-            setReplyContent({ ...replyContent, [parentNo]: "" });
-            setNewReply("");
-            window.location.reload();
+            const token = localStorage.getItem("accessToken");  // 로그인 토큰 가져오기
+
+            if (!token) {
+                alert("로그인 후 댓글을 작성할 수 있습니다.");
+                return;
+            }
+            // 댓글 작성 요청
+            const res = await api.addReply(replyData, token);  // 댓글 API 호출
+            if (res.status === 200) {
+                alert("댓글이 작성되었습니다.");
+                setReplyContent({ ...replyContent, [parentNo]: "" });
+                setNewReply("");  // 댓글 작성 후 입력 필드 초기화
+                window.location.reload();  // 새로고침
+            }
         } catch (error) {
             console.error("댓글 작성 실패:", error);
         }
@@ -77,7 +87,7 @@ const Reply = ({ boardNo, category }) => {
     const handleDeleteReply = async (replyNo) => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
-                await api.deleteReply(replyNo);
+                await api.deleteReply(replyNo, token);  // 토큰을 header로 전달
                 alert("댓글이 삭제되었습니다.");
                 window.location.reload();
             } catch (error) {
