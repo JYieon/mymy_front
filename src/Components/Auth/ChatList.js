@@ -33,7 +33,7 @@ function ChatList() {
 
   return (
     <div>
-      <h2>채팅방 목록</h2>
+      <h1 className="Category-Title">채팅방 목록</h1>
       <ul>
         {chatRooms.map((room) => (
           <li

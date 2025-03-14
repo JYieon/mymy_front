@@ -47,7 +47,8 @@ function App() {
 
     {/* <Route path="/kakao-test" element={<KakaoLogin />}/> */}
     <Route path="/auth/kakao/callback" element={<KakaoCallback />}/>
-    <Route path="/chatting/:roomNum" element={<ChatRoom />}/>
+    {/* <Route path="/chatting/:roomNum" element={<ChatRoom />}/> */}
+    <Route path="/chatting" element={<ChatRoom />}/>
     <Route path="/chatlist" element={<ChatList />}/>
     <Route path="/chat-create" element={<ChatCreate />}/>
 
@@ -55,75 +56,8 @@ function App() {
       <Route path="/" element={<Layout />}>
         {/* 메인 페이지 */}
         <Route index element={<MainPage />} />
-        
-        {/* 게시판 */}
-        <Route path="/Board" element={<SidebarCom />}>
-          <Route path="Plan" element={<PlanBoardPage />} />
-          <Route path="Diary" element={<DiaryBoardPage />} />
-          <Route path="Bookmark" element={<BookmarkBoardPage />} />
-        </Route>
-        
-        {/* 게시글 리스트 */}
-        <Route path="/board/list" element={<BoardList />} />
-        {/* 게시글 작성 페이지 */}
-        <Route path="/board/write" element={<BoardWrite />} />
-        {/* 게시판 상세 페이지 */}
-        <Route path="/board/detail/:boardNo" element={<Detail />} />
-        {/* 수정 폼 라우트 */}
-        <Route path="/board/modifyForm/:boardNo" element={<BoardModify />} />
-        {/* 북마크 리스트 */}
-        <Route path="/board/bookmarkList" element={<BookmarkList />} />
-
-        {/* 여행메이트 게시판 */}
-        <Route path="/mateboard/list" element={<MateBoardList />} />
-        <Route path="/mateboard/write" element={<MateBoardWrite />} />
-        <Route path="/mateboard/detail/:boardNo" element={<MateBoardDetail />} />
-        <Route path="/mateboard/modify/:boardNo" element={<MateBoardModify />} />
-import ChatListPage from "./Pages/Chat/ChatListPage";
-
-function App() {
-  return (
-    <Routes>
-        {/* <Route path="/login" element={<LoginForm />} /> 
-      <Route path="/find" element={<Find />} /> 
-      <Route path="/find_password" element={<FindPassword />} /> 
-      <Route path="/reset_password" element={<ResetPassword />} /> 
-      <Route path="/signup" element={<SignupForm />} /> */}
-
-    {/* <Route path="/kakao-test" element={<KakaoLogin />}/> */}
-    <Route path="/auth/kakao/callback" element={<KakaoCallback />}/>
-    <Route path="/chatting/:roomNum" element={<ChatRoom />}/>
-    <Route path="/chatlist" element={<ChatList />}/>
-    <Route path="/chat-create" element={<ChatCreate />}/>
-
-    {/* 기본 레이아웃 (헤더) */}
-      <Route path="/" element={<Layout />}>
-      {/* 메인 페이지 */}
-        <Route index element={<MainPage />}/>
-
-         {/* 채팅 */}
-        <Route path="/chat" element={<SidebarCom/>}>
-          <Route path="Create" element={<NewChatPage/>}/>
-         <Route path="/chat" element={<SidebarCom/>}>
-          <Route path="newChat" element={<NewChatPage/>}/>
-          <Route path="groupChat" element={<GroupChatPage/>}/>
-          <Route path="list" element={<ChatListPage/>}/>
-        </Route>
-
-        {/* 여행자 테스트 */}
-
-        <Route path="/test" element={<TestPage/>}/>
-        <Route path="/test/result" element={<ResultPage/>}/>
-        
-        {/* 계정 (로그인,회원가입,계정 찾기) */}
-        <Route path="/Account" element={<AccoutLayout/>}>
-          <Route path="login" element={<LoginPage />}/>
-          <Route path="myPage" element={<MyPage/>}/>
-          <Route path="register" element={<ResisterPage />}/>
-        </Route>
-
-        {/* 게시판 */}
-        <Route path="/board" element={<SidebarCom />}>
+      
+        <Route path="/board" element={<SidebarCom/>}>
         {/* 게시글 리스트 */}
           <Route path="/board/list" element={<BoardList />} />
           {/* 게시글 작성 페이지 */}
@@ -135,9 +69,6 @@ function App() {
           {/* 북마크 리스트 */}
           <Route path="/board/bookmarkList" element={<BookmarkList />} />
         </Route>
-      
-
-
         {/* 여행메이트 게시판 */}
         <Route path="/mateboard" element={<SidebarCom/>}>
           <Route path="/mateboard/list" element={<MateBoardList />} />
@@ -145,10 +76,15 @@ function App() {
           <Route path="/mateboard/detail/:boardNo" element={<MateBoardDetail />} />
           <Route path="/mateboard/modify/:boardNo" element={<MateBoardModify />} />
         </Route>
-        {/* 계정 (로그인, 회원가입, 계정 찾기) */}
-        <Route path="/account" element={<AccoutLayout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<ResisterPage />} />
+         {/* 채팅 */}
+         <Route path="/chat" element={<SidebarCom/>}>
+          <Route path="Create" element={<NewChatPage/>}/>
+          <Route path="groupChat" element={<ChatRoom />}/>
+          <Route path="List" element={<ChatList/>}/>
+        </Route>
+
+        {/* 여행자 테스트 */}
+
         {/* 계정 (로그인, 회원가입, 계정 찾기) */}
         <Route path="/account" element={<AccoutLayout />}>
           <Route path="login" element={<LoginPage />} />

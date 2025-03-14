@@ -1,5 +1,8 @@
+.GroupChatWrap {
+    display: flex;
+}
 
-.form {
+.CreateNewChatWrap {
     display:flex;
     flex-direction: column;
     & *{
@@ -7,7 +10,7 @@
     }
 }
 
-input[type="submit"] {
+.CreateChatBtn {
     background-color: #00284C;
     color: white;
     border-style: none;
@@ -42,4 +45,18 @@ hr {
 
 .Subtitle {
     text-align: center;
+}
+
+/* 내 채팅 */
+
+.ChatSidebar {
+    float: right;
+    display: flex;
+    flex-direction: column;
+    
+    width: 200px;
+    height: auto;
+    overflow: hidden;
+    border-radius: 25px 25px 0 0;
+    margin: 50px 20px 0 20psx;
 }

@@ -5,11 +5,12 @@ import Message from "./Messages";
 import SockJs from 'sockjs-client';
 import {Stomp} from '@stomp/stompjs';
 import styled from "styled-components";
+import style from "../../Css/ChatLayout.module.css";
 
 /* ✅ ul을 감싸는 컨테이너 스타일 */
 const ChatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   height: 500px; /* 고정 높이 */
 `;
 
@@ -109,7 +110,7 @@ const ChttingRoom = () => {
     };
 
     if (!message) {
-      alert("뭐든 입력하세요");
+      alert("전송이 불가한 메세지.");
       return;
     }
     if (!webSocket) {
@@ -148,18 +149,14 @@ const ChttingRoom = () => {
     if (res.data === 1) {
       setInvite("");
     } else {
-      alert("없는 회원입니다.");
+      alert("존재하지 않는 회원입니다.");
       setInvite("");
     }
   };
 
-  return (
+  return (<div className={style.GroupChatWrap}>
     <ChatContainer>
-      <h2>채팅룸 {roomNum}</h2>
-      <div>
-        <input type="text" onChange={(e) => setInvite(e.target.value)} value={invite} />
-        <button onClick={inviteChatUser}>초대하기</button>
-      </div>
+      <h1 className={style.Title}>채팅룸 {roomNum}</h1>
 
       {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
       <ChatList>
@@ -179,6 +176,16 @@ const ChttingRoom = () => {
         <button onClick={sendMessage}>전송</button>
       </div>
     </ChatContainer>
+
+      {/* 채팅 사이드 바 */}
+     <div className={style.ChatSidebar}>
+        모임 통장
+        정산하기
+        <input type="text" onChange={(e) => setInvite(e.target.value)} value={invite} />
+        <button onClick={inviteChatUser} className={style.InviteBtn}>초대하기</button>
+      </div>
+
+    </div>
   );
 };
 
