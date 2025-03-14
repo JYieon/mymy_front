@@ -21,7 +21,6 @@ const ChatCreate = () => {
     }
 
     return(<div>
-
         <h2>채팅방 생성</h2>
         <input type="text" onChange={(e) => {setRoomName(e.target.value)}} placeholder="채팅방 이름" ></input>
         <button onClick={createRoom}>만들기</button>
