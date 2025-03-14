@@ -31,12 +31,12 @@ export default function Message({ chatMessages }) {
     if (!chatMessages || chatMessages.length === 0) {
         return <div>No messages</div>; // 메시지가 없을 때 "No messages" 표시
     }
-    chatMessages.map((c)=>{
-        console.log(c)
-        console.log("??", c.id)
-        console.log(">>>>", user)
-        console.log(c.id === user)
-    })
+    // chatMessages.map((c)=>{
+    //     console.log(c)
+    //     console.log("??", c.id)
+    //     console.log(">>>>", user)
+    //     console.log(c.id === user)
+    // })
     
     return (
         
