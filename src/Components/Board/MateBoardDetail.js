@@ -7,7 +7,6 @@ const MateBoardDetail = () => {
     const { boardNo } = useParams();
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
-    const token = localStorage.getItem("accessToken");
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -59,7 +58,7 @@ const MateBoardDetail = () => {
             </div>
 
             {/* 댓글 컴포넌트 추가 (category=3 전달) */}
-            <Reply boardNo={boardNo} />
+            <Reply boardNo={boardNo} category={3} />
         </div>
     );
 };

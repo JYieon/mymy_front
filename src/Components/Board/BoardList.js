@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/BoardList.css";
-import { toBeChecked } from "@testing-library/jest-dom/matchers";
 
 const BoardList = () => {
     const location = useLocation();
@@ -11,7 +10,6 @@ const BoardList = () => {
     const category = searchParams.get("category") ? parseInt(searchParams.get("category")) : 1;
     const searchTypeParam = searchParams.get("searchType");
     const keywordParam = searchParams.get("keyword");
-    const token = 0
 
     const [pageState, setPageState] = useState({
         1: { boardList: [], currentPage: 1, totalPages: 1 },
@@ -33,14 +31,9 @@ const BoardList = () => {
         return imgTag ? imgTag.src : "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
     };
 
-    const fetchBoardList = async (page, category, token) => {
+    const fetchBoardList = async (page, category) => {
         try {
-            let params= {page, category, token};
-            if(category === 1){
-                params.token = localStorage.getItem("accessToken");
-            }
-            const response = await axios.get(`http://localhost:8080/mymy/board/list`, {params});
-    
+            const response = await axios.get(`http://localhost:8080/mymy/board/list?page=${page}&category=${category}`);
             const updatedPageState = { ...pageState };
             updatedPageState[category] = {
                 boardList: response.data.boardList.map(post => ({
@@ -56,7 +49,6 @@ const BoardList = () => {
             console.error("게시글 목록 불러오기 실패:", error);
         }
     };
-    
 
     const searchBoardList = async (page) => {
         if (keyword.trim() === "") return;
@@ -84,9 +76,9 @@ const BoardList = () => {
         if (isSearching) {
             searchBoardList(pageState[category].currentPage);
         } else {
-            fetchBoardList(pageState[category].currentPage, category, token);
+            fetchBoardList(pageState[category].currentPage, category);
         }
-    }, [category, pageState[category].currentPage], token);
+    }, [category, pageState[category].currentPage]);
 
     const handleSearch = () => {
         if (keyword.trim() === "") {

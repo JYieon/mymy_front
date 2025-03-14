@@ -25,31 +25,24 @@ const BoardWrite = () => {
 
   // Summernote 초기화
   useEffect(() => {
-    if(!localStorage.getItem("accessToken")){
-      alert("로그인 이후 이용 부탁드립니다")
-      window.location.href = "/"
-    }else{
-      if (!window.$ || !window.jQuery) {
-        window.$ = window.jQuery = $;
-      }
-      const editor = editorRef.current;
-      if (editor) {
-        $(editor).summernote({
-          height: 300,
-          lang: "ko-KR",
-          callbacks: {
-            onImageUpload: function (files) {
-              uploadImage(files[0]);
-            },
-          },
-        });
-      }
-      return () => {
-        if (editor) $(editor).summernote("destroy");
-      };
+    if (!window.$ || !window.jQuery) {
+      window.$ = window.jQuery = $;
     }
-
-    
+    const editor = editorRef.current;
+    if (editor) {
+      $(editor).summernote({
+        height: 300,
+        lang: "ko-KR",
+        callbacks: {
+          onImageUpload: function (files) {
+            uploadImage(files[0]);
+          },
+        },
+      });
+    }
+    return () => {
+      if (editor) $(editor).summernote("destroy");
+    };
   }, []);
 
   // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
@@ -104,36 +97,24 @@ const BoardWrite = () => {
   };
 
   // 게시글 작성
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const content = $(editorRef.current).summernote("code");
-  const postData = { title, boardCategory: category, content };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const content = $(editorRef.current).summernote("code");
+    const postData = { title, boardCategory: category, content };
 
-  if (category === 2) postData.boardOpen = boardOpen;
-  if (category === 2) postData.hashtags = hashtags;
+    if (category === 2) postData.boardOpen = boardOpen;
+    if (category === 2) postData.hashtags = hashtags;
 
-  try {
-    const token = localStorage.getItem("accessToken");
-
-    // 토큰이 없으면 로그인 화면으로 이동
-    if (!token) {
-      alert("로그인 후 이용 부탁드립니다.");
-      window.location.href = "/login";
-      return;
+    try {
+      const res = await BoardApi.writeSave(postData);
+      if (res.status === 200) {
+        alert("게시글이 등록되었습니다!");
+        navigate(`/board/list?category=${category}`);
+      }
+    } catch (error) {
+      alert("게시글 등록 실패");
     }
-
-    // 토큰을 Authorization 헤더에 포함시켜 API 요청
-    const res = await BoardApi.writeSave(postData, token);
-    if (res.status === 200) {
-      alert("게시글이 등록되었습니다!");
-      navigate(`/board/list?category=${category}`);
-    }
-  } catch (error) {
-    alert("게시글 등록 실패");
-    console.error(error);
-  }
-};
-
+  };
 
   return (
     <div>
