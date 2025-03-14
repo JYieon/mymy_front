@@ -87,10 +87,10 @@ const HeaderCom=()=>{
                         <li className="HeaderNav link">채팅
                             <ul className="MenuList">
                                 <li>
-                                    <Link to="/chat/유저고유번호/list" className="Menu">채팅 목록</Link>
+                                    <Link to="/chat/list" className="Menu">채팅 목록</Link>
                                 </li>
                                 <li>
-                                    <Link to="/chat/유저고유번호/newChat" className="Menu">새로운 채팅</Link>
+                                    <Link to="/chat/Create" className="Menu">새로운 채팅</Link>
                                 </li>
                             </ul>
                         </li>

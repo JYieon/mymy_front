@@ -2,9 +2,6 @@ import {Routes, Route} from "react-router-dom"
 
 import MainPage from "./Pages/MainPage";
 import Layout from "./Pages/Common/Layout";
-import PlanBoardPage from "./Pages/Board/PlanBoardPage";
-import DiaryBoardPage from "./Pages/Board/DiaryBoardPage";
-import BookmarkBoardPage from "./Pages/Board/BookmarkBoardPage";
 import LoginPage from "./Pages/Account/LoginPage";
 import SidebarCom from "./Components/Sidebar/SidebarCom";
 import ResisterPage from "./Pages/Account/RegisterPage";
@@ -12,7 +9,6 @@ import FindAccountPage from "./Pages/Account/FindAccountPage";
 import FindIdPage from "./Pages/Account/FindIdPage";
 import FindPwPage from "./Pages/Account/FindPwPage";
 import AccoutLayout from "./Pages/Account/AccountLayout";
-
 // import KakaoLogin from "./Components/Auth/KakaoLogin";
 import KakaoCallback from "./Components/KakaoSync/KakaoCallback";
 import ChatRoom from "./Components/Auth/ChttingRoom";
@@ -20,7 +16,6 @@ import ChatList from "./Components/Auth/ChatList";
 import ChatCreate from "./Components/Auth/ChatCreate";
 
 import MyPage from "./Pages/Account/MyPage";
-import MateBoardPage from "./Pages/Board/MateBoardPage";
 import TestPage from "./Pages/TestPage/TestPage";
 import Detail from "./Components/Board/Detail";
 import BoardWrite from "./Components/Board/BoardWrite";
@@ -35,6 +30,7 @@ import MateBoardList from "./Components/Board/MateBoardList";
 import MateBoardWrite from "./Components/Board/MateBoardWrite";
 import MateBoardDetail from "./Components/Board/MateBoardDetail";
 import MateBoardModify from "./Components/Board/MateBoardModify";
+import ChatListPage from "./Pages/Chat/ChatListPage";
 
 function App() {
   return (
@@ -58,8 +54,9 @@ function App() {
 
          {/* 채팅 */}
         <Route path="/chat" element={<SidebarCom/>}>
-          <Route path="newChat" element={<NewChatPage/>}/>
+          <Route path="Create" element={<NewChatPage/>}/>
           <Route path="groupChat" element={<GroupChatPage/>}/>
+          <Route path="list" element={<ChatListPage/>}/>
         </Route>
 
         {/* 여행자 테스트 */}

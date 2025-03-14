@@ -53,8 +53,8 @@ const SidebarCom=()=>{
                     {/* 채팅 목록 */}
                     <li className="link">채팅
                         <ul className="MenuList">
-                            <li><Link to="/board/Chat" className="Menu">채널 목록</Link></li>
-                            <li><Link to="../chat/newChat" className="Menu">채팅방 만들기</Link></li>
+                            <li><Link to="../chat/List" className="Menu">채널 목록</Link></li>
+                            <li><Link to="../chat/create" className="Menu">채팅방 만들기</Link></li>
                         </ul>
                         <hr className="ContourLine"/>
                     </li>
