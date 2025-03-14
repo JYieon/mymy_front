@@ -1,5 +1,5 @@
 
-.form {
+.CreateNewChatWrap {
     display:flex;
     flex-direction: column;
     & *{
@@ -7,7 +7,7 @@
     }
 }
 
-input[type="submit"] {
+.CreateChatBtn {
     background-color: #00284C;
     color: white;
     border-style: none;
@@ -43,3 +43,4 @@ hr {
 .Subtitle {
     text-align: center;
 }
+
