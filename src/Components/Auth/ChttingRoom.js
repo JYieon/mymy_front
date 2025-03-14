@@ -65,7 +65,7 @@ const HamburgerButton = styled.button`
 
 const ChttingRoom = () => {
   const { roomNum } = useParams();
-  const [userInfo, setUserInfo] = useState([]);
+  const [chatUserInfo, setChatUserInfo] = useState([]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [chatInfo, setChatInfo] = useState([]);
@@ -85,12 +85,17 @@ const ChttingRoom = () => {
         const res = await ChatApi.getChatMessages(roomNum);
         console.log(res.data);
         setMemberNum(res.data.member.length);
-        setUserInfo(res.data.member);
+        // setChatUserInfo(res.data.member);
+        // console.log("msg", res.data.member)
+        const filteredUser = res.data.member.filter(user => user.member !== userId)
+        setChatUserInfo(filteredUser)
         if (res.data.messages.length > 0) {
           const newMessages = res.data.messages.map((element) => ({
             id: element.member, 
             msg: element.msg,
-            type: element.type
+            type: element.type,
+            nick: element.nick,
+            profile: element.profile
           }));
           setMessages(newMessages);
         } else {
@@ -109,21 +114,21 @@ const ChttingRoom = () => {
   }, [roomNum]);
 
   useEffect(() => {
-    const CreateWebSocket = () => new SockJs("http://localhost:8080/mymy/stompServer");
+    const CreateWebSocket = () => new SockJs("http://localhost:8080/mymy/ws");
     const stompClient = Stomp.over(CreateWebSocket);
     stompClient.connect({}, (frame) => {
       console.log(frame);
 
-      stompClient.subscribe(`/chat/chatRoomNo/${roomNum}/message`, async (frame) => {
+      stompClient.subscribe(`/topic/chatRoomNo/${roomNum}/message`, async (frame) => {
         let jsonMessage = frame.body;
         let parsedMessage = await JSON.parse(jsonMessage);
         setMessages((preState) => [...preState, { id: parsedMessage.member, msg: parsedMessage.msg }]);
       });
 
-      stompClient.subscribe(`/chat/chatRoomNo/${roomNum}/enternleave`, async (frame) => {
+      stompClient.subscribe(`/topic/chatRoomNo/${roomNum}/enternleave`, async (frame) => {
         let jsonMessage = frame.body;
         let parsedMessage = await JSON.parse(jsonMessage);
-        setUserInfo(parsedMessage);
+        setChatUserInfo(parsedMessage);
       });
     });
     setWebSocket(stompClient);
@@ -170,7 +175,7 @@ const ChttingRoom = () => {
       return;
     }
 
-    webSocket.send(`/chat/sendMessage/chatRoomNo/${roomNum}`, {}, JSON.stringify(chatMessage));
+    webSocket.send(`/app/sendMessage/chatRoomNo/${roomNum}`, {}, JSON.stringify(chatMessage));
     setMessage("");
     setTimeout(() => {
       scrollToBottom();
@@ -206,6 +211,24 @@ const ChttingRoom = () => {
     }
   };
 
+  const endChat = async () => {
+    const isConfirmed = window.confirm("채팅방을 정말 나가시겠습니까?");
+    if (!isConfirmed) return; // 사용자가 취소하면 종료
+  
+    try {
+      const res = await ChatApi.endChat(roomNum, localStorage.getItem("accessToken"));
+      console.log("delete", res);
+      if (res.status === 200) {
+        window.location.href = "/chatlist"; // 채팅방 목록으로 이동
+      } else {
+        alert("채팅방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("채팅방 나가기 오류:", error);
+      alert("서버 오류로 인해 채팅방을 나갈 수 없습니다.");
+    }
+  };
+
   return (
     <ChatContainer>
       <ChatSection>
@@ -237,12 +260,13 @@ const ChttingRoom = () => {
       <SideMenu isOpen={isMenuOpen}>
         <button onClick={() => setIsMenuOpen(false)}>닫기</button>
         <h3>참여자</h3>
-        {userInfo.map((user) => (
+        {chatUserInfo.map((user) => (
           <div key={user.id}>
-            <img src={user.profile} alt="프로필" style={{ width: "30px", borderRadius: "50%" }} />
-            {user.nickname}
+          <img src={`/images/${user.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
+            {user.nick}
           </div>
         ))}
+        <button onClick={endChat}>채팅방 나가기</button>
       </SideMenu>
     </ChatContainer>
   );

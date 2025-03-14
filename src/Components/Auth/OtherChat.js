@@ -53,6 +53,13 @@ const UserProfile = styled.div`
   margin-bottom: 5px;
 `;
 
+const NickName = styled.span`
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin-left: 8px;
+`;
+
 export default function OtherChat({ chatMessage }) {
   if (chatMessage.type === "ENTER" || chatMessage.type === "LEAVE") {
     return <NoticeMessage>{chatMessage.msg}</NoticeMessage>;
@@ -61,8 +68,8 @@ export default function OtherChat({ chatMessage }) {
   return (
     <ChatContainer key={chatMessage.id}>
       <UserProfile>
-        {/* <img src={chatMessage.profile} style={{ width: "30px", borderRadius: "50px" }} /> */}
-        {/* <NickName>{chatMessage.nickName}</NickName> */}
+        <img src={`/images/${chatMessage.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
+        <NickName>{chatMessage.nick}</NickName>
       </UserProfile>
       <ChatBubble>
         <ChatMessage>{chatMessage.msg}</ChatMessage>

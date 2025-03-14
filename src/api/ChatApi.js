@@ -1,4 +1,5 @@
 import axios from "axios";
+import { param } from "jquery";
 
 const domain = "http://localhost:8080/mymy/chat";
 
@@ -42,6 +43,15 @@ const ChatApi =  {
                 inviteUser: inviteUser, 
                 roomNum: roomNum
 
+            }
+        })
+    },
+
+    endChat : async (roomNum, token) => {
+        return await axios.delete(domain + "/endChat", {
+            params: {
+                roomNum: roomNum,
+                token: token
             }
         })
     }

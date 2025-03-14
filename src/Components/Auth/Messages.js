@@ -14,7 +14,7 @@ export default function Message({ chatMessages }) {
             if (token) {
                 try {
                     const res = await ChatApi.getUserInfo(token); // 예시 API 요청
-                    setUser(res.data.id); // 유저 정보 저장
+                    setUser(res.data); // 유저 정보 저장
                 } catch (error) {
                     console.error("유저 정보를 가져오는 데 실패했습니다.", error);
                 }
@@ -42,7 +42,7 @@ export default function Message({ chatMessages }) {
         
         chatMessages.map((chatMessage) => {
             return (
-                chatMessage.id === user ? <MyChat chatMessage={chatMessage} /> : <OtherChat chatMessage={chatMessage} />
+                chatMessage.id === user.id ? <MyChat chatMessage={chatMessage} /> : <OtherChat chatMessage={chatMessage} />
             );
         })
     );
