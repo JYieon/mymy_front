@@ -10,14 +10,17 @@ const RegiCom=()=>{
     const [pwd, setPwd] = useState("");         // 비밀번호
     const [pwd2, setPwd2] = useState("");       // 비밀번호 확인
     const [name, setName] = useState("");       // 이름
-    const [nick, setNickname] = useState("");// 닉네임
+    const [nick, setNick] = useState("");// 닉네임
     const [phone, setPhone] = useState("");     // 전화번호
     const [error, setError] = useState("");     // 에러 메시지
+    const [nickError, setNickError] = useState("");     // 에러 메시지
     const [mainError, setMainError] = useState("");     // 에러 메시지
+    const [emailError, setEmailError] = useState(""); // 이메일 에러
     const [pwdError, setPwdError] = useState(""); // 비밀번호 유효성 오류 메시지
     const [pwdMatchError, setPwdMatchError] = useState(""); // 비밀번호 불일치 오류 메시지
     const [buttonText, setButtonText] = useState("발송"); // 버튼 텍스트 (발송 → 인증)
     const [isVerified, setIsVerified] = useState(false); // 인증 여부
+    const [phoneError, setPhoneError] = useState(""); // 핸드폰 에러러
     const [authError, setAuthError] = useState(""); // 인증 실패 메시지
     const [authTime, setAuthTime] = useState(300); // 5분 (300초)
     const [isAuthTimeOver, setIsAuthTimeOver] = useState(false); // 시간 만료 여부
@@ -64,8 +67,30 @@ const RegiCom=()=>{
         }
     }, [pwd, pwd2]);
 
+    // 이메일 유효성 검사
+    useEffect(() => {
+        if (email.length === 0) {
+            setEmailError("");
+            return;
+        }
+
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+            setEmailError("올바른 이메일 형식이 아닙니다.");
+        } else {
+            setEmailError("");
+        }
+    }, [email]);
+
     useEffect(() => {
         setPhone(autoHypenTel(phone));
+        
+        if (phone.length === 0) {
+            setPhoneError("");
+            return;
+        }
+        const phonePattern = /^01[0-9]-\d{3,4}-\d{4}$/;
+        setPhoneError(phonePattern.test(phone) ? "" : "올바른 전화번호 형식이 아닙니다.");
     }, [phone]);
 
     //전화번호 하이픈 자동생성
@@ -100,7 +125,7 @@ const RegiCom=()=>{
     // 아이디 중복 확인
     const handleCheckId = async () => {
         if (!id) {
-            setError("아이디를를 입력하세요.");
+            setError("아이디를 입력하세요.");
             return;
         }
 
@@ -109,7 +134,6 @@ const RegiCom=()=>{
             console.log("checkID: ", res)
             if (res.status === 200) {
                 setError("");  
-                alert("사용 가능한 아이디입니다.");
             }
         } catch (err) {
             setError("이미 사용 중인 아이디입니다.");
@@ -170,24 +194,38 @@ const RegiCom=()=>{
     const FirstForm=useRef(null);
     const SecondForm=useRef(null);
     
-    const onClick=()=>{
-        if (SecondForm.current.style.display==="none")
-            {
-                SecondForm.current.style.display="block";
-                FirstForm.current.style.display="none";
+    const onClick = async () => {
+        //닉네임 유효성 검사
+        try {
+            const res = await AuthApi.checkNick(nick);
+            console.log(res);
+    
+            if (res.status === 200) {
+                if (SecondForm.current.style.display === "none") {
+                    SecondForm.current.style.display = "block";
+                    FirstForm.current.style.display = "none";
+                    setNickError("")
+                } else {
+                    SecondForm.current.style = "display:none;";
+                    FirstForm.current.style.display = "block";
+                }
+            } else {
+                setNickError("닉네임 검증에 실패했습니다.");
             }
-        else{
-            SecondForm.current.style="display:none;"
-            FirstForm.current.style.display="block";
-
-        };         
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                setNickError("동일한 닉네임이 존재합니다.");
+            } else {
+                setNickError("서버 오류가 발생했습니다.");
+            }
+        }    
     }
 
     // 회원가입 폼 제출
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        if (!id || !email || !isVerified || !pwd || !pwd2 || !name || !phone) {
+        if (!id || !email || !isVerified || !pwd || !pwd2 || !name || !phone || !nick) {
             setMainError("모든 항목을 입력하세요.");
             return;
         }
@@ -207,26 +245,23 @@ const RegiCom=()=>{
         }
     };
 
-
     return (
         <>
             <form className={styles.form} onSubmit={handleSignup} >
                 <div className={styles.FirstForm} ref={FirstForm}>
                     <input type="text" name="Name" placeholder="이름" onChange={(e) => setName(e.target.value)}/>
+                    <input type="text" name="nickName" placeholder="닉네임" onChange={(e) => setNick(e.target.value)}/>
+                    {nickError && <div style={{ color: "red", marginTop: "5px", fontSize:"12px", marginLeft:"5px", marginBottom:"10px", marginTop:"0px" }}>{nickError}</div>}
                     <input 
                         type="tel" name="Tel" 
                         placeholder="010-0000-0000" 
-                        pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"
                         maxLength="13"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         />
+                    {phoneError && <div style={{ color: "red", marginTop: "5px", fontSize:"12px", marginLeft:"5px", marginBottom:"10px", marginTop:"0px" }}>{phoneError}</div>}
                     <input type="email" name="Email" placeholder="example@mail.com" onChange={(e) => setEmail(e.target.value)}/>
-                    {/* 이메일 입력 오류 메세지 */}
-                    <div className={styles.Warning}>
-                        올바른 이메일 양식이 아닙니다.
-                    </div>
-                    
+                    {emailError && <div style={{ color: "red", fontSize: "12px", marginLeft: "5px", marginBottom:"10px" }}>{emailError}</div>}
                     
                     <div className={styles.Verfiy} >
                         <input 
@@ -253,7 +288,7 @@ const RegiCom=()=>{
                         </div>
                     )}
                     
-                    {authError && <div style={{color:"red", marginLeft:"15px"}}>{authError}</div>}
+                    {authError && <div style={{color:"red", marginLeft:"15px", fontSize:"12px"}}>{authError}</div>}
                     {isVerified && <div style={{color:"white", marginLeft:"15px"}}>인증되었습니다.</div>}
                     {isVerified && (
                         <input type="button" value="다음" onClick={onClick} />
@@ -268,13 +303,13 @@ const RegiCom=()=>{
                             중복 확인
                         </button>
                     </div>
-                    {error && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px"}}>{error}</div>}
+                    {error && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"12px"}}>{error}</div>}
                     <input type="password" name="Pwd" placeholder="비밀번호 (8자 이상, 숫자 포함)" onChange={(e) => setPwd(e.target.value)}/>
-                    {pwdError && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"13px"}}>{pwdError}</div>}
+                    {pwdError && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"12px"}}>{pwdError}</div>}
                     <input type="password" name="PwdCheck" placeholder="비밀번호 확인" onChange={(e) => setPwd2(e.target.value)} />
-                    {pwdMatchError && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px"}}>{pwdMatchError}</div>}
+                    {pwdMatchError && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"12px"}}>{pwdMatchError}</div>}
                     <input type="submit" value="완료"/>
-                    {mainError && <div style={{color:"red", marginLeft:"30px", marginBottom:"10px"}}>{mainError}</div>}
+                    {mainError && <div style={{color:"red", marginLeft:"38px", marginBottom:"10px", fontSize:"15px"}}>{mainError}</div>}
                 </div>
             </form>
         </>
