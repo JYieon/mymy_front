@@ -15,6 +15,15 @@ Header {
     }
 }
 
+.LogoutBtn {
+    background-color: white;
+    color: #00284C;
+    border: none;
+    font-size: 25px;
+    font-weight: 600;
+
+}
+
 .LoginState {
     display: none;
 }

@@ -98,8 +98,8 @@ const HeaderCom=()=>{
                             <Link to="/account/mypage" className="link">마이페이지</Link>
                         </li>
                         <li className="HeaderNav">
-                            {/* 이후 수정 필요 */}
-                            <button className="link" onClick={onClickLogout}>로그아웃</button>
+
+                            <button className="LogoutBtn" onClick={onClickLogout}>로그아웃</button>
                         </li>
                         <li className="HeaderNav">
                             <svg className="Alarm" width="20px" height="20px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

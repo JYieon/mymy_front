@@ -1,3 +1,12 @@
+/* 캐치프레이즈 */
+
+.Catchphrase {
+    color: white;
+    font-weight: 900px;
+    font-size: 60px;
+    display: flex;
+}
+
 /* 배경 */
 .AccountLayout{
     width: 100vw;
@@ -83,14 +92,6 @@
      }
 }
 
-/* 캐치프레이즈 */
-
-.Catchphrase {
-    color: white;
-    font-weight: 900px;
-    font-size: 50px;
-    display: flex;
-}
 
 /* 다른 옵션 (계정 찾기, 다른 옵션) */
 
