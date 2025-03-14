@@ -120,7 +120,6 @@ const BoardApi = {
 
     // 북마크 추가
     toggleBookmark: async (boardNo, token) => {
-
         return await axios.post(`${domain}/bookmark/toggle`, null, {
             params: { boardNo: boardNo, token: token },
         });
@@ -128,7 +127,7 @@ const BoardApi = {
     // 북마크된 게시글 목록 불러오기
     getBookmarkList: async (token) => {
         return await axios.get(`${domain}/bookmark/list`, {
-            params: { token: token },
+            params: { token },
         });
     },
 
