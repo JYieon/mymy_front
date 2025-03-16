@@ -1,39 +1,45 @@
 .LayoutWrap {
-    display:  flex;
-    margin: 0 -8px;
+  display: flex;
+  margin: 0 -8px;
 }
 
 :global .link {
-    text-decoration: none;
-    color: #00284C;
+  text-decoration: none;
+  color: #00284c;
 }
 /* 그림자 */
 :global .Shadow {
-    background-color: white;
-    box-shadow: 0px 10px 20px  gray ;
+  background-color: white;
+  box-shadow: 0px 10px 20px lightgray;
+}
+
+:global .CategoryShadow {
+  background-color: white;
+  box-shadow: 0px -10px 20px -5px lightgray;
 }
 
 @font-face {
-    font-family: 'ADLaMDisplay-Regular';
-    src: url('../Assets/ADLaMDisplay-Regular.ttf') format('woff');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "ADLaMDisplay-Regular";
+  src: url("../Assets/ADLaMDisplay-Regular.ttf") format("woff");
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* 본문 폰트 */
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
 }
 
-:global body {
-    font-family: 'Pretendard-Regular';
-    font-weight: 600;
+:global body * {
+  font-family: "Pretendard-Regular";
+  font-weight: 600;
 }
 
 .Logo {
-    font-family: 'ADLaMDisplay-Regular';
-    font-size: 25px;
+  font-family: "ADLaMDisplay-Regular";
+  font-size: 25px;
 }

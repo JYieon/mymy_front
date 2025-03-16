@@ -1,112 +1,107 @@
-.GroupChatWrap {
-    display: flex;
-}
-
 .CreateNewChatWrap {
-    display:flex;
-    flex-direction: column;
-    /* & *{
-        margin: 10px auto;
-    } */
+  display: flex;
+  flex-direction: column;
 }
 
 .CreateChatBtn {
-    background-color: #00284C;
-    color: white;
-    border-style: none;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 10px 40px;
+  background-color: #00284c;
+  color: white;
+  border-style: none;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 40px;
 }
 
 .GroupChatName {
-    padding: 10px;
-    width: 60%;
-    border-radius: 10px;
-    border-color: #00284C;    
+  padding: 10px;
+  width: 60%;
+  border-radius: 10px;
+  border-color: #00284c;
 }
 
-
 hr {
-    width: 80%;
+  width: 80%;
 }
 
 .Pre {
-    list-style: square;
-    font-size: 20px;
-    margin: 10px auto;
+  list-style: square;
+  font-size: 20px;
+  margin: 10px auto;
 }
 .Title {
-    text-align: center;
-    color: #00284C;
-    font-weight: 900;
+  text-align: center;
+  color: #00284c;
+  font-weight: 900;
 }
 
 .Subtitle {
-    text-align: center;
+  text-align: center;
 }
 
 /* 채팅 */
 
+.GroupChatContiner {
+  display: flex;
+  justify-content: center;
+  * {
+    margin: 20px;
+  }
+}
+
+.RoomTitle {
+  text-align: center;
+  margin-top: -10px;
+  color: #00284c;
+  font-weight: 900;
+}
+
 .ChatContainer {
-    display: flex;
-    flex-direction: column;
-    height: 500px; /* 고정 높이 */
+  resize: both;
+  display: flex;
+  flex-direction: column;
+  height: 500px; /* 고정 높이 */
+  width: 100%;
+  padding: 20px;
+  /* background-color: burlywood; */
+}
+
+.MessageList {
+  flex: 1; /* ✅ 남은 공간을 자동으로 채우도록 설정 */
+  overflow-y: auto; /* ✅ 메시지가 많아지면 스크롤 가능 */
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: whitesmoke;
+}
+.Mymessages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  textarea {
     width: 700px;
-}
-
-.ChatSidebar {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    padding:10px;
-    /* background-color: aqua; */
-    border-radius: 25px 25px 0 0;
-    margin: 50px 20px 0 20psx;
-    & Button{
-        color: #00284C;
-        border: none;
-        font-size: 20px;
-        font-weight: 700;
-        background-color: white;
-    }
-}
-
-.InviteForm {
-    display: flex;
-    flex-direction: column;
-    input[type="text"]{
-        border-radius: 100px;
-        padding: 5px 10px;
-    }
-}
-/* .InviteBtn {
-    color: white;
-    background-color: #00284C;
+    height: 50px;
     padding: 10px;
     border-radius: 10px;
-} */
-
-.Textarea {
-    width: 500px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1pxd;
     resize: none;
-
-}
-.SendBtn{
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
+    border: 1pxd;
+    font-weight: 400;
     font-size: 15px;
+  }
+
+  .SendBtn {
+    background-color: #00284c;
+    width: auto;
+    height: 50px;
+    border-radius: 100%;
+  }
 }
+
 .JointAccount {
-    
 }
 
 .AdjustBtn {
-
 }
