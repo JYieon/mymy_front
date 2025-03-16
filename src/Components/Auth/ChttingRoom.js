@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ChatApi from "../../api/ChatApi";
 import Message from "./Messages";
 import SockJs from 'sockjs-client';
 import {Stomp} from '@stomp/stompjs';
 import styled from "styled-components";
 import style from "../../Css/ChatLayout.module.css";
+import {distance, motion} from "framer-motion";
 
-/* ✅ ul을 감싸는 컨테이너 스타일 */
+/* ✅ ul을 감 싸는 컨테이너 스타일 */
 const ChatContainer = styled.div`
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
   height: 500px; /* 고정 높이 */
 `;
 
@@ -33,7 +34,7 @@ const ChttingRoom = () => {
   const [webSocket, setWebSocket] = useState(null);
   const [userId, setUserId] = useState("");
   const [invite, setInvite] = useState("");
-
+  const [open, setOpen] = useState(false);
   // 스크롤 자동으로 아래로 내리기
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
@@ -154,16 +155,21 @@ const ChttingRoom = () => {
     }
   };
 
+
+  const ChatSidebarBtn=()=>{
+    setOpen(!open);
+  };
+
   return (<div className={style.GroupChatWrap}>
-    <ChatContainer>
+    <div className={style.ChatContainer}>
       <h1 className={style.Title}>채팅룸 {roomNum}</h1>
+      <button onClick={ChatSidebarBtn}>사랑의 버튼</button>
 
       {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
       <ChatList>
         <Message chatMessages={messages} />
         <li ref={bottomRef} />
       </ChatList>
-
       <div>
         <textarea 
           rows="3" 
@@ -171,19 +177,35 @@ const ChttingRoom = () => {
           ref={textareaRef} 
           onKeyDown={submitMessage}
           onChange={(e) => setMessage(e.target.value)}
+          className={style.Textarea}
           value={message}
         />
-        <button onClick={sendMessage}>전송</button>
+        <button className={style.SendBtn} onClick={sendMessage}>전송</button>
       </div>
-    </ChatContainer>
+      
+    </div>
 
       {/* 채팅 사이드 바 */}
-     <div className={style.ChatSidebar}>
-        모임 통장
-        정산하기
-        <input type="text" onChange={(e) => setInvite(e.target.value)} value={invite} />
-        <button onClick={inviteChatUser} className={style.InviteBtn}>초대하기</button>
-      </div>
+      <motion.div className={style.ChatSidebar}
+      initial={{
+        display:"none"
+        }}
+      animate={{
+        x:open? 50:0,
+        opacity:open? 100:0,
+        display:open? "flex":"none"}}>
+        <button className={style.AdjustBtn}>정산 하기</button>
+        <button className={style.JointAccount}>모임 통장</button>
+        <div className={style.InviteForm}>
+          <input type="text" onChange={(e) => setInvite(e.target.value)} value={invite} />
+          <button onClick={inviteChatUser} className={style.InviteBtn}>초대하기</button>
+        </div>
+        <ul className="MemberList">
+           <li>바보</li> 
+           <li>바보</li> 
+           <li>바보</li> 
+        </ul>
+      </motion.div>
 
     </div>
   );

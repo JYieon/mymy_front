@@ -5,9 +5,9 @@
 .CreateNewChatWrap {
     display:flex;
     flex-direction: column;
-    & *{
+    /* & *{
         margin: 10px auto;
-    }
+    } */
 }
 
 .CreateChatBtn {
@@ -47,16 +47,66 @@ hr {
     text-align: center;
 }
 
-/* 내 채팅 */
+/* 채팅 */
 
-.ChatSidebar {
-    float: right;
+.ChatContainer {
     display: flex;
     flex-direction: column;
-    
-    width: 200px;
-    height: auto;
+    height: 500px; /* 고정 높이 */
+    width: 700px;
+}
+
+.ChatSidebar {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding:10px;
+    /* background-color: aqua; */
     border-radius: 25px 25px 0 0;
     margin: 50px 20px 0 20psx;
+    & Button{
+        color: #00284C;
+        border: none;
+        font-size: 20px;
+        font-weight: 700;
+        background-color: white;
+    }
+}
+
+.InviteForm {
+    display: flex;
+    flex-direction: column;
+    input[type="text"]{
+        border-radius: 100px;
+        padding: 5px 10px;
+    }
+}
+/* .InviteBtn {
+    color: white;
+    background-color: #00284C;
+    padding: 10px;
+    border-radius: 10px;
+} */
+
+.Textarea {
+    width: 500px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1pxd;
+    resize: none;
+
+}
+.SendBtn{
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 15px;
+}
+.JointAccount {
+    
+}
+
+.AdjustBtn {
+
 }
