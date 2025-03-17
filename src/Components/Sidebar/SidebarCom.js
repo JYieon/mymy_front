@@ -27,26 +27,6 @@ const SidebarCom=()=>{
     //     setUserId(res.data.id)
     // },[])
 
-    return (<>
-        <div className="Sidebar">
-            {/* 현재 로그인 유저 프로필 */}
-            <div className="UserInfo Shadow">
-                <div>
-                    <img src="https://picsum.photos/200/200" alt="can't read Img" className="UserProfilePic"/>
-                </div>
-
-                <div className="UserId">{userId}</div>
-                <div className="UserLevel">고양이</div>
-                {/*  팔로잉 / 팔로워 버튼 추가 */}
-                <div className="UserFollower">
-                        <Link to={`/mypage/following/${userId}`} className="FollowButton">팔로잉 </Link>
-                        <Link to={`/mypage/followers/${userId}`} className="FollowButton">팔로워</Link>
-                    </div>
-                <Link to="/mypage/myContent">내가 쓴 글</Link>
-                <Link to="/account/logout">로그아웃</Link>
-            </div>
-import "./Sidebar.css";
-const SidebarCom = () => {
   return (
     <>
       <div className="Sidebar">
@@ -112,9 +92,8 @@ const SidebarCom = () => {
               <Link to="/" className="link">
                 home
               </Link>
-              <hr />
+              <hr className="ContourLine" />
             </li>
-
             {/* 커뮤니티 목록 */}
             <li className="link">
               커뮤니티
@@ -142,7 +121,6 @@ const SidebarCom = () => {
               </ul>
               <hr className="ContourLine" />
             </li>
-
             {/* 채팅 목록 */}
             <li className="link">
               채팅
@@ -159,6 +137,16 @@ const SidebarCom = () => {
                 </li>
               </ul>
               <hr className="ContourLine" />
+            </li>
+            <li className="link">마이페이지
+                        <ul className="MenuList">            
+                            <li><Link to={`/mypage/my_story/${userId}`} className="Menu">내가 쓴 글</Link></li>
+                            <li><Link to={`/mypage/my_reply/${userId}`} className="Menu">내가 쓴 댓글</Link></li>
+                            <li><Link to={`/mypage/modify/${userId}`} className="Menu">회원정보 수정</Link></li>
+                            <li><Link to={`/mypage/alarm/settings/${userId}`} className="Menu">알림 설정</Link></li>
+                        </ul>
+                        <hr className="ContourLine"/>
+
             </li>
           </ul>
         </div>

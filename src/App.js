@@ -8,10 +8,11 @@ import FindAccountPage from "./Pages/Account/FindAccountPage";
 import FindIdPage from "./Pages/Account/FindIdPage";
 import FindPwPage from "./Pages/Account/FindPwPage";
 import AccoutLayout from "./Pages/Account/AccountLayout";
+
 // import TestMainPage from "./Pages/TestPage/TestMainPage";
 // import TestLayout from "./Pages/TestPage/TestLayout";
-
 // import KakaoLogin from "./Components/Auth/KakaoLogin";
+
 import KakaoCallback from "./Components/KakaoSync/KakaoCallback";
 import ChatRoom from "./Components/Auth/ChttingRoom";
 import ChatList from "./Components/Auth/ChatList";
@@ -55,10 +56,6 @@ function App() {
 
       {/* <Route path="/kakao-test" element={<KakaoLogin />}/> */}
       <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
-      {/* <Route path="/chatting/:roomNum" element={<ChatRoom />}/> */}
-      <Route path="/chatting" element={<ChatRoom />} />
-      <Route path="/chatlist" element={<ChatList />} />
-      {/* <Route path="/chat-create" element={<ChatCreate />} /> */}
 
       {/* 기본 레이아웃 (헤더) */}
       <Route path="/" element={<Layout />}>
@@ -77,6 +74,7 @@ function App() {
           {/* 북마크 리스트 */}
           <Route path="/board/bookmarkList" element={<BookmarkList />} />
         </Route>
+
         {/* 여행메이트 게시판 */}
         <Route path="/mateboard" element={<SidebarCom />}>
           <Route path="/mateboard/list" element={<MateBoardList />} />
@@ -90,11 +88,13 @@ function App() {
             element={<MateBoardModify />}
           />
         </Route>
+
         {/* 채팅 */}
         <Route path="/chat" element={<SidebarCom />}>
           <Route path="Create" element={<NewChatPage />} />
           <Route path="List" element={<ChatList />} />
         </Route>
+        {/* <Route path="groupChat:roomNum" element={<GroupChatPage />}/> */}
         <Route path="groupChat" element={<GroupChatPage />}/>
         {/* 여행자 테스트 */}
 
@@ -114,8 +114,13 @@ function App() {
           <Route path="/mypage/my_story/:userId" element={< MyPost />}/>
           <Route path="/mypage/my_reply/:userId" element={< MyComment  />}/>
           <Route path="/mypage/modify/:userId" element={<MyPage />}/> 
+          
+          {/* 알림 설정 테스트 페이지? */}
+
           {/* <Route path="/mypage/alarm" element={<AlarmSettings  />}/>    */}
+
           <Route path="/mypage/alarm/settings/:userId" element={<AlarmSettings  />}/>
+
           {/*  팔로잉 / 팔로워 목록 페이지 추가 */}
           <Route path="following/:userId" element={<FollowingList />} />
           <Route path="followers/:userId" element={<FollowerList />} />
