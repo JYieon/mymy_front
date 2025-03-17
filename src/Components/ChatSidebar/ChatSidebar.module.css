@@ -41,7 +41,7 @@
 
 .modal {
   width: 500px;
-  height: 300px;
+  min-height: 300px;
   background-color: white;
   margin: 100px auto;
   border-radius: 10px;
@@ -50,15 +50,20 @@
   align-items: center;
   justify-content: center;
 
+  &> *{
+    margin: 10px;
+
+  }
   input[type="text"] {
     margin: 20px auto 50px auto;
     width: 60%;
     border-radius: 100px;
     padding: 10px;
+
   }
 }
 
-.InviteBtn {
+.ModalBtn {
   color: white;
   background-color: #00284c;
   border: none;

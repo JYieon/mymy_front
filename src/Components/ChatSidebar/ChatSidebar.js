@@ -17,6 +17,7 @@ const ChatSidebarCom = () => {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [invite, setInvite] = useState("");
   const [JointAccountOpen, setJointAccountOpen] = useState(false);
+  const [AdjustmentOpen, setAdjustmentOpen] = useState(false);
 
   // 사이드바 여닫는 버튼
   const sideOpenBtn = () => {
@@ -30,6 +31,11 @@ const ChatSidebarCom = () => {
   const JointAccountOpenBtn=()=>{
     setJointAccountOpen(!JointAccountOpen)
   };
+    // 정산 통장 모달 여는 버튼
+    const AdjustmentOpenBtn=()=>{
+      setAdjustmentOpen(!AdjustmentOpen)
+    };
+  
 
   
   const inviteChatUser = async () => {
@@ -187,20 +193,49 @@ const ChatSidebarCom = () => {
           display: sideOpen ? "flex" : "none",
         }}
       >
-        <button className={style.AdjustBtn}>정산 하기</button>
+
+      <button className={style.AdjustBtn} onClick=
+      {AdjustmentOpenBtn}>정산 하기</button>
+      {/* 정산 모달 */}
         <Modal
+            isOpen={AdjustmentOpen}
+            ariaHideApp={true}
+            onRequestClose={AdjustmentOpenBtn}
+            className={`Shadow ${style.modal} ${style.JointAccountModal}`}
+          >
+            <h1 className={style.Title}>정산해요</h1>
+            <h2></h2>
+            <h3 className={style.SubTitle}> 정산 금액 입력</h3>
+            <input
+              type="text"
+              onChange={(e) => setInvite(e.target.value)}
+              value={invite}
+            />
+            <button onClick={inviteChatUser} className={style.ModalBtn}>
+              초대하기버튼
+            </button>
+      </Modal>
+
+     
+      <button className={style.JointAccount} onClick={JointAccountOpenBtn}>모임 통장</button>
+      {/* 모임통장 모달 */}
+      <Modal
             isOpen={JointAccountOpen}
             ariaHideApp={true}
             onRequestClose={JointAccountOpenBtn}
             className={`Shadow ${style.modal} ${style.JointAccountModal}`}
           >
             <h1 className={style.Title}>모임 통장 만들기</h1>
-            <button onClick={inviteChatUser} className={style.InviteBtn}>
+            <button onClick={inviteChatUser} className={style.ModalBtn}>
               초대하기버튼
             </button>
-          </Modal>
-        <button className={style.JointAccount} onClick={JointAccountOpenBtn}>모임 통장</button>
-        <Modal
+      </Modal>
+
+      <button onClick={inviteOpenBtn} className={style.ModalBtn}>
+            초대하기
+      </button>
+      {/* 초대 모달 */}
+      <Modal
             isOpen={inviteOpen}
             ariaHideApp={true}
             onRequestClose={inviteOpenBtn}
@@ -212,14 +247,10 @@ const ChatSidebarCom = () => {
               onChange={(e) => setInvite(e.target.value)}
               value={invite}
             />
-            <button onClick={inviteChatUser} className={style.InviteBtn}>
+            <button onClick={inviteChatUser} className={style.ModalBtn}>
               초대하기버튼
             </button>
-          </Modal>
-
-          <button onClick={inviteOpenBtn} className={style.InviteBtn}>
-            초대하기
-          </button>
+      </Modal>
         <hr />
         <ul className={style.GrounpMemList}>
           <li className={style.GrounpMem}>바보</li>
