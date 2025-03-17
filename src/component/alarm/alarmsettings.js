@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import MypageApi from "../../api/MypageApi";
 
 const AlarmSettings = () => {
     const { userId } = useParams(); // URL에서 userId 가져오기
@@ -9,29 +10,34 @@ const AlarmSettings = () => {
     const [error, setError] = useState(null);
 
      // 알림 설정 불러오기
-    useEffect(() => {
-        console.log("불러올 사용자 ID : ", userId); //userid 값 확인인
-        if (!userId) return; // userId가 없으면 요청하지 않음
-
-        axios.get(`http://localhost:8080/mymy/alarm/settings/${userId}`)
+     useEffect(() => {
+        console.log("불러올 사용자 ID : ", userId); // ✅ userId 값 확인
+        if (!userId) {
+            console.error("🚨 userId가 없습니다. 요청을 중단합니다.");
+            return;
+        }
+    
+        console.log(" 알림 설정 요청 보내는 중...");
+        MypageApi.getAlarmSettings(userId) // ✅ userId 전달!
             .then(response => {
-                console.log("알림 설정 데이터:", response.data); // 응답 데이터 확인
+                console.log(" 알림 설정 데이터:", response.data);
                 setSettings(response.data);
                 setLoading(false);
             })
             .catch(error => {
-                console.error("알림 설정 불러오기 실패:", error);
+                console.error("🚨 알림 설정 불러오기 실패:", error);
                 setError("알림 설정을 불러오는 중 오류 발생");
                 setLoading(false);
             });
     }, [userId]);
-
     
+
     const saveSettings = () => {
-        axios.post(`http://localhost:8080/mymy/alarm/settings/update`, settings)
+        MypageApi.updateAlarmSettings(settings) //  API 모듈 활용
             .then(() => alert("설정이 저장되었습니다."))
             .catch(error => console.error("설정 저장 실패:", error));
     };
+
 
     //  체크박스 상태 변경 핸들러 추가
     const toggleSetting = (key) => {
@@ -42,7 +48,7 @@ const AlarmSettings = () => {
         }));
     };
 
-    if (!settings) return <p>알림 설정을 불러오는 중...</p>;
+    if (!settings) return <p>알림 설정을 불러오는 중</p>;
     if (error) return <p>xxxxxxxxxxxxxxxx {error}</p>;
     return (
         <div className="alarm-settings">

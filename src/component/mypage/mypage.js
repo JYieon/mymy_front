@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import MypageApi from "../../api/MypageApi";
 import { useParams } from "react-router-dom";
+import ChatApi from '../../api/ChatApi';
 
 function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
-  const { userId } = useParams(); // URL에서 userId 가져오기
- 
+  const token = localStorage.getItem("accessToken")
 
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
   const [formData, setFormData] = useState(userData || {
-    id: "aaa",
+    id: "",
+    nick:"",
     pwd: "",
     pwdCheck: "",
     phone: "",
@@ -20,15 +21,33 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
 
   //사용자 정보 불러오기
   useEffect(() => {
-    axios.get("http://localhost:8080/mymy/userinfo/me", { withCredentials: true })
-      .then(response => {
-        console.log("로그인된 사용자:", response.data);
-        setFormData(response.data); //로그인된 사용자 정보로 상태 업데이트
-      })
-      .catch(error => {
-        console.error("로그인 정보 가져오기 실패:", error);
-      });
-  }, []);
+    const fetchUserInfo = async () => {
+        try {
+            const res = await ChatApi.getUserInfo(token);
+            console.log(res.data);
+            // 기존 formData의 기본값을 유지하면서 데이터 업데이트
+            setFormData(prevState => ({
+                ...prevState, 
+                ...res.data
+            }));
+        } catch (error) {
+            console.error("로그인 정보 가져오기 실패:", error);
+        }
+    };
+
+    fetchUserInfo();
+}, [token]); 
+
+
+    // axios.get("http://localhost:8080/mymy/userinfo/me", { })
+    //   .then(response => {
+    //     console.log("로그인된 사용자:", response.data);
+    //     setFormData(response.data); //로그인된 사용자 정보로 상태 업데이트
+    //   })
+    //   .catch(error => {
+    //     console.error("로그인 정보 가져오기 실패:", error);
+    //   });
+  
 
   //입력값 변경 핸들러
   const handleChange = (e) => {
@@ -55,7 +74,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
     setError("");
 
     // 필수 입력 필드 검사
-    if (!formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
+    if (!formData.nick ||!formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
       setError("모든 필드를 입력해야 합니다.");
       return;
     }
@@ -73,7 +92,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
   //특정 필드만 업데이트하는 함수
   const handleUpdateField = async (field) => {
     if (!formData[field]) {
-      alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : "전화번호"}를 입력해주세요.`);
+      alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : field === "nick" ? "닉네임" : "전화번호"}를 입력해주세요.`);
       return;
     }
   
@@ -82,7 +101,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
       const res = await MypageApi.modify(updateData);
   
       if (res.status === 200) {
-        alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : "전화번호"}가 성공적으로 변경되었습니다!`);
+        alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : field === "nick" ? "닉네임" : "전화번호"} 성공적으로 변경되었습니다!`);
       }
     } catch (err) {
       alert("변경에 실패했습니다. 다시 시도해주세요.");
@@ -98,6 +117,12 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
         <div>
           <label>아이디</label>
           <p>{formData.id}</p>
+        </div>
+
+        <div>
+          <label>닉네임</label>
+          <input type="text" name="nick" value={formData.nick} onChange={handleChange} />
+          <button type="button" onClick={() => handleUpdateField("nick")}>변경</button>
         </div>
 
         <div>

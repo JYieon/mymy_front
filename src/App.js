@@ -22,7 +22,7 @@ import ChatCreate from "./Components/Auth/ChatCreate";
 import MyPage from "./component/mypage/mypage";
 import AlarmSettings from "./component/alarm/alarmsettings";
 import Alarm from "./component/alarm/alarm"
-import MyPage from "./Pages/Account/MyPage";
+// import MyPage from "./Pages/Account/MyPage";
 import MateBoardPage from "./Pages/Board/MateBoardPage";
 import TestPage from "./Pages/TestPage/TestPage";
 import Detail from "./Components/Board/Detail";
@@ -34,11 +34,14 @@ import TimelinePage from "./Pages/TimelinePage";
 import ResultPage from "./Pages/TestPage/ResultPage";
 import NewChatPage from "./Pages/Chat/NewChatPage";
 import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
-
+import AlarmList from "./component/alarm/alarmList";
+import FollowingList from "./component/follow/FollowingList";
+import FollowerList from "./component/follow/FollowerList";
+import UserProfile from "./component/follow/UserProfile";
+import MyPost from "./component/mypage/MyPost";
+import MyComment from "./component/mypage/MyComment";
 
 function App() {
-  const loggedInUser = "aaa"; //  로그인된 사용자 (테스트용)
-  const userId="aaa";
   return (
     <Routes>
       {/* <Route path="/login" element={<LoginForm />} /> 
@@ -104,17 +107,20 @@ function App() {
         </Route>
         {/* 마이페이지 관련 라우트 */}
         <Route path="mypage" element={<SidebarCom />}>
-          <Route path="/mypage/modify" element={<MyPage  />}/>
-          <Route path="/mypage/alarm" element={<AlarmSettings  />}/>
-          <Route path="/mypage/modify" element={<MyPage />}/> 
-          <Route path="/mypage/alarm" element={<Alarm  />}/>   
+          <Route path="/mypage/my_story/:userId" element={< MyPost />}/>
+          <Route path="/mypage/my_reply/:userId" element={< MyComment  />}/>
+          <Route path="/mypage/modify/:userId" element={<MyPage />}/> 
+          {/* <Route path="/mypage/alarm" element={<AlarmSettings  />}/>    */}
           <Route path="/mypage/alarm/settings/:userId" element={<AlarmSettings  />}/>
           {/*  팔로잉 / 팔로워 목록 페이지 추가 */}
           <Route path="following/:userId" element={<FollowingList />} />
           <Route path="followers/:userId" element={<FollowerList />} />
         </Route>
+        {/* 알림 목록 */}
+        <Route path="/mypage/alarm/list/:userId" element={<AlarmList />} />
+
         {/* 특정 유저 프로필 페이지 */}
-        <Route path="/profile/:userId" element={<UserProfile loggedInUser={loggedInUser || userId} />} />
+        <Route path="/profile/:userId" element={<UserProfile />} />
 
         {/* 타임라인 경로 변경 */} 
         <Route path="/timeline" element={<TimelinePage />} /> 

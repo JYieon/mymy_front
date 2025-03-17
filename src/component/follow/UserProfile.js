@@ -1,29 +1,41 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import FollowButton from "./FollowButton";
 import { useParams } from "react-router-dom";
+import MypageApi from "../../api/MypageApi";
+import FollowButton from "./FollowButton";
 
 const UserProfile = ({ loggedInUser }) => {
     const { userId } = useParams();
     const [followerCount, setFollowerCount] = useState(0);
+    const [followingCount, setFollowingCount] = useState(0);
 
+    // ✅ 팔로워 & 팔로잉 숫자 불러오기
     useEffect(() => {
-        //  상대방의 팔로워 수 조회
-        console.log("사용자 프로필 불러오기:", userId);
+        console.log("📌 사용자 프로필 조회:", userId);
         if (!userId) return;
 
-        axios.get(`http://localhost:8080/mymy/follow/followers/${userId}`)
-        then((res) => {
-            console.log("API 응답 데이터: ", res.data);
-            setFollowers(res.data); // followers 목록 업데이트
-        })
-        .catch((err) => console.error("팔로워 불러오기 오류", err));
+        // 팔로워 목록 가져오기
+        MypageApi.getFollowerList()
+            .then((res) => {
+                console.log("✅ 팔로워 목록:", res);
+                const userFollowers = res.filter(user => user.followerId === userId);
+                setFollowerCount(userFollowers.length);
+            })
+            .catch((err) => console.error("🚨 팔로워 불러오기 오류", err));
+
+        // 팔로잉 목록 가져오기
+        MypageApi.getFollowingList()
+            .then((res) => {
+                console.log("✅ 팔로잉 목록:", res);
+                const userFollowing = res.filter(user => user.followingId === userId);
+                setFollowingCount(userFollowing.length);
+            })
+            .catch((err) => console.error("🚨 팔로잉 불러오기 오류", err));
     }, [userId]);
 
     return (
         <div className="user-profile">
             <h2>{userId}</h2>
-            <p>팔로워: {followerCount}</p>
+            <p>팔로워: {followerCount} | 팔로잉: {followingCount}</p>
             <FollowButton loggedInUser={loggedInUser} profileUser={userId} />
         </div>
     );

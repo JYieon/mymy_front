@@ -1,32 +1,43 @@
-import { useEffect } from "react";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import { Client } from "@stomp/stompjs";
 
-// 웹소켓을 통해 실시간 알람을 수신하는 커스텀 훅
 const useWebSocket = (userId, onMessageReceived) => {
-  useEffect(() => {
-    //userId가 없을 경우 실행하지 않음
-    if (!userId) return;
+    let stompClient = null;
 
-    //SockJS를 이용하여 Spring 서버의 WebSocket 엔드포인트와 연결
-    const socket = new SockJS("http://localhost:8080/mymy/ws");
-    const stompClient = Stomp.over(socket);
+    const connect = () => {
+      
+      const token = localStorage.getItem("accessToken");
+        stompClient = new Client({
+          
+            brokerURL: "http://localhost:8080/alarm-ws",  // ✅ WebSocket 엔드포인트 변경
+            reconnectDelay: 5000,  // ✅ 자동 재연결 (5초 후 재시도)
+            connectHeaders: {
+              Authorization: `Bearer ${token}`  // ✅ 토큰을 헤더로 전달
+            },
+            onConnect: () => {
+              console.log("✅ WebSocket 연결 성공!");
 
-    //STOMP 프로토콜을 사용하여 서버와 연결
-    stompClient.connect({}, () => {
-      stompClient.subscribe(`/topic/notifications/${userId}`, (message) => {
-        const alarm = JSON.parse(message.body);//JSON 데이터 파싱
-        console.log("새 알림 도착:", alarm); //  알람 수신 로그
-        onMessageReceived(alarm);//콜백 실행하여 알람 데이터 전달
+                // ✅ 사용자 알림 구독 설정
+                stompClient.subscribe(`/queue/alarms/${token}`, (message) => {
+                    const newAlarm = JSON.parse(message.body);
+                    console.log("📩 새로운 알림 수신:", newAlarm);
+                    onMessageReceived(newAlarm);
+                });
+            },
+            connectHeaders: {
+              Authorization: `Bearer ${token}`  // ✅ 토큰을 헤더에 포함하여 서버에 전달
+          },
+          onDisconnect: () => {
+              console.log("🚨 WebSocket 연결 종료됨");
+          },
+          onStompError: (frame) => {
+              console.error("🚨 STOMP 오류 발생:", frame);
+          }
       });
-    });
 
-    //컴포넌트가 언마운트될 때 웹소켓 연결 해제
-    return () => {
-        console.log("웹소켓 연결 해제"); //  연결 해제 로그
-      stompClient.disconnect();
-    };
-  }, [userId, onMessageReceived]);
+      stompClient.activate();
+  };
+
+  return { connect };
 };
 
 export default useWebSocket;

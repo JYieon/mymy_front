@@ -1,48 +1,48 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import MypageApi from "../../api/MypageApi";
 
-const FollowButton = ({ loggedInUser, profileUser }) => {
+const FollowButton = ({ profileUser }) => {
     const [isFollowed, setIsFollowed] = useState(false);
+    const [loading, setLoading] = useState(false);  
+    const token = localStorage.getItem("accessToken");
 
     useEffect(() => {
-        //  팔로우 여부 확인
-        console.log("팔로우 여부 확인 중:", loggedInUser, "→", profileUser);
-        if (!loggedInUser || !profileUser) return;
+        if (!token || !profileUser) return;
 
-        axios.get(`http://localhost:8080/mymy/follow/isFollowing/${loggedInUser}/${profileUser}`)
-            .then(response => {
-                console.log("팔로우 여부 확인 응답:", response.data);
-                setIsFollowed(response.data);
+        MypageApi.isFollowing(profileUser, token)  
+            .then((response) => {
+                console.log("✅ 팔로우 여부:", response);
+                setIsFollowed(response);
             })
-            .catch(error => console.error("팔로우 여부 확인 실패:", error));
+            .catch((error) => console.error("🚨 팔로우 여부 확인 실패:", error));
+    }, [token, profileUser]);
 
-    }, [loggedInUser, profileUser]);
+    const handleFollow = async () => {
+        if (!token || !profileUser || loading) return;
 
-    //  팔로우 / 언팔로우 버튼 클릭 시 실행
-    const handleFollow = () => {
-        if (!loggedInUser || !profileUser) return;
-
-        if (isFollowed) {
-            // 언팔로우 요청 (DELETE)
-            axios.delete(`http://localhost:8080/mymy/follow/${loggedInUser}/${profileUser}`)
-                .then(() => {
-                    console.log("언팔로우 성공");
-                    setIsFollowed(false);
-                })
-                .catch(error => console.error("언팔로우 실패:", error));
-        } else {
-            // 팔로우 요청 (PUT)
-            axios.put(`http://localhost:8080/mymy/follow/${loggedInUser}/${profileUser}`)
-                .then(() => {
-                    console.log("팔로우 성공");
-                    setIsFollowed(true);
-                })
-                .catch(error => console.error("팔로우 실패:", error));
+        setLoading(true); 
+        try {
+            if (isFollowed) {
+                await MypageApi.unfollowUser(profileUser, token);  // ✅ token 추가
+                console.log("✅ 언팔로우 성공");
+                setIsFollowed(false);
+            } else {
+                await MypageApi.followUser(profileUser, token);  // ✅ token 추가
+                console.log("✅ 팔로우 성공");
+                setIsFollowed(true);
+            }
+        } catch (error) {
+            console.error("🚨 팔로우/언팔로우 요청 실패:", error);
         }
+        setLoading(false); 
     };
 
     return (
-        <button className={`follow-btn ${isFollowed ? "unfollow" : "follow"}`} onClick={handleFollow}>
+        <button 
+            className={`follow-btn ${isFollowed ? "unfollow" : "follow"}`} 
+            onClick={handleFollow}
+            disabled={loading}  
+        >
             {isFollowed ? "언팔로우" : "팔로우"}
         </button>
     );

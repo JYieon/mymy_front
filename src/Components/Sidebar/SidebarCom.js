@@ -1,7 +1,32 @@
 import { Link, Outlet } from "react-router-dom";
 import "./Sidebar.css"
+import { useEffect, useState } from "react";
+import ChatApi from "../../api/ChatApi";
+
 const SidebarCom=()=>{
-    const userId = "aaa"; // 현재 로그인한 사용자 ID (임시 테스트용)
+    const token = localStorage.getItem("accessToken")
+    const [userId, setUserId] = useState("")
+
+    useEffect(() => {
+        const userInfo = async() => {
+            try{
+                const res = await ChatApi.getUserInfo(token)
+                if(res.data){
+                    setUserId(res.data.id || "" );
+                }
+            }catch(error){
+                console.log("사용자 정보 가져오기 실패 : ", error );
+            }
+        }
+        userInfo();
+    },[token])
+
+    // useEffect(() => {
+    //     const res = ChatApi.getUserInfo(token)
+    //     console.log(res.data)
+    //     setUserId(res.data.id)
+    // },[])
+
     return (<>
         <div className="Sidebar">
             {/* 현재 로그인 유저 프로필 */}
@@ -10,7 +35,7 @@ const SidebarCom=()=>{
                     <img src="https://picsum.photos/200/200" alt="can't read Img" className="UserProfilePic"/>
                 </div>
 
-                <Link to="{`/user/${userId}`}" className="UserId">{userId}</Link>
+                <div className="UserId">{userId}</div>
                 <div className="UserLevel">고양이</div>
                 {/*  팔로잉 / 팔로워 버튼 추가 */}
                 <div className="UserFollower">
@@ -52,9 +77,9 @@ const SidebarCom=()=>{
                     {/* 마이페이지 */}{/* 영주님이랑 상의후 수지 수정중 */}
                     <li className="link">마이페이지
                         <ul className="MenuList">            
-                            <li><Link to="/mypage/your_story" className="Menu">내가 쓴 글</Link></li>
-                            <li><Link to="/mypage/my_story" className="Menu">내가 쓴 댓글</Link></li>
-                            <li><Link to="/mypage/modify" className="Menu">회원정보 수정</Link></li>
+                            <li><Link to={`/mypage/my_story/${userId}`} className="Menu">내가 쓴 글</Link></li>
+                            <li><Link to={`/mypage/my_reply/${userId}`} className="Menu">내가 쓴 댓글</Link></li>
+                            <li><Link to={`/mypage/modify/${userId}`} className="Menu">회원정보 수정</Link></li>
                             <li><Link to={`/mypage/alarm/settings/${userId}`} className="Menu">알림 설정</Link></li>
                         </ul>
                         <hr className="ContourLine"/>
