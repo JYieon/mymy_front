@@ -94,8 +94,8 @@ function App() {
           <Route path="Create" element={<NewChatPage />} />
           <Route path="List" element={<ChatList />} />
         </Route>
-        {/* <Route path="groupChat:roomNum" element={<GroupChatPage />}/> */}
-        <Route path="groupChat" element={<GroupChatPage />}/>
+        <Route path="groupChat/:roomNum" element={<GroupChatPage />}/>
+        {/* <Route path="groupChat" element={<GroupChatPage />}/> */}
         {/* 여행자 테스트 */}
 
         {/* 계정 (로그인, 회원가입, 계정 찾기) */}
