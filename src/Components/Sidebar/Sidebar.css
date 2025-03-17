@@ -75,10 +75,8 @@ li {
 }
 
 .ContentSection {
-  min-height: 500px;
-  max-height: 700px;
-  /* background-color: aliceblue; */
-  width: 60%;
+  height: fit-content;
+  width: fit-content;
   border-radius: 20px;
   margin: 20px;
 }
