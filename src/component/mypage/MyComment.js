@@ -28,7 +28,7 @@ const MyComment = () => {
                     {comments.map((comment) => (
                         <li key={comment.boardNo} className="mycomment-item">
                             <Link to={`/board/detail/${comment.boardNo}`}>
-                                <h3>📌 {comment.originalPost}</h3>
+                                <h3> {comment.originalPost}</h3>
                                 <p className="comment-content">"{comment.content}"</p>
                                 <p className="comment-date">{comment.date}</p>
                             </Link>
