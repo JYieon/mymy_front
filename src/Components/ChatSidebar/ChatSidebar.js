@@ -18,6 +18,7 @@ const ChatSidebarCom = () => {
   const [invite, setInvite] = useState("");
   const [JointAccountOpen, setJointAccountOpen] = useState(false);
   const [AdjustmentOpen, setAdjustmentOpen] = useState(false);
+  const [VerfiyOpen, setVerfiyOpen] = useState(false);
 
   // 사이드바 여닫는 버튼
   const sideOpenBtn = () => {
@@ -27,15 +28,21 @@ const ChatSidebarCom = () => {
   const inviteOpenBtn = () => {
     setInviteOpen(!inviteOpen);
   };
+  //본인 확인 모달 여는 버튼
+
+  const VerfiyOpenBtn=()=>{
+    setVerfiyOpen(!VerfiyOpen)
+  };
+
   // 모임 통장 모달 여는 버튼
   const JointAccountOpenBtn=()=>{
     setJointAccountOpen(!JointAccountOpen)
   };
-    // 정산 통장 모달 여는 버튼
-    const AdjustmentOpenBtn=()=>{
-      setAdjustmentOpen(!AdjustmentOpen)
-    };
-  
+
+  // 정산 모달 여는 버튼
+  const AdjustmentOpenBtn=()=>{
+    setAdjustmentOpen(!AdjustmentOpen)
+  };
 
   
   const inviteChatUser = async () => {
@@ -48,6 +55,12 @@ const ChatSidebarCom = () => {
       setInvite("");
     }
   };
+
+  const VerfiyUser=()=>{
+    setVerfiyOpen(!VerfiyOpen);
+    setJointAccountOpen(!JointAccountOpen);
+  };
+
   const BeforeBtn=()=>{
     navigate('../chat/list');
   };
@@ -193,7 +206,6 @@ const ChatSidebarCom = () => {
           display: sideOpen ? "flex" : "none",
         }}
       >
-
       <button className={style.AdjustBtn} onClick=
       {AdjustmentOpenBtn}>정산 하기</button>
       {/* 정산 모달 */}
@@ -217,20 +229,42 @@ const ChatSidebarCom = () => {
       </Modal>
 
      
-      <button className={style.JointAccount} onClick={JointAccountOpenBtn}>모임 통장</button>
-      {/* 모임통장 모달 */}
+      <button className={style.JointAccount} onClick={VerfiyOpenBtn}>모임 통장</button>
+      {/* 모임통장 본인 확인 모달 */}
+      <Modal
+            isOpen={VerfiyOpen}
+            ariaHideApp={true}
+            onRequestClose={VerfiyOpenBtn}
+            className={`Shadow ${style.modal} ${style.JointAccountModal}`}>
+            <h1 className={style.Title}>모임 통장 만들기</h1>
+            <h3 className={style.SubTitle}>다함께 즐거운 여행이 되기 위해<br/>모임통장을 만들어 관리해요!</h3>
+            <button onClick={VerfiyUser} className={style.ModalBtn}>
+             통장 본인확인
+            </button>
+      </Modal>
+      {/* 모임통장 거래 모달 */}
       <Modal
             isOpen={JointAccountOpen}
             ariaHideApp={true}
             onRequestClose={JointAccountOpenBtn}
             className={`Shadow ${style.modal} ${style.JointAccountModal}`}
           >
-            <h1 className={style.Title}>모임 통장 만들기</h1>
-            <button onClick={inviteChatUser} className={style.ModalBtn}>
-              초대하기버튼
-            </button>
+        <div className={style.Goal}>
+          <h3>123-45678-123</h3>
+          <h1 className={style.Title}>150,000</h1>
+          <button onClick={inviteChatUser} className={style.ModalBtn}>
+             이체하기
+          </button>
+          <button onClick={inviteChatUser} className={style.ModalBtn}>
+           출금하기
+          </button>
+        </div>
+        <div className={style.history}>
+        {/* 목표 금액 */}
+          <h1 className={style.Goal}>1,000,000</h1>
+          <></>
+        </div>
       </Modal>
-
       <button onClick={inviteOpenBtn} className={style.ModalBtn}>
             초대하기
       </button>
