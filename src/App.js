@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import MainPage from "./Pages/MainPage";
 import Layout from "./Pages/Common/Layout";
 import LoginPage from "./Pages/Account/LoginPage";
-import SidebarCom from "./Components/Sidebar/SidebarCom";
 import ResisterPage from "./Pages/Account/RegisterPage";
 import FindAccountPage from "./Pages/Account/FindAccountPage";
 import FindIdPage from "./Pages/Account/FindIdPage";
@@ -36,7 +35,7 @@ import MateBoardWrite from "./Components/Board/MateBoardWrite";
 import MateBoardDetail from "./Components/Board/MateBoardDetail";
 import MateBoardModify from "./Components/Board/MateBoardModify";
 import KakaoMap from "./Components/Board/KakaoMap";
-import ChatSidebarCom from "./Components/ChatSidebar/ChatSidebar";
+import ChatSidebarPage from "./Components/ChatSidebar/ChatSidebar";
 import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
 import AlarmList from "./component/alarm/alarmList";
 import FollowingList from "./component/follow/FollowingList";
@@ -44,6 +43,7 @@ import FollowerList from "./component/follow/FollowerList";
 import UserProfile from "./component/follow/UserProfile";
 import MyPost from "./component/mypage/MyPost";
 import MyComment from "./component/mypage/MyComment";
+import SidebarPage from "./Pages/SidebarPage";
 
 function App() {
   return (
@@ -62,7 +62,7 @@ function App() {
         {/* 메인 페이지 */}
         <Route index element={<MainPage />} />
 
-        <Route path="/board" element={<SidebarCom />}>
+        <Route path="/board" element={<SidebarPage />}>
           {/* 게시글 리스트 */}
           <Route path="/board/list" element={<BoardList />} />
           {/* 게시글 작성 페이지 */}
@@ -76,7 +76,7 @@ function App() {
         </Route>
 
         {/* 여행메이트 게시판 */}
-        <Route path="/mateboard" element={<SidebarCom />}>
+        <Route path="/mateboard" element={<SidebarPage />}>
           <Route path="/mateboard/list" element={<MateBoardList />} />
           <Route path="/mateboard/write" element={<MateBoardWrite />} />
           <Route
@@ -90,11 +90,11 @@ function App() {
         </Route>
 
         {/* 채팅 */}
-        <Route path="/chat" element={<SidebarCom />}>
+        <Route path="/chat" element={<SidebarPage />}>
           <Route path="Create" element={<NewChatPage />} />
           <Route path="List" element={<ChatList />} />
         </Route>
-        {/* <Route path="groupChat:roomNum" element={<GroupChatPage />}/> */}
+        <Route path="groupChat/:roomNum" element={<GroupChatPage />}/>
         <Route path="groupChat" element={<GroupChatPage />}/>
         {/* 여행자 테스트 */}
 
@@ -110,7 +110,7 @@ function App() {
           </Route>
         </Route>
         {/* 마이페이지 관련 라우트 */}
-        <Route path="mypage" element={<SidebarCom />}>
+        <Route path="mypage" element={<SidebarPage />}>
           <Route path="/mypage/my_story/:userId" element={< MyPost />}/>
           <Route path="/mypage/my_reply/:userId" element={< MyComment  />}/>
           <Route path="/mypage/modify/:userId" element={<MyPage />}/> 
