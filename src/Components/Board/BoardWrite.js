@@ -10,7 +10,7 @@ const BoardWrite = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const editorRef = useRef(null);
-
+  const token = localStorage.getItem("accessToken")
   // URL에서 category 값 가져오기
   const searchParams = new URLSearchParams(location.search);
   const initialCategory = searchParams.get("category") ? parseInt(searchParams.get("category")) : 1;
@@ -55,7 +55,7 @@ const BoardWrite = () => {
   // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
   useEffect(() => {
     if (category === 2) {
-      BoardApi.getBoardList(1, 1).then((res) => {
+      BoardApi.getBoardList(1, 1, token).then((res) => {
         setPlans(res.data.boardList);
       });
     }
