@@ -2,24 +2,50 @@ import style from "./ChatSidebar.module.css";
 import Modal from "react-modal";
 import { distance, motion } from "framer-motion";
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../Sidebar/Sidebar.css";
 
 import SidebarIcon from "../../Assets/line-3.svg";
-import SendIcon from "../../Assets/send.svg";
 import ChttingRoom from "../Auth/ChttingRoom";
-const ChatSidebarCom = ({ inviteChatUser }) => {
+import ChatApi from "../../api/ChatApi";
+
+
+const ChatSidebarCom = () => {
+  const { roomNum } = useParams();
+  const navigate = useNavigate();
   const [sideOpen, setSideOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [invite, setInvite] = useState("");
+  const [JointAccountOpen, setJointAccountOpen] = useState(false);
 
-  const inviteOpenBtn = () => {
-    setInviteOpen(!inviteOpen);
-  };
-
+  // 사이드바 여닫는 버튼
   const sideOpenBtn = () => {
     setSideOpen(!sideOpen);
   };
+  // 유저 초대 모달 여는 버튼
+  const inviteOpenBtn = () => {
+    setInviteOpen(!inviteOpen);
+  };
+  // 모임 통장 모달 여는 버튼
+  const JointAccountOpenBtn=()=>{
+    setJointAccountOpen(!JointAccountOpen)
+  };
+
+  
+  const inviteChatUser = async () => {
+    setInviteOpen(!inviteOpen);
+    const res = await ChatApi.inviteChatUser(invite, roomNum);
+    if (res.data === 1) {
+      setInvite("");
+    } else {
+      alert("존재하지 않는 회원입니다.");
+      setInvite("");
+    }
+  };
+  const BeforeBtn=()=>{
+    navigate('../chat/list');
+  };
+
   return (
     <>
       <div className="Sidebar">
@@ -134,13 +160,14 @@ const ChatSidebarCom = ({ inviteChatUser }) => {
         </div>
       </div>
       <div className="ContentSection Shadow">
-        <button onClick={sideOpenBtn} className={style.BeforeBtn}>
+        <button onClick={BeforeBtn} className={style.BeforeBtn}>
           <img
             src={SidebarIcon}
             alt="can't load image"
             className={style.SidebarIcon}
           />
-        </button>
+        </button>     
+        {/* 사이드메뉴 오픈 */}
         <button onClick={sideOpenBtn} className={style.ChatSidebarBtn}>
           <img
             src={SidebarIcon}
@@ -161,13 +188,23 @@ const ChatSidebarCom = ({ inviteChatUser }) => {
         }}
       >
         <button className={style.AdjustBtn}>정산 하기</button>
-        <button className={style.JointAccount}>모임 통장</button>
-        <div className={style.InviteForm}>
-          <Modal
+        <Modal
+            isOpen={JointAccountOpen}
+            ariaHideApp={true}
+            onRequestClose={JointAccountOpenBtn}
+            className={`Shadow ${style.modal} ${style.JointAccountModal}`}
+          >
+            <h1 className={style.Title}>모임 통장 만들기</h1>
+            <button onClick={inviteChatUser} className={style.InviteBtn}>
+              초대하기버튼
+            </button>
+          </Modal>
+        <button className={style.JointAccount} onClick={JointAccountOpenBtn}>모임 통장</button>
+        <Modal
             isOpen={inviteOpen}
             ariaHideApp={true}
             onRequestClose={inviteOpenBtn}
-            className={`Shadow ${style.InviteModal}`}
+            className={`Shadow ${style.modal} ${style.inviteModal}`}
           >
             <h1 className={style.Title}>친구를 초대해요</h1>
             <input
@@ -183,7 +220,6 @@ const ChatSidebarCom = ({ inviteChatUser }) => {
           <button onClick={inviteOpenBtn} className={style.InviteBtn}>
             초대하기
           </button>
-        </div>
         <hr />
         <ul className={style.GrounpMemList}>
           <li className={style.GrounpMem}>바보</li>

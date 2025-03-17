@@ -24,11 +24,11 @@ function ChatList() {
   const enterChatRoom = (roomNum) => {
     // 채팅방으로 이동하는 로직 작성
     console.log(`Entering chat room ${roomNum}`);
-    navigate(`/chatting/${roomNum}`);
+    navigate(`/groupChat/${roomNum}`);
   };
 
   const createChatRoom = () => {
-    navigate("/chat-create");
+    navigate("/chat/create");
   };
 
   return (

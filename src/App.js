@@ -27,7 +27,6 @@ import BookmarkList from "./Components/Board/BookmarkList";
 import TimelinePage from "./Pages/TimelinePage";
 import ResultPage from "./Pages/TestPage/ResultPage";
 import NewChatPage from "./Pages/Chat/NewChatPage";
-import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
 import Timeline from "./Components/Board/Timeline";
 import MateBoardList from "./Components/Board/MateBoardList";
 import MateBoardWrite from "./Components/Board/MateBoardWrite";
@@ -35,6 +34,7 @@ import MateBoardDetail from "./Components/Board/MateBoardDetail";
 import MateBoardModify from "./Components/Board/MateBoardModify";
 import KakaoMap from "./Components/Board/KakaoMap";
 import ChatSidebarCom from "./Components/ChatSidebar/ChatSidebar";
+import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
 
 function App() {
   return (
@@ -50,7 +50,7 @@ function App() {
       {/* <Route path="/chatting/:roomNum" element={<ChatRoom />}/> */}
       <Route path="/chatting" element={<ChatRoom />} />
       <Route path="/chatlist" element={<ChatList />} />
-      <Route path="/chat-create" element={<ChatCreate />} />
+      {/* <Route path="/chat-create" element={<ChatCreate />} /> */}
 
       {/* 기본 레이아웃 (헤더) */}
       <Route path="/" element={<Layout />}>
@@ -87,9 +87,7 @@ function App() {
           <Route path="Create" element={<NewChatPage />} />
           <Route path="List" element={<ChatList />} />
         </Route>
-        <Route path="groupChat" element={<ChatSidebarCom />}>
-          <Route index element={<ChatRoom />} />
-        </Route>
+        <Route path="groupChat" element={<GroupChatPage />}/>
         {/* 여행자 테스트 */}
 
         {/* 계정 (로그인, 회원가입, 계정 찾기) */}

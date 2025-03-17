@@ -4,8 +4,8 @@ import ChatApi from "../../api/ChatApi";
 import Message from "./Messages";
 import SockJs from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-import styled from "styled-components";
 import style from "../../Css/ChatLayout.module.css";
+import SendIcon from "../../Assets/send.svg";
 
 // /* ✅ 채팅 메시지 리스트 */
 // const ChatList = styled.ul`
@@ -153,16 +153,18 @@ const ChttingRoom = () => {
     }
   };
 
-  const inviteChatUser = async () => {
-    setInviteOpen(!inviteOpen);
-    const res = await ChatApi.inviteChatUser(invite, roomNum);
-    if (res.data === 1) {
-      setInvite("");
-    } else {
-      alert("존재하지 않는 회원입니다.");
-      setInvite("");
-    }
-  };
+  // ChatSidebar.js로 이동
+  
+  // const inviteChatUser = async () => {
+  //   setInviteOpen(!inviteOpen);
+  //   const res = await ChatApi.inviteChatUser(invite, roomNum);
+  //   if (res.data === 1) {
+  //     setInvite("");
+  //   } else {
+  //     alert("존재하지 않는 회원입니다.");
+  //     setInvite("");
+  //   }
+  // };
 
   return (
     <>
@@ -186,11 +188,10 @@ const ChttingRoom = () => {
               value={message}
             />
             <button className={style.SendBtn} onClick={sendMessage}>
-              전송
+            <img src={SendIcon} className={style.SendIcon} alt=""/>
             </button>
           </div>
         </div>
-        {/* 채팅 사이드 바 */}
       </div>
     </>
   );
