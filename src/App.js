@@ -16,8 +16,10 @@ import KakaoCallback from "./Components/KakaoSync/KakaoCallback";
 import ChatRoom from "./Components/Auth/ChttingRoom";
 import ChatList from "./Components/Auth/ChatList";
 import ChatCreate from "./Components/Auth/ChatCreate";
-
-import MyPage from "./Pages/Account/MyPage";
+import MyPage from "./component/mypage/mypage";
+import AlarmSettings from "./component/alarm/alarmsettings";
+import Alarm from "./component/alarm/alarm"
+// import MyPage from "./Pages/Account/MyPage";
 import TestPage from "./Pages/TestPage/TestPage";
 import Detail from "./Components/Board/Detail";
 import BoardWrite from "./Components/Board/BoardWrite";
@@ -35,6 +37,12 @@ import MateBoardModify from "./Components/Board/MateBoardModify";
 import KakaoMap from "./Components/Board/KakaoMap";
 import ChatSidebarCom from "./Components/ChatSidebar/ChatSidebar";
 import GroupChatPage from "./Pages/Chat/GroupChatPagePage";
+import AlarmList from "./component/alarm/alarmList";
+import FollowingList from "./component/follow/FollowingList";
+import FollowerList from "./component/follow/FollowerList";
+import UserProfile from "./component/follow/UserProfile";
+import MyPost from "./component/mypage/MyPost";
+import MyComment from "./component/mypage/MyComment";
 
 function App() {
   return (
@@ -101,6 +109,22 @@ function App() {
             <Route path="pw" element={<FindPwPage />} />
           </Route>
         </Route>
+        {/* 마이페이지 관련 라우트 */}
+        <Route path="mypage" element={<SidebarCom />}>
+          <Route path="/mypage/my_story/:userId" element={< MyPost />}/>
+          <Route path="/mypage/my_reply/:userId" element={< MyComment  />}/>
+          <Route path="/mypage/modify/:userId" element={<MyPage />}/> 
+          {/* <Route path="/mypage/alarm" element={<AlarmSettings  />}/>    */}
+          <Route path="/mypage/alarm/settings/:userId" element={<AlarmSettings  />}/>
+          {/*  팔로잉 / 팔로워 목록 페이지 추가 */}
+          <Route path="following/:userId" element={<FollowingList />} />
+          <Route path="followers/:userId" element={<FollowerList />} />
+        </Route>
+        {/* 알림 목록 */}
+        <Route path="/mypage/alarm/list/:userId" element={<AlarmList />} />
+
+        {/* 특정 유저 프로필 페이지 */}
+        <Route path="/profile/:userId" element={<UserProfile />} />
 
         {/* 타임라인 경로 */}
         <Route path="/timeline/:boardNo" element={<Timeline />} />

@@ -1,3 +1,10 @@
+
+.Wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 .List {
     display: flex;
     flex-direction: row;
@@ -7,5 +14,5 @@
 }
 
 .bar {
-    text-align: center;
+    text-align: center
 }

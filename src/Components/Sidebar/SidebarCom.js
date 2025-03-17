@@ -1,4 +1,50 @@
 import { Link, Outlet } from "react-router-dom";
+import "./Sidebar.css"
+import { useEffect, useState } from "react";
+import ChatApi from "../../api/ChatApi";
+
+const SidebarCom=()=>{
+    const token = localStorage.getItem("accessToken")
+    const [userId, setUserId] = useState("")
+
+    useEffect(() => {
+        const userInfo = async() => {
+            try{
+                const res = await ChatApi.getUserInfo(token)
+                if(res.data){
+                    setUserId(res.data.id || "" );
+                }
+            }catch(error){
+                console.log("사용자 정보 가져오기 실패 : ", error );
+            }
+        }
+        userInfo();
+    },[token])
+
+    // useEffect(() => {
+    //     const res = ChatApi.getUserInfo(token)
+    //     console.log(res.data)
+    //     setUserId(res.data.id)
+    // },[])
+
+    return (<>
+        <div className="Sidebar">
+            {/* 현재 로그인 유저 프로필 */}
+            <div className="UserInfo Shadow">
+                <div>
+                    <img src="https://picsum.photos/200/200" alt="can't read Img" className="UserProfilePic"/>
+                </div>
+
+                <div className="UserId">{userId}</div>
+                <div className="UserLevel">고양이</div>
+                {/*  팔로잉 / 팔로워 버튼 추가 */}
+                <div className="UserFollower">
+                        <Link to={`/mypage/following/${userId}`} className="FollowButton">팔로잉 </Link>
+                        <Link to={`/mypage/followers/${userId}`} className="FollowButton">팔로워</Link>
+                    </div>
+                <Link to="/mypage/myContent">내가 쓴 글</Link>
+                <Link to="/account/logout">로그아웃</Link>
+            </div>
 import "./Sidebar.css";
 const SidebarCom = () => {
   return (
