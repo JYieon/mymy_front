@@ -1,3 +1,12 @@
+/* 캐치프레이즈 */
+
+.Catchphrase {
+    color: white;
+    font-weight: 900px;
+    font-size: 60px;
+    display: flex;
+}
+
 /* 배경 */
 .AccountLayout{
     width: 100vw;
@@ -5,6 +14,11 @@
     background: linear-gradient(to right,#00284C 50%,white);
 }
 
+.link {
+    color: white;
+    text-decoration: none;
+    margin: 20px;
+}
 /* 폼 */
 
 .form{
@@ -24,6 +38,8 @@
      }
      & input[type="submit"]{
         padding: 10px 20px;
+        background-color: white;
+        color: #00284C;
      }
 
      & input[type="button"] {
@@ -81,14 +97,6 @@
      }
 }
 
-/* 캐치프레이즈 */
-
-.Catchphrase {
-    color: white;
-    font-weight: 900px;
-    font-size: 50px;
-    display: flex;
-}
 
 /* 다른 옵션 (계정 찾기, 다른 옵션) */
 
@@ -143,3 +151,5 @@
         cursor: pointer;
      }
 }
+
+/* 계정 찾기 */
