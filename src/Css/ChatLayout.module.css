@@ -1,30 +1,4 @@
-.CreateNewChatWrap {
-  display: flex;
-  flex-direction: column;
-  & > *{
-  justify-content: center;
-  }
-}
-
-
-
-.CreateGroupChatName {
-  padding: 10px;
-  margin: 20px 100px;
-  border-radius: 10px;
-  border-color: #00284c;
-}
-
-.CreateChatBtn {
-  background-color: #00284c;
-  color: white;
-  border-style: none;
-  border-radius: 10px;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 10px 40px;
-  margin: 20px 30%;
-}
+/* 공통 */
 
 hr {
   width: 80%;
@@ -45,19 +19,59 @@ hr {
   text-align: center;
 }
 
-/* 채팅 */
 
-.GroupChatContiner {
+.ChatLayoutWrap {
+  /* margin: 20px; */
+  padding: 10px;
+}
+
+
+/* 새로운 채팅방 생성 */
+
+.CreateNewChatWrap {
   display: flex;
+  flex-direction: column;
+  & > *{
   justify-content: center;
+  }
+}
+
+.CreateGroupChatName {
+  padding: 10px;
+  margin: 20px 100px;
+  border-radius: 10px;
+  border-color: #00284c;
+}
+
+.CreateChatBtn {
+  background-color: #00284c;
+  color: white;
+  border-style: none;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 40px;
+  margin: 20px 30%;
+}
+
+
+/* 채팅 */
+.GroupChatContiner {
+  /* resize: both; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 600px;
+  height:600px;
   * {
-    margin: 20px;
+    overflow:  hidden;
+    margin: 10px 0;
   }
 }
 
 .RoomTitle {
-  text-align: center;
-  margin-top: -10px;
+  width: max-content;
+  margin: -50px auto 10px;
   color: #00284c;
   font-weight: 900;
 }
@@ -69,18 +83,18 @@ hr {
   height:600px;
   width: 100%;
   padding: 20px;
-  /* background-color: burlywood; */
 }
 
 .MessageList {
   flex: 1; /* ✅ 남은 공간을 자동으로 채우도록 설정 */
   overflow-y: auto; /* ✅ 메시지가 많아지면 스크롤 가능 */
   list-style: none;
-  padding: 10px;
+  padding-top: 10px;
+  width: auto;
   margin: 0px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
 }
 .Mymessages {
   display: flex;
@@ -107,15 +121,16 @@ hr {
   }
 }
 
-/* .JointAccount {
-}
-
-.AdjustBtn {
-} */
-
 .SendIcon{
   margin: 0 auto;
   width: 30px;
   height: 30px;
-  filter: ;
+}
+
+
+/* 채팅 목록 */
+
+.ChatListContainer {
+  margin: 20px;
+  background-color: antiquewhite;
 }
