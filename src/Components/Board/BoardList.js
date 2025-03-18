@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../Css/BoardList.css";
+import style from "../../Css/BoardList.module.css";
 import { toBeChecked } from "@testing-library/jest-dom/matchers";
 
+
+// 썸네일이 보이는 게시판
 const BoardList = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -156,10 +158,10 @@ const BoardList = () => {
 
   const { boardList, currentPage, totalPages } = pageState[category];
   return (
-    <div className="board-container">
+    <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
 
-      <div className="category-buttons">
+      <div className={style.categoryBtns}>
         <button
           className={category === 1 ? "active" : ""}
           onClick={() => handleCategoryChange(1)}
@@ -181,10 +183,10 @@ const BoardList = () => {
       </div>
 
       {(category === 1 || category === 2) && (
-        <div className="search-container Shadow">
+        <div className={`${style.searchContainer} Shadow`}>
           <select
             value={searchType}
-            className="Search-Type-Selector"
+            className={style.SearchTypeSelector}
             onChange={(e) => setSearchType(e.target.value)}
           >
             <option value="title">제목</option>
@@ -195,70 +197,69 @@ const BoardList = () => {
           </select>
           <input
             type="text"
-            className="Search-Keyword"
+            className={style.SearchKeyword}
             placeholder="검색어 입력"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
 
-          <button className="Search-Button" onClick={handleSearch}>
+          <button className={style.SearchBtn} onClick={handleSearch}>
             검색
           </button>
         </div>
       )}
 
-      <div className="board-grid">
+      <div className={style.boardGrid}>
         {boardList.map((post) => {
           console.log(post);
           return (
-            <div key={post.boardNo} className="board-item">
-              <Link
-                to={`/board/detail/${post.boardNo}`}
-                className="BoardTitle link"
-              >
+            <div key={post.boardNo} className={style.boardItem}>
+              <Link to={`/board/detail/${post.boardNo}`} className="link">
                 <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
-                <h3 className="PostTitle">{post.title} </h3>
+                <h3 className={style.PostTitle}>{post.title} </h3>
 
-                <div className="PostInfo">
-                  <div>조회수<span className="value">{post.boardOpen}</span></div>
-
+                <div className={style.PostInfo}>
+                  <div>
+                    조회수<span className={style.value}>{post.boardOpen}</span>
+                  </div>
                   <span>좋아요 {post.boardLikes}</span>
                 </div>
-                <div className="WriterId">{post.id}</div>
+                <div className={style.WriterId}>{post.id}</div>
               </Link>
             </div>
           );
         })}
       </div>
-
       {/* 글쓰기 버튼 추가 */}
-      <button className="write-post-btn" onClick={handleWritePost}>
+      <button className={style.writePostBtn} onClick={handleWritePost}>
         게시글 작성
       </button>
 
-      {totalPages > 1 && (
-        <div className="pagination">
-          {currentPage > 1 && (
-            <button onClick={() => handlePageChange(currentPage - 1)}>
-              이전
-            </button>
-          )}
-          {[...Array(totalPages).keys()].map((page) => (
-            <button
-              key={page + 1}
-              onClick={() => handlePageChange(page + 1)}
-              className={currentPage === page + 1 ? "current" : ""}
-            >
-              {page + 1}
-            </button>
-          ))}
-          {currentPage < totalPages && (
-            <button onClick={() => handlePageChange(currentPage + 1)}>
-              다음
-            </button>
-          )}
-        </div>
-      )}
+      <div className={style.Paginations}>
+        {totalPages > 1 && (
+          <div className={style.Pagination}>
+            {currentPage > 1 && (
+              <button onClick={() => handlePageChange(currentPage - 1)}>
+                이전
+              </button>
+            )}
+            {[...Array(totalPages).keys()].map((page) => (
+              <button
+                key={page + 1}
+                onClick={() => handlePageChange(page + 1)}
+                className={currentPage === page + 1 ? "current" : ""}
+              >
+                {page + 1}
+              </button>
+            ))}
+            {currentPage < totalPages && (
+              <button onClick={() => handlePageChange(currentPage + 1)}>
+                다음
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
