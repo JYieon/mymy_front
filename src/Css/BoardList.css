@@ -2,10 +2,15 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  
 }
 
 .category-buttons a {
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: 1px solid #00284c;
+  color: #00284c;
+  border-radius: 5px;
   text-decoration: none;
   padding: 10px 20px;
   margin: 0 10px;
@@ -20,7 +25,7 @@
 }
 
 .board-grid {
-  background-color: aqua;
+  /* background-color: aqua; */
   padding: 20px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -128,7 +133,7 @@
 /* 페이지 넘기는 바 */
 .pagination {
   button{
-    background-color: magenta;
+    /* background-color: magenta; */
     border: none;
   }
   

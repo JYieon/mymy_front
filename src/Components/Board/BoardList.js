@@ -155,6 +155,7 @@ const BoardList = () => {
   };
 
   const { boardList, currentPage, totalPages } = pageState[category];
+
   return (
     <div className="board-container">
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
