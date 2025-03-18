@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import MypageApi from "../../api/MypageApi"; // ✅ API 호출 파일
-import ChatApi from "../../api/ChatApi"; // ✅ 로그인한 유저 정보 가져오기
+import MypageApi from "../../api/MypageApi"; //  API 호출 파일
+import ChatApi from "../../api/ChatApi"; //  로그인한 유저 정보 가져오기
 import SidebarCom from "../../Components/Sidebar/SidebarCom";
 import { Link } from "react-router-dom";
 
 
 const AlarmList = () => {
     const navigate = useNavigate();
-    const { userId: paramUserId } = useParams(); // ✅ URL에서 userId 가져오기
-    const token = localStorage.getItem("accessToken"); // ✅ 토큰 유지
+    const { userId: paramUserId } = useParams(); //  URL에서 userId 가져오기
+    const token = localStorage.getItem("accessToken"); //  토큰 유지
     const [userId, setUserId] = useState(null);
     const [alarms, setAlarms] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,38 +18,38 @@ const AlarmList = () => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
+                const res = await ChatApi.getUserInfo(token); //  로그인한 사용자 정보 가져오기
                 console.log("백엔드에서 가져온 userId:", res.data.id);
 
                 const userIdFromApi = res.data.id;
-                localStorage.setItem("userId", userIdFromApi); // ✅ `localStorage`에 userId 저장
+                localStorage.setItem("userId", userIdFromApi); //  `localStorage`에 userId 저장
                 setUserId(userIdFromApi);
             } catch (error) {
-                console.error("🚨 userId 가져오기 실패:", error);
-                navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+                console.error(" userId 가져오기 실패:", error);
+                navigate("/login"); //  실패하면 로그인 페이지로 이동
             }
         };
 
         if (!localStorage.getItem("userId")) {
-            fetchUserInfo(); // ✅ `localStorage`에 userId 없으면 백엔드에서 가져옴
+            fetchUserInfo(); //  `localStorage`에 userId 없으면 백엔드에서 가져옴
         } else {
             setUserId(localStorage.getItem("userId"));
         }
     }, [token, navigate]);
 
     useEffect(() => {
-        if (!userId) return; // ✅ userId가 없으면 요청 중단
+        if (!userId) return; //  userId가 없으면 요청 중단
 
         MypageApi.getAlarms(userId)
             .then(response => {
                 console.log("🔹 받아온 알림 데이터:", response.data);
 
-                // ✅ null, undefined 값이 포함된 경우 필터링
+                //  null, undefined 값이 포함된 경우 필터링
                 const validAlarms = (response.data || []).filter(alarm => alarm && alarm !== null && alarm !== undefined);
 
-                setAlarms(validAlarms);  // ✅ null이 제거된 데이터 저장
+                setAlarms(validAlarms);  //  null이 제거된 데이터 저장
             })
-            .catch(error => console.error("🚨 알림 목록 가져오기 실패:", error));
+            .catch(error => console.error(" 알림 목록 가져오기 실패:", error));
     }, [userId]);
 
 

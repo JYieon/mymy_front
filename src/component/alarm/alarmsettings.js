@@ -11,21 +11,21 @@ const AlarmSettings = () => {
 
      // 알림 설정 불러오기
      useEffect(() => {
-        console.log("불러올 사용자 ID : ", userId); // ✅ userId 값 확인
+        console.log("불러올 사용자 ID : ", userId); // userId 값 확인
         if (!userId) {
-            console.error("🚨 userId가 없습니다. 요청을 중단합니다.");
+            console.error(" userId가 없습니다. 요청을 중단합니다.");
             return;
         }
     
         console.log(" 알림 설정 요청 보내는 중...");
-        MypageApi.getAlarmSettings(userId) // ✅ userId 전달!
+        MypageApi.getAlarmSettings(userId) //  userId 전달!
             .then(response => {
                 console.log(" 알림 설정 데이터:", response.data);
                 setSettings(response.data);
                 setLoading(false);
             })
             .catch(error => {
-                console.error("🚨 알림 설정 불러오기 실패:", error);
+                console.error(" 알림 설정 불러오기 실패:", error);
                 setError("알림 설정을 불러오는 중 오류 발생");
                 setLoading(false);
             });

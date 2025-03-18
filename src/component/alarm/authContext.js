@@ -10,10 +10,10 @@ export const AuthProvider = ({ children }) => {
 
     //로그인 상태 확인 (로컬스토리지에서 불러오기)
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");// ✅ 로컬스토리지에서 사용자 정보 가져오기
+        const storedUser = localStorage.getItem("user");//  로컬스토리지에서 사용자 정보 가져오기
         if (storedUser) {
-            setUser(JSON.parse(storedUser)); // ✅ JSON 파싱하여 상태 업데이트
-            setIsAuthenticated(true);// ✅ 로그인 상태로 설정
+            setUser(JSON.parse(storedUser)); //  JSON 파싱하여 상태 업데이트
+            setIsAuthenticated(true);//  로그인 상태로 설정
         }
     }, []);
 

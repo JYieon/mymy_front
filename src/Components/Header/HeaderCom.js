@@ -28,15 +28,15 @@ const HeaderCom=()=>{
                         .then(response => {
                             console.log("🔹 받아온 알람 데이터:", response.data);
         
-                            // ✅ null 값 제거 및 기본값 설정
+                            //  null 값 제거 및 기본값 설정
                             const validNotifications = (response.data || []).filter(alarm => alarm !== null);
         
                             setNotifications(validNotifications);
         
-                            // ✅ 오류 방지를 위해 every() 또는 some() 사용 시 기본값 처리
+                            // 오류 방지를 위해 every() 또는 some() 사용 시 기본값 처리
                             setHasUnread(validNotifications.length > 0 && validNotifications.some(alarm => alarm?.read === false));
                         })
-                        .catch(error => console.error("🚨 알림 가져오기 실패:", error));
+                        .catch(error => console.error(" 알림 가져오기 실패:", error));
                 }
         }else{
             Login.current.style="display:none;"
@@ -139,7 +139,7 @@ const HeaderCom=()=>{
 
                             <button className="LogoutBtn" onClick={onClickLogout}>로그아웃</button>
                         </li>
-                        {/* ✅ 알람 아이콘 추가 */}
+                        {/*  알람 아이콘 추가 */}
                         <li className="HeaderNav">
                             <AlarmIcon userId={userId} token={token} />
                         </li>

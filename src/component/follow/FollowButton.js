@@ -11,10 +11,10 @@ const FollowButton = ({ profileUser }) => {
 
         MypageApi.isFollowing(profileUser, token)  
             .then((response) => {
-                console.log("✅ 팔로우 여부:", response);
+                console.log(" 팔로우 여부:", response);
                 setIsFollowed(response);
             })
-            .catch((error) => console.error("🚨 팔로우 여부 확인 실패:", error));
+            .catch((error) => console.error(" 팔로우 여부 확인 실패:", error));
     }, [token, profileUser]);
 
     const handleFollow = async () => {
@@ -23,16 +23,16 @@ const FollowButton = ({ profileUser }) => {
         setLoading(true); 
         try {
             if (isFollowed) {
-                await MypageApi.unfollowUser(profileUser, token);  // ✅ token 추가
-                console.log("✅ 언팔로우 성공");
+                await MypageApi.unfollowUser(profileUser, token);  //  token 추가
+                console.log(" 언팔로우 성공");
                 setIsFollowed(false);
             } else {
-                await MypageApi.followUser(profileUser, token);  // ✅ token 추가
-                console.log("✅ 팔로우 성공");
+                await MypageApi.followUser(profileUser, token);  //  token 추가
+                console.log(" 팔로우 성공");
                 setIsFollowed(true);
             }
         } catch (error) {
-            console.error("🚨 팔로우/언팔로우 요청 실패:", error);
+            console.error(" 팔로우/언팔로우 요청 실패:", error);
         }
         setLoading(false); 
     };

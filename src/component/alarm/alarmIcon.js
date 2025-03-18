@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useWebSocket from "./useWebsocket";
-import axios from "axios";
 import MypageApi from "../../api/MypageApi";
 
 const AlarmIcon = ({ userId, token }) => {
@@ -29,8 +28,8 @@ const AlarmIcon = ({ userId, token }) => {
             setUnreadCount(alarmsArray.filter(alarm => !alarm.read).length);
         })
         .catch(error => {
-            console.error("🚨 알림 불러오기 실패:", error);
-            setNotifications([]); // ✅ 오류 발생 시 빈 배열 설정
+            console.error(" 알림 불러오기 실패:", error);
+            setNotifications([]); // 오류 발생 시 빈 배열 설정
         });
 }, [userId]);
 

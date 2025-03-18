@@ -24,7 +24,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
     const fetchUserInfo = async () => {
         try {
             const res = await ChatApi.getUserInfo(token);
-            console.log(res.data);
+            // console.log(res.data);
             // 기존 formData의 기본값을 유지하면서 데이터 업데이트
             setFormData(prevState => ({
                 ...prevState, 

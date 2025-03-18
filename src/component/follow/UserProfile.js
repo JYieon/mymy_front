@@ -8,28 +8,28 @@ const UserProfile = ({ loggedInUser }) => {
     const [followerCount, setFollowerCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
 
-    // ✅ 팔로워 & 팔로잉 숫자 불러오기
+    // 팔로워 & 팔로잉 숫자 불러오기
     useEffect(() => {
-        console.log("📌 사용자 프로필 조회:", userId);
+        console.log(" 사용자 프로필 조회:", userId);
         if (!userId) return;
 
         // 팔로워 목록 가져오기
         MypageApi.getFollowerList()
             .then((res) => {
-                console.log("✅ 팔로워 목록:", res);
+                console.log(" 팔로워 목록:", res);
                 const userFollowers = res.filter(user => user.followerId === userId);
                 setFollowerCount(userFollowers.length);
             })
-            .catch((err) => console.error("🚨 팔로워 불러오기 오류", err));
+            .catch((err) => console.error(" 팔로워 불러오기 오류", err));
 
         // 팔로잉 목록 가져오기
         MypageApi.getFollowingList()
             .then((res) => {
-                console.log("✅ 팔로잉 목록:", res);
+                console.log(" 팔로잉 목록:", res);
                 const userFollowing = res.filter(user => user.followingId === userId);
                 setFollowingCount(userFollowing.length);
             })
-            .catch((err) => console.error("🚨 팔로잉 불러오기 오류", err));
+            .catch((err) => console.error(" 팔로잉 불러오기 오류", err));
     }, [userId]);
 
     return (

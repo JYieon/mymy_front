@@ -4,24 +4,24 @@ import MypageApi from "../../api/MypageApi";
 
 const MyPost = () => {
     const { userId } = useParams();
-    const storedUserId = localStorage.getItem("userId"); // 🔥 로컬스토리지에서 가져오기
-    const finalUserId = userId || storedUserId; // 🔥 URL에서 없으면 로컬 저장소에서 가져옴
+    const storedUserId = localStorage.getItem("userId"); //  로컬스토리지에서 가져오기
+    const finalUserId = userId || storedUserId; //  URL에서 없으면 로컬 저장소에서 가져옴
 
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
         const fetchPosts = async () => {
             if (!userId) {
-                console.error("🚨 userId가 존재하지 않습니다!");
+                console.error(" userId가 존재하지 않습니다!");
                 return;
             }
-            console.log("📌 현재 userId:", userId);
+            console.log(" 현재 userId:", userId);
 
             try {
                 const response = await MypageApi.getMyPosts(userId);
                 setPosts(response || []);
             } catch (error) {
-                console.error("❌ 내가 쓴 글 불러오기 실패:", error);
+                console.error(" 내가 쓴 글 불러오기 실패:", error);
             }
         };
 
