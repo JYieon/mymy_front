@@ -12,7 +12,7 @@ const BoardModify = () => {
     const [boardOpen, setBoardOpen] = useState(1);
     const [hashtags, setHashtags] = useState([]);
     const [tagInput, setTagInput] = useState("");
-    const [boardCategory, setBoardCategory] = useState(1); // 🔥 추가: 게시글 카테고리
+    const [boardCategory, setBoardCategory] = useState(1); 
     const editorRef = useRef(null);
     const navigate = useNavigate();
 
@@ -25,10 +25,10 @@ const BoardModify = () => {
                     const { title, content, boardOpen, hashtags, boardCategory } = res.data.post;
                     setTitle(title);
                     setBoardOpen(boardOpen);
-                    setBoardCategory(boardCategory); // 🔥 추가: 카테고리 저장
+                    setBoardCategory(boardCategory);
                     
                     if (boardCategory === 1) {
-                        setHashtags([]); // 🔥 계획 게시글이면 해시태그 초기화
+                        setHashtags([]); 
                     } else {
                         setHashtags(hashtags || []);
                     }
@@ -98,7 +98,7 @@ const BoardModify = () => {
 
         const postData = { boardNo, title, boardOpen, content };
         
-        // 🔥 계획 게시글이면 해시태그 데이터 전송 안 함
+        // 계획 게시글이면 해시태그 데이터 전송 안 함
         if (boardCategory !== 1) {
             postData.hashtags = hashtags;
         }
@@ -150,7 +150,7 @@ const BoardModify = () => {
                     <div ref={editorRef}></div>
                 </div>
 
-                {/* 🔥 해시태그 입력: 계획 게시글이면 안 보이게 처리 */}
+                {/* 해시태그 입력: 계획 게시글이면 안 보이게 처리 */}
                 {boardCategory !== 1 && (
                     <div>
                         <label>해시태그:</label>

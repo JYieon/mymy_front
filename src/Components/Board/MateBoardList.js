@@ -27,7 +27,7 @@ const MateBoardList = () => {
             return;
         }
     
-        // console.log("🔍 검색 요청 파라미터 확인:", { searchType, keyword: keyword.trim(), page });
+        // console.log("검색 요청 파라미터 확인:", { searchType, keyword: keyword.trim(), page });
     
         try {
             const boardList = await MateBoardApi.searchMateBoardList(page, 3, searchType, keyword.trim());

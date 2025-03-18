@@ -27,7 +27,7 @@ const BookmarkList = () => {
     const handleRemoveBookmark = async (boardNo) => {
         if (window.confirm("북마크를 해제하시겠습니까?")) {
             try {
-                const success = await BoardApi.toggleBookmark(boardNo, token); // ✅ token 추가
+                const success = await BoardApi.toggleBookmark(boardNo, token);
                 if (success) {
                     alert("북마크가 해제되었습니다.");
                     fetchBookmarks(); // 북마크 목록 새로고침

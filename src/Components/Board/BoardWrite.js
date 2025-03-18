@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // ✅ URL 가져오기
+import { useNavigate, useLocation } from "react-router-dom"; 
 import axios from "axios";
 import $ from "jquery";
 import BoardApi from "../../api/BoardApi";

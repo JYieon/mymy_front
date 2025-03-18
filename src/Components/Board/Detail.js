@@ -18,7 +18,7 @@ const Detail = () => {
             try {                
                 const res = await BoardApi.detail(boardNo);
                 if (res.status === 200) {
-                    console.log("받은 데이터:", res.data);
+                    // console.log("받은 데이터:", res.data);
                     setData(res.data.post);         // 게시글 정보
                     setHashtags(res.data.hashtags); // 해시태그
                     checkBookmark();
@@ -51,7 +51,7 @@ const Detail = () => {
         const newLiked = !liked; // 좋아요 상태 반전
         const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1; // 좋아요 개수 반전
 
-        // 🔥 UI 즉시 업데이트
+        // UI 즉시 업데이트
         setLiked(newLiked);
         setData((prev) => (prev ? { ...prev, boardLikes: newLikes } : prev));
 
@@ -61,6 +61,12 @@ const Detail = () => {
                 // 서버에서 받은 최종 상태로 업데이트
                 setLiked(res.liked);
                 setData((prev) => prev ? { ...prev, boardLikes: res.likes } : prev);
+                
+                 // 추가: 목록에서 boardLikes 값 갱신 (BoardList에서 fetchBoardList 다시 실행)
+            if (window.updateBoardList) {
+                window.updateBoardList();  
+            }
+            
             }
         } catch (error) {
             console.error("좋아요 토글 실패:", error);
