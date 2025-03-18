@@ -1,4 +1,4 @@
-/* 썸네일이 보이는 게시판 목록용 모듈 */
+/* 게시판 목록용 모듈 */
 .boardContainer {
   /* background-color: tomato; */
   height: 100%;
@@ -151,3 +151,29 @@
     border-style: none;
   }
 }
+
+.boardTable{
+  border: none;
+  /* background-color: aliceblue; */
+
+}
+
+hr {
+  width: 100%;
+}
+
+.tr {
+  text-align: center;
+  font-size: smaller;
+}
+table {
+  padding: 10px;
+
+}
+.tbody {
+  height: auto;
+  /* background-color: yellowgreen; */
+}
+/* .category {
+  
+} */

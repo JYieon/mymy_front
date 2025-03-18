@@ -1,168 +1,196 @@
 import React, { useEffect, useState } from "react";
 import BoardApi from "../../api/BoardApi";
 import MateBoardApi from "../../api/MateBoardApi";
+import style from "../../Css/Replay.module.css";
 
 const Reply = ({ boardNo, category }) => {
-    const [replies, setReplies] = useState([]);
-    const [newReply, setNewReply] = useState("");
-    const [replyContent, setReplyContent] = useState({});
-    const [showReplyInput, setShowReplyInput] = useState({});
-    const token = localStorage.getItem("accessToken");
+  const [replies, setReplies] = useState([]);
+  const [newReply, setNewReply] = useState("");
+  const [replyContent, setReplyContent] = useState({});
+  const [showReplyInput, setShowReplyInput] = useState({});
+  const token = localStorage.getItem("accessToken");
 
-    // **어떤 API를 사용할지 선택**
-    const api = category === 3 ? MateBoardApi : BoardApi;
+  // **어떤 API를 사용할지 선택**
+  const api = category === 3 ? MateBoardApi : BoardApi;
 
-    // 댓글 목록 불러오기
-    useEffect(() => {
-        const fetchReplies = async () => {
-            try {
-                const res = await api.getReplies(boardNo);
-                const tree = buildReplyTree(res.data);
-                setReplies(tree);
-            } catch (error) {
-                console.error("댓글 불러오기 실패:", error);
-            }
-        };
-
-        fetchReplies();
-    }, [boardNo, api]);
-
-    // 대댓글 트리 구조 생성
-    const buildReplyTree = (replies) => {
-        const map = {};
-        const roots = [];
-
-        replies.forEach(reply => {
-            map[reply.repNo] = { ...reply, children: [] };
-        });
-
-        replies.forEach(reply => {
-            if (reply.parentNo === 0) {
-                roots.push(map[reply.repNo]);
-            } else {
-                map[reply.parentNo]?.children.push(map[reply.repNo]);
-            }
-        });
-
-        return roots;
+  // 댓글 목록 불러오기
+  useEffect(() => {
+    const fetchReplies = async () => {
+      try {
+        const res = await api.getReplies(boardNo);
+        const tree = buildReplyTree(res.data);
+        setReplies(tree);
+      } catch (error) {
+        console.error("댓글 불러오기 실패:", error);
+      }
     };
 
-    // 댓글 작성 (대댓글 포함)
-    const handleAddReply = async (parentNo = 0) => {
-        const content = replyContent[parentNo] || newReply;
+    fetchReplies();
+  }, [boardNo, api]);
 
-        if (!content.trim()) {
-            alert("댓글 내용을 입력하세요.");
-            return;
-        }
+  // 대댓글 트리 구조 생성
+  const buildReplyTree = (replies) => {
+    const map = {};
+    const roots = [];
 
-        const replyData = {
-            boardNo: boardNo,
-            repContent: content,
-            parentNo: parentNo,
-        };
-        console.log(replyData);
+    replies.forEach((reply) => {
+      map[reply.repNo] = { ...reply, children: [] };
+    });
 
-        try {
-            const token = localStorage.getItem("accessToken");  // 로그인 토큰 가져오기
+    replies.forEach((reply) => {
+      if (reply.parentNo === 0) {
+        roots.push(map[reply.repNo]);
+      } else {
+        map[reply.parentNo]?.children.push(map[reply.repNo]);
+      }
+    });
 
-            if (!token) {
-                alert("로그인 후 댓글을 작성할 수 있습니다.");
-                return;
-            }
-            // 댓글 작성 요청
-            const res = await api.addReply(replyData, token);  // 댓글 API 호출
-            if (res.status === 200) {
-                alert("댓글이 작성되었습니다.");
-                setReplyContent({ ...replyContent, [parentNo]: "" });
-                setNewReply("");  // 댓글 작성 후 입력 필드 초기화
-                window.location.reload();  // 새로고침
-            }
-        } catch (error) {
-            console.error("댓글 작성 실패:", error);
-        }
+    return roots;
+  };
+
+  // 댓글 작성 (대댓글 포함)
+  const handleAddReply = async (parentNo = 0) => {
+    const content = replyContent[parentNo] || newReply;
+
+    if (!content.trim()) {
+      alert("댓글 내용을 입력하세요.");
+      return;
+    }
+
+    const replyData = {
+      boardNo: boardNo,
+      repContent: content,
+      parentNo: parentNo,
     };
+    console.log(replyData);
 
-    // 댓글 삭제
-    const handleDeleteReply = async (replyNo) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-            try {
-                await api.deleteReply(replyNo, token);  // 토큰을 header로 전달
-                alert("댓글이 삭제되었습니다.");
-                window.location.reload();
-            } catch (error) {
-                console.error("댓글 삭제 실패:", error);
-            }
-        }
-    };
+    try {
+      const token = localStorage.getItem("accessToken"); // 로그인 토큰 가져오기
 
-    // 대댓글 입력창 토글
-    const toggleReplyInput = (repNo) => {
-        setShowReplyInput((prev) => ({
-            ...prev,
-            [repNo]: !prev[repNo]
-        }));
-    };
+      if (!token) {
+        alert("로그인 후 댓글을 작성할 수 있습니다.");
+        return;
+      }
+      // 댓글 작성 요청
+      const res = await api.addReply(replyData, token); // 댓글 API 호출
+      if (res.status === 200) {
+        alert("댓글이 작성되었습니다.");
+        setReplyContent({ ...replyContent, [parentNo]: "" });
+        setNewReply(""); // 댓글 작성 후 입력 필드 초기화
+        window.location.reload(); // 새로고침
+      }
+    } catch (error) {
+      console.error("댓글 작성 실패:", error);
+    }
+  };
 
-    // 날짜 포맷 변경
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleString("ko-KR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-        });
-    };
+  // 댓글 삭제
+  const handleDeleteReply = async (replyNo) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      try {
+        await api.deleteReply(replyNo, token); // 토큰을 header로 전달
+        alert("댓글이 삭제되었습니다.");
+        window.location.reload();
+      } catch (error) {
+        console.error("댓글 삭제 실패:", error);
+      }
+    }
+  };
 
-    // 댓글 렌더링 (재귀 호출)
-    const renderReplies = (replies, depth = 0) => {
-        return replies.map(reply => (
-            <div key={reply.repNo} style={{ marginLeft: `${depth * 20}px`, padding: "10px", border: "1px solid #ddd", borderRadius: "5px", marginBottom: "10px" }}>
-                <p>
-                    <strong>{reply.id}</strong> | {formatDate(reply.repDate)} <br />
-                    {reply.repContent}
-                </p>
-                <button onClick={() => toggleReplyInput(reply.repNo)}>답글</button>
-                <button onClick={() => handleDeleteReply(reply.repNo)}>삭제</button>
+  // 대댓글 입력창 토글
+  const toggleReplyInput = (repNo) => {
+    setShowReplyInput((prev) => ({
+      ...prev,
+      [repNo]: !prev[repNo],
+    }));
+  };
 
-                {/* 대댓글 입력창 */}
-                {showReplyInput[reply.repNo] && (
-                    <div style={{ marginTop: "10px" }}>
-                        <textarea
-                            value={replyContent[reply.repNo] || ""}
-                            onChange={(e) => setReplyContent({ ...replyContent, [reply.repNo]: e.target.value })}
-                            placeholder="답글을 입력하세요"
-                            style={{ width: "100%", height: "60px" }}
-                        />
-                        <button onClick={() => handleAddReply(reply.repNo)}>답글 등록</button>
-                    </div>
-                )}
+  // 날짜 포맷 변경
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
 
-                {/* 자식 댓글 재귀 호출 */}
-                {reply.children?.length > 0 && renderReplies(reply.children, depth + 1)}
-            </div>
-        ));
-    };
+  // 댓글 렌더링 (재귀 호출)
+  const renderReplies = (replies, depth = 0) => {
+    return replies.map((reply) => (
+      <div key={reply.repNo} className={`Shadow ${style.replyItem}`}>
+        <p>
+          <span className={style.date}> {formatDate(reply.repDate)}</span>
+          <span className={style.date}> {formatDate(reply.repDate)}</span>
+        </p>
+        <span className={style.content}>{reply.repContent}</span>
+        <div style={style.replyEditContiner}>
+          <button
+            className={style.newReplyBtn}
+            onClick={() => toggleReplyInput(reply.repNo)}
+          >
+            답글
+          </button>
 
-    return (
-        <div>
-            <h3>💬 댓글 목록</h3>
-            {replies.length > 0 ? renderReplies(replies) : <p>댓글이 없습니다.</p>}
-
-            {/* 새 댓글 작성 */}
-            <h3>📝 댓글 작성</h3>
-            <textarea
-                value={newReply}
-                onChange={(e) => setNewReply(e.target.value)}
-                placeholder="댓글을 입력하세요"
-                style={{ width: "100%", height: "80px" }}
-            />
-            <button onClick={() => handleAddReply(0)}>댓글 등록</button>
+          <button
+            className={style.newReplyBtn}
+            onClick={() => handleDeleteReply(reply.repNo)}
+          >
+            삭제
+          </button>
         </div>
-    );
+
+        {/* 대댓글 입력창 */}
+        {showReplyInput[reply.repNo] && (
+          <div className={`Shadow ${style.newReplyContainer}`}>
+            <textarea
+              className={style.textarea}
+              value={replyContent[reply.repNo] || ""}
+              onChange={(e) =>
+                setReplyContent({
+                  ...replyContent,
+                  [reply.repNo]: e.target.value,
+                })
+              }
+              placeholder="답글을 입력하세요"            />
+            <button
+              className={style.newReplyBtn}
+              onClick={() => handleAddReply(reply.repNo)}
+            >
+              답글 등록
+            </button>
+          </div>
+        )}
+
+        {/* 자식 댓글 재귀 호출 */}
+        {reply.children?.length > 0 && renderReplies(reply.children, depth + 1)}
+      </div>
+    ));
+  };
+
+  return (
+    <div className={style.replyContainer}>
+      {/* <h3>💬 댓글 목록</h3> */}
+
+      {replies.length > 0 ? renderReplies(replies) : <p>댓글이 없습니다.</p>}
+
+      {/* 새 댓글 작성 */}
+      <h3>댓글</h3>
+      <div className={`Shadow ${style.newReplyContainer}`}>
+        <textarea
+          value={newReply}
+          onChange={(e) => setNewReply(e.target.value)}
+          placeholder="댓글을 입력하세요"
+        />
+        <button onClick={() => handleAddReply(0)} className={style.newReplyBtn}>
+          작성
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Reply;
