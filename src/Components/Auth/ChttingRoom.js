@@ -1,27 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ChatApi from "../../api/ChatApi";
 import Message from "./Messages";
-import SockJs from 'sockjs-client';
-import {Stomp} from '@stomp/stompjs';
-import styled from "styled-components";
+import SockJs from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+import style from "../../Css/ChatLayout.module.css";
+import SendIcon from "../../Assets/send.svg";
 
-/* ✅ ul을 감싸는 컨테이너 스타일 */
-const ChatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 500px; /* 고정 높이 */
-`;
-
-/* ✅ 채팅 메시지 리스트 */
-const ChatList = styled.ul`
-  flex: 1;  /* ✅ 남은 공간을 자동으로 채우도록 설정 */
-  overflow-y: auto;  /* ✅ 메시지가 많아지면 스크롤 가능 */
-  list-style: none;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-`;
+// /* ✅ 채팅 메시지 리스트 */
+// const ChatList = styled.ul`
+//   flex: 1; /* ✅ 남은 공간을 자동으로 채우도록 설정 */
+//   overflow-y: auto; /* ✅ 메시지가 많아지면 스크롤 가능 */
+//   list-style: none;
+//   padding: 10px;
+//   border: 1px solid #ddd;
+//   border-radius: 5px;
+// `;
 
 const ChttingRoom = () => {
   const { roomNum } = useParams();
@@ -32,6 +26,8 @@ const ChttingRoom = () => {
   const [webSocket, setWebSocket] = useState(null);
   const [userId, setUserId] = useState("");
   const [invite, setInvite] = useState("");
+  // const [sideOpen, setSideOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   // 스크롤 자동으로 아래로 내리기
   const bottomRef = useRef(null);
@@ -44,8 +40,8 @@ const ChttingRoom = () => {
         setUserInfo(res.data.member);
         if (res.data.messages.length > 0) {
           const newMessages = res.data.messages.map((element) => ({
-            id: element.member, 
-            msg: element.msg
+            id: element.member,
+            msg: element.msg,
           }));
           setMessages(newMessages);
         } else {
@@ -64,22 +60,32 @@ const ChttingRoom = () => {
   }, [roomNum]);
 
   useEffect(() => {
-    const CreateWebSocket = () => new SockJs("http://localhost:8080/mymy/stompServer");
+    const CreateWebSocket = () =>
+      new SockJs("http://localhost:8080/mymy/stompServer");
     const stompClient = Stomp.over(CreateWebSocket);
     stompClient.connect({}, (frame) => {
       console.log(frame);
 
-      stompClient.subscribe(`/chat/chatRoomNo/${roomNum}/message`, async (frame) => {
-        let jsonMessage = frame.body;
-        let parsedMessage = await JSON.parse(jsonMessage);
-        setMessages((preState) => [...preState, { id: parsedMessage.member, msg: parsedMessage.msg }]);
-      });
+      stompClient.subscribe(
+        `/chat/chatRoomNo/${roomNum}/message`,
+        async (frame) => {
+          let jsonMessage = frame.body;
+          let parsedMessage = await JSON.parse(jsonMessage);
+          setMessages((preState) => [
+            ...preState,
+            { id: parsedMessage.member, msg: parsedMessage.msg },
+          ]);
+        }
+      );
 
-      stompClient.subscribe(`/chat/chatRoomNo/${roomNum}/enternleave`, async (frame) => {
-        let jsonMessage = frame.body;
-        let parsedMessage = await JSON.parse(jsonMessage);
-        setUserInfo(parsedMessage);
-      });
+      stompClient.subscribe(
+        `/chat/chatRoomNo/${roomNum}/enternleave`,
+        async (frame) => {
+          let jsonMessage = frame.body;
+          let parsedMessage = await JSON.parse(jsonMessage);
+          setUserInfo(parsedMessage);
+        }
+      );
     });
 
     setWebSocket(stompClient);
@@ -105,11 +111,11 @@ const ChttingRoom = () => {
     const chatMessage = {
       msg: message,
       roomNum,
-      member: userId
+      member: userId,
     };
 
     if (!message) {
-      alert("뭐든 입력하세요");
+      alert("전송이 불가한 메세지.");
       return;
     }
     if (!webSocket) {
@@ -117,7 +123,11 @@ const ChttingRoom = () => {
       return;
     }
 
-    webSocket.send(`/chat/sendMessage/chatRoomNo/${roomNum}`, {}, JSON.stringify(chatMessage));
+    webSocket.send(
+      `/chat/sendMessage/chatRoomNo/${roomNum}`,
+      {},
+      JSON.stringify(chatMessage)
+    );
     setMessage("");
     setTimeout(() => {
       scrollToBottom();
@@ -143,42 +153,45 @@ const ChttingRoom = () => {
     }
   };
 
-  const inviteChatUser = async () => {
-    const res = await ChatApi.inviteChatUser(invite, roomNum);
-    if (res.data === 1) {
-      setInvite("");
-    } else {
-      alert("없는 회원입니다.");
-      setInvite("");
-    }
-  };
+  // ChatSidebar.js로 이동
+
+  // const inviteChatUser = async () => {
+  //   setInviteOpen(!inviteOpen);
+  //   const res = await ChatApi.inviteChatUser(invite, roomNum);
+  //   if (res.data === 1) {
+  //     setInvite("");
+  //   } else {
+  //     alert("존재하지 않는 회원입니다.");
+  //     setInvite("");
+  //   }
+  // };
 
   return (
-    <ChatContainer>
-      <h2>채팅룸 {roomNum}</h2>
-      <div>
-        <input type="text" onChange={(e) => setInvite(e.target.value)} value={invite} />
-        <button onClick={inviteChatUser}>초대하기</button>
-      </div>
+    <div className={style.ChatLayoutWrap}>
+      <div className={style.GroupChatContiner}>
+        <h1 className={style.RoomTitle}>채팅룸 {roomNum}</h1>
 
-      {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
-      <ChatList>
-        <Message chatMessages={messages} />
-        <li ref={bottomRef} />
-      </ChatList>
-
-      <div>
-        <textarea 
-          rows="3" 
-          name="message" 
-          ref={textareaRef} 
-          onKeyDown={submitMessage}
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
-        />
-        <button onClick={sendMessage}>전송</button>
+        {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
+        <ul className={style.MessageList}>
+          <Message chatMessages={messages} />
+          <li ref={bottomRef} />
+        </ul>
+        <div className={style.Mymessages}>
+          <textarea
+            rows="3"
+            name="message"
+            ref={textareaRef}
+            onKeyDown={submitMessage}
+            onChange={(e) => setMessage(e.target.value)}
+            className={style.Textarea}
+            value={message}
+          />
+          <button className={style.SendBtn} onClick={sendMessage}>
+            <img src={SendIcon} className={style.SendIcon} alt="" />
+          </button>
+        </div>
       </div>
-    </ChatContainer>
+    </div>
   );
 };
 

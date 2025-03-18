@@ -10,8 +10,8 @@ const BoardThumbnailCom=({link, Title})=>{
                 <img alt="ThumbnailPic" src={link} className="ThumbnailPic"/>
             </div>
 
-
             <Link to={"../../"+Title} className="TitleText">{Title}</Link>
+            
             <div className="ContentInfo">조회수 10 댓글 10</div>
             <div className="WriterInfo">
                 <img alt="WriterPic" src="https://picsum.photos/20/20" className="WriterPic"></img>

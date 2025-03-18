@@ -1,3 +1,4 @@
+
 import { Link, useLocation} from "react-router-dom";
 import BoardThumbnailCom from "../BoardThumbnail/BoardThumbnail";
 import "./BoardThumbnailList.css"

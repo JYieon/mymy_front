@@ -15,9 +15,10 @@ const Detail = () => {
     // 게시글 상세 정보 불러오기
     useEffect(() => {
         const fetchData = async () => {
-            try {
+            try {                
                 const res = await BoardApi.detail(boardNo);
                 if (res.status === 200) {
+                    console.log("받은 데이터:", res.data);
                     setData(res.data.post);         // 게시글 정보
                     setHashtags(res.data.hashtags); // 해시태그
                     checkBookmark();
