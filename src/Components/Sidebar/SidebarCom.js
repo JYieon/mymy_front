@@ -7,18 +7,16 @@ import Modal from "react-modal";
 
 const SidebarCom = () => {
   const token = localStorage.getItem("accessToken");
-  const [user, setUser] = useState("");
+  const [userId, setUserId] = useState("");
   const [ProfileEditOpen, setProfileEditOpen] = useState(false);
   const [ProfilePic, setProfilePic] = useState("");
-
 
   useEffect(() => {
     const userInfo = async () => {
       try {
         const res = await ChatApi.getUserInfo(token);
-        console.log(res.data)
         if (res.data) {
-          setUser(res.data);
+          setUserId(res.data.id || "");
         }
       } catch (error) {
         console.log("사용자 정보 가져오기 실패 : ", error);
@@ -67,8 +65,8 @@ const SidebarCom = () => {
           />
           <input type="file" value={ProfilePic} onChange={(e) => setProfilePic(e.target.value)}/>
 
-          <div className="UserId">{user.nick}</div>
-          <div className="UserLevel">{user.level}</div>
+          <div className="UserId">{userId}</div>
+          <div className="UserLevel">고양이</div>
 
           <button onClick={ProfileEditBtn}>저장</button>
         </Modal>
@@ -107,18 +105,18 @@ const SidebarCom = () => {
           </li>
         </ul>
       </div>
-      <div className="UserId">{user.nick}</div>
-      <div className="UserLevel">{user.level}</div>
+      <div className="UserId">{userId}</div>
+      <div className="UserLevel">고양이</div>
       {/*  팔로잉 / 팔로워 버튼 추가 */}
       <div className="UserFollower">
-        <Link to={`/mypage/following/${user.id}`} className="FollowButton">
+        <Link to={`/mypage/following/${userId}`} className="FollowButton">
           팔로잉{" "}
         </Link>
-        <Link to={`/mypage/followers/${user.id}`} className="FollowButton">
+        <Link to={`/mypage/followers/${userId}`} className="FollowButton">
           팔로워
         </Link>
       </div>
-      <Link to={`/mypage/my_story/${user.id}`} className="link">
+      <Link to={`/mypage/my_story/${userId}`} className="link">
         내가 쓴 글
       </Link>
       <Link to="/account/logout" className="link Logout">
@@ -184,23 +182,23 @@ const SidebarCom = () => {
           마이페이지
           <ul className="MenuList">
             <li>
-              <Link to={`/mypage/my_story/${user.id}`} className="Menu">
+              <Link to={`/mypage/my_story/${userId}`} className="Menu">
                 내가 쓴 글
               </Link>
             </li>
             <li>
-              <Link to={`/mypage/my_reply/${user.id}`} className="Menu">
+              <Link to={`/mypage/my_reply/${userId}`} className="Menu">
                 내가 쓴 댓글
               </Link>
             </li>
             <li>
-              <Link to={`/mypage/modify/${user.id}`} className="Menu">
+              <Link to={`/mypage/modify/${userId}`} className="Menu">
                 회원정보 수정
               </Link>
             </li>
             <li>
               <Link
-                to={`/mypage/alarm/settings/${user.id}`}
+                to={`/mypage/alarm/settings/${userId}`}
                 className="Menu"
               >
                 알림 설정

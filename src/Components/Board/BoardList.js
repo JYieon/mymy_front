@@ -209,14 +209,27 @@ const BoardList = () => {
       )}
 
       <div className="board-grid">
-        {boardList.map((post) => (
-          <div key={post.boardNo} className="board-item">
-            <Link to={`/board/detail/${post.boardNo}`}>
-              <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
-              <h3>{post.title}</h3>
-            </Link>
-          </div>
-        ))}
+        {boardList.map((post) => {
+          console.log(post);
+          return (
+            <div key={post.boardNo} className="board-item">
+              <Link
+                to={`/board/detail/${post.boardNo}`}
+                className="BoardTitle link"
+              >
+                <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
+                <h3 className="PostTitle">{post.title} </h3>
+
+                <div className="PostInfo">
+                  <div>조회수<span className="value">{post.boardOpen}</span></div>
+
+                  <span>좋아요 {post.boardLikes}</span>
+                </div>
+                <div className="WriterId">{post.id}</div>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
       {/* 글쓰기 버튼 추가 */}
