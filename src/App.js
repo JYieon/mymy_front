@@ -96,7 +96,12 @@ function App() {
         </Route>
         <Route path="groupChat/:roomNum" element={<GroupChatPage />}/>
         <Route path="groupChat" element={<GroupChatPage />}/>
+
         {/* 여행자 테스트 */}
+        <Route path="/test" element={<TestPage/>}>
+        </Route>
+        <Route path="test/result" element={<ResultPage/>}/>
+
 
         {/* 계정 (로그인, 회원가입, 계정 찾기) */}
         <Route path="/account" element={<AccoutLayout />}>
