@@ -37,7 +37,7 @@ const SidebarCom = () => {
                     const fetchedUserId = res.data.id;
                     setUserId(fetchedUserId);
                     setIsAuthenticated(true);
-                    console.log("🔹 로그인한 사용자 ID:", fetchedUserId);
+                    console.log(" 로그인한 사용자 ID:", fetchedUserId);
 
 
                     // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)

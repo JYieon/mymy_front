@@ -26,7 +26,7 @@ const HeaderCom=()=>{
                 if (userId) {
                     MypageApi.getAlarms(token)
                         .then(response => {
-                            console.log("🔹 받아온 알람 데이터:", response.data);
+                            console.log("받아온 알람 데이터:", response.data);
         
                             //  null 값 제거 및 기본값 설정
                             const validNotifications = (response.data || []).filter(alarm => alarm !== null);

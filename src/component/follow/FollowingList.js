@@ -3,14 +3,15 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 
+//팔로잉 목록록
 const FollowingList = () => {
     const { userId } = useParams(); //  URL에서 userId 가져오기
-    const [following, setFollowing] = useState([]);
+    const [following, setFollowing] = useState([]);//내가 팔로우한 사람들 목록 저장
     const [error, setError] = useState(null);
     console.log(" URL에서 가져온 userId:", userId);
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("accessToken");//콘솔에서 userid 확인
         if (!token) {
             setError(" 로그인 후 확인 가능합니다.");
             return;
@@ -20,11 +21,12 @@ const FollowingList = () => {
             setError(" 유저 ID가 없습니다.");
             return;
         }
-
+        //서버에서 팔로잉 정보를 가져오는 함수
         const fetchFollowing = async () => {
             try {
-                const res = await MypageApi.getFollowingList(userId, token);
+                const res = await MypageApi.getFollowingList(userId, token);//api 요청 
                 console.log(" 팔로잉 목록:", res);
+                //서버에서 받은 데이터가 배열인지 확인 후 저장 
                 setFollowing(Array.isArray(res) ? res : []);
             } catch (error) {
                 console.error(" 팔로잉 목록 불러오기 실패:", error);

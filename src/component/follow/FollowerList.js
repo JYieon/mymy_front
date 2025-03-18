@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 
+//팔로워 목록
 const FollowerList = () => {
-    const { userId } = useParams();
+    const { userId } = useParams();//사용자 id 가져옴옴
    
-    const [followers, setFollowers] = useState([]);
-    const [error, setError] = useState(null);
+    const [followers, setFollowers] = useState([]);//팔로워 목록 저장장
+    const [error, setError] = useState(null);//오류 메세지 저장장
     console.log(" URL에서 가져온 userId:", userId);
 
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("accessToken");//사용자 토큰 확인인
         if (!token) {
             setError(" 로그인 후 확인 가능합니다.");
             return;
@@ -22,10 +23,12 @@ const FollowerList = () => {
             return;
         }
 
+        //서버에서 팔로워 정보를 가져옴옴
         const fetchFollowers = async () => {
             try {
-                const res = await MypageApi.getFollowerList(userId, token);
+                const res = await MypageApi.getFollowerList(userId, token); //api 요청청
                 console.log("팔로워 목록:", res);
+                //서버에서 받은 데이터가 배열인지 확인 후 저장장
                 setFollowers(Array.isArray(res) ? res : []);
             } catch (error) {
                 console.error(" 팔로워 목록 불러오기 실패:", error);
@@ -34,7 +37,7 @@ const FollowerList = () => {
         };
 
         fetchFollowers();
-    }, [userId]);
+    }, [userId]);//userid가 변경되면 재실행
 
         
 

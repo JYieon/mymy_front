@@ -4,8 +4,9 @@ import MypageApi from "../../api/MypageApi";
 import { useParams } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 
-function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
-  const token = localStorage.getItem("accessToken")
+//회원 정보 수정정
+function MyPage({ userData }) { 
+  const token = localStorage.getItem("accessToken")//사용자 토큰
 
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
   const [formData, setFormData] = useState(userData || {
@@ -23,12 +24,12 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
   useEffect(() => {
     const fetchUserInfo = async () => {
         try {
-            const res = await ChatApi.getUserInfo(token);
+            const res = await ChatApi.getUserInfo(token);//api 요청
             // console.log(res.data);
             // 기존 formData의 기본값을 유지하면서 데이터 업데이트
             setFormData(prevState => ({
                 ...prevState, 
-                ...res.data
+                ...res.data //기존값 유지하면서 새로운 값 추가
             }));
         } catch (error) {
             console.error("로그인 정보 가져오기 실패:", error);
@@ -51,7 +52,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
 
   //입력값 변경 핸들러
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; //사용자가 입력한 값 가져오기
     setFormData({
       ...formData,
       [name]: value,
@@ -68,7 +69,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
     }
   };
 
-  //폼 제출 시 처리할 함수 (정보 수정)
+  //회원 정보 수정
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -80,7 +81,7 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
     }
 
     try {
-      const res = await MypageApi.modify(formData);
+      const res = await MypageApi.modify(formData);//api 요청청
       if (res.status === 200) {
         alert("수정이 완료되었습니다!");
       }
@@ -97,8 +98,8 @@ function MyPage({ userData }) { //userData가 props로 들어올 수도 있음
     }
   
     try {
-      const updateData = { id: formData.id, [field]: formData[field] };
-      const res = await MypageApi.modify(updateData);
+      const updateData = { id: formData.id, [field]: formData[field] }; // 수정할 데이터 구성성
+      const res = await MypageApi.modify(updateData);//api 요청청
   
       if (res.status === 200) {
         alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : field === "nick" ? "닉네임" : "전화번호"} 성공적으로 변경되었습니다!`);

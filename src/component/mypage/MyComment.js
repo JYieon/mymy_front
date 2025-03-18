@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 
+//내가 쓴 댓글 목록록
 const MyComment = () => {
-    const { userId } = useParams();
-    const [comments, setComments] = useState([]);
-
+    const { userId } = useParams(); //url에서 id 가져옴옴
+    const [comments, setComments] = useState([]);//내가 쓴 댓글 목록 저장장
+    //내가 작성한 댓글 불러옴옴
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await MypageApi.getMyComments(userId);
-                setComments(response || []);
+                const response = await MypageApi.getMyComments(userId);//api요청청
+                setComments(response || []);//댓글 데이터가 없으면 빈 배열로 저장장
             } catch (error) {
-                console.error("❌ 내가 쓴 댓글 불러오기 실패:", error);
+                console.error(" 내가 쓴 댓글 불러오기 실패:", error);
             }
         };
         fetchComments();
-    }, [userId]);
+    }, [userId]);//id가 바뀌면 재실행
 
     return (
         <div className="mycomment-container">

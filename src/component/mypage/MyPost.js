@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 
+//내가 쓴 글 목록록
 const MyPost = () => {
     const { userId } = useParams();
     const storedUserId = localStorage.getItem("userId"); //  로컬스토리지에서 가져오기
     const finalUserId = userId || storedUserId; //  URL에서 없으면 로컬 저장소에서 가져옴
 
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);//내가 쓴 글 목록 저장 
 
+    //내가 작성한 글 불러오기기
     useEffect(() => {
         const fetchPosts = async () => {
             if (!userId) {
@@ -18,8 +20,8 @@ const MyPost = () => {
             console.log(" 현재 userId:", userId);
 
             try {
-                const response = await MypageApi.getMyPosts(userId);
-                setPosts(response || []);
+                const response = await MypageApi.getMyPosts(userId);//api 요청청
+                setPosts(response || []);//게시글이 없으면 빈 배열 저장장
             } catch (error) {
                 console.error(" 내가 쓴 글 불러오기 실패:", error);
             }
