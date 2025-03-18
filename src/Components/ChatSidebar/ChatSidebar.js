@@ -1,7 +1,7 @@
 import style from "./ChatSidebar.module.css";
 import Modal from "react-modal";
 import { distance, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "../Sidebar/Sidebar.css";
 
@@ -19,6 +19,24 @@ const ChatSidebarCom = () => {
   const [JointAccountOpen, setJointAccountOpen] = useState(false);
   const [AdjustmentOpen, setAdjustmentOpen] = useState(false);
   const [VerfiyOpen, setVerfiyOpen] = useState(false);
+  const [chatUserInfo, setChatUserInfo] = useState([]);
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await ChatApi.getUserInfo(token);
+        setUserId(res.data.id);
+        
+        const chatRes = await ChatApi.getChatMessages(roomNum);
+        setChatUserInfo(chatRes.data.member.filter(user => user.member !== res.data.id));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserInfo();
+  }, []);
 
   // 사이드바 여닫는 버튼
   const sideOpenBtn = () => {
@@ -63,6 +81,24 @@ const ChatSidebarCom = () => {
 
   const BeforeBtn=()=>{
     navigate('../chat/list');
+  };
+
+  const endChat = async () => {
+    const isConfirmed = window.confirm("채팅방을 정말 나가시겠습니까?");
+    if (!isConfirmed) return; // 사용자가 취소하면 종료
+  
+    try {
+      const res = await ChatApi.endChat(roomNum, localStorage.getItem("accessToken"));
+      console.log("delete", res);
+      if (res.status === 200) {
+        window.location.href = "/chatlist"; // 채팅방 목록으로 이동
+      } else {
+        alert("채팅방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("채팅방 나가기 오류:", error);
+      alert("서버 오류로 인해 채팅방을 나갈 수 없습니다.");
+    }
   };
 
   return (
@@ -287,10 +323,18 @@ const ChatSidebarCom = () => {
       </Modal>
         <hr />
         <ul className={style.GrounpMemList}>
+          {chatUserInfo.map((user)=>(
+            <li className={style.GrounpMem}>
+            <img src={`/images/${user.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
+            {user.nick}
+            </li>
+          ))}
+
+          {/* <li className={style.GrounpMem}>바보</li>
           <li className={style.GrounpMem}>바보</li>
-          <li className={style.GrounpMem}>바보</li>
-          <li className={style.GrounpMem}>바보</li>
+          <li className={style.GrounpMem}>바보</li> */}
         </ul>
+        <button onClick={endChat}>채팅방 나가기</button>
       </motion.div>
     </>
   );

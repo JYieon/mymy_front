@@ -13,11 +13,11 @@ const ChatApi =  {
     },
 
     getUserInfo : async (token) => {
-        return await axios.get(domain + "/user/info", {
-            params:{
-                token: token
-            }
-        })
+        return await axios.get(domain + "/user/info", { headers: { Authorization: `Bearer ${token}` } })
+        //     params:{
+        //         token: token
+        //     }
+        // })
     },
 
     getChatMessages : async (roomNum) => {
