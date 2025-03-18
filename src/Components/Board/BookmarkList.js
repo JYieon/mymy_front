@@ -5,15 +5,21 @@ import { useNavigate } from "react-router-dom";
 const BookmarkList = () => {
     const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
     const navigate = useNavigate();
+    const token = localStorage.getItem("accessToken"); 
 
     // 북마크 목록 불러오기
     const fetchBookmarks = async () => {
         try {
-            const bookmarkData = await BoardApi.getBookmarkList();
-            // console.log("✅ 가져온 북마크 데이터:", bookmarkData);
-            setBookmarks(bookmarkData); // 배열 상태 업데이트
+            if (!token) {
+                alert("로그인이 필요합니다.");
+                return;
+            }
+            const response = await BoardApi.getBookmarkList(token); 
+            //console.log("북마크 목록 API 응답:", response);
+            
+            setBookmarks(response.data.data || response.data); 
         } catch (error) {
-           // console.error("❌ 북마크 목록 불러오기 실패:", error);
+            console.error("북마크 목록 불러오기 실패:", error);
         }
     };
 
@@ -21,13 +27,13 @@ const BookmarkList = () => {
     const handleRemoveBookmark = async (boardNo) => {
         if (window.confirm("북마크를 해제하시겠습니까?")) {
             try {
-                const success = await BoardApi.toggleBookmark(boardNo);
+                const success = await BoardApi.toggleBookmark(boardNo, token); // ✅ token 추가
                 if (success) {
                     alert("북마크가 해제되었습니다.");
                     fetchBookmarks(); // 북마크 목록 새로고침
                 }
             } catch (error) {
-                // console.error("❌ 북마크 해제 실패:", error);
+                console.error("북마크 해제 실패:", error);
             }
         }
     };
@@ -35,28 +41,70 @@ const BookmarkList = () => {
     // 페이지 로드 시 북마크 목록 불러오기
     useEffect(() => {
         fetchBookmarks();
-    }, []);
+    }, []); // 최초 렌더링 시 실행
 
     return (
-        <div>
+        <div style={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
             <h2>🔖 내 북마크 목록</h2>
+            
             {Array.isArray(bookmarks) && bookmarks.length > 0 ? (
-                <ul>
+                <ul style={{ listStyleType: "none", padding: 0 }}>
                     {bookmarks.map((bookmark) => (
-                        <li key={bookmark.boardNo} style={{ marginBottom: "10px" }}>
-                            <h3>{bookmark.title}</h3>
-                            <p>{bookmark.content}</p>
-                            <button onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}>
-                                게시글 보기
-                            </button>
-                            <button onClick={() => handleRemoveBookmark(bookmark.boardNo)} style={{ marginLeft: "10px" }}>
-                                북마크 해제
-                            </button>
+                        <li 
+                            key={bookmark.boardNo} 
+                            style={{ 
+                                padding: "15px", 
+                                borderBottom: "1px solid #ddd",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                            }}
+                        >
+                            <div style={{ flex: 1 }}>
+                                <h3 
+                                    style={{ color: "#007bff", cursor: "pointer", textDecoration: "underline" }}
+                                    onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
+                                >
+                                    {bookmark.title}
+                                </h3>
+                                <p style={{ margin: "5px 0", color: "#555" }}>
+                                    👤 {bookmark.id} | 📅 {new Date(bookmark.date).toLocaleDateString()}
+                                </p>
+                            </div>
+                            <div>
+                                <button 
+                                    onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)} 
+                                    style={{ 
+                                        marginRight: "10px", 
+                                        padding: "5px 10px", 
+                                        border: "1px solid #007bff", 
+                                        backgroundColor: "white", 
+                                        color: "#007bff", 
+                                        cursor: "pointer", 
+                                        borderRadius: "5px" 
+                                    }}
+                                >
+                                    게시글 보기
+                                </button>
+                                <button 
+                                    onClick={() => handleRemoveBookmark(bookmark.boardNo)} 
+                                    style={{ 
+                                        backgroundColor: "#ff4d4d", 
+                                        color: "white", 
+                                        border: "none", 
+                                        padding: "5px 10px", 
+                                        cursor: "pointer", 
+                                        borderRadius: "5px" 
+                                    }}
+                                >
+                                    ❌ 해제
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p>북마크된 게시글이 없습니다.</p>
+                <p style={{ textAlign: "center", color: "#777" }}>❌ 북마크된 게시글이 없습니다.</p>
             )}
         </div>
     );

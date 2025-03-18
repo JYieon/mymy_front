@@ -82,16 +82,16 @@ const HeaderCom=()=>{
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
-                                    <Link to="/Board/BookMark" className="Menu">북마크</Link>
+                                    <Link to="/board/bookmarkList" className="Menu">북마크</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Plan" className="Menu">여행 계획</Link>
+                                    <Link to="/board/list?category=1" className="Menu">여행 계획</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Diary" className="Menu">여행 기록</Link>
+                                    <Link to="/board/list?category=2" className="Menu">여행 기록</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Mate" className="Menu">여행 메이트</Link>
+                                    <Link to="/mateboard/list" className="Menu">여행 메이트</Link>
                                 </li>
                             </ul>
                         </li>
@@ -109,26 +109,26 @@ const HeaderCom=()=>{
                         <li className="HeaderNav link">커뮤니티
                             <ul className="MenuList">
                                 <li>
-                                    <Link to="/Board/BookMark" className="Menu">북마크</Link>
+                                    <Link to="/board/bookmarkList" className="Menu">북마크</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Plan" className="Menu">여행 계획</Link>
+                                    <Link to="/board/list?category=1" className="Menu">여행 계획</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Diary" className="Menu">여행 기록</Link>
+                                    <Link to="/board/list?category=2" className="Menu">여행 기록</Link>
                                 </li>
                                 <li>
-                                    <Link to="/Board/Mate" className="Menu">여행 메이트</Link>
+                                    <Link to="/mateboard/list" className="Menu">여행 메이트</Link>
                                 </li>
                             </ul>
                         </li>
                         <li className="HeaderNav link">채팅
                             <ul className="MenuList">
                                 <li>
-                                    <Link to="/chat/유저고유번호/list" className="Menu">채팅 목록</Link>
+                                    <Link to="/chat/list" className="Menu">채팅 목록</Link>
                                 </li>
                                 <li>
-                                    <Link to="/chat/유저고유번호/newChat" className="Menu">새로운 채팅</Link>
+                                    <Link to="/chat/Create" className="Menu">새로운 채팅</Link>
                                 </li>
                             </ul>
                         </li>
@@ -136,8 +136,8 @@ const HeaderCom=()=>{
                             <Link to= {`/mypage/modify/&{userId}`} className="link">마이페이지</Link>
                         </li>
                         <li className="HeaderNav">
-                            {/* 이후 수정 필요 */}
-                            <button className="link" onClick={onClickLogout}>로그아웃</button>
+
+                            <button className="LogoutBtn" onClick={onClickLogout}>로그아웃</button>
                         </li>
                         {/* ✅ 알람 아이콘 추가 */}
                         <li className="HeaderNav">

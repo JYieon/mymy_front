@@ -4,11 +4,29 @@ const domain = "http://localhost:8080/mymy/board";
 
 const BoardApi = {
 
-    // 게시글 목록 조회 (카테고리 추가)
-    getBoardList: async (page, category) => {
-        return await axios.get(`${domain}/list`, {
-            params: { page: page, category: category },
+    //기록 게시판 검색
+    searchBoardList: async (page, category, searchType, keyword) => {
+        console.log("계획 검색 요청:", { page, category, searchType, keyword });
+        return await axios.get(`${domain}/search`, {
+            params: { page, category, searchType, keyword },
+        }).then(response => {
+            //console.log("검색 API 응답 데이터:", response.data);  // 응답 확인
+            return response.data;
+        }).catch(error => {
+            console.error("❌ 검색 API 요청 실패:", error);
+            throw error;
         });
+    },
+
+    // 게시글 목록 조회 (카테고리 추가)
+    getBoardList: async (page, category, token) => {
+        return await axios.get(`${domain}/list`, {
+            params: { page, category, token},  // 쿼리 파라미터로 전달
+        }).catch(error => {
+            console.error("게시글 목록 조회 실패:", error);
+            throw error;
+        });
+
     },
 
     // 게시글 상세 조회
@@ -17,12 +35,13 @@ const BoardApi = {
     },
 
     // 게시글 저장 (글쓰기)
-    writeSave: async (postData) => {
-        console.log("📤 전송 데이터:", postData);
+    writeSave: async (postData, token) => {
+        //console.log("전송 데이터:", postData);
         try {
             return await axios.post(`${domain}/writeSave`, postData, {
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
                 },
             });
         } catch (error) {
@@ -35,7 +54,6 @@ const BoardApi = {
     // 게시글 수정
     modify: async (postData) => {
         try {
-            console.log("📤 수정 요청 데이터:", postData);
             return await axios.post(`${domain}/modify`, postData, {
                 headers: { "Content-Type": "application/json" },
             });
@@ -92,41 +110,25 @@ const BoardApi = {
         }
     },
     // 북마크 상태 확인
-    checkBookmark: async (boardNo) => {
-        try {
-            return await axios.get(`${domain}/bookmark/check`, {
-                params: { id: "a", boardNo: boardNo }
-            });
-        } catch (error) {
-            console.error("❌ BoardApi checkBookmark 에러:", error);
-            throw error;
-        }
+    checkBookmark: async (boardNo, token) => {
+
+        return await axios.get(`${domain}/bookmark/check`, {
+            params: { boardNo: boardNo, token: token },
+        });
+
     },
 
-    // BoardApi.js 수정
-    toggleBookmark: async (boardNo) => {
-        try {
-            const res = await axios.post(`${domain}/bookmark/toggle`, null, {
-                params: { id: "a", boardNo: boardNo }
-            });
-            return res.status === 200; // 성공 시 true 반환
-        } catch (error) {
-            console.error("❌ BoardApi toggleBookmark 에러:", error);
-            throw error;
-        }
+    // 북마크 추가
+    toggleBookmark: async (boardNo, token) => {
+        return await axios.post(`${domain}/bookmark/toggle`, null, {
+            params: { boardNo: boardNo, token: token },
+        });
     },
     // 북마크된 게시글 목록 불러오기
-    getBookmarkList: async () => {
-        try {
-            const response = await axios.get(`${domain}/bookmark/list`, {
-                params: { id: "a" }
-            });
-            console.log("📚 북마크 리스트 응답 데이터:", response.data); // 디버깅 로그 추가
-            return response.data;  // ✅ 배열 반환 (boardList 또는 빈 배열)
-        } catch (error) {
-            console.error("❌ BoardApi getBookmarkList 에러:", error);
-            return [];
-        }
+    getBookmarkList: async (token) => {
+        return await axios.get(`${domain}/bookmark/list`, {
+            params: { token },
+        });
     },
 
     // 댓글 목록 조회
@@ -141,12 +143,15 @@ const BoardApi = {
     },
 
     // 댓글 작성
-    addReply: async (replyData) => {
+    addReply: async (replyData, token) => {
         try {
-            const response = await axios.post(`${domain}/addReply`, replyData, {
-                headers: { "Content-Type": "application/json" },
+            return await axios.post(`${domain}/addReply`, replyData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`  // 토큰을 헤더에 포함
+                }
             });
-            return response;
+
         } catch (error) {
             console.error("❌ BoardApi addReply 에러:", error);
             throw error;

@@ -1,0 +1,45 @@
+.Top {
+    width: 100vw;
+    padding: 20px 0px;
+}
+
+.Gradient {
+    background: linear-gradient(to right,#00284C 50%,white);
+}
+.Bottom {
+    display: flex;
+}
+
+.Catchphrase {
+    color: white;
+    font-size: 90px;
+    font-weight: 900;
+}
+
+.Info{
+    color: white;
+    padding: 0;
+}
+
+.TestLink {
+    background-color: gold;
+    padding: 50px;
+}
+
+.Lastest{
+    width: 300px; height: 200px;
+    position: relative;
+    &:hover .TestLink{
+        opacity: 100;
+    }
+}
+
+.LastestPic {
+    border-radius: 10px;
+    &:hover {
+        filter: brightness(0.7);
+        transition: 0.3s;
+    }
+
+
+}

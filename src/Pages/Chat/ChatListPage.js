@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ChatApi from "../../api/ChatApi";
 import { useNavigate } from "react-router-dom";
-import style from "../../Css/ChatLayout.module.css";
-function ChatList() {
+
+const ChatListPage = () => {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
 
@@ -24,16 +24,16 @@ function ChatList() {
   const enterChatRoom = (roomNum) => {
     // 채팅방으로 이동하는 로직 작성
     console.log(`Entering chat room ${roomNum}`);
-    navigate(`/groupChat/${roomNum}`);
+    navigate(`/chatting/${roomNum}`);
   };
 
   const createChatRoom = () => {
-    navigate("/chat/create");
+    navigate("/chat-create");
   };
 
   return (
-    <div className={style.ChatLayoutWrap}>
-      <h1 className="Category-Title">채팅방 목록</h1>
+    <div>
+      <h2>채팅방 목록</h2>
       <ul>
         {chatRooms.map((room) => (
           <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)}>
@@ -45,6 +45,6 @@ function ChatList() {
       <button onClick={createChatRoom}>생성</button>
     </div>
   );
-}
+};
 
-export default ChatList;
+export default ChatListPage;

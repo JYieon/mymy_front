@@ -1,0 +1,163 @@
+.ChatSidebarBtn {
+  margin: 20px;
+  float: right;
+  border: none;
+  background-color: white;
+}
+
+.ChatSidebar {
+  /* position: relative; */
+  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; */
+  width: 250px;
+  border-radius: 25px 25px 0 0;
+  padding: 5px;
+  & Button {
+    padding: 10px;
+    color: #00284c;
+    border: none;
+    font-size: 25px;
+    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
+.BeforeBtn {
+  margin: 20px;
+  float: left;
+  border: none;
+  background-color: white;
+}
+
+.SendBtn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+
+.ModalBtn {
+  color: white;
+  background-color: #00284c;
+  border: none;
+  font-size: 20px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.SidebarIcon {
+  width: 30px;
+  height: 30px;
+}
+
+/* 모임 통장 */
+
+.JointAccountMainArea {
+  background-color: whitesmoke;
+  padding: 20px 100px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  * {
+    text-align: center;
+  }
+}
+
+.JointAccountDetailedArea {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 10px 40px;
+  * {
+    text-align: center;
+  }
+}
+
+/* 목표 금액 */
+.TargetAmount {
+  display: none;
+}
+
+.UserTargetAmountList {
+  background-color: whitesmoke;
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 0px ;
+  padding: 0px 50px;
+
+  li {
+    margin: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    font-weight: 600;
+    & > * {
+      margin: 10px 10px;
+    }
+  }
+}
+
+.UserTargetAmount {
+  color: gray;
+  font-size: 15px;
+  font-weight: 600;
+
+}
+
+.UserPic {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+
+}
+
+.MasterUserPic {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 1px solid firebrick;
+}
+
+.TransactionHistoryList {
+  background-color: whitesmoke;
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 0px ;
+  padding: 0px 50px;
+  li {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    & > * {
+      /* background-color: antiquewhite; */
+      margin: 5px 40px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      font-size: 20px;
+
+    }
+    .UserInfo {
+      margin-left: 0px;
+
+    }
+    .UserTransactionHistory {
+      margin-right: 0px;
+    }
+    .Withdrawal{
+      color: tomato;
+    }
+    .Deposit{
+      color: dodgerblue;
+    }
+    .SubInfo {
+      font-size: 15px;
+      color: #ddd;
+    }
+  }
+
+
+}
+
