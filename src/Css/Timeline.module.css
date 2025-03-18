@@ -76,7 +76,7 @@
 
 /* 개별 투두 */
 .todoItem {
-  border: 1px solid #ddd;   
+  border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -97,7 +97,6 @@
   margin-top: 10px;
 }
 
-
 .timeInput {
   margin: 5px;
   padding: 0 5px;
@@ -106,8 +105,7 @@
   border-radius: 100px;
   background: none;
   width: fit-content;
-  box-shadow:0 0 20px #ddd;
-
+  box-shadow: 0 0 20px #ddd;
 }
 
 .timeDash {
@@ -116,7 +114,7 @@
 }
 
 .taskInput {
-    color: #00284C;
+  color: #00284c;
   padding: 5px 20px;
   margin: 10px 0;
   border-radius: 100px;
@@ -124,8 +122,7 @@
   background: none;
   font-size: 12px;
   /* background-color: whitesmoke; */
-  box-shadow:0 0 20px #ddd; ;
-
+  box-shadow: 0 0 20px #ddd;
 }
 
 .subTaskInput {
@@ -139,11 +136,10 @@
   font-size: 10px;
   box-sizing: border-box;
   border-radius: 20px;
-  box-shadow:0 0 20px #ddd;
-
+  box-shadow: 0 0 20px #ddd;
 }
 .addButton {
-    float: right;
+  float: right;
   background: #4caf50;
   color: white;
   padding: 10px 15px;
@@ -161,14 +157,15 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  margin: 10px;
 }
 
 .updateButton {
-    background: #007bff;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  
+  margin: 10px;
+  background: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}

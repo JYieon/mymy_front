@@ -226,13 +226,13 @@ const Timeline = () => {
               </div>
             ))}
           </div>
-
-          <button className={style.saveButton} onClick={handleSaveTasks}>
-            💾 저장
-          </button>
           <button className={style.updateButton} onClick={handleUpdateTasks}>
             🔄 수정
           </button>
+          <button className={style.saveButton} onClick={handleSaveTasks}>
+            💾 저장
+          </button>
+
         </div>
       </div>
     </div>
