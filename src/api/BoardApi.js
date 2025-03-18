@@ -52,10 +52,14 @@ const BoardApi = {
 
 
     // 게시글 수정
-    modify: async (postData) => {
+    modify: async (postData, token) => {
+        console.log("토큰 확인:", token);
         try {
             return await axios.post(`${domain}/modify`, postData, {
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`  // 수정 요청에 토큰 추가
+                },
             });
         } catch (error) {
             console.error("❌ BoardApi modify 에러:", error);
@@ -75,9 +79,11 @@ const BoardApi = {
     },
 
     // 게시글 삭제
-    delete: async (boardNo) => {
+    delete: async (boardNo, token) => {
         try {
-            return await axios.delete(`${domain}/delete/${boardNo}`);
+            return await axios.delete(`${domain}/delete/${boardNo}`, {
+                headers: { "Authorization": `Bearer ${token}`}
+            });
         } catch (error) {
             console.error("❌ BoardApi delete 에러:", error);
             throw error;

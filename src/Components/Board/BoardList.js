@@ -221,7 +221,7 @@ const BoardList = () => {
                 <h3 className="PostTitle">{post.title} </h3>
 
                 <div className="PostInfo">
-                  <div>조회수<span className="value">{post.boardOpen}</span></div>
+                  <div>조회수<span className="value">{post.boardCnt}</span></div>
 
                   <span>좋아요 {post.boardLikes}</span>
                 </div>

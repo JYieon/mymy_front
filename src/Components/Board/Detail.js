@@ -95,11 +95,27 @@ const Detail = () => {
         }
     };
 
-    // 게시글 삭제
-    const deletePost = async () => {
+     const deletePost = async () => {
+        const token = localStorage.getItem("accessToken");
+    
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+    
+        // JWT 토큰 디코딩하여 로그인한 사용자 ID 가져오기
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const loggedInUserId = decodedToken.sub; // 로그인한 사용자 ID
+    
+        // 작성자 ID와 비교
+        if (data.id !== loggedInUserId) {
+            alert("작성자만 삭제할 수 있습니다.");
+            return;
+        }
+    
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
-                const res = await BoardApi.delete(boardNo);
+                const res = await BoardApi.delete(boardNo, token);
                 if (res.status === 200) {
                     alert("게시글이 삭제되었습니다.");
                     navigate("/board/list");
@@ -113,6 +129,23 @@ const Detail = () => {
 
     // 게시글 수정 페이지 이동
     const handleModify = () => {
+        const token = localStorage.getItem("accessToken");
+    
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+    
+        // JWT 토큰 디코딩하여 로그인한 사용자 ID 가져오기
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const userId = decodedToken.sub; 
+    
+        // 게시글 작성자와 로그인한 사용자 비교
+        if (data.id !== userId) {
+            alert("작성자만 수정할 수 있습니다.");
+            return;
+        }
+    
         navigate(`/board/modifyForm/${data.boardNo}`);
     };
 
