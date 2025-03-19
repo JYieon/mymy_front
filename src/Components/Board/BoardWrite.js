@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // ✅ URL 가져오기
+import { useNavigate, useLocation } from "react-router-dom"; 
 import axios from "axios";
-import $ from "jquery";
+import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
 import SummernoteLite from "react-summernote-lite"; 
 import "react-summernote-lite/dist/summernote-lite.min.css";
@@ -10,7 +10,7 @@ const BoardWrite = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const editorRef = useRef(null);
-
+  const token = localStorage.getItem("accessToken")
   // URL에서 category 값 가져오기
   const searchParams = new URLSearchParams(location.search);
   const initialCategory = searchParams.get("category") ? parseInt(searchParams.get("category")) : 1;
@@ -55,7 +55,7 @@ const BoardWrite = () => {
   // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
   useEffect(() => {
     if (category === 2) {
-      BoardApi.getBoardList(1, 1).then((res) => {
+      BoardApi.getBoardList(1, 1, token).then((res) => {
         setPlans(res.data.boardList);
       });
     }
@@ -124,13 +124,19 @@ const handleSubmit = async (e) => {
 
     // 토큰을 Authorization 헤더에 포함시켜 API 요청
     const res = await BoardApi.writeSave(postData, token);
+    console.log("timeline",postData)
     if (res.status === 200) {
-      alert("게시글이 등록되었습니다!");
-      navigate(`/board/list?category=${category}`);
+      if (category===2){
+        alert("게시글이 등록되었습니다!");
+        navigate(`/board/list?category=${category}`);
+      }
     }
   } catch (error) {
     alert("게시글 등록 실패");
     console.error(error);
+  }
+  if (category===1){
+    navigate(`/board/modify/84`);
   }
 };
 

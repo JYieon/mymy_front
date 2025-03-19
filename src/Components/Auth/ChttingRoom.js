@@ -138,7 +138,7 @@ const ChttingRoom = () => {
   };
 
   // ChatSidebar.js로 이동
-  
+
   // const inviteChatUser = async () => {
   //   setInviteOpen(!inviteOpen);
   //   const res = await ChatApi.inviteChatUser(invite, roomNum);
@@ -209,31 +209,31 @@ const ChttingRoom = () => {
     //   </SideMenu>
     // </ChatContainer>
     // <>
-      <div className={style.GroupChatContiner}>
-        <div className={style.ChatContainer}>
+      <div className={style.ChatLayoutWrap}>
+        <div className={style.GroupChatContiner}>
           <h1 className={style.RoomTitle}>{chatInfo.roomName} {roomNum}</h1>
 
-          {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
-          <ul className={style.MessageList}>
-            <Message chatMessages={messages} />
-            <li ref={bottomRef} />
-          </ul>
-          <div className={style.Mymessages}>
-            <textarea
-              rows="3"
-              name="message"
-              ref={textareaRef}
-              onKeyDown={submitMessage}
-              onChange={(e) => setMessage(e.target.value)}
-              className={style.Textarea}
-              value={message}
-            />
-            <button className={style.SendBtn} onClick={sendMessage}>
-            <img src={SendIcon} className={style.SendIcon} alt=""/>
-            </button>
-          </div>
+        {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
+        <ul className={style.MessageList}>
+          <Message chatMessages={messages} />
+          <li ref={bottomRef} />
+        </ul>
+        <div className={style.Mymessages}>
+          <textarea
+            rows="3"
+            name="message"
+            ref={textareaRef}
+            onKeyDown={submitMessage}
+            onChange={(e) => setMessage(e.target.value)}
+            className={style.Textarea}
+            value={message}
+          />
+          <button className={style.SendBtn} onClick={sendMessage}>
+            <img src={SendIcon} className={style.SendIcon} alt="" />
+          </button>
         </div>
       </div>
+    </div>
   );
 };
 

@@ -1,0 +1,13 @@
+.BoardWriteContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.TimelineWrap {
+    margin-top: 50px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    /* background-color: tomato; */
+}

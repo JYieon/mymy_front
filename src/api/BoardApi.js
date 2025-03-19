@@ -21,7 +21,7 @@ const BoardApi = {
     // 게시글 목록 조회 (카테고리 추가)
     getBoardList: async (page, category, token) => {
         return await axios.get(`${domain}/list`, {
-            params: { page, category, token},  // 쿼리 파라미터로 전달
+            params: { page, category, token },  // 쿼리 파라미터로 전달
         }).catch(error => {
             console.error("게시글 목록 조회 실패:", error);
             throw error;
@@ -52,10 +52,14 @@ const BoardApi = {
 
 
     // 게시글 수정
-    modify: async (postData) => {
+    modify: async (postData, token) => {
         try {
             return await axios.post(`${domain}/modify`, postData, {
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json" ,
+                    "Authorization": `Bearer ${token}`,
+                },
+                
             });
         } catch (error) {
             console.error("❌ BoardApi modify 에러:", error);
@@ -84,29 +88,29 @@ const BoardApi = {
         }
     },
 
+    // 사용자가 좋아요 눌렀는지 확인
+    checkLike: async (boardNo, token) => {
+        const res = await axios.get(`${domain}/likes/check`, {
+            params: { boardNo, token } // 
+        }); return res.data; // 
+    },
+
     // 좋아요 상태와 개수 확인
-    checkLike: async (boardNo) => {
-        try {
-            const res = await axios.get(`${domain}/like/check?boardNo=${boardNo}`);
-            return res.data; // { liked: true/false, likes: number } 형태로 반환
-        } catch (error) {
-            console.error("❌ BoardApi checkLike 에러:", error);
-            throw error;
-        }
+    getLikes: async (boardNo) => {
+        const res = await axios.get(`${domain}/likes/count`, { params: { boardNo } });
+        return res.data.likes;  // 
     },
 
     // 좋아요 토글
-    toggleLike: async (boardNo) => {
+    toggleLike: async (boardNo, token) => {
         try {
-            const res = await axios.post(
-                `${domain}/like/toggle`,
-                { boardNo: boardNo },
-                { headers: { "Content-Type": "application/json" } }
-            );
+            const res = await axios.post(`${domain}/likes/toggle`, null, {
+                params: { boardNo, token }
+            });
             return res.data;  // { liked: true/false, likes: number }
         } catch (error) {
             console.error("❌ BoardApi toggleLike 에러:", error);
-            throw error;
+            throw null;
         }
     },
     // 북마크 상태 확인

@@ -20,15 +20,14 @@ const MyComment = () => {
 
     return (
         <div className="mycomment-container">
-            <h2>내가 쓴 댓글</h2>
+            <h1>내가 쓴 댓글</h1>
             {comments.length === 0 ? (
-                <p className="no-data">작성한 댓글이 없습니다.</p>
+                <p className="noDataContext">작성한 댓글이 없습니다.</p>
             ) : (
                 <ul className="mycomment-list">
                     {comments.map((comment) => (
                         <li key={comment.boardNo} className="mycomment-item">
                             <Link to={`/board/detail/${comment.boardNo}`}>
-                                <h3>📌 {comment.originalPost}</h3>
                                 <p className="comment-content">"{comment.content}"</p>
                                 <p className="comment-date">{comment.date}</p>
                             </Link>

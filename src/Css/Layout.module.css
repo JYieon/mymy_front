@@ -1,7 +1,6 @@
 .LayoutWrap {
   display: flex;
   margin: 0 -8px;
-
 }
 
 :global .link {
@@ -10,7 +9,7 @@
 }
 /* 그림자 */
 :global .Shadow {
-  background-color: white;
+  /* background-color: white; */
   box-shadow: 0px 10px 20px lightgray;
 }
 
@@ -40,7 +39,19 @@
   font-weight: 600;
 }
 
+:global .ContentSection {
+  /* background-color: aquamarine; */
+  border-radius: 20px;
+  margin: 0px;
+  min-height: 700px;
+  min-width: 600px;
+  width: 1000px;
+  /* width: fit-content; */
+  
+}
+
 .Logo {
   font-family: "ADLaMDisplay-Regular";
   font-size: 25px;
 }
+

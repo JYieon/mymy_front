@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ChatApi from "../../api/ChatApi";
 import { useNavigate } from "react-router-dom";
-
+import style from "../../Css/ChatLayout.module.css";
 function ChatList() {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ function ChatList() {
     // 서버로부터 채팅방 목록을 가져오는 API 호출
     const getChatRoom = async () => {
       try {
-        const token = localStorage.getItem("accessToken")
+        const token = localStorage.getItem("accessToken");
         const res = await ChatApi.getChatList(token);
         console.log(res.data);
         setChatRooms(res.data);
@@ -32,14 +32,11 @@ function ChatList() {
   };
 
   return (
-    <div>
+    <div className={style.ChatLayoutWrap}>
       <h1 className="Category-Title">채팅방 목록</h1>
       <ul>
         {chatRooms.map((room) => (
-          <li
-            key={room.roomNum}
-            onClick={() => enterChatRoom(room.roomNum)}
-          >
+          <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)}>
             <p>{room.roomName}</p>
             {/* <p>room.regDate</p> */}
           </li>

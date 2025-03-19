@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../Css/BoardList.css";
+import style from "../../Css/BoardList.module.css";
 import { toBeChecked } from "@testing-library/jest-dom/matchers";
 
+
+// 썸네일이 보이는 게시판
 const BoardList = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,32 +42,62 @@ const BoardList = () => {
       : "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
   };
 
+  const filterBoardList = (boardList, token) => {
+    let loggedInUserId = null;
+
+    if (token) {
+        try {
+          //console.log("저장된 토큰:", token);
+            const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
+            loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
+           // console.log("로그인한 사용자 ID:", loggedInUserId);
+        } catch (error) {
+            console.error("토큰 디코딩 오류:", error);
+        }
+    }
+
+    console.log("📝 필터링 전 게시글 목록:", boardList);
+
+    const filteredList = boardList.filter(
+        (post) => post.boardOpen === 1 || (loggedInUserId && post.id === loggedInUserId)
+    );
+
+    // console.log("필터링 후 게시글 목록:", filteredList);
+
+    return filteredList;
+};
+
+
+  
   const fetchBoardList = async (page, category, token) => {
     try {
-      let params = { page, category, token };
-      if (category === 1) {
-        params.token = localStorage.getItem("accessToken");
-      }
-      const response = await axios.get(
-        `http://localhost:8080/mymy/board/list`,
-        { params }
-      );
+        let params = { page, category, token };
+        if (category === 1) {
+            params.token = localStorage.getItem("accessToken");
+        }
+        const response = await axios.get(
+            `http://localhost:8080/mymy/board/list`,
+            { params }
+        );
 
-      const updatedPageState = { ...pageState };
-      updatedPageState[category] = {
-        boardList: response.data.boardList.map((post) => ({
-          ...post,
-          thumbnail: extractThumbnail(post),
-        })),
-        currentPage: response.data.currentPage,
-        totalPages: response.data.totalPages,
-      };
-      setPageState(updatedPageState);
-      setIsSearching(false);
+        // 비공개 글 필터링 추가
+        const filteredBoardList = filterBoardList(response.data.boardList, localStorage.getItem("accessToken"));
+
+        const updatedPageState = { ...pageState };
+        updatedPageState[category] = {
+            boardList: filteredBoardList.map((post) => ({
+                ...post,
+                thumbnail: extractThumbnail(post),
+            })),
+            currentPage: response.data.currentPage,
+            totalPages: response.data.totalPages,
+        };
+        setPageState(updatedPageState);
+        setIsSearching(false);
     } catch (error) {
-      console.error("게시글 목록 불러오기 실패:", error);
+        console.error("게시글 목록 불러오기 실패:", error);
     }
-  };
+};
 
   const searchBoardList = async (page) => {
     if (keyword.trim() === "") return;
@@ -157,10 +189,10 @@ const BoardList = () => {
   const { boardList, currentPage, totalPages } = pageState[category];
 
   return (
-    <div className="board-container">
+    <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
 
-      <div className="category-buttons">
+      <div className={style.categoryBtns}>
         <button
           className={category === 1 ? "active" : ""}
           onClick={() => handleCategoryChange(1)}
@@ -182,10 +214,10 @@ const BoardList = () => {
       </div>
 
       {(category === 1 || category === 2) && (
-        <div className="search-container Shadow">
+        <div className={`${style.searchContainer} Shadow`}>
           <select
             value={searchType}
-            className="Search-Type-Selector"
+            className={style.SearchTypeSelector}
             onChange={(e) => setSearchType(e.target.value)}
           >
             <option value="title">제목</option>
@@ -196,57 +228,71 @@ const BoardList = () => {
           </select>
           <input
             type="text"
-            className="Search-Keyword"
+            className={style.SearchKeyword}
             placeholder="검색어 입력"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
 
-          <button className="Search-Button" onClick={handleSearch}>
+          <button className={style.SearchBtn} onClick={handleSearch}>
             검색
           </button>
         </div>
       )}
 
-      <div className="board-grid">
-        {boardList.map((post) => (
-          <div key={post.boardNo} className="board-item">
-            <Link to={`/board/detail/${post.boardNo}`}>
-              <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
-              <h3>{post.title}</h3>
-            </Link>
-          </div>
-        ))}
-      </div>
+      <div className={style.boardGrid}>
+        {boardList.map((post) => {
+          console.log(post);
+          return (
+            <div key={post.boardNo} className={style.boardItem}>
+              <Link to={`/board/detail/${post.boardNo}`} className="link">
+                <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
+                <h3 className="PostTitle">
+                  {post.boardOpen === 0 ? "🔒 " : ""}{post.title} 
+                </h3>
 
+                <div className="PostInfo">
+                  <div>조회수<span className="value">{post.boardCnt}</span></div>
+
+                  <span>좋아요 {post.boardLikes}</span>
+                </div>
+                <Link to={`/profile/${post.id}`} className="WriterId">{post.id}
+                </Link>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
       {/* 글쓰기 버튼 추가 */}
-      <button className="write-post-btn" onClick={handleWritePost}>
+      <button className={style.writePostBtn} onClick={handleWritePost}>
         게시글 작성
       </button>
 
-      {totalPages > 1 && (
-        <div className="pagination">
-          {currentPage > 1 && (
-            <button onClick={() => handlePageChange(currentPage - 1)}>
-              이전
-            </button>
-          )}
-          {[...Array(totalPages).keys()].map((page) => (
-            <button
-              key={page + 1}
-              onClick={() => handlePageChange(page + 1)}
-              className={currentPage === page + 1 ? "current" : ""}
-            >
-              {page + 1}
-            </button>
-          ))}
-          {currentPage < totalPages && (
-            <button onClick={() => handlePageChange(currentPage + 1)}>
-              다음
-            </button>
-          )}
-        </div>
-      )}
+      <div className={style.Paginations}>
+        {totalPages > 1 && (
+          <div className={style.Pagination}>
+            {currentPage > 1 && (
+              <button onClick={() => handlePageChange(currentPage - 1)}>
+                이전
+              </button>
+            )}
+            {[...Array(totalPages).keys()].map((page) => (
+              <button
+                key={page + 1}
+                onClick={() => handlePageChange(page + 1)}
+                className={currentPage === page + 1 ? "current" : ""}
+              >
+                {page + 1}
+              </button>
+            ))}
+            {currentPage < totalPages && (
+              <button onClick={() => handlePageChange(currentPage + 1)}>
+                다음
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
