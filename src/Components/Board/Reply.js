@@ -108,6 +108,7 @@ const Reply = ({ boardNo, category }) => {
 
     // 댓글 삭제
     const handleDeleteReply = async (replyNo) => {
+        console.log('replyNo',replyNo);
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
                 await api.deleteReply(replyNo, token);
@@ -145,7 +146,7 @@ const Reply = ({ boardNo, category }) => {
     return replies.map((reply) => (
       <div key={reply.repNo} className={`Shadow ${style.replyItem}`}>
         <p>
-          <span className={style.date}> {formatDate(reply.repDate)}</span>
+          <span className={style.id}> {reply.id}</span>
           <span className={style.date}> {formatDate(reply.repDate)}</span>
         </p>
         <span className={style.content}>{reply.repContent}</span>
@@ -167,7 +168,7 @@ const Reply = ({ boardNo, category }) => {
 
         {/* 대댓글 입력창 */}
         {showReplyInput[reply.repNo] && (
-          <div className={`Shadow ${style.newReplyContainer}`}>
+          <div className={`${style.newReplyContainer}`}>
             <textarea
               className={style.textarea}
               value={replyContent[reply.repNo] || ""}
@@ -182,7 +183,7 @@ const Reply = ({ boardNo, category }) => {
               className={style.newReplyBtn}
               onClick={() => handleAddReply(reply.repNo)}
             >
-              답글 등록
+              작성
             </button>
           </div>
         )}
@@ -210,7 +211,7 @@ const Reply = ({ boardNo, category }) => {
         <button onClick={() => handleAddReply(0)} className={style.newReplyBtn}>
           작성
         </button>
-      </div>
+      </div>w
     </div>
   );
 };
