@@ -3,8 +3,9 @@ import BoardWrite from "../../Components/Board/BoardWrite";
 import Timeline from "../../Components/Board/Timeline";
 import { motion } from "framer-motion";
 import style from "../../Css/BoardWritePage.module.css";
+import KakaoMap from "../../Components/Board/KakaoMap";
 
-import KakaoMapCom from "../../Components/KakaoMap/KakaoMapCom";
+
 const BoardWritePage = () => {
   const [TimelineOpen, setTimelineOpen] = useState(false);
 
@@ -36,7 +37,7 @@ const BoardWritePage = () => {
         >
           {/* <h1>📅 여행 타임라인</h1> */}
           <div className={style.TimelineWrap}>
-            <KakaoMapCom />
+            <KakaoMap />
             <Timeline />
           </div>
         </motion.div>
