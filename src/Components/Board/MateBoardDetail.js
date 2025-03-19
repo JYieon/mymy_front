@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MateBoardApi from "../../api/MateBoardApi";
 import Reply from "./Reply"; 
+import style from "../../Css/BoardDetail.module.css"
 
 const MateBoardDetail = () => {
     const { boardNo } = useParams();

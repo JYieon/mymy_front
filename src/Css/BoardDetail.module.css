@@ -1,0 +1,115 @@
+.boardDetailContainer{
+    margin: 20px;
+    /* background-color: azure; */
+}
+
+.postContainer{
+    /* background-color: aquamarine; */
+    display: flex;
+    flex-direction: column;
+
+}
+
+.postInfoContainer {
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.postInfo {
+    font-size: 13px;
+}
+.title {
+    margin:20px;
+    
+    
+}
+.writer {
+    float: left;
+    margin: 5px ;
+
+}
+
+hr {
+    width: 100%;
+}
+
+.postStatus{
+    float: right;
+
+    span {
+        margin: auto 5px;
+    }
+}
+.date {
+    float: right;
+    margin: 5px ;
+
+    
+}
+
+.content{
+    margin: auto 5px;
+    /* word-spacing: 1px; */
+    padding: 5px;
+    line-height: 20px;
+
+}
+.hashtag {
+    margin-right: 10px;
+    font: 15px;
+    color: gray;
+    cursor: pointer;
+    &:hover{
+        color: lightgray;
+
+    }
+}
+
+
+.bookmarkBtn {
+    background: none;
+    border: none;
+    float: right;
+
+}
+.bookmarkIcon {
+    fill:white;
+    /* left: 85%;
+    top: 80%; 
+    display: table-cell;
+    position: absolute; */
+    cursor: pointer;
+    &:hover {
+        fill: #00284C;
+    }
+}
+
+
+.likeBtn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.likeIcon {
+    
+}
+.userReaction {
+    display: flex;
+    justify-content: space-between;
+}
+.editBtnContainer{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-bottom: auto;
+    button {
+        background: none;
+        border: none;
+        color: gray;
+    }
+}

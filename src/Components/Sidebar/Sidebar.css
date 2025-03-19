@@ -74,11 +74,3 @@ li {
   }
 }
 
-.ContentSection {
-  min-height: 600px;
-  height: 1000px;
-  min-width: 500px;
-  width: 800px;
-  border-radius: 20px;
-  margin: 20px;
-}

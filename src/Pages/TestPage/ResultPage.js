@@ -1,14 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
-import styles from "../../Css/TestPage.module.css";
+import style from "../../Css/TestPage.module.css";
 import { useState, useEffect } from "react";
 import MypageApi from "../../api/MypageApi";
 
 const ResultPage = () => {
   const location = useLocation();
   const token = localStorage.getItem("accessToken");  
-
-  // 변환된 여행자 유형을 저장할 상태
-  const [userResult, setUserResult] = useState("");
+  const [UserResult, setUserResult] = useState(location.state.result);
+  console.log(location.state);
+  
+  const ResultShare=()=>{};
 
   // 여행자 유형 변환 함수
   const getTagName = (mbti) => {
@@ -59,14 +60,13 @@ const ResultPage = () => {
   };
 
   return (
-    <div className={`${styles.TestLayout} Shadow`}>
-      <h2>당신은 {location.state.result} 입니다.</h2>
-      <h2>여행자 유형: {userResult}</h2>  {/* 변환된 유형 표시 */}
-
-      <Link className="link" to="/test">
+    <div className={`${style.TestLayout} Shadow`}>
+      <h1>당신은 {UserResult} 입니다.</h1>
+      <Link className={`link ${style.testAgain}`} to="/test">
         다시하기
       </Link>
-      <button className="ResultShare"> share btn</button>
+      <button className="ResultSave">저장하기</button>
+      <button className="ResultShare">공유하기</button>
     </div>
   );
 };
