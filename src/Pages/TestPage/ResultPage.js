@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import styles from "../../Css/TestPage.module.css";
+import style from "../../Css/TestPage.module.css";
 import { useState } from "react";
 
 const ResultPage = () => {
   const location = useLocation();
   const [UserResult, setUserResult] = useState(location.state.result);
   console.log(location.state);
+  
+  const ResultShare=()=>{};
 
   switch (UserResult) {
     case "ISTP":
@@ -63,13 +65,13 @@ const ResultPage = () => {
 
   console.log("ddd", UserResult);
   return (
-    <div className={`${styles.TestLayout} Shadow`}>
-      당신은 {location.state.result} 입니다.
-      당신은 {UserResult} 입니다.
-      <Link className="link" to="/test">
+    <div className={`${style.TestLayout} Shadow`}>
+      <h1>당신은 {UserResult} 입니다.</h1>
+      <Link className={`link ${style.testAgain}`} to="/test">
         다시하기
       </Link>
-      <button className="ResultShare"> share btn</button>
+      <button className="ResultSave">저장하기</button>
+      <button className="ResultShare">공유하기</button>
     </div>
   );
 };
