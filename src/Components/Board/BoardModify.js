@@ -5,6 +5,7 @@ import $ from "jquery";
 import BoardApi from "../../api/BoardApi";
 import SummernoteLite from "react-summernote-lite";
 import "react-summernote-lite/dist/summernote-lite.min.css";
+import ChatApi from "../../api/ChatApi";
 
 const BoardModify = () => {
     const { boardNo } = useParams();
@@ -14,11 +15,12 @@ const BoardModify = () => {
     const [tagInput, setTagInput] = useState("");
     const [boardCategory, setBoardCategory] = useState(1);
     const [authorId, setAuthorId] = useState(""); // 작성자 ID 저장
+    const [loggedInUserId, setLoggedInUserId] = useState("")
     const editorRef = useRef(null);
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
 
-    // ✅ 페이지 진입 시 로그인한 사용자와 작성자를 비교
+    // 페이지 진입 시 로그인한 사용자와 작성자를 비교
     useEffect(() => {
         const fetchData = async () => {
             if (!token) {
@@ -27,9 +29,18 @@ const BoardModify = () => {
                 return;
             }
 
-            // 🔍 토큰에서 로그인한 사용자 ID 가져오기
-            const decodedToken = JSON.parse(atob(token.split(".")[1]));
-            const loggedInUserId = decodedToken.sub;
+            // 토큰에서 로그인한 사용자 ID 가져오기
+            const userInfo = async () => {
+                try {
+                  const res = await ChatApi.getUserInfo(token);
+                  if (res.data) {
+                    setLoggedInUserId(res.data.id);
+                  }
+                } catch (error) {
+                  console.log("사용자 정보 가져오기 실패 : ", error);
+                }
+              };
+              userInfo();
 
             try {
                 const res = await BoardApi.detail(boardNo);
@@ -38,7 +49,7 @@ const BoardModify = () => {
                     setTitle(title);
                     setBoardOpen(boardOpen);
                     setBoardCategory(boardCategory);
-                    setAuthorId(id); // ✅ 작성자 ID 저장
+                    setAuthorId(id); // 작성자 ID 저장
 
                     if (boardCategory === 1) {
                         setHashtags([]);
@@ -46,8 +57,8 @@ const BoardModify = () => {
                         setHashtags(hashtags || []);
                     }
 
-                    // ✅ 작성자와 로그인한 사용자가 다르면 수정 페이지 접근 차단
-                    if (id !== loggedInUserId) {
+                    // 작성자와 로그인한 사용자가 다르면 수정 페이지 접근 차단
+                    if (authorId !== loggedInUserId) {
                         alert("작성자만 수정할 수 있습니다.");
                         navigate(`/board/detail/${boardNo}`);
                         return;
@@ -112,18 +123,43 @@ const BoardModify = () => {
         setHashtags(hashtags.filter((tag) => tag !== tagToRemove));
     };
 
-    // 게시글 수정 요청
     const handleSubmit = async (e) => {
         e.preventDefault();
         const content = $(editorRef.current).summernote("code");
-
-        const postData = { boardNo, title, boardOpen, content };
-
-        // 계획 게시글이면 해시태그 데이터 전송 안 함
+    
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+    
+        // JWT 토큰에서 로그인한 사용자 ID 추출
+        let loggedInUserId = null;
+        try {
+            const decodedToken = JSON.parse(atob(token.split(".")[1]));
+            loggedInUserId = decodedToken.sub;
+        } catch (error) {
+            console.error("❌ JWT 디코딩 실패:", error);
+            alert("토큰 오류: 다시 로그인해주세요.");
+            return;
+        }
+    
+        // 서버로 보낼 데이터 구성
+        const postData = { 
+            boardNo, 
+            title, 
+            boardOpen, 
+            content, 
+            id: loggedInUserId // id 추가
+        };
+    
+        // 계획 게시글이 아니면 해시태그도 포함
         if (boardCategory !== 1) {
             postData.hashtags = hashtags;
         }
-
+    
+        //console.log("수정 요청 데이터:", postData);
+        //console.log("보낼 토큰:", token);
+    
         try {
             const res = await BoardApi.modify(postData, token);
             if (res.status === 200) {
@@ -131,9 +167,11 @@ const BoardModify = () => {
                 navigate(`/board/detail/${boardNo}`);
             }
         } catch (error) {
+            console.error("❌ 게시글 수정 실패:", error);
             alert("게시글 수정에 실패했습니다.");
         }
     };
+    
 
     return (
         <div>

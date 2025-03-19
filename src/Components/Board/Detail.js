@@ -1,4 +1,5 @@
 import BoardApi from "../../api/BoardApi";
+import ChatApi from "../../api/ChatApi"; 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Reply from "./Reply";
@@ -7,25 +8,43 @@ const Detail = () => {
     const { boardNo } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState(null);
-    const [liked, setLiked] = useState(false); // 좋아요 상태
-    const [bookmarked, setBookmarked] = useState(false); // 북마크 상태
-    const [hashtags, setHashtags] = useState([]); // 해시태그 상태
+    const [liked, setLiked] = useState(false);
+    const [bookmarked, setBookmarked] = useState(false);
+    const [hashtags, setHashtags] = useState([]);
+    const [loggedInUserId, setLoggedInUserId] = useState("");
     const token = localStorage.getItem("accessToken");
+
+    // 로그인한 사용자 정보 가져오기
+    useEffect(() => {
+        if (!token) return;
+
+        const fetchUserInfo = async () => {
+            try {
+                const res = await ChatApi.getUserInfo(token);
+                if (res.data) {
+                    setLoggedInUserId(res.data.id);
+                    console.log("🔑 로그인한 사용자 ID:", res.data.id);
+                }
+            } catch (error) {
+                console.error("❌ 사용자 정보 가져오기 실패:", error);
+            }
+        };
+        fetchUserInfo();
+    }, [token]);
 
     // 게시글 상세 정보 불러오기
     useEffect(() => {
         const fetchData = async () => {
-            try {                
+            try {
                 const res = await BoardApi.detail(boardNo);
                 if (res.status === 200) {
-                    // console.log("받은 데이터:", res.data);
-                    setData(res.data.post);         // 게시글 정보
-                    setHashtags(res.data.hashtags); // 해시태그
+                    setData(res.data.post);
+                    setHashtags(res.data.hashtags);
                     checkBookmark();
-                    checkLike(); // 좋아요 여부 및 개수 업데이트
+                    checkLike();
                 }
             } catch (error) {
-                console.error("게시글 불러오기 실패:", error);
+                console.error("❌ 게시글 불러오기 실패:", error);
             }
         };
         fetchData();
@@ -34,42 +53,37 @@ const Detail = () => {
     // 좋아요 상태 및 개수 확인
     const checkLike = async () => {
         try {
-            const likeRes = await BoardApi.checkLike(boardNo, token); // 좋아요 상태 확인
-            const likesRes = await BoardApi.getLikes(boardNo); // 좋아요 개수 확인
+            const likeRes = await BoardApi.checkLike(boardNo, token);
+            const likesRes = await BoardApi.getLikes(boardNo);
 
-            setLiked(likeRes.liked); // 사용자 좋아요 상태
-            setData((prev) => prev ? { ...prev, boardLikes: likesRes } : prev); // 게시글 좋아요 개수 업데이트
+            setLiked(likeRes.liked);
+            setData((prev) => prev ? { ...prev, boardLikes: likesRes } : prev);
         } catch (error) {
-            console.error("좋아요 상태 확인 실패:", error);
+            console.error("❌ 좋아요 상태 확인 실패:", error);
         }
     };
 
-    // 좋아요 토글 (UI 즉시 반영 후 서버 응답으로 다시 업데이트)
+    // 좋아요 토글
     const toggleLike = async () => {
         if (!data) return;
 
-        const newLiked = !liked; // 좋아요 상태 반전
-        const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1; // 좋아요 개수 반전
+        const newLiked = !liked;
+        const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
 
-        // UI 즉시 업데이트
         setLiked(newLiked);
         setData((prev) => (prev ? { ...prev, boardLikes: newLikes } : prev));
 
         try {
             const res = await BoardApi.toggleLike(boardNo, token);
             if (res) {
-                // 서버에서 받은 최종 상태로 업데이트
                 setLiked(res.liked);
                 setData((prev) => prev ? { ...prev, boardLikes: res.likes } : prev);
-                
-                 // 추가: 목록에서 boardLikes 값 갱신 (BoardList에서 fetchBoardList 다시 실행)
-            if (window.updateBoardList) {
-                window.updateBoardList();  
-            }
-            
+                if (window.updateBoardList) {
+                    window.updateBoardList();
+                }
             }
         } catch (error) {
-            console.error("좋아요 토글 실패:", error);
+            console.error("❌ 좋아요 토글 실패:", error);
         }
     };
 
@@ -79,7 +93,7 @@ const Detail = () => {
             const res = await BoardApi.checkBookmark(boardNo, token);
             setBookmarked(res.data);
         } catch (error) {
-            console.error("북마크 상태 확인 실패", error);
+            console.error("❌ 북마크 상태 확인 실패", error);
         }
     };
 
@@ -88,31 +102,26 @@ const Detail = () => {
         try {
             const success = await BoardApi.toggleBookmark(boardNo, token);
             if (success) {
-                setBookmarked((prev) => !prev); // UI에서 즉시 반영
+                setBookmarked((prev) => !prev);
             }
         } catch (error) {
-            console.error("북마크 토글 실패", error);
+            console.error("❌ 북마크 토글 실패", error);
         }
     };
 
-     const deletePost = async () => {
-        const token = localStorage.getItem("accessToken");
-    
+    // 게시글 삭제
+    const deletePost = async () => {
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
         }
-    
-        // JWT 토큰 디코딩하여 로그인한 사용자 ID 가져오기
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const loggedInUserId = decodedToken.sub; // 로그인한 사용자 ID
-    
-        // 작성자 ID와 비교
+
+        // 작성자 ID와 로그인한 사용자 ID 비교
         if (data.id !== loggedInUserId) {
             alert("작성자만 삭제할 수 있습니다.");
             return;
         }
-    
+
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
                 const res = await BoardApi.delete(boardNo, token);
@@ -121,7 +130,7 @@ const Detail = () => {
                     navigate("/board/list");
                 }
             } catch (error) {
-                console.error("게시글 삭제 실패", error);
+                console.error("❌ 게시글 삭제 실패", error);
                 alert("게시글 삭제 중 오류가 발생했습니다.");
             }
         }
@@ -129,27 +138,20 @@ const Detail = () => {
 
     // 게시글 수정 페이지 이동
     const handleModify = () => {
-        const token = localStorage.getItem("accessToken");
-    
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
         }
-    
-        // JWT 토큰 디코딩하여 로그인한 사용자 ID 가져오기
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const userId = decodedToken.sub; 
-    
-        // 게시글 작성자와 로그인한 사용자 비교
-        if (data.id !== userId) {
+
+        // 작성자와 로그인한 사용자 비교
+        if (data.id !== loggedInUserId) {
             alert("작성자만 수정할 수 있습니다.");
             return;
         }
-    
+
         navigate(`/board/modifyForm/${data.boardNo}`);
     };
 
-    // 로딩 중 화면
     if (!data) {
         return <p>로딩 중...</p>;
     }

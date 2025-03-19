@@ -1,16 +1,36 @@
 import React, { useEffect, useState } from "react";
 import BoardApi from "../../api/BoardApi";
 import MateBoardApi from "../../api/MateBoardApi";
+import ChatApi from "../../api/ChatApi";
 
 const Reply = ({ boardNo, category }) => {
     const [replies, setReplies] = useState([]);
     const [newReply, setNewReply] = useState("");
     const [replyContent, setReplyContent] = useState({});
     const [showReplyInput, setShowReplyInput] = useState({});
+    const [loggedInUserId, setLoggedInUserId] = useState(""); 
     const token = localStorage.getItem("accessToken");
 
-    // **어떤 API를 사용할지 선택**
+    //  어떤 API를 사용할지 선택
     const api = category === 3 ? MateBoardApi : BoardApi;
+
+    // 로그인한 사용자 정보 가져오기
+    useEffect(() => {
+        if (!token) return;
+
+        const fetchUserInfo = async () => {
+            try {
+                const res = await ChatApi.getUserInfo(token);
+                if (res.data) {
+                    setLoggedInUserId(res.data.id);
+                    console.log("🔑 로그인한 사용자 ID:", res.data.id);
+                }
+            } catch (error) {
+                console.error("❌ 사용자 정보 가져오기 실패:", error);
+            }
+        };
+        fetchUserInfo();
+    }, [token]);
 
     // 댓글 목록 불러오기
     useEffect(() => {
@@ -20,7 +40,7 @@ const Reply = ({ boardNo, category }) => {
                 const tree = buildReplyTree(res.data);
                 setReplies(tree);
             } catch (error) {
-                console.error("댓글 불러오기 실패:", error);
+                console.error("❌ 댓글 불러오기 실패:", error);
             }
         };
 
@@ -56,30 +76,33 @@ const Reply = ({ boardNo, category }) => {
             return;
         }
 
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        // 🛠️ 서버에 보낼 데이터 구성
         const replyData = {
             boardNo: boardNo,
             repContent: content,
             parentNo: parentNo,
+            id: loggedInUserId, // ChatApi에서 가져온 사용자 ID 사용
         };
-        console.log(replyData);
+        
+        console.log("🚀 댓글 작성 요청 데이터:", replyData);
+        console.log("🔑 보낼 토큰:", token);
 
         try {
-            const token = localStorage.getItem("accessToken");  // 로그인 토큰 가져오기
-
-            if (!token) {
-                alert("로그인 후 댓글을 작성할 수 있습니다.");
-                return;
-            }
-            // 댓글 작성 요청
-            const res = await api.addReply(replyData, token);  // 댓글 API 호출
+            const res = await api.addReply(replyData, token);
+            console.log("댓글 응답 데이터:", res.data);
             if (res.status === 200) {
                 alert("댓글이 작성되었습니다.");
                 setReplyContent({ ...replyContent, [parentNo]: "" });
-                setNewReply("");  // 댓글 작성 후 입력 필드 초기화
-                window.location.reload();  // 새로고침
+                setNewReply(""); // 댓글 작성 후 입력 필드 초기화
+                window.location.reload(); // 새로고침
             }
         } catch (error) {
-            console.error("댓글 작성 실패:", error);
+            console.error("❌ 댓글 작성 실패:", error);
         }
     };
 
@@ -87,11 +110,11 @@ const Reply = ({ boardNo, category }) => {
     const handleDeleteReply = async (replyNo) => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             try {
-                await api.deleteReply(replyNo, token);  // 토큰을 header로 전달
+                await api.deleteReply(replyNo, token);
                 alert("댓글이 삭제되었습니다.");
                 window.location.reload();
             } catch (error) {
-                console.error("댓글 삭제 실패:", error);
+                console.error("❌ 댓글 삭제 실패:", error);
             }
         }
     };
