@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BoardApi from "../../api/BoardApi";
 import MateBoardApi from "../../api/MateBoardApi";
 import ChatApi from "../../api/ChatApi";
-
+import style from "../../Css/Replay.module.css"
 const Reply = ({ boardNo, category }) => {
     const [replies, setReplies] = useState([]);
     const [newReply, setNewReply] = useState("");
