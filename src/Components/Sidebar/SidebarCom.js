@@ -66,12 +66,11 @@ const SidebarCom = () => {
           <input type="file" value={ProfilePic} onChange={(e) => setProfilePic(e.target.value)}/>
 
           <div className="UserId">{userId}</div>
-          <div className="UserLevel">고양이</div>
+          <div className="UserLevel">호기심 많은 고양이</div>
 
           <button onClick={ProfileEditBtn}>저장</button>
         </Modal>
 
-        <button onClick={ProfileEditOpenBtn}>✏️</button>
       </div>
       <div className="HeaderNav">
         <svg
@@ -119,6 +118,7 @@ const SidebarCom = () => {
       <Link to={`/mypage/my_story/${userId}`} className="link">
         내가 쓴 글
       </Link>
+      <button className="profileEditBtn" onClick={ProfileEditOpenBtn}>프로필 수정</button>
       <Link to="/account/logout" className="link Logout">
         로그아웃
       </Link>

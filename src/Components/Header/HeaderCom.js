@@ -1,4 +1,4 @@
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useLocation, useNavigate  } from "react-router-dom";
 import "./Header.css"
 import { useEffect, useRef, useState } from "react";
 import AuthApi from "../../api/AuthApi";
@@ -16,8 +16,15 @@ const HeaderCom=()=>{
     const [hasUnread, setHasUnread] = useState(false); // 읽지 않은 알람 여부
     const [showDropdown, setShowDropdown] = useState(false); // 알람 목록 열기/닫기
     const isAuthenticated = !!token;//로그인 여부 확인
+    const [path ,setPath] = useState(false);
+    const location =useLocation();
 
     useEffect(()=>{
+        if (location.pathname==='/' && path){
+            setPath(false);
+        }else if (location.pathname !=="/" && !path){
+            setPath(true)
+        }
         if (localStorage.getItem("accessToken"))
             {
                 Login.current.style.display="block"; 

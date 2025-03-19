@@ -104,7 +104,9 @@ const MateBoardList = () => {
           </tr>
         </thead>
         <tbody className={style.tbody}>
-          <tr className={style.tr}>
+
+        {/* 임시 데이터 코드 */}
+          <tr className={style.tr} key={2} onClick={()=>navigate(`/mateboard/detail/1`)}>
             <td>1</td>
             <td>안녕안녕안녕안녕</td>
             <td>작성자이름</td>
@@ -112,6 +114,7 @@ const MateBoardList = () => {
             <td>2</td>
             <td>180</td>
           </tr>
+      {/* 실제 코드 */}
           {/* {boardList.length > 0 ? (
             boardList.map((post, index) => (
               <tr

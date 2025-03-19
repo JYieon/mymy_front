@@ -8,7 +8,6 @@ const ResultPage = () => {
   console.log(location.state);
   
   const ResultShare=()=>{};
-
   switch (UserResult) {
     case "ISTP":
       setUserResult("고독한 방랑자");
@@ -72,6 +71,11 @@ const ResultPage = () => {
       </Link>
       <button className="ResultSave">저장하기</button>
       <button className="ResultShare">공유하기</button>
+      <div>
+        <input type="url" value={location.pathname} readOnly/>
+        <button className={style.KakaoShare}>카톡 공유</button>
+        <button className={style.pdfShare}>PDF 공유</button>
+      </div>
     </div>
   );
 };

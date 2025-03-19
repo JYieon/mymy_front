@@ -1,9 +1,8 @@
 import BoardApi from "../../api/BoardApi";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import Reply from "./Reply";
 import style from "../../Css/BoardDetail.module.css";
-import { input } from "framer-motion/client";
 
 const Detail = () => {
   const { boardNo } = useParams();
@@ -13,6 +12,7 @@ const Detail = () => {
   const [bookmarked, setBookmarked] = useState(false); // 북마크 상태
   const [hashtags, setHashtags] = useState([]); // 해시태그 상태
   const token = localStorage.getItem("accessToken");
+  const location = useLocation();
 
   // 게시글 상세 정보 불러오기
   useEffect(() => {
@@ -128,13 +128,67 @@ const Detail = () => {
     }
   };
 
-  const kakaoShare=()=>{};
-  const urlShare=()=>{};
-  const PDFShare=()=>{};
+  // 공유 버튼
+  const kakaoShare = () => {};
+  const urlShare = () => {
+    var url = location.pathname;
+    navigator.clipboard.writeText(`localhost:3000${url}`);
+    alert("복사 완료!");
+  };
+  const PDFShare = () => {};
 
+  const poam = `계절이 지나가는 하늘에는
+가을로 가득 차 있습니다.
+
+나는 아무 걱정도 없이
+가을 속의 별들을 다 헤일 듯합니다.
+
+가슴속에 하나둘 새겨지는 별을
+이제 다 못 헤는 것은
+쉬이 아침이 오는 까닭이요,
+내일 밤이 남은 까닭이요,
+아직 나의 청춘이 다하지 않은 까닭입니다.
+
+별 하나에 추억과
+별 하나에 사랑과
+별 하나에 쓸쓸함과
+별 하나에 동경과
+별 하나에 시와
+별 하나에 어머니, 어머니,
+
+어머님, 나는 별 하나에 아름다운 말 한마디씩 불러 봅니다. 소학교 때 책상을 같이 했던 아이들의 이름과, 패, 경, 옥, 이런 이국 소녀들의 이름과, 벌써 아기 어머니 된 계집애들의 이름과, 가난한 이웃 사람들의 이름과, 비둘기, 강아지, 토끼, 노새, 노루, '프랑시스 잠', '라이너 마리아 릴케' 이런 시인의 이름을 불러 봅니다.
+
+이네들은 너무나 멀리 있습니다.
+별이 아스라이 멀듯이.
+
+어머님,
+그리고 당신은 멀리 북간도에 계십니다.
+
+나는 무엇인지 그리워
+이 많은 별빛이 내린 언덕 위에
+내 이름자를 써 보고
+흙으로 덮어 버리었습니다.
+
+딴은 밤을 새워 우는 벌레는
+부끄러운 이름을 슬퍼하는 까닭입니다.
+
+그러나 겨울이 지나고 나의 별에도 봄이 오면
+무덤 위에 파란 잔디가 피어나듯이
+내 이름자 묻힌 언덕 위에도
+자랑처럼 풀이 무성할 거외다.`;
 
   // 로딩 처리
   if (!data) {
+    setData({
+      id: "a",
+      date: "2025-00-00",
+      boardCnt: 8,
+      content: `<p> ${poam}</p>`,
+      boardCategory: 2,
+      boardLikes: 10,
+      title: "제목",
+    });
+    setHashtags(["ddd", "dddd"]);
     return <p>로딩 중...</p>;
   }
 
@@ -156,15 +210,11 @@ const Detail = () => {
               <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
               <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
               <div
-                style={{ marginBottom: "20px" }}
                 className={style.editBtnContainer}
               >
                 {/* 계획 & 기록 게시글 모두 수정 & 삭제 가능 */}
 
-                <button
-                  onClick={handleModify}
-                  className={style.editBtn}
-                >
+                <button onClick={handleModify} className={style.editBtn}>
                   수정
                 </button>
                 <button onClick={deletePost} className={style.deleteBtn}>
@@ -276,11 +326,18 @@ const Detail = () => {
         </div>
       )}
       <div>
-        <input type="url" value={`현재 주소`} readOnly/>
+        {/* <input
+          type="url"
+          value={`localhost:3000${location.pathname}`}
+          onClick={urlShare}
+          readOnly
+        /> */}
         <button className={style.KakaoShare}>카톡 공유</button>
         <button className={style.pdfShare}>PDF 공유</button>
       </div>
-      <button className="Sharebtn">공유하기</button>
+      <button className="Sharebtn" onClick={urlShare}>
+        공유하기
+      </button>
       {/* 기록 게시글(2)만 댓글 가능 */}
       {data.boardCategory === 2 && (
         <>

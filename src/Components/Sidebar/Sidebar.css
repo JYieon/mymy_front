@@ -42,6 +42,17 @@ li {
   }
 }
 
+.profileEditBtn {
+  border: none;
+  padding: 5px 10px;
+  background-color: #00284c;
+  color: white;
+  border-radius: 10px;
+}
+
+.Logout {
+  font-size: 13px;
+}
 .MenuList {
   margin-right: 30px;
   width: 100%;
@@ -73,4 +84,5 @@ li {
     }
   }
 }
+
 

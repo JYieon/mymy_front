@@ -1,45 +1,85 @@
+.TestLayout {
+    min-width: 800px;
+    height: 70vmax;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #00284C;
+    color: white;
+    justify-self: center;
+}
+
 .TestStartBtn {
+    justify-self: center;
     text-decoration: none;
-    margin: 0 auto;
+    margin: 50px auto;
     background-color: white;
     padding: 10px 50px;
     border-radius: 10px;
 }
 
-.TestThumbnail {
-    margin: 0 auto;
-    width: auto;
-    height: auto;
+.mainPic {
+    justify-self: center;
+    border-radius: 10px;
 }
 
-.TestTitle {
+.title {
+    text-align: center;
+    color: white;
+    font-size: 40px;
+    font-weight: 900;
+    margin: 20px auto 10px auto;
+}
+
+.subtitle {
     text-align: center;
     color: white;
 }
 
 .StartPage {
-    display: block;
-    /* display: none; */
-
+    display: flex;
+    flex-direction: column;
 }
 
+/* 테스트 시작 */
 .MainPage {
     display: none;
 }
 
-.ResultPage {
-    display: none;
+.questionWrap{
+    justify-items: center;
+    background-color: aqua;
+    width: max-content;
 }
 
-.TestLayout {
-    width: 70vmax; 
-    height: 70vmax;
-    border-radius: 10px;
-    margin: 20px auto;
-    background-color: #00284C;
-    color: white;
+.testPic {
+    border-radius: 20px;
+}
+
+
+.answerWrap {
     display: flex;
     flex-direction: column;
+}
+
+.answer {
+    width: 500px;
+    padding: 40px 100px;
+    border: none;
+    margin: 10px;
+    border-radius: 30px 30px 30px 10px;
+    font-size: 20px;
+    font-weight: 600;
+    &:hover {
+        background-color: gray;
+    }
+}
+
+
+/* 테스트 결과 */
+.ResultPage {
+    display: none;
 }
 
 .testAgiain {
