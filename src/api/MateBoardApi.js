@@ -10,7 +10,6 @@ const MateBoardApi = {
                 headers: { 
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`, 
-                
                 },
             });
         } catch (error) {
@@ -41,32 +40,8 @@ const MateBoardApi = {
         }
     },
 
-    // 게시글 수정
-    modifyMateBoard: async (boardNo, updatedData) => {
-        try {
-            const response = await axios.post(`${domain}/modify/${boardNo}`, updatedData, {
-                headers: { "Content-Type": "application/json" },
-            });
-            return response.data;
-        } catch (error) {
-            console.error("❌ MateBoardApi modifyMateBoard 에러:", error);
-            throw error;
-        }
-    },
-
-    // 게시글 삭제
-    deleteMateBoard: async (boardNo) => {
-        try {
-            const response = await axios.delete(`${domain}/delete/${boardNo}`);
-            return response.data;
-        } catch (error) {
-            console.error("❌ MateBoardApi deleteMateBoard 에러:", error);
-            throw error;
-        }
-    },
-
-      // 댓글 목록 조회
-      getReplies: async (boardNo) => {
+    // 댓글 목록 조회
+    getReplies: async (boardNo) => {
         try {
             const response = await axios.get(`${domain}/replyList/${boardNo}`);
             return response.data;
@@ -106,6 +81,29 @@ const MateBoardApi = {
         }
     },
 
+    // 게시글 수정
+    modifyMateBoard: async (boardNo, updatedData) => {
+        try {
+            const response = await axios.post(`${domain}/modify/${boardNo}`, updatedData, {
+                headers: { "Content-Type": "application/json" },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("❌ MateBoardApi modifyMateBoard 에러:", error);
+            throw error;
+        }
+    },
+
+    // 게시글 삭제
+    deleteMateBoard: async (boardNo) => {
+        try {
+            const response = await axios.delete(`${domain}/delete/${boardNo}`);
+            return response.data;
+        } catch (error) {
+            console.error("❌ MateBoardApi deleteMateBoard 에러:", error);
+            throw error;
+        }
+    },
 
     // 검색 기능
     searchMateBoardList: async (page, category, searchType, keyword) => {
@@ -116,18 +114,14 @@ const MateBoardApi = {
             keyword = keyword.substring(1, keyword.length - 1);
         }
 
-        // console.log("여행 메이트 검색 요청:", { page, category, searchType, keyword });
-
         try {
             const response = await axios.get(`${domain}/search`, {
                 params: { page, category, searchType, keyword }
             });
 
-            // console.log("검색 API 응답 데이터:", response.data);
-            return response.data?.boardList || []; // `boardList`만 반환
+            return response.data?.boardList || [];
         } catch (error) {
-            // console.error("❌ 검색 API 요청 실패:", error);
-            return []; // 
+            return [];
         }
     }
 };

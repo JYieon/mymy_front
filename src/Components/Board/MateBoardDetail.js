@@ -60,7 +60,7 @@ const MateBoardDetail = () => {
             </div>
 
             {/* 댓글 컴포넌트 추가 (category=3 전달) */}
-            <Reply boardNo={boardNo} />
+            <Reply boardNo={boardNo} category={3} token={token}/>
         </div>
     );
 };

@@ -22,40 +22,37 @@ const MateBoardList = () => {
     }
   }, [page]);
 
-  const searchBoardList = async () => {
-    if (!keyword.trim()) {
-      alert("검색어를 입력하세요!");
-      return;
-    }
-
-    // console.log("🔍 검색 요청 파라미터 확인:", { searchType, keyword: keyword.trim(), page });
-
-    try {
-      const boardList = await MateBoardApi.searchMateBoardList(
-        page,
-        3,
-        searchType,
-        keyword.trim()
-      );
-
-      // console.log("boardList:", boardList);
-
-      if (!boardList || boardList.length === 0) {
-        // console.warn("검색 결과 없음!");
-        alert("검색 결과가 없습니다.");
-        setBoardList([]);
-      } else {
-        // console.log("boardList:", boardList);
-        setBoardList([...boardList]); // 배열 복사 후 상태 업데이트
-      }
-
-      setPage(1);
-      setIsSearching(true);
-    } catch (error) {
-      console.error("❌ 검색 실패:", error);
-      setBoardList([]);
-    }
-  };
+    const searchBoardList = async () => {
+        if (!keyword.trim()) {
+            alert("검색어를 입력하세요!");
+            return;
+        }
+    
+        // console.log("검색 요청 파라미터 확인:", { searchType, keyword: keyword.trim(), page });
+    
+        try {
+            const boardList = await MateBoardApi.searchMateBoardList(page, 3, searchType, keyword.trim());
+    
+            // console.log("boardList:", boardList);
+    
+            if (!boardList || boardList.length === 0) {
+                // console.warn("검색 결과 없음!");
+                alert("검색 결과가 없습니다.");
+                setBoardList([]);
+            } else {
+                // console.log("boardList:", boardList);
+                setBoardList([...boardList]);  // 배열 복사 후 상태 업데이트
+            }
+    
+            setPage(1);
+            setIsSearching(true);
+        } catch (error) {
+            console.error("❌ 검색 실패:", error);
+            setBoardList([]);
+        }
+    };
+    
+    
 
   // 페이지 변경 시 목록 불러오기 (검색 중이면 실행 안 함)
   useEffect(() => {

@@ -137,8 +137,8 @@ function App() {
         <Route path="/timeline/:boardNo" element={<Timeline />} />
         <Route path="/timeline" element={<Timeline />} />
 
-        {/* 카카오맵
-        <Route path="/map" element={<KakaoMap />} /> */}
+        {/* 카카오맵 */}
+        <Route path="/map/:boardNo" element={<KakaoMap />} />
       </Route>
     </Routes>
   );

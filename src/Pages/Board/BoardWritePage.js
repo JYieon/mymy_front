@@ -16,6 +16,7 @@ const BoardWritePage = () => {
   const TimelineCloseBtn = () => {
     setTimelineOpen(false);
   };
+  
 
   return (
     <div className={style.BoardWriteContainer}>
@@ -38,9 +39,11 @@ const BoardWritePage = () => {
           {/* <h1>📅 여행 타임라인</h1> */}
           <div className={style.TimelineWrap}>
             <KakaoMap />
+            <KakaoMap />
             <Timeline />
           </div>
         </motion.div>
+        
         <motion.div
           initial={{ display: "block" }}
           transition={{

@@ -25,20 +25,20 @@ const BookmarkList = () => {
     }
   };
 
-  // 북마크 해제
-  const handleRemoveBookmark = async (boardNo) => {
-    if (window.confirm("북마크를 해제하시겠습니까?")) {
-      try {
-        const success = await BoardApi.toggleBookmark(boardNo, token); // ✅ token 추가
-        if (success) {
-          alert("북마크가 해제되었습니다.");
-          fetchBookmarks(); // 북마크 목록 새로고침
+    // 북마크 해제
+    const handleRemoveBookmark = async (boardNo) => {
+        if (window.confirm("북마크를 해제하시겠습니까?")) {
+            try {
+                const success = await BoardApi.toggleBookmark(boardNo, token);
+                if (success) {
+                    alert("북마크가 해제되었습니다.");
+                    fetchBookmarks(); // 북마크 목록 새로고침
+                }
+            } catch (error) {
+                console.error("북마크 해제 실패:", error);
+            }
         }
-      } catch (error) {
-        console.error("북마크 해제 실패:", error);
-      }
-    }
-  };
+    };
 
   // 페이지 로드 시 북마크 목록 불러오기
   useEffect(() => {
