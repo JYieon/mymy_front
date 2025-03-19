@@ -24,9 +24,8 @@ const HeaderCom = () => {
     console.log("header", hasUnread)
 
     useEffect(()=>{
-        const getUserInfo = async () => {
+        const getUserInfo = async (token) => {
             try {
-              const token = localStorage.getItem("accessToken");
               const res = await ChatApi.getUserInfo(token);
               setUserId(res.data.id);
 
@@ -67,7 +66,7 @@ const HeaderCom = () => {
                 console.log("로그인 사용자")
                 Login.current.style.display="block"; 
                 Logout.current.style.display="none";
-                getUserInfo();
+                getUserInfo(localStorage.getItem("accessToken"));
                 // if (userId) {
                 //     MypageApi.getAlarms(token)
                 //         .then(response => {

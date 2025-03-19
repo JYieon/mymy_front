@@ -8,6 +8,7 @@ const WebSocketContext = createContext();
 export const WebSocketProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
     const [hasUnread, setHasUnread] = useState(false);
+    const token = localStorage.getItem("accessToken");
     // const [userId, setUserId] = useState(false)
 
     const { connect } = useWebSocket((newAlarm) => {
@@ -17,13 +18,14 @@ export const WebSocketProvider = ({ children }) => {
     });
 
     useEffect(() => {
+        if (!token) return;
         const getUserInfo = async () => {
-            const res = await ChatApi.getUserInfo(localStorage.getItem("accessToken"))
+            const res = await ChatApi.getUserInfo(token)
             // setUserId(res.data.id)
 
             connect(res.data.id);
 
-            const resAlram = await MypageApi.getAlarms(localStorage.getItem("accessToken"));
+            const resAlram = await MypageApi.getAlarms(token);
             //   console.log("받아온 알람 데이터:", resAlram.data[0].isRead);
               if(resAlram.data.length !== 0){
                 setNotifications(resAlram.data);
@@ -42,7 +44,7 @@ export const WebSocketProvider = ({ children }) => {
               
         }
         getUserInfo()
-    }, []);
+    }, [token]);
 
     return (
         <WebSocketContext.Provider value={{ hasUnread, setHasUnread }}>

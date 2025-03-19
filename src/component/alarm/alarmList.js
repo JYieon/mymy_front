@@ -64,11 +64,11 @@ const AlarmList = () => {
     const handleClick = async (type, sender, no) => {
         console.log(type)
         if(type === 1){ //팔로우의 새로운 게시글
-            window.location.href = ""
+            window.location.href = "/board/detail/" + no
         }else if(type === 2){ //새로운 댓글
-            // window.location.href = ""
+            window.location.href = "/board/detail/" + no
         }else if(type === 3){ //새로운 채팅
-            // window.location.href = ""
+            window.location.href = "/groupChat/" + no
         }else if(type === 4){ //새로운 팔로우 요청
             await MypageApi.markAlarmsAsRead(token, no)
             window.location.href = "/mypage/followers"
@@ -108,8 +108,8 @@ const AlarmList = () => {
                             alarms.map((alarm, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td>{alarm?.alarmContent || "새로운 알림이 있습니다."}</td>
-                                    <td onClick={() => handleClick(alarm.alarmTypeId, alarm.senderId, alarm.alarmNo)}>바로가기</td>
+                                    <td>{alarm.senderId + alarm.alarmContent}</td>
+                                    <td onClick={() => handleClick(alarm.alarmTypeId, alarm.senderId, alarm.addr)}>바로가기</td>
                                     <td>{alarm?.createdAt || "날짜 없음"}</td>
                                     <td>{alarm?.commentCount || 0}</td>
                                 </tr>

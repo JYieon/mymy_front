@@ -15,7 +15,7 @@ const ChatCreate = () => {
         console.log(res)
         if(res.data === 1){
             alert("채팅방 생성 완료")
-            navigate(`/chatlist`);
+            navigate(`/chat/list`);
         }else{
             alert("채팅방 생성 실패")
         }

@@ -37,9 +37,10 @@ const ChatApi =  {
         })
     },
 
-    inviteChatUser : async (inviteUser, roomNum) => {
+    inviteChatUser : async (token, inviteUser, roomNum) => {
         return await axios.post(domain + "/invite", null, {
             params: {
+                token: token,
                 inviteUser: inviteUser, 
                 roomNum: roomNum
 

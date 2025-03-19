@@ -21,11 +21,12 @@ const ChatSidebarCom = () => {
   const [VerfiyOpen, setVerfiyOpen] = useState(false);
   const [chatUserInfo, setChatUserInfo] = useState([]);
   const [userId, setUserId] = useState("");
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
+        
         const res = await ChatApi.getUserInfo(token);
         setUserId(res.data.id);
         
@@ -65,7 +66,7 @@ const ChatSidebarCom = () => {
   
   const inviteChatUser = async () => {
     setInviteOpen(!inviteOpen);
-    const res = await ChatApi.inviteChatUser(invite, roomNum);
+    const res = await ChatApi.inviteChatUser(token, invite, roomNum);
     if (res.data === 1) {
       setInvite("");
     } else {
