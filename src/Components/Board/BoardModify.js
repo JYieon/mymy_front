@@ -6,6 +6,7 @@ import BoardApi from "../../api/BoardApi";
 import SummernoteLite from "react-summernote-lite";
 import "react-summernote-lite/dist/summernote-lite.min.css";
 import ChatApi from "../../api/ChatApi";
+import Timeline from "./Timeline";
 
 const BoardModify = () => {
     const { boardNo } = useParams();
@@ -158,7 +159,7 @@ const BoardModify = () => {
         }
     
         //console.log("수정 요청 데이터:", postData);
-        //console.log("보낼 토큰:", token);
+        console.log("보낼 토큰:", token);
     
         try {
             const res = await BoardApi.modify(postData, token);
@@ -227,6 +228,10 @@ const BoardModify = () => {
                         </div>
                     </div>
                 )}
+
+                {/* {boardCategory == 1 && (
+                    <Timeline/>
+                )} */}
 
                 <button type="submit" className="btn btn-primary mt-3">수정 완료</button>
             </form>
