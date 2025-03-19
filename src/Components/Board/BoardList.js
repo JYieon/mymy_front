@@ -213,19 +213,19 @@ const BoardList = () => {
           console.log(post);
           return (
             <div key={post.boardNo} className="board-item">
-              <Link
-                to={`/board/detail/${post.boardNo}`}
-                className="BoardTitle link"
-              >
+              <Link to={`/board/detail/${post.boardNo}`} className="BoardTitle link">
                 <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
-                <h3 className="PostTitle">{post.title} </h3>
+                <h3 className="PostTitle">{post.title}</h3>
 
                 <div className="PostInfo">
-                  <div>조회수<span className="value">{post.boardOpen}</span></div>
-
+                  <div>조회수 <span className="value">{post.boardOpen}</span></div>
                   <span>좋아요 {post.boardLikes}</span>
                 </div>
-                <div className="WriterId">{post.id}</div>
+              </Link>
+
+              {/* 프로필 페이지로 이동하는 링크 */}
+              <Link to={`/profile/${post.id}`} className="WriterId">
+                {post.id}
               </Link>
             </div>
           );

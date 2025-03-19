@@ -36,6 +36,7 @@ const MypageApi = {
             return [];
         }
     },
+    
 
 
     // 알림 관련 API
@@ -67,12 +68,12 @@ const MypageApi = {
         const userId = localStorage.getItem("userId");  //  localStorage에서 userId 가져오기
 
         if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
+            console.error("토큰이 없습니다! API 요청 중단.");
             return [];
         }
 
         if (!userId) {
-            console.error("🚨 userId가 없습니다! API 요청 중단.");
+            console.error(" userId가 없습니다! API 요청 중단.");
             return [];
         }
 
@@ -86,7 +87,7 @@ const MypageApi = {
             });
             return response;
         } catch (error) {
-            console.error("🚨 알림 가져오기 실패:", error);
+            console.error("알림 가져오기 실패:", error);
             return [];
         }
     },
@@ -96,7 +97,7 @@ const MypageApi = {
         const token = localStorage.getItem("accessToken");
 
         if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
+            console.error("토큰이 없습니다! API 요청 중단.");
             return;
         }
 
@@ -160,7 +161,7 @@ const MypageApi = {
         const token = localStorage.getItem("accessToken");
 
         if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
+            console.error(" 토큰이 없습니다! API 요청 중단.");
             return;
         }
 

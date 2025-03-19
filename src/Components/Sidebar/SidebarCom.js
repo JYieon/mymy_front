@@ -69,7 +69,7 @@ const SidebarCom = () => {
                     console.log(" [오류] 팔로잉 데이터가 배열이 아닙니다.");
                 }
             } catch (error) {
-                console.error("🚨 팔로잉 리스트 가져오기 실패:", error);
+                console.error(" 팔로잉 리스트 가져오기 실패:", error);
             }
         };
         userInfo();
