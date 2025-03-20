@@ -7,6 +7,7 @@ import style from "../../Css/BoardDetail.module.css";
 import axios from "axios";
 
 const Detail = () => {
+    const location=useLocation();
     const { boardNo } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState(null);
