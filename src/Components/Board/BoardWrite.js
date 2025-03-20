@@ -104,41 +104,46 @@ const BoardWrite = () => {
   };
 
   // 게시글 작성
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const content = $(editorRef.current).summernote("code");
-  const postData = { title, boardCategory: category, content };
-
-  if (category === 2) postData.boardOpen = boardOpen;
-  if (category === 2) postData.hashtags = hashtags;
-
-  try {
-    const token = localStorage.getItem("accessToken");
-
-    // 토큰이 없으면 로그인 화면으로 이동
-    if (!token) {
-      alert("로그인 후 이용 부탁드립니다.");
-      window.location.href = "/login";
-      return;
-    }
-
-    // 토큰을 Authorization 헤더에 포함시켜 API 요청
-    const res = await BoardApi.writeSave(postData, token);
-    console.log("timeline",postData)
-    if (res.status === 200) {
-      if (category===2){
-        alert("게시글이 등록되었습니다!");
-        navigate(`/board/list?category=${category}`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const content = $(editorRef.current).summernote("code");
+    const postData = { title, boardCategory: category, content };
+  
+    if (category === 2) postData.boardOpen = boardOpen;
+    if (category === 2) postData.hashtags = hashtags;
+    
+    console.log("전송할 데이터:",postData);
+    try {
+      const token = localStorage.getItem("accessToken");
+  
+      if (!token) {
+        alert("로그인 후 이용 부탁드립니다.");
+        window.location.href = "/login";
+        return;
       }
+  
+      // 게시글 저장 API 요청
+      const res = await BoardApi.writeSave(postData, token);
+      console.log("📩 서버 응답 데이터:", res.data);
+  
+      if (res.status === 200) {
+        const boardNo = res.data.boardNo;
+        console.log("✅ 반환된 boardNo:", boardNo);
+  
+        if (category === 1) {
+          // 계획 게시글 → 타임라인 페이지로 이동
+          navigate(`/timeline/${boardNo}`);  
+        } else if (category === 2) {
+          alert("게시글이 등록되었습니다!");
+          navigate(`/board/list?category=${category}`);
+        }
+      }
+    } catch (error) {
+      alert("게시글 등록 실패");
+      console.error("❌ 게시글 작성 오류:", error);
     }
-  } catch (error) {
-    alert("게시글 등록 실패");
-    console.error(error);
-  }
-  if (category===1){
-    navigate(`/board/modify/84`);
-  }
-};
+  };
+  
 
 
   return (

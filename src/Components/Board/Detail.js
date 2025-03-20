@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import Reply from "./Reply";
 import style from "../../Css/BoardDetail.module.css";
+import axios from "axios";
 
 const Detail = () => {
     const { boardNo } = useParams();
@@ -264,7 +265,7 @@ const Detail = () => {
                         hashtags.map((tag, index) => (
                             <span 
                                 key={index} 
-                                style={{ marginRight: "10px", color: "#007bff", cursor: "pointer" }}
+                                className={style.hashtag}
                                 onClick={() => navigate(`/board/list?category=2&searchType=tag&keyword=${encodeURIComponent(tag)}`)}
                             >
                                 #{tag}
