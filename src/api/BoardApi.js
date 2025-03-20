@@ -79,9 +79,13 @@ const BoardApi = {
     },
 
     // 게시글 삭제
-    delete: async (boardNo) => {
+    delete: async (boardNo, token) => {
         try {
-            return await axios.delete(`${domain}/delete/${boardNo}`);
+            return await axios.delete(`${domain}/delete/${boardNo}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
         } catch (error) {
             console.error("❌ BoardApi delete 에러:", error);
             throw error;
