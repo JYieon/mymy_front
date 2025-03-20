@@ -15,6 +15,7 @@ const MateBoardList = () => {
   const fetchBoardList = useCallback(async () => {
     try {
       const data = await MateBoardApi.getMateBoardList(page);
+      console.log("가져온 데이터:", data);
       setBoardList(data);
       setIsSearching(false);
     } catch (error) {
@@ -109,12 +110,14 @@ const MateBoardList = () => {
             <td>2</td>
             <td>180</td>
           </tr>
-          {/* {boardList.length > 0 ? (
+          {boardList.length > 0 ? (
             boardList.map((post, index) => (
               <tr
                className={style.tr}
                 key={post.boardNo}
-                onClick={() => navigate(`/mateboard/detail/${post.boardNo}`)}
+                onClick={() => {
+                  navigate(`/mateboard/detail/${post.boardNo}`);
+                }}
                 
               >
                 <td>{index + 1}</td>
@@ -131,7 +134,7 @@ const MateBoardList = () => {
                className={style.tr}
               colSpan="6">등록된 게시글이 없습니다.</td>
               </tr>
-          )} */}
+          )}
         </tbody>
       </table>
 
