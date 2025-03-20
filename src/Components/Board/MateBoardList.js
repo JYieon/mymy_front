@@ -124,7 +124,7 @@ const MateBoardList = () => {
                 <td>{post.title}</td>
                 <td>{post.id}</td>
                 <td>{post.date ? post.date : "날짜 없음"}</td>
-                <td>{post.replyCount}</td>
+                <td>{post.repCnt}</td>
                 <td>{post.boardCnt}</td>
               </tr>
             ))
