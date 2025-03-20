@@ -92,7 +92,7 @@ const MypageApi = {
         }
     },
 
-    //알림 읽음 처리리
+    //알림 읽음 처리
     markAlarmsAsRead: async () => {
         const token = localStorage.getItem("accessToken");
 
@@ -207,25 +207,43 @@ const MypageApi = {
     },
 
     //내가 팔로우한 사람 가져오기
-    getFollowingList: async () => {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-            console.error(" 토큰이 없습니다! API 요청 중단.");
-            return [];
-        }
-        try {
-            const response = await axios.get(`${domain}/follow/following`, {
-                headers: { "Authorization": `Bearer ${token}` },
-                withCredentials: true
-            });
+    // 내가 팔로우한 사람 가져오기
+getFollowingList: async () => {
+    const token = localStorage.getItem("accessToken");
 
-            console.log(" 팔로우우 목록 응답:", response.data);
-            return response.data;
-        } catch (error) {
-            console.error(" 팔로우 목록 가져오기 실패:", error);
-            return [];
+    if (!token) {
+        console.error(" 토큰이 없습니다! API 요청 중단.");
+        return [];
+    }
+
+    try {
+        const response = await axios.get(`${domain}/follow/following`, {
+            headers: { "Authorization": `Bearer ${token}` },
+            withCredentials: true
+        });
+
+        console.log(" 팔로우 목록 응답:", response.data);
+        return response.data;
+
+    } catch (error) {
+        if (error.response) {
+            console.error(" 팔로우 목록 가져오기 실패:", error.response.data);
+            
+            // 인증 오류 (401 Unauthorized) 시 로그인 페이지로 이동
+            if (error.response.status === 401) {
+                alert("세션이 만료되었습니다. 다시 로그인하세요.");
+                window.location.href = "/login"; // 로그인 페이지로 이동
+            }
+
+        } else if (error.request) {
+            console.error(" 서버 응답이 없습니다.");
+        } else {
+            console.error(" 요청 설정 중 오류 발생:", error.message);
         }
-    },
+
+        return [];
+    }
+},
 
     //나를 팔로우한 사람 가져오기
     getFollowerList: async () => {
@@ -244,7 +262,7 @@ const MypageApi = {
             console.log(" 팔로워 목록 응답:", response.data);
             return response.data;
         } catch (error) {
-            console.error("🚨 팔로워 목록 가져오기 실패:", error);
+            console.error(" 팔로워 목록 가져오기 실패:", error);
             return [];
         }
     },
