@@ -1,8 +1,9 @@
 import style from "./ChatSidebar.module.css";
 import Modal from "react-modal";
 import { distance, motion } from "framer-motion";
-import { useState } from "react";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import "../Sidebar/Sidebar.css";
 import SidebarIcon from "../../Assets/line-3.svg";
 import ChttingRoom from "../Auth/ChttingRoom";
 import ChatApi from "../../api/ChatApi";
@@ -19,6 +20,25 @@ const ChatSidebarCom = () => {
   const [JointAccountOpen, setJointAccountOpen] = useState(false);
   const [AdjustmentOpen, setAdjustmentOpen] = useState(false);
   const [VerfiyOpen, setVerfiyOpen] = useState(false);
+  const [chatUserInfo, setChatUserInfo] = useState([]);
+  const [userId, setUserId] = useState("");
+  const token = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        
+        const res = await ChatApi.getUserInfo(token);
+        setUserId(res.data.id);
+        
+        const chatRes = await ChatApi.getChatMessages(roomNum);
+        setChatUserInfo(chatRes.data.member.filter(user => user.member !== res.data.id));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserInfo();
+  }, []);
 
   const [TargetAmountOpen, SetTargetAmountOpen] = useState(false);
 
@@ -56,7 +76,7 @@ const ChatSidebarCom = () => {
 
   const inviteChatUser = async () => {
     setInviteOpen(!inviteOpen);
-    const res = await ChatApi.inviteChatUser(invite, roomNum);
+    const res = await ChatApi.inviteChatUser(token, invite, roomNum);
     if (res.data === 1) {
       setInvite("");
     } else {
@@ -72,6 +92,24 @@ const ChatSidebarCom = () => {
 
   const BeforeBtn = () => {
     navigate("../chat/list");
+  };
+
+  const endChat = async () => {
+    const isConfirmed = window.confirm("채팅방을 정말 나가시겠습니까?");
+    if (!isConfirmed) return; // 사용자가 취소하면 종료
+  
+    try {
+      const res = await ChatApi.endChat(roomNum, localStorage.getItem("accessToken"));
+      console.log("delete", res);
+      if (res.status === 200) {
+        window.location.href = "/chatlist"; // 채팅방 목록으로 이동
+      } else {
+        alert("채팅방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("채팅방 나가기 오류:", error);
+      alert("서버 오류로 인해 채팅방을 나갈 수 없습니다.");
+    }
   };
 
   return (
@@ -311,6 +349,19 @@ const ChatSidebarCom = () => {
           </button>
         </Modal>
         <hr />
+        <ul className={style.GrounpMemList}>
+          {chatUserInfo.map((user)=>(
+            <li className={style.GrounpMem}>
+            <img src={`/images/${user.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
+            {user.nick}
+            </li>
+          ))}
+
+          {/* <li className={style.GrounpMem}>바보</li>
+          <li className={style.GrounpMem}>바보</li>
+          <li className={style.GrounpMem}>바보</li> */}
+        </ul>
+        <button onClick={endChat}>채팅방 나가기</button>
       </motion.div>
     </>
   );

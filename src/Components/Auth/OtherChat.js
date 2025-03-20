@@ -10,7 +10,7 @@ const ChatContainer = styled.li`
 `;
 
 const ChatBubble = styled.div`
-  display: inline-block; /* ✅ 내용에 맞게 크기 조절 */
+  display: inline-block;
   padding: 10px;
   border-radius: 10px;
   background-color: rgb(255, 255, 255);
@@ -36,18 +36,40 @@ const ChatMessage = styled.p`
   margin: 0;
 `;
 
+const NoticeMessage = styled.div`
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  font-weight: bold;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+`;
+
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 `;
 
+const NickName = styled.span`
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin-left: 8px;
+`;
+
 export default function OtherChat({ chatMessage }) {
+  if (chatMessage.type === "ENTER" || chatMessage.type === "LEAVE") {
+    return <NoticeMessage>{chatMessage.msg}</NoticeMessage>;
+  }
+
   return (
     <ChatContainer key={chatMessage.id}>
       <UserProfile>
-        {/* <img src={chatMessage.profile} style={{ width: "30px", borderRadius: "50px" }} /> */}
-        {/* <NickName>{chatMessage.nickName}</NickName> */}
+        <img src={`/images/${chatMessage.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
+        <NickName>{chatMessage.nick}</NickName>
       </UserProfile>
       <ChatBubble>
         <ChatMessage>{chatMessage.msg}</ChatMessage>

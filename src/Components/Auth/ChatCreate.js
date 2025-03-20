@@ -12,14 +12,16 @@ const ChatCreate = () => {
     console.log(token);
     const res = await ChatApi.createRoom(token, roomName);
 
-    console.log(res);
-    if (res.data === 1) {
-      alert("채팅방 생성 완료");
-      navigate(`/chatlist`);
-    } else {
-      alert("채팅방 생성 실패");
+
+        console.log(res)
+        if(res.data === 1){
+            alert("채팅방 생성 완료")
+            navigate(`/chat/list`);
+        }else{
+            alert("채팅방 생성 실패")
+        }
+
     }
-  };
 
   return (
     <div className={style.ChatLayoutWrap}>
