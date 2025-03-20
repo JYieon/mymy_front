@@ -368,7 +368,7 @@ const Detail = () => {
       {data.boardCategory === 2 && (
         <>
           {/* 댓글 섹션 */}
-          <Reply boardNo={boardNo} />
+          <Reply boardNo={boardNo} category={2} />
         </>
       )}
     </div>

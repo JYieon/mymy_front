@@ -37,12 +37,14 @@ import FollowerList from "./component/follow/FollowerList";
 import UserProfile from "./component/follow/UserProfile";
 import MyPost from "./component/mypage/MyPost";
 import MyComment from "./component/mypage/MyComment";
+import { WebSocketProvider } from "./component/alarm/alramWebSocketProvider";
 import SidebarPage from "./Pages/SidebarPage";
 import BoardWritePage from "./Pages/Board/BoardWritePage";
 
 function App() {
   return (
-    <Routes>
+    <WebSocketProvider>{
+      <Routes>
       {/* <Route path="/login" element={<LoginForm />} /> 
       <Route path="/find" element={<Find />} /> 
       <Route path="/find_password" element={<FindPassword />} /> 
@@ -92,7 +94,6 @@ function App() {
         </Route>
         <Route path="groupChat/:roomNum" element={<GroupChatPage />} />
         <Route path="groupChat" element={<GroupChatPage />} />
-
         {/* 여행자 테스트 */}
         <Route path="/test" element={<TestPage />}></Route>
         <Route path="test/result" element={<ResultPage />} />
@@ -124,11 +125,11 @@ function App() {
           />
 
           {/*  팔로잉 / 팔로워 목록 페이지 추가 */}
-          <Route path="following/:userId" element={<FollowingList />} />
-          <Route path="followers/:userId" element={<FollowerList />} />
+          <Route path="following" element={<FollowingList />} />
+          <Route path="followers" element={<FollowerList />} />
         </Route>
         {/* 알림 목록 */}
-        <Route path="/mypage/alarm/list/:userId" element={<AlarmList />} />
+        <Route path="/mypage/alarm/list" element={<AlarmList />} />
 
         {/* 특정 유저 프로필 페이지 */}
         <Route path="/profile/:userId" element={<UserProfile />} />
@@ -141,6 +142,8 @@ function App() {
         <Route path="/map/:boardNo" element={<KakaoMap />} />
       </Route>
     </Routes>
+    }</WebSocketProvider>
+   
   );
 }
 

@@ -11,8 +11,16 @@ const AuthApi = {
         return await axios.post(domain + "/login", user);
     },
 
+    findId: async (name, email) => {
+        return await axios.get(domain + "/find/id", {
+            params:{
+                name: name,
+                email: email
+            }
+        })
+    },
+
     sendMail: async (id, email) => {
-        console.log(id, email)
         return await axios.post(domain + "/find/pwd", null, {
             params: {
                 id: id,

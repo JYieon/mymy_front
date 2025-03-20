@@ -60,21 +60,9 @@ const MypageApi = {
             withCredentials: true
         });
     },
-
-    //알림 목록
-    getAlarms: async () => {
-        const token = localStorage.getItem("accessToken");
-        const userId = localStorage.getItem("userId");  // ✅ localStorage에서 userId 가져오기
-
-        if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
-            return [];
-        }
-
-        if (!userId) {
-            console.error("🚨 userId가 없습니다! API 요청 중단.");
-            return [];
-        }
+    
+    
+    getAlarms: async (token) => {
 
         try {
             const response = await axios.get(`${domain}/alarm/list`, {
@@ -90,19 +78,12 @@ const MypageApi = {
             return [];
         }
     },
-
-    //알림 읽음 표처리리
-    markAlarmsAsRead: async () => {
-        const token = localStorage.getItem("accessToken");
-
-        if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
-            return;
-        }
-
-
+    markAlarmsAsRead: async (token, no) => {
+    
         try {
-            const response = await axios.post(`${domain}/alarm/mark-read`, {},
+            const response = await axios.post(
+                "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
+                {no},  
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
