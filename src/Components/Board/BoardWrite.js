@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; 
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
-import SummernoteLite from "react-summernote-lite"; 
+import SummernoteLite from "react-summernote-lite";
 import "react-summernote-lite/dist/summernote-lite.min.css";
+import Timeline from "./Timeline";
+import KakaoMap from "./KakaoMap";
 
-const BoardWrite = () => {
+const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
+  // 아래 기능들은 BoardWritePage.js에 있음
+
   const location = useLocation();
   const navigate = useNavigate();
   const editorRef = useRef(null);
@@ -15,7 +19,6 @@ const BoardWrite = () => {
   const searchParams = new URLSearchParams(location.search);
   const initialCategory = searchParams.get("category") ? parseInt(searchParams.get("category")) : 1;
   const [category, setCategory] = useState(initialCategory);
-
   const [title, setTitle] = useState("");
   const [boardOpen, setBoardOpen] = useState(1);
   const [hashtags, setHashtags] = useState([]);
@@ -25,10 +28,10 @@ const BoardWrite = () => {
 
   // Summernote 초기화
   useEffect(() => {
-    if(!localStorage.getItem("accessToken")){
-      alert("로그인 이후 이용 부탁드립니다")
-      window.location.href = "/"
-    }else{
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 이후 이용 부탁드립니다");
+      window.location.href = "/";
+    } else {
       if (!window.$ || !window.jQuery) {
         window.$ = window.jQuery = $;
       }
@@ -48,8 +51,6 @@ const BoardWrite = () => {
         if (editor) $(editor).summernote("destroy");
       };
     }
-
-    
   }, []);
 
   // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
@@ -67,9 +68,13 @@ const BoardWrite = () => {
     formData.append("file", file);
 
     try {
-      const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(
+        "http://localhost:8080/mymy/board/uploadSummernoteImageFile",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       if (res.data.fileName) {
         let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
@@ -103,36 +108,37 @@ const BoardWrite = () => {
     }
   };
 
+
   // 게시글 작성
   const handleSubmit = async (e) => {
     e.preventDefault();
     const content = $(editorRef.current).summernote("code");
     const postData = { title, boardCategory: category, content };
-  
     if (category === 2) postData.boardOpen = boardOpen;
     if (category === 2) postData.hashtags = hashtags;
-    
-    console.log("전송할 데이터:",postData);
     try {
       const token = localStorage.getItem("accessToken");
-  
+
       if (!token) {
         alert("로그인 후 이용 부탁드립니다.");
         window.location.href = "/login";
         return;
       }
-  
+
       // 게시글 저장 API 요청
       const res = await BoardApi.writeSave(postData, token);
       console.log("📩 서버 응답 데이터:", res.data);
-  
+
       if (res.status === 200) {
-        const boardNo = res.data.boardNo;
-        console.log("✅ 반환된 boardNo:", boardNo);
-  
+        setBoardNo(res.data.boardNo);
+        console.log("✅ 반환된 boardNo:", res.data.boardNo);
         if (category === 1) {
           // 계획 게시글 → 타임라인 페이지로 이동
-          navigate(`/timeline/${boardNo}`);  
+          setTimelineOpen(true);
+          setTimeline(
+            <Timeline boardNo={res.data.boardNo} />);
+            <KakaoMap boardNo={res.data.boardNo}/>
+          // navigate(`/timeline/${boardNo}`);
         } else if (category === 2) {
           alert("게시글이 등록되었습니다!");
           navigate(`/board/list?category=${category}`);
@@ -143,17 +149,21 @@ const BoardWrite = () => {
       console.error("❌ 게시글 작성 오류:", error);
     }
   };
-  
-
 
   return (
     <div>
+      <button>뒤로가기</button>
       <h2>📄 {category === 1 ? "계획 게시글 작성" : "기록 게시글 작성"}</h2>
       <form onSubmit={handleSubmit}>
         {/* 제목 입력 */}
         <div>
           <label>제목:</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
         </div>
 
         {/* 기록 게시글에만 공개 여부 & 해시태그 추가 */}
@@ -161,7 +171,10 @@ const BoardWrite = () => {
           <>
             <div>
               <label>공개 여부:</label>
-              <select value={boardOpen} onChange={(e) => setBoardOpen(parseInt(e.target.value))}>
+              <select
+                value={boardOpen}
+                onChange={(e) => setBoardOpen(parseInt(e.target.value))}
+              >
                 <option value={1}>공개</option>
                 <option value={0}>비공개</option>
               </select>
@@ -169,10 +182,16 @@ const BoardWrite = () => {
 
             <div>
               <label>해시태그:</label>
-              <input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)} />
+              <input
+                type="text"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+              />
               <button onClick={addHashtag}>추가</button>
               {hashtags.map((tag, index) => (
-                <span key={index} onClick={() => removeHashtag(tag)}>#{tag} ❌</span>
+                <span key={index} onClick={() => removeHashtag(tag)}>
+                  #{tag} ❌
+                </span>
               ))}
             </div>
 
@@ -182,10 +201,14 @@ const BoardWrite = () => {
               <select onChange={(e) => setSelectedPlan(e.target.value)}>
                 <option value="">선택</option>
                 {plans.map((plan) => (
-                  <option key={plan.boardNo} value={plan.boardNo}>{plan.title}</option>
+                  <option key={plan.boardNo} value={plan.boardNo}>
+                    {plan.title}
+                  </option>
                 ))}
               </select>
-              <button type="button" onClick={handleLoadPlan}>불러오기</button>
+              <button type="button" onClick={handleLoadPlan}>
+                불러오기
+              </button>
             </div>
           </>
         )}
@@ -195,7 +218,6 @@ const BoardWrite = () => {
           <label>본문:</label>
           <div ref={editorRef}></div>
         </div>
-
         {/* 작성 완료 */}
         <button type="submit">작성 완료</button>
       </form>

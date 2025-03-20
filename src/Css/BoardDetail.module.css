@@ -51,10 +51,12 @@ hr {
 }
 
 .content{
+    display: flex;
     margin: auto 5px;
     /* word-spacing: 1px; */
     padding: 5px;
     line-height: 20px;
+    /* background-color: aliceblue; */
 
 }
 .hashtag {

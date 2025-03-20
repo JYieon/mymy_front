@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
 import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
-const Timeline = () => {
-  const { boardNo } = useParams();
+  const Timeline = ({boardNo}) => {
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
@@ -24,6 +23,7 @@ const Timeline = () => {
   // 타임라인 데이터 가져오기
   const fetchTimeline = async () => {
     try {
+      console.log("타임라인 게시글 번호",boardNo)
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
         setStartDate(response.data.startDt);
@@ -90,12 +90,13 @@ const Timeline = () => {
       location,
       todo: JSON.stringify(todoList),
     };
-
+    console.log("타임라인 유저 데이터",data)
     try {
       await TimelineApi.addTimeline(data, token);
       alert("여행 일정이 저장되었습니다!");
       fetchTimeline();
     } catch (error) {
+      alert("작성되지 않은 부분이 있습니다!");
       console.error("저장 중 오류 발생:", error);
     }
   };
@@ -141,7 +142,10 @@ const Timeline = () => {
           <input
             type="date"
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)} // startDate 업데이트
+            onChange={(e) => {
+              setStartDate(e.target.value)
+              setSelectedDate(startDate)
+            }} // startDate 업데이트
             className={style.input}
           />
           <span>~</span>
@@ -149,7 +153,15 @@ const Timeline = () => {
           <input
             type="date"
             value={endDate}
-            onChange={(e) => setEndDate(e.target.value)} // endDate 업데이트
+            onChange={(e) => {
+              if (e.target.value.replaceAll('-', '')-startDate.replaceAll('-', "")<0)
+              {alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
+                setEndDate(startDate);
+              }else{
+                setEndDate(e.target.value)
+              }
+              }
+              } // endDate 업데이트
             className={style.input}
           />
         </div>
@@ -233,7 +245,6 @@ const Timeline = () => {
           <button className={style.saveButton} onClick={handleSaveTasks}>
             💾 저장
           </button>
-
         </div>
       </div>
     </div>

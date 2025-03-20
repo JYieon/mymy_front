@@ -18,13 +18,13 @@ import Alarm from "./component/alarm/alarm";
 // import MyPage from "./Pages/Account/MyPage";
 import TestPage from "./Pages/TestPage/TestPage";
 import Detail from "./Components/Board/Detail";
-import BoardWrite from "./Components/Board/BoardWrite";
 import BoardList from "./Components/Board/BoardList";
 import BoardModify from "./Components/Board/BoardModify";
 import BookmarkList from "./Components/Board/BookmarkList";
 import ResultPage from "./Pages/TestPage/ResultPage";
 import NewChatPage from "./Pages/Chat/NewChatPage";
 import Timeline from "./Components/Board/Timeline";
+import TimelineModify from "./Components/Board/TimelineModify";
 import MateBoardList from "./Components/Board/MateBoardList";
 import MateBoardWrite from "./Components/Board/MateBoardWrite";
 import MateBoardDetail from "./Components/Board/MateBoardDetail";
@@ -135,7 +135,8 @@ function App() {
         <Route path="/profile/:userId" element={<UserProfile />} />
 
         {/* 타임라인 경로 */}
-        <Route path="/timeline/:boardNo" element={<Timeline />} />
+        <Route path="/timeline/:boardNo" element={<TimelineModify/>} />
+        {/* <Route path="/timeline/:boardNo" element={<Timeline/>} /> */}
         <Route path="/timeline" element={<Timeline />} />
 
         {/* 카카오맵 */}
