@@ -24,7 +24,7 @@ const LoginPage=()=>{
     
         try {
             const res = await AuthApi.login(id, pwd);
-    
+            console.log(res)
             if (res.status === 200) {
                 // 로그인 성공 후, 토큰 저장
                 console.log("로그인 성공");

@@ -3,6 +3,7 @@ import axios from "axios";
 import MypageApi from "../../api/MypageApi";
 import { useParams } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
+import style from "../../Css/MyPage.module.css";
 
 //회원 정보 수정정
 function MyPage({ userData }) { 
@@ -112,46 +113,52 @@ function MyPage({ userData }) {
   return (
     <div>
       <h1>회원 정보 수정</h1>
-      <hr />
-
-      <form onSubmit={handleSubmit}>
-        <div>
+      <hr className={style.hr} />
+      <form onSubmit={handleSubmit}
+      className={style.formContainer}>
+        <div className={style.form}>
           <label>아이디</label>
-          <p>{formData.id}</p>
-        </div>
+          <input type='text'className={`${style.readOnlyId}`}  value={formData.id} readOnly />
+          {/* 간격을 맞추기 위한 버튼 (화면상에서 보이지 않음) */}
+          <button type="button" readOnly className={style.readonly}>변경</button>
 
-        <div>
+
+        </div>
+        <div className={style.form}>
           <label>닉네임</label>
-          <input type="text" name="nick" value={formData.nick} onChange={handleChange} />
+          <input className={`Shadow`} className={`Shadow`} type="text" name="nick" value={formData.nick} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("nick")}>변경</button>
         </div>
 
-        <div>
+        <div className={style.form}>
           <label>비밀번호</label>
-          <input type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
+          <input className={`Shadow`} className={`Shadow`} type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
+          <button type="button" readOnly className={style.readonly}>변경</button>
+
+
         </div>
 
-        <div>
+        <div className={style.form}>
           <label>비밀번호 확인</label>
-          <input type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
+          <input className={`Shadow`} className={`Shadow`} type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("pwd")}>변경</button>
         </div>
         {/* 비밀번호 오류 메시지 표시 */}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <div>
+        <div className={style.form}>
           <label>이메일</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          <input className={`Shadow`} className={`Shadow`} type="email" name="email" value={formData.email} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("email")}>변경</button>
         </div>
 
-        <div>
+        <div className={style.form}>
           <label>전화번호</label>
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
+          <input className={`Shadow`} className={`Shadow`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("phone")}>변경</button>
         </div>
 
-        <button type="submit">저장</button>
+        <button className={style.submitBtn} type="submit">저장</button>
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 #KakaoMap {
-    width: 500px;
-    height: 400px;
+    min-width: 450px;
+    min-height: 400px;
     border-radius: 10px;
+    background-color: whitesmoke;
 }

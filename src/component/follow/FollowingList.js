@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
+import ChatApi from "../../api/ChatApi";
 
 //팔로잉 목록록
 const FollowingList = () => {
-    const { userId } = useParams(); //  URL에서 userId 가져오기
-    const [following, setFollowing] = useState([]);//내가 팔로우한 사람들 목록 저장
+    // const { userId } = useParams(); //  URL에서 userId 가져오기
+    const [following, setFollowing] = useState([]);
     const [error, setError] = useState(null);
-    console.log(" URL에서 가져온 userId:", userId);
+    const [userId, setUserId] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");//콘솔에서 userid 확인
@@ -17,11 +18,17 @@ const FollowingList = () => {
             return;
         }
 
-        if (!userId) {
-            setError(" 유저 ID가 없습니다.");
-            return;
-        }
-        //서버에서 팔로잉 정보를 가져오는 함수
+        const fetchUserInfo = async () => {
+            try {
+                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
+                console.log("백엔드에서 가져온 userId:", res.data.id);
+                setUserId(res.data.id);
+            } catch (error) {
+                console.error("🚨 userId 가져오기 실패:", error);
+                Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+            }
+        };
+
         const fetchFollowing = async () => {
             try {
                 const res = await MypageApi.getFollowingList(userId, token);//api 요청 
@@ -35,8 +42,7 @@ const FollowingList = () => {
         };
 
         fetchFollowing();
-    }, [userId]);
-
+    }, []);
     return (
         <div className="following-list">
             <h2>{userId}의 팔로잉 목록 (내가 팔로우한 사람)</h2>

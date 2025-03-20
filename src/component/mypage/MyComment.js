@@ -45,7 +45,7 @@ const MyComment = () => {
                 </thead>
             </table>
             {comments.length === 0 ? (
-                <p className="no-data">작성한 댓글이 없습니다.</p>
+                <p className="noDataContext">작성한 댓글이 없습니다.</p>
             ) : (
                 <ul className="mycomment-list">
                     {comments.map((comment) => (

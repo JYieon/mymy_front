@@ -52,10 +52,14 @@ const BoardApi = {
 
 
     // 게시글 수정
-    modify: async (postData) => {
+    modify: async (postData, token) => {
         try {
             return await axios.post(`${domain}/modify`, postData, {
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json" ,
+                    "Authorization": `Bearer ${token}`,
+                },
+                
             });
         } catch (error) {
             console.error("❌ BoardApi modify 에러:", error);

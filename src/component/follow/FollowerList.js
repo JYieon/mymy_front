@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
+import ChatApi from "../../api/ChatApi";
 
 //팔로워 목록
 const FollowerList = () => {
-    const { userId } = useParams();//사용자 id 가져옴옴
+    // const { userId } = useParams();
    
-    const [followers, setFollowers] = useState([]);//팔로워 목록 저장장
-    const [error, setError] = useState(null);//오류 메세지 저장장
-    console.log(" URL에서 가져온 userId:", userId);
+    const [followers, setFollowers] = useState([]);
+    const [error, setError] = useState(null);
 
 
     useEffect(() => {
@@ -17,11 +17,16 @@ const FollowerList = () => {
             setError(" 로그인 후 확인 가능합니다.");
             return;
         }
-
-        if (!userId) {
-            setError(" 유저 ID가 없습니다.");
-            return;
-        }
+        const fetchUserInfo = async () => {
+            try {
+                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
+                console.log("백엔드에서 가져온 userId:", res.data.id);
+                setUserId(res.data.id);
+            } catch (error) {
+                console.error("🚨 userId 가져오기 실패:", error);
+                Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+            }
+        };
 
         //서버에서 팔로워 정보를 가져옴옴
         const fetchFollowers = async () => {
@@ -37,7 +42,7 @@ const FollowerList = () => {
         };
 
         fetchFollowers();
-    }, [userId]);//userid가 변경되면 재실행
+    }, []);
 
         
 

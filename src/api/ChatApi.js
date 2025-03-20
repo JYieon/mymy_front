@@ -1,4 +1,5 @@
 import axios from "axios";
+import { param } from "jquery";
 
 const domain = "http://localhost:8080/mymy/chat";
 
@@ -12,11 +13,11 @@ const ChatApi =  {
     },
 
     getUserInfo : async (token) => {
-        return await axios.get(domain + "/user/info", {
-            params:{
-                token: token
-            }
-        })
+        return await axios.get(domain + "/user/info", { headers: { Authorization: `Bearer ${token}` } })
+        //     params:{
+        //         token: token
+        //     }
+        // })
     },
 
     getChatMessages : async (roomNum) => {
@@ -36,12 +37,22 @@ const ChatApi =  {
         })
     },
 
-    inviteChatUser : async (inviteUser, roomNum) => {
+    inviteChatUser : async (token, inviteUser, roomNum) => {
         return await axios.post(domain + "/invite", null, {
             params: {
+                token: token,
                 inviteUser: inviteUser, 
                 roomNum: roomNum
 
+            }
+        })
+    },
+
+    endChat : async (roomNum, token) => {
+        return await axios.delete(domain + "/endChat", {
+            params: {
+                roomNum: roomNum,
+                token: token
             }
         })
     }
