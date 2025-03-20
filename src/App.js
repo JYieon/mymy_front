@@ -111,16 +111,16 @@ function App() {
         </Route>
         {/* 마이페이지 관련 라우트 */}
         <Route path="mypage" element={<SidebarPage />}>
-          <Route path="/mypage/my_story/:userId" element={<MyPost />} />
-          <Route path="/mypage/my_reply/:userId" element={<MyComment />} />
-          <Route path="/mypage/modify/:userId" element={<MyPage />} />
+          <Route path="/mypage/my_story" element={<MyPost />} />
+          <Route path="/mypage/my_reply" element={<MyComment />} />
+          <Route path="/mypage/modify" element={<MyPage />} />
 
           {/* 알림 설정 테스트 페이지? */}
 
           {/* <Route path="/mypage/alarm" element={<AlarmSettings  />}/>    */}
 
           <Route
-            path="/mypage/alarm/settings/:userId"
+            path="/mypage/alarm/settings"
             element={<AlarmSettings />}
           />
 

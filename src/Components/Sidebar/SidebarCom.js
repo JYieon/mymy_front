@@ -264,23 +264,23 @@ const SidebarCom = () => {
                         마이페이지
                         <ul className="MenuList">
                             <li>
-                                <Link to={`/mypage/my_story/${userId}`} className="Menu">
+                                <Link to={`/mypage/my_story`} className="Menu">
                                     내가 쓴 글
                                 </Link>
                             </li>
                             <li>
-                                <Link to={`/mypage/my_reply/${userId}`} className="Menu">
+                                <Link to={`/mypage/my_reply`} className="Menu">
                                     내가 쓴 댓글
                                 </Link>
                             </li>
                             <li>
-                                <Link to={`/mypage/modify/${userId}`} className="Menu">
+                                <Link to={`/mypage/modify`} className="Menu">
                                     회원정보 수정
                                 </Link>
                             </li>
                             <li>
                                 <Link
-                                    to={`/mypage/alarm/settings/${userId}`}
+                                    to={`/mypage/alarm/settings`}
                                     className="Menu"
                                 >
                                     알림 설정

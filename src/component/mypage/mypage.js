@@ -126,13 +126,13 @@ function MyPage({ userData }) {
         </div>
         <div className={style.form}>
           <label>닉네임</label>
-          <input className={`Shadow`} className={`Shadow`} type="text" name="nick" value={formData.nick} onChange={handleChange} />
+          <input className={`Shadow`} type="text" name="nick" value={formData.nick} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("nick")}>변경</button>
         </div>
 
         <div className={style.form}>
           <label>비밀번호</label>
-          <input className={`Shadow`} className={`Shadow`} type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
+          <input className={`Shadow`}  type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
           <button type="button" readOnly className={style.readonly}>변경</button>
 
 
@@ -140,7 +140,7 @@ function MyPage({ userData }) {
 
         <div className={style.form}>
           <label>비밀번호 확인</label>
-          <input className={`Shadow`} className={`Shadow`} type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
+          <input className={`Shadow`} type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("pwd")}>변경</button>
         </div>
         {/* 비밀번호 오류 메시지 표시 */}
@@ -148,13 +148,13 @@ function MyPage({ userData }) {
 
         <div className={style.form}>
           <label>이메일</label>
-          <input className={`Shadow`} className={`Shadow`} type="email" name="email" value={formData.email} onChange={handleChange} />
+          <input className={`Shadow`}  type="email" name="email" value={formData.email} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("email")}>변경</button>
         </div>
 
         <div className={style.form}>
           <label>전화번호</label>
-          <input className={`Shadow`} className={`Shadow`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
+          <input className={`Shadow`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("phone")}>변경</button>
         </div>
 

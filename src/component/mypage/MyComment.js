@@ -4,25 +4,25 @@ import MypageApi from "../../api/MypageApi";
 
 //내가 쓴 댓글 목록
 const MyComment = () => {
-    const { userId } = useParams(); //url에서 id 가져옴
     const [comments, setComments] = useState([]);//내가 쓴 댓글 목록 저장
     const [posts, setPosts] = useState([]);  // 내가 작성한 게시글 (추가)
+    const token = localStorage.getItem("accessToken")
     //내가 작성한 댓글 불러옴
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await MypageApi.getMyComments(userId);//api요청
+                const response = await MypageApi.getMyComments(token);//api요청
                 setComments(response || []);//댓글 데이터가 없으면 빈 배열로 저장
 
                 // 게시글 가져오기
-                const postResponse = await MypageApi.getMyPosts(userId);
+                const postResponse = await MypageApi.getMyPosts(token);
                 setPosts(postResponse || []);
             } catch (error) {
                 console.error(" 내가 쓴 댓글 불러오기 실패:", error);
             }
         };
         fetchComments();
-    }, [userId]);//id가 바뀌면 재실행
+    }, [token]);
 
        // 댓글이 속한 게시글의 제목을 찾는 함수
        const getPostTitle = (boardNo,title) => {

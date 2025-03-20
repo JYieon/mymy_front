@@ -5,21 +5,18 @@ import MypageApi from "../../api/MypageApi";
 
 //알림 설정정
 const AlarmSettings = () => {
-    const { userId } = useParams(); // URL에서 userId 가져오기
+    // const { userId } = useParams(); // URL에서 userId 가져오기
     const [settings, setSettings] = useState(null); //알림 설정 데이터터
     const [loading, setLoading] = useState(true);//데이터 로딩 중인지 확인인
     const [error, setError] = useState(null);//에러 메세지 상태 관리리
+    const token = localStorage.getItem("accessToken")
 
      // 알림 설정 불러오기
      useEffect(() => {
-        console.log("불러올 사용자 ID : ", userId); // userId 값 확인
-        if (!userId) {
-            console.error(" userId가 없습니다. 요청을 중단합니다.");
-            return;
-        }
+        
     
         console.log(" 알림 설정 요청 보내는 중...");
-        MypageApi.getAlarmSettings(userId) //  api 요청청
+        MypageApi.getAlarmSettings(token) //  api 요청청
             .then(response => {
                 console.log(" 알림 설정 데이터:", response.data);
                 setSettings(response.data);//설정을 화면에 적용 
@@ -30,7 +27,7 @@ const AlarmSettings = () => {
                 setError("알림 설정을 불러오는 중 오류 발생");
                 setLoading(false);
             });
-    }, [userId]);//userid가 변경될 때마다 실행행
+    }, [token]);//userid가 변경될 때마다 실행행
     
     //설정 저장
     const saveSettings = () => {

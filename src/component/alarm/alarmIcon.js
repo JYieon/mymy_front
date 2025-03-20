@@ -8,7 +8,7 @@ const AlarmIcon = ({hasUnread}) => {
     const navigate = useNavigate();
     console.log("icon", hasUnread)
 //     const [notifications, setNotifications] = useState([]);
-//     const [unreadCount, setUnreadCount] = useState(0);
+     const [unreadCount, setUnreadCount] = useState(0);
 //     const [showDropdown, setShowDropdown] = useState(false);
 //     const token = localStorage.getItem("token")
 

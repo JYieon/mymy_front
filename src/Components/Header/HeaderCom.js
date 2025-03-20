@@ -29,17 +29,17 @@ const HeaderCom = () => {
               const res = await ChatApi.getUserInfo(token);
               setUserId(res.data.id);
 
-            //   const resAlram = await MypageApi.getAlarms(token);
-            //   console.log("🔹 받아온 알람 데이터:", resAlram.data);
-            //   setNotifications(resAlram.data);
+              const resAlram = await MypageApi.getAlarms(token);
+              console.log("🔹 받아온 알람 데이터:", resAlram.data);
+              setNotifications(resAlram.data);
 
-            //   notifications.map((noti) => {
-            //     if(noti.isRead === 0){
-            //         setHasUnread(true);
-            //         console.log("!!!!!", hasUnread)
-            //         return;
-            //     }
-            //   })
+              notifications.map((noti) => {
+                if(noti.isRead === 0){
+                    setHasUnread(true);
+                    console.log("!!!!!", hasUnread)
+                    return;
+                }
+              })
         
              
                         // .then(response => {

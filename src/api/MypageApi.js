@@ -16,9 +16,14 @@ const MypageApi = {
     },
 
     // 내가 쓴 글 목록 조회
-    getMyPosts: async (userId) => {
+    getMyPosts: async (token) => {
         try {
-            const res = await axios.get(`${domain}/myboard/my-posts/${userId}`);  
+            const res = await axios.get(`${domain}/myboard/my-posts`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}}`//인증 토큰
+                }
+            });  
             return res.data;
         } catch (error) {
             console.error(" MyBoardApi getMyPosts 에러:", error);
@@ -27,9 +32,14 @@ const MypageApi = {
     },
 
     // 내가 쓴 댓글 목록 조회
-    getMyComments: async (userId) => {
+    getMyComments: async (token) => {
         try {
-            const res = await axios.get(`${domain}/myboard/my-comments/${userId}`);
+            const res = await axios.get(`${domain}/myboard/my-comments`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}}`//인증 토큰
+                }
+            });
             return res.data;
         } catch (error) {
             console.error("MyBoardApi getMyComments 에러:", error);
@@ -53,76 +63,58 @@ const MypageApi = {
 
 
     // 알림 설정 조회
-    getAlarmSettings: async (memberId) => {
-        return await axios.get(`${domain}/alarm/settings/${memberId}`, { //  memberId를 경로에 추가
+    getAlarmSettings: async (token) => {
+        return await axios.get(`${domain}/alarm/settings`, { //  memberId를 경로에 추가
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                "Authorization": `Bearer ${token}`
             },
             withCredentials: true
         });
     },
 
     //알림 목록
-    getAlarms: async () => {
-        const token = localStorage.getItem("accessToken");
-        const userId = localStorage.getItem("userId");  //  localStorage에서 userId 가져오기
-
-        if (!token) {
-            console.error("토큰이 없습니다! API 요청 중단.");
-            return [];
-        }
-
-        if (!userId) {
-            console.error(" userId가 없습니다! API 요청 중단.");
-            return [];
-        }
+    getAlarms: async (token) => {
 
         try {
             const response = await axios.get(`${domain}/alarm/list`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "Access-Control-Allow-Origin": "*"  //  CORS 해결을 위한 헤더 추가 }, 
+                    "Access-Control-Allow-Origin": "*"  // ✅ CORS 해결을 위한 헤더 추가 }, // ✅ userId를 헤더로 전달
                 },
                 withCredentials: true
             });
             return response;
         } catch (error) {
-            console.error("알림 가져오기 실패:", error);
+            console.error("🚨 알림 가져오기 실패:", error);
             return [];
         }
     },
-
-    //알림 읽음 처리리
-    markAlarmsAsRead: async () => {
-        const token = localStorage.getItem("accessToken");
-
-        if (!token) {
-            console.error("토큰이 없습니다! API 요청 중단.");
-            return;
-        }
-
-
+    markAlarmsAsRead: async (token, no) => {
+    
         try {
-            const response = await axios.post(`${domain}/alarm/mark-read`, {},
+            const response = await axios.post(
+                "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
+                {no},  
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
-                    withCredentials: true // 백엔드에서 CORS 설정이 필요
+                    withCredentials: true // ✅ 백엔드에서 CORS 설정이 필요
                 }
             );
-            console.log("알림 읽음 처리 성공:", response.data);
+            console.log("✅ 알림 읽음 처리 성공:", response.data);
         } catch (error) {
             if (error.response) {
-                console.error(" [서버 응답 오류]", error.response.status, error.response.data);
+                console.error("🚨 [서버 응답 오류]", error.response.status, error.response.data);
             } else if (error.request) {
-                console.error("[요청 실패] 서버로부터 응답이 없습니다.");
+                console.error("🚨 [요청 실패] 서버로부터 응답이 없습니다.");
             } else {
-                console.error(" [알 수 없는 오류]", error.message);
+                console.error("🚨 [알 수 없는 오류]", error.message);
             }
         }
     },
+
 
 
 
