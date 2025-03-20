@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Reply from "./Reply";
 import style from "../../Css/BoardDetail.module.css";
-import { input } from "framer-motion/client";
+import axios from "axios";
 
 const Detail = () => {
     const { boardNo } = useParams();
@@ -176,7 +176,6 @@ const Detail = () => {
               <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
               <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
               <div
-                style={{ marginBottom: "20px" }}
                 className={style.editBtnContainer}
               >
                 {/* 계획 & 기록 게시글 모두 수정 & 삭제 가능 */}
@@ -209,7 +208,7 @@ const Detail = () => {
                         hashtags.map((tag, index) => (
                             <span 
                                 key={index} 
-                                style={{ marginRight: "10px", color: "#007bff", cursor: "pointer" }}
+                                className={style.hashtag}
                                 onClick={() => navigate(`/board/list?category=2&searchType=tag&keyword=${encodeURIComponent(tag)}`)}
                             >
                                 #{tag}
@@ -305,7 +304,7 @@ const Detail = () => {
       {data.boardCategory === 2 && (
         <>
           {/* 댓글 섹션 */}
-          <Reply boardNo={boardNo} />
+          <Reply boardNo={boardNo} category={2} />
         </>
       )}
     </div>

@@ -256,6 +256,7 @@ const BoardList = () => {
                   <div>조회수<span className="value">{post.boardCnt}</span></div>
 
                   <span>좋아요 {post.boardLikes}</span>
+                  <span>댓글 수 {post.repCnt}</span>
                 </div>
                 <Link to={`/profile/${post.id}`} className="WriterId">{post.id}
                 </Link>
