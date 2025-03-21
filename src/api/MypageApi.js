@@ -221,7 +221,7 @@ const MypageApi = {
                 withCredentials: true
             });
 
-            console.log("✅ 팔로워 목록 응답:", response.data);
+            console.log("팔로워 목록 응답:", response.data);
             return response.data;
         } catch (error) {
             console.error("🚨 팔로워 목록 가져오기 실패:", error);
@@ -246,6 +246,20 @@ const MypageApi = {
                 params: { testResult, token }
             });
     },
+
+   // 여행자 테스트 결과 조회 (수정)
+    getTestResult: async (token) => {
+    try {
+        const res = await axios.get(`${domain}/userinfo/testResult`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        return res.data; // ✅ 응답 데이터 반환!
+    } catch (error) {
+        console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
+        return ""; // 🚨 오류 발생 시 빈 값 반환
+    }
+},
+
 
 
 

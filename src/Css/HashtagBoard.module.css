@@ -1,0 +1,25 @@
+
+.hashtagBoard {
+    text-align: center;
+    padding: 20px;
+}
+
+.hashtagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.hashtag {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hashtag:hover {
+    background-color: #ddd;
+}

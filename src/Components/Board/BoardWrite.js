@@ -5,6 +5,8 @@ import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
 import SummernoteLite from "react-summernote-lite";
 import "react-summernote-lite/dist/summernote-lite.min.css";
+import ChatApi from "../../api/ChatApi";
+import MypageApi from "../../api/MypageApi";
 import Timeline from "./Timeline";
 import KakaoMap from "./KakaoMap";
 
@@ -14,7 +16,8 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const editorRef = useRef(null);
-  const token = localStorage.getItem("accessToken")
+  const token = localStorage.getItem("accessToken");
+
   // URL에서 category 값 가져오기
   const searchParams = new URLSearchParams(location.search);
   const initialCategory = searchParams.get("category") ? parseInt(searchParams.get("category")) : 1;
@@ -25,10 +28,34 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   const [tagInput, setTagInput] = useState("");
   const [plans, setPlans] = useState([]); // 계획 목록
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [userResult, setUserResult] = useState(""); // 여행자 테스트 결과
+
+  // 여행자 테스트 결과 가져오기
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchUserTestResult = async () => {
+        try {
+            const res = await MypageApi.getTestResult(token);
+            console.log("✅ 서버 응답:", res);
+
+            if (res) {
+                console.log("✅ 여행자 테스트 결과:", res);
+                setUserResult(res);
+                setHashtags((prev) => [...prev, res]);
+            }
+        } catch (error) {
+            console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
+        }
+    };
+
+    fetchUserTestResult();
+}, [token]);
+
 
   // Summernote 초기화
   useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
+    if (!token) {
       alert("로그인 이후 이용 부탁드립니다");
       window.location.href = "/";
     } else {
@@ -53,48 +80,35 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     }
   }, []);
 
-  // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
-  useEffect(() => {
-    if (category === 2) {
-      BoardApi.getBoardList(1, 1, token).then((res) => {
-        setPlans(res.data.boardList);
-      });
-    }
-  }, [category]);
-
-  // 이미지 업로드
+  // 이미지 업로드 함수 (오류 해결)
   const uploadImage = async (file) => {
     let formData = new FormData();
     formData.append("file", file);
 
     try {
-      const res = await axios.post(
-        "http://localhost:8080/mymy/board/uploadSummernoteImageFile",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+        const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
 
-      if (res.data.fileName) {
-        let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
-        $(editorRef.current).summernote("insertImage", imageUrl);
-      }
+        if (res.data.fileName) {
+            let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
+            $(editorRef.current).summernote("insertImage", imageUrl);
+        }
     } catch (err) {
-      alert("이미지 업로드 실패");
+        alert("이미지 업로드 실패");
     }
   };
 
-  // 해시태그 추가
+  // 해시태그 추가 함수 (오류 해결)
   const addHashtag = (e) => {
     e.preventDefault();
     if (tagInput.trim() && !hashtags.includes(tagInput.trim())) {
-      setHashtags([...hashtags, tagInput.trim()]);
-      setTagInput("");
+        setHashtags([...hashtags, tagInput.trim()]);
+        setTagInput(""); // 입력 필드 초기화
     }
   };
 
-  // 해시태그 삭제
+  // 해시태그 삭제 함수 (오류 해결)
   const removeHashtag = (tagToRemove) => {
     setHashtags(hashtags.filter((tag) => tag !== tagToRemove));
   };
@@ -107,7 +121,6 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
       });
     }
   };
-
 
   // 게시글 작성
   const handleSubmit = async (e) => {
@@ -145,8 +158,8 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
         }
       }
     } catch (error) {
-      alert("게시글 등록 실패");
-      console.error("❌ 게시글 작성 오류:", error);
+        alert("게시글 등록 실패");
+        console.error("❌ 게시글 작성 오류:", error);
     }
   };
 
@@ -201,14 +214,10 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
               <select onChange={(e) => setSelectedPlan(e.target.value)}>
                 <option value="">선택</option>
                 {plans.map((plan) => (
-                  <option key={plan.boardNo} value={plan.boardNo}>
-                    {plan.title}
-                  </option>
+                  <option key={plan.boardNo} value={plan.boardNo}>{plan.title}</option>
                 ))}
               </select>
-              <button type="button" onClick={handleLoadPlan}>
-                불러오기
-              </button>
+              <button type="button" onClick={handleLoadPlan}>불러오기</button>
             </div>
           </>
         )}
