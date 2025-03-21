@@ -132,27 +132,32 @@ const Detail = () => {
 
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
-        const timellineRes= await TimelineApi.deleteTimeline(timelineId);
-        console.log('타임라인 삭제 완료!')
-        const mapRes= await MapApi.deleteAllMarkersByBoard(boardNo);
-        console.log('맵 삭제 완료!')
+
+        if ( data.boardCategory ===1 ){
+
+          const timellineRes= await TimelineApi.deleteTimeline(timelineId);
+          const mapRes= await MapApi.deleteAllMarkersByBoard(boardNo);
+  
+          if (mapRes ===200) {
+            console.log('✅ 맵 마커 삭제 완료!')
+          }else{
+            console.error("❌ 맵 마커 삭제 실패");
+            
+          }
+          if (timellineRes ===200) {
+            console.log('✅ 타임라인 삭제 완료!')
+          }else{
+            console.error("❌ 타임라인 삭제 실패");
+            
+          }
+        }
+
 
         const res = await BoardApi.delete(boardNo, token);
         console.log('게시글 삭제 완료!')
 
         console.log("boardNo",boardNo,"\n token",token);
-        if (mapRes ===200) {
-          console.log('✅ 맵 마커 삭제 완료!')
-        }else{
-          console.error("❌ 맵 마커 삭제 실패");
-          
-        }
-        if (timellineRes ===200) {
-          console.log('✅ 타임라인 삭제 완료!')
-        }else{
-          console.error("❌ 타임라인 삭제 실패");
-          
-        }
+
         if (res.status === 200 ) {
           console.log('✅ 게시글 삭제 완료!')
           alert("게시글이 삭제되었습니다.");
