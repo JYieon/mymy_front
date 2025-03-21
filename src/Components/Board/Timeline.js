@@ -3,12 +3,21 @@ import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
   const Timeline = ({boardNo}) => {
 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [location, setLocation] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+    
+    const today=(date)=>{
+      const year=date.getFullYear();
+      const month=String(date.getMonth()+1).padStart(2,0);
+      const day=String(date.getDate()).padStart(2,0)
+      return `${year}-${month}-${day}`;
+    }
+
+  const [startDate, setStartDate] = useState(today(new Date()));
+  const [endDate, setEndDate] = useState(today(new Date()));
+  const [location, setLocation] = useState("가고 싶은 장소를 적어보세요!");
+  const [selectedDate, setSelectedDate] = useState(today(new Date()));
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
+
 
   useEffect(() => {
     if (!token) {
@@ -156,6 +165,7 @@ import style from "../../Css/Timeline.module.css";
             onChange={(e) => {
               if (e.target.value.replaceAll('-', '')-startDate.replaceAll('-', "")<0)
               {alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
+                console.log(startDate)
                 setEndDate(startDate);
               }else{
                 setEndDate(e.target.value)
