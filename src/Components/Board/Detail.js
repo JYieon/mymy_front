@@ -132,9 +132,18 @@ const Detail = () => {
 
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
-
+        const isBookmarted = await BoardApi.checkBookmark(boardNo,token);
+        if ( isBookmarted )
+        {
+          try {
+            const success = await BoardApi.toggleBookmark(boardNo, token);
+            if (success) {
+            }
+        } catch (error) {
+            console.error("북마크 해제 실패:", error);
+        }
+        }
         if ( data.boardCategory ===1 ){
-
           const timellineRes= await TimelineApi.deleteTimeline(timelineId);
           const mapRes= await MapApi.deleteAllMarkersByBoard(boardNo);
   
