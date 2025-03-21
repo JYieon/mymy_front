@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, Navigate, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import ChatApi from "../../api/ChatApi";
 
-//팔로잉 목록록
+//팔로잉 목록
 const FollowingList = () => {
-    // const { userId } = useParams(); //  URL에서 userId 가져오기
+    const { userId } = useParams(); //  URL에서 userId 가져오기
     const [following, setFollowing] = useState([]);
     const [error, setError] = useState(null);
-    const [userId, setUserId] = useState("");
+
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");//콘솔에서 userid 확인
@@ -18,16 +17,16 @@ const FollowingList = () => {
             return;
         }
 
-        const fetchUserInfo = async () => {
-            try {
-                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
-                console.log("백엔드에서 가져온 userId:", res.data.id);
-                setUserId(res.data.id);
-            } catch (error) {
-                console.error("🚨 userId 가져오기 실패:", error);
-                Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
-            }
-        };
+        // const fetchUserInfo = async () => {
+        //     try {
+        //         const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
+        //         console.log("백엔드에서 가져온 userId:", res.data.id);
+        //         setUserId(res.data.id);
+        //     } catch (error) {
+        //         console.error("🚨 userId 가져오기 실패:", error);
+        //         Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+        //     }
+        // };
 
         const fetchFollowing = async () => {
             try {
