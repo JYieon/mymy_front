@@ -8,6 +8,7 @@ import style from "../../Css/BoardDetail.module.css";
 import ReadingOnlyTimeline from "./ReadingOnlyTimeline";
 import TimelineApi from "../../api/TimelineApi";
 import MapApi from "../../api/MapApi";
+import ReadingOnlyKakaoMap from "./ReadingOnlyKakaoMap";
 
 const Detail = () => {
   const location = useLocation();
@@ -19,8 +20,10 @@ const Detail = () => {
   const [hashtags, setHashtags] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState("");
   const [timelineId, SetTimelineId] = useState("");
-  
+
   const token = localStorage.getItem("accessToken");
+
+
 
   // 로그인한 사용자 정보 가져오기
   useEffect(() => {
@@ -132,42 +135,54 @@ const Detail = () => {
 
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
-        const isBookmarted = await BoardApi.checkBookmark(boardNo,token);
-        if ( isBookmarted )
-        {
+        const isBookmarted = await BoardApi.checkBookmark(boardNo, token);
+        console.log("isbookmarked",isBookmarted.data);
+        if (isBookmarted.data) {
           try {
             const success = await BoardApi.toggleBookmark(boardNo, token);
             if (success) {
-            }
-        } catch (error) {
-            console.error("북마크 해제 실패:", error);
-        }
-        }
-        if ( data.boardCategory ===1 ){
-          const timellineRes= await TimelineApi.deleteTimeline(timelineId);
-          const mapRes= await MapApi.deleteAllMarkersByBoard(boardNo);
-  
-          if (mapRes ===200) {
-            console.log('✅ 맵 마커 삭제 완료!')
-          }else{
-            console.error("❌ 맵 마커 삭제 실패");
-            
-          }
-          if (timellineRes ===200) {
-            console.log('✅ 타임라인 삭제 완료!')
-          }else{
-            console.error("❌ 타임라인 삭제 실패");
-            
-          }
-        }
+              console.log('✅ 북마크 삭제 완료!')
 
+            }
+          } catch (error) {
+            console.error("❌ 북마크 삭제 실패");
+          }
+        }
+        const isTimeline = await TimelineApi.getTimeline(boardNo)
+        console.log("isTimeline",isTimeline.data.timelineId);
+
+        if (isTimeline.data.timelineId !== null) {
+          try {
+            const success = await TimelineApi.deleteTimeline(timelineId);
+            if (success === 200) {
+            console.log('✅ 타임라인 삭제 완료!')
+            }
+          } catch (error) {
+            console.error("❌ 타임라인 삭제 실패");
+
+          }
+        }
+        const isMapMaker = await MapApi.fetchMarkers(boardNo);
+        console.log("isMapMaker",isMapMaker.data.length);
+        
+        if (isMapMaker.data) {
+          try {
+            const success = await MapApi.deleteAllMarkersByBoard(boardNo);
+            if (success === 200) {
+            console.log('✅ 맵 마커 삭제 완료!')
+            }
+          } catch (error) {
+            console.error("❌ 맵 마커 삭제 실패");
+
+          }
+        }
 
         const res = await BoardApi.delete(boardNo, token);
         console.log('게시글 삭제 완료!')
 
-        console.log("boardNo",boardNo,"\n token",token);
+        console.log("boardNo", boardNo, "\n token", token);
 
-        if (res.status === 200 ) {
+        if (res.status === 200) {
           console.log('✅ 게시글 삭제 완료!')
           alert("게시글이 삭제되었습니다.");
           navigate("/board/list");
@@ -196,18 +211,20 @@ const Detail = () => {
   };
 
   // 공유 버튼
-  const kakaoShare = () => {};
+  const kakaoShare = () => { };
   const urlShare = () => {
     var url = location.pathname;
     navigator.clipboard.writeText(`localhost:3000${url}`);
     alert("복사 완료!");
   };
-  const PDFShare = () => {};
+  const PDFShare = () => { };
 
   // 로딩 처리
   if (!data) {
     return <p>로딩 중...</p>;
   }
+
+
 
   return (
     <div className={style.boardDetailContainer}>
@@ -242,10 +259,14 @@ const Detail = () => {
 
         {/* 게시글 본문 렌더링 */}
         <div className={style.content}>
-          <pre className={style.post} dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\\n','')}} />
+          <pre className={style.post} dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\\n', '') }} />
+
           {/* 타임라인 및 지도 (계획 게시글만) */}
           {data.boardCategory === 1 &&
-            <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
+            (<>
+              <ReadingOnlyKakaoMap boardNo={boardNo} />
+              <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
+            </>)
           }
         </div>
         {/* 해시태그 (기록 게시글만) */}
