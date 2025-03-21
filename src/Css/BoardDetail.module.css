@@ -27,6 +27,7 @@
     
 }
 .writer {
+    font-size: 15px;
     float: left;
     margin: 5px ;
 
@@ -51,22 +52,26 @@ hr {
 }
 
 .content{
+    height: fit-content;
     display: flex;
-    margin: auto 5px;
+    margin: auto 5px 5px 5px;
     /* word-spacing: 1px; */
     padding: 5px;
     line-height: 20px;
     /* background-color: aliceblue; */
 
 }
+
 .hashtag {
+    background-color: whitesmoke;
+    padding: 5px;
+    border-radius: 100px;
     margin-right: 10px;
-    font: 15px;
     color: gray;
     cursor: pointer;
+    font-size: 13px;
     &:hover{
         color: lightgray;
-
     }
 }
 
@@ -78,11 +83,9 @@ hr {
 
 }
 .bookmarkIcon {
+    width: 25px;
+    height: 25px;
     fill:white;
-    /* left: 85%;
-    top: 80%; 
-    display: table-cell;
-    position: absolute; */
     cursor: pointer;
     &:hover {
         fill: #00284C;
@@ -95,10 +98,13 @@ hr {
     border: none;
     display: flex;
     align-items: center;
+    font-size: 13px;
 }
 
 .likeIcon {
-    
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
 }
 .userReaction {
     display: flex;
@@ -113,5 +119,16 @@ hr {
         background: none;
         border: none;
         color: gray;
+    }
+}
+
+.shareContainer {
+    text-align: center;
+    button {
+        
+        padding: 5px;
+        margin: 10px;
+        border: none;
+        background-color: aliceblue;    
     }
 }

@@ -271,7 +271,7 @@ const Detail = () => {
         {/* 해시태그 (기록 게시글만) */}
         {data.boardCategory === 2 && (
           <div>
-            <h4>📌 해시태그:</h4>
+            {/* <h5>📌 해시태그:</h5> */}
             {hashtags.length > 0 ? (
               hashtags.map((tag, index) => (
                 <span
@@ -303,8 +303,7 @@ const Detail = () => {
             <button onClick={toggleLike} className={style.likeBtn}>
               {liked ? (
                 <svg
-                  width="30px"
-                  height="30px"
+                  className={style.likeIcon}
                   viewBox="0 0 24 24"
                   fill="tomato"
                   xmlns="http://www.w3.org/2000/svg"
@@ -318,8 +317,8 @@ const Detail = () => {
                 </svg>
               ) : (
                 <svg
-                  width="30px"
-                  height="30px"
+                  className={style.likeIcon}
+
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -339,8 +338,6 @@ const Detail = () => {
               {bookmarked ? (
                 <svg
                   className={style.bookmarkIcon}
-                  width="30px"
-                  height="30px"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
@@ -353,8 +350,7 @@ const Detail = () => {
               ) : (
                 <svg
                   className={style.bookmarkIcon}
-                  width="30px"
-                  height="30px"
+
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
@@ -368,7 +364,7 @@ const Detail = () => {
             </button>
           </div>
         )}
-        <div>
+        <div className={style.shareContainer}>
           {/* <input
           type="url"
           value={`localhost:3000${location.pathname}`}
@@ -377,10 +373,11 @@ const Detail = () => {
         /> */}
           <button className={style.KakaoShare}>카톡 공유</button>
           <button className={style.pdfShare}>PDF 공유</button>
-        </div>
-        <button className="Sharebtn" onClick={urlShare}>
+          <button className="Sharebtn" onClick={urlShare}>
           공유하기
         </button>
+        </div>
+
         {/* 기록 게시글(2)만 댓글 가능 */}
         {data.boardCategory === 2 && (
           <>
