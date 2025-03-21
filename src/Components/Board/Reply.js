@@ -11,6 +11,7 @@ const Reply = ({ boardNo, category }) => {
     const [showReplyInput, setShowReplyInput] = useState({});
     const [loggedInUserId, setLoggedInUserId] = useState("");
     const token = localStorage.getItem("accessToken");
+    const [ nickname , setNickname]= useState("");
 
     console.log(`🔍 댓글 컴포넌트 실행 - boardNo: ${boardNo}, category: ${category}`);
 
@@ -27,6 +28,7 @@ const Reply = ({ boardNo, category }) => {
                 if (res.data) {
                     setLoggedInUserId(res.data.id);
                     console.log("🔑 로그인한 사용자 ID:", res.data.id);
+                    setNickname(res.data.nick);
                 }
             } catch (error) {
                 console.error("❌ 사용자 정보 가져오기 실패:", error);
@@ -186,7 +188,7 @@ const handleDeleteReply = async (replyNo) => {
     // 댓글 렌더링 (재귀 호출)
     const renderReplies = (replies, depth = 0) => {
         return replies.map(reply => (
-            <div key={reply.repNo} className={`${style.replyItem}`} style={{ marginLeft: `${depth * 20}px` }}>
+            <div key={reply.repNo} className={`${style.replyItem} Shadow`} style={{ marginLeft: `${depth * 20}px` }}>
                 <p>
                     <span className={style.id}>{reply.id}</span>
                     <span className={style.date}>{formatDate(reply.repDate)}</span>
@@ -219,18 +221,24 @@ const handleDeleteReply = async (replyNo) => {
 
     return (
         <div className={style.replyContainer}>
-            <h3>💬 댓글 목록</h3>
-            {replies.length > 0 ? renderReplies(replies) : <p>댓글이 없습니다.</p>}
+            <h3>💬</h3>
+        <hr className={style.hr}/>
 
+            {/* {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>} */}
+            
             {/* 새 댓글 작성 */}
-            <h3>📝 댓글 작성</h3>
-            <div className={style.newReplyContainer}>
+            {/* <h3>📝 댓글 작성</h3> */}
+            <div className={`Shadow ${style.newReplyContainer}`}>
+                <span className={style.userNickname}>
+                {nickname}
+                </span>
                 <textarea
+                    className={style.textarea}
                     value={newReply}
                     onChange={(e) => setNewReply(e.target.value)}
                     placeholder="댓글을 입력하세요"
                 />
-                <button className={style.newReplyBtn} onClick={() => handleAddReply(0)}>댓글 등록</button>
+                <button className={style.newReplyBtn} onClick={() => handleAddReply(0)}>등록</button>
             </div>
         </div>
     );
