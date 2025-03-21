@@ -108,16 +108,16 @@ const Detail = () => {
     }
   };
 
-  // 북마크 토글
   const toggleBookmark = async () => {
     try {
-      const success = await BoardApi.toggleBookmark(boardNo, token);
-      if (success) {
-        setBookmarked((prev) => !prev);
-      }
+      console.log("bookmark token",token)
+        const success = await BoardApi.toggleBookmark(boardNo, token);
+        if (success) {
+            setBookmarked((prev) => !prev);
+        }
     } catch (error) {
-      console.error("❌ 북마크 토글 실패", error);
-    }
+        console.error("❌ 북마크 토글 실패", error);
+    };
   };
 
   // 게시글 삭제
@@ -136,7 +136,7 @@ const Detail = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
         const isBookmarted = await BoardApi.checkBookmark(boardNo, token);
-        console.log("isbookmarked",isBookmarted.data);
+        // console.log("isbookmarked",isBookmarted.data);
         if (isBookmarted.data) {
           try {
             const success = await BoardApi.toggleBookmark(boardNo, token);
@@ -149,9 +149,9 @@ const Detail = () => {
           }
         }
         const isTimeline = await TimelineApi.getTimeline(boardNo)
-        console.log("isTimeline",isTimeline.data.timelineId);
+        // console.log("isTimeline",isTimeline.data.timelineId);
 
-        if (isTimeline.data.timelineId !== null) {
+        if (isTimeline.data.timelineId !== undefined) {
           try {
             const success = await TimelineApi.deleteTimeline(timelineId);
             if (success === 200) {
@@ -163,8 +163,7 @@ const Detail = () => {
           }
         }
         const isMapMaker = await MapApi.fetchMarkers(boardNo);
-        console.log("isMapMaker",isMapMaker.data.length);
-        
+        // console.log("isMapMaker",isMapMaker.data.length);
         if (isMapMaker.data) {
           try {
             const success = await MapApi.deleteAllMarkersByBoard(boardNo);
