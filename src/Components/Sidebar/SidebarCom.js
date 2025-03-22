@@ -109,10 +109,10 @@ const SidebarCom = () => {
       <div className="UserLevel">고양이</div>
       {/*  팔로잉 / 팔로워 버튼 추가 */}
       <div className="UserFollower">
-        <Link to={`/mypage/following/${userId}`} className="FollowButton">
+        <Link to={`/mypage/following`} className="FollowButton">
           팔로잉{" "}
         </Link>
-        <Link to={`/mypage/followers/${userId}`} className="FollowButton">
+        <Link to={`/mypage/followers`} className="FollowButton">
           팔로워
         </Link>
       </div>

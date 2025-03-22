@@ -7,16 +7,17 @@ import { Stomp } from "@stomp/stompjs";
 import style from "../../Css/ChatLayout.module.css";
 import SendIcon from "../../Assets/send.svg";
 
-const ChttingRoom = () => {
+const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
   const { roomNum } = useParams();
-  const [chatUserInfo, setChatUserInfo] = useState([]);
+  const [chatUserInfo, setChatUserInfo] = useState([chatUser]);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [chatInfo, setChatInfo] = useState([]);
+  // const [messages, setMessages] = useState([]);
+  // const [chatInfo, setChatInfo] = useState([]);
+  const [chatMessages, setChatMessages] = useState([messages]);
   const [webSocket, setWebSocket] = useState(null);
   const [userId, setUserId] = useState("");
   const [invite, setInvite] = useState("");
-  const [memberNum, setMemberNum] = useState(0);
+  // const [memberNum, setMemberNum] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const [sideOpen, setSideOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -26,37 +27,7 @@ const ChttingRoom = () => {
   const textareaRef = useRef(null);
 
   useEffect(() => {
-    const getChatRoom = async () => {
-      try {
-        const res = await ChatApi.getChatMessages(roomNum);
-        console.log(res.data);
-        setMemberNum(res.data.member.length);
-        // setChatUserInfo(res.data.member);
-        // console.log("msg", res.data.member)
-        const filteredUser = res.data.member.filter(user => user.member !== userId)
-        setChatUserInfo(filteredUser)
-        if (res.data.messages.length > 0) {
-          const newMessages = res.data.messages.map((element) => ({
-            id: element.member, 
-            msg: element.msg,
-            type: element.type,
-            nick: element.nick,
-            profile: element.profile
-          }));
-          setMessages(newMessages);
-        } else {
-          setMessages([]);
-        }
-        setChatInfo(res.data.chat);
-      } catch (error) {
-        console.log(error);
-      }
-
-      setTimeout(() => {
-        scrollToBottom();
-      }, 100);
-    };
-    getChatRoom();
+    
   }, [roomNum]);
 
   useEffect(() => {
@@ -67,7 +38,7 @@ const ChttingRoom = () => {
       stompClient.subscribe(`/topic/chatRoomNo/${roomNum}/message`, async (frame) => {
         let jsonMessage = frame.body;
         let parsedMessage = await JSON.parse(jsonMessage);
-        setMessages((preState) => [...preState, { id: parsedMessage.member, msg: parsedMessage.msg }]);
+        setChatMessages((preState) => [...preState, { id: parsedMessage.member, msg: parsedMessage.msg }]);
       });
 
       stompClient.subscribe(`/topic/chatRoomNo/${roomNum}/enternleave`, async (frame) => {
@@ -211,7 +182,7 @@ const ChttingRoom = () => {
     // <>
       <div className={style.ChatLayoutWrap}>
         <div className={style.GroupChatContiner}>
-          <h1 className={style.RoomTitle}>{chatInfo.roomName} {roomNum}</h1>
+          <h1 className={style.RoomTitle}>{chatInfo.roomName} {memberNum}</h1>
 
         {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
         <ul className={style.MessageList}>

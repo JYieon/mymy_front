@@ -55,6 +55,56 @@ const ChatApi =  {
                 token: token
             }
         })
+    },
+
+    checkUserBank : async (token, bankCode, bankNum) => {
+        return await axios.get(domain + "/bank/check/name", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            params: {
+                bankCode, bankCode,
+                bankNum, bankNum
+            }
+        })
+    },
+
+    getAdjustmentList : async (roomNum) => {
+        return await axios.get(domain + "/settlement/list", {
+            params: {
+                roomNum: roomNum
+            }
+        })
+    },
+
+    addAdjustment : async (amount, toMember, roomNum, memberNum) => {
+        return await axios.post(domain + "/settlement/add", null, {
+            params: {
+                money: amount,
+                roomNum: roomNum, 
+                toMember: toMember, 
+                roomMember: memberNum
+            }
+        })
+    },
+
+    sendAdjustment : async (token, adNum, adMemberNum) => {
+        return await axios.post(domain + "/settlement", null, {
+            params: {
+                token: token,
+                settleNum: adNum,
+                settleMember: adMemberNum
+            }
+        })
+    },
+
+    getAdjustmentServiceList : async (adNum) => {
+        return await axios.get(domain + "/settlement/service", {
+            params: {
+                settleNum: adNum
+            }
+        })
     }
 }
 

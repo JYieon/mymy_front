@@ -161,3 +161,105 @@
 
 }
 
+/* 지연 */
+
+.AdList {
+  border-bottom: 1px solid #ddd; /* 각 항목을 구분하는 선 */
+  padding: 10px 0; /* 상하 패딩을 추가하여 여백을 줌 */
+  cursor: pointer; /* 클릭할 수 있다는 느낌을 주기 위해 포인터 커서 */
+}
+
+.AdList:hover {
+  background-color: #f0f0f0; /* 마우스를 올렸을 때 배경색 변화 */
+}
+
+/* 전체 컨테이너 */
+.AdjustmentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+  justify-content: space-between; /* 좌우로 배치 */
+}
+
+/* 상단 영역 (프로필 + 정산 금액) */
+.TopSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ProfileImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+.ProfileImageMember{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.Nickname {
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+  margin-right: 30px;
+}
+
+.NicknameMember {
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* 정산 금액 & 화살표 */
+.AdjustmentAmount {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.Arrow {
+  margin: 0px;
+  padding: 0px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #00284c;
+}
+
+.Money {
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 30px;
+}
+
+/* 하단 멤버 리스트 (가로 정렬) */
+.AdjustmentMembers {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* 개별 멤버 컨테이너 */
+.MemberContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 정산해야 할 멤버 프로필 */
+.BorderGreen {
+  border: 2px solid rgb(0, 255, 0);
+}
+
+.BorderRed {
+  border: 2px solid red;
+}
