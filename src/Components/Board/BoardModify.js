@@ -185,6 +185,8 @@ const BoardModify = (props) => {
         } catch (error) {
             console.error("❌ 게시글 수정 실패:", error);
             alert("게시글 수정에 실패했습니다.");
+            navigate(`/board/detail/${boardNo}`);
+
         }
     };
 
