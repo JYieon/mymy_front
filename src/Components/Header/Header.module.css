@@ -1,22 +1,33 @@
-Header {
+header {
     /* width: 100vw; */
     height: auto;
     display: flex;
     background-color: white;
+}
+
+
+.headerNav {
+    display: flex;
 
 }
 
-.HeaderNav {
-    display: inline-table;
-    & > .MenuList, .AlarmList {
+.headerMenu {
+    display: table-cell;
+    .menuList, .alarmList {
         width: auto;
         position: absolute;
         z-index: 100;
     }
+    &:hover {
+        .menuList, .alarmList {
+            display: block;
+        }
+    }
 }
 
-.LogoutBtn {
-    background-color: white;
+
+.logoutBtn {
+    background:none;
     color: #00284C;
     border: none;
     font-size: 25px;
@@ -24,22 +35,28 @@ Header {
 
 }
 
-.LoginState {
+.menuList {
+    margin-right: 30px;
+    width: 100%;
+    background-color: #00284c;
     display: none;
-}
+    .menu {
+      color: white;
+      text-decoration: none;
+      &:hover {
+        color: lightgrey;
+      }
+    }
+  }
 
-.LogoutState {
-    display: block;
-}
-
-.AlarmList {
+.alarmList {
     padding: 5px;
     width: 100%;
     background-color:white;
     border-style:groove;
     border-radius: 10px;
     display: none;
-    .Menu {
+    .menu {
         color: black;
         font-size: 20px;
         font-weight: 400;
@@ -79,4 +96,11 @@ Header {
     height: 8px;
     background-color: red;
     border-radius: 50%;
+}
+
+.userInfo {
+    background-color: darkseagreen;
+    * {
+        font-size: 15px;
+    }
 }
