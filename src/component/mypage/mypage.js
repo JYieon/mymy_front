@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
 
-//회원 정보 수정정
+//회원 정보 수정
 function MyPage({ userData }) { 
   const token = localStorage.getItem("accessToken")//사용자 토큰
 
@@ -20,6 +20,8 @@ function MyPage({ userData }) {
   });
 
   const [error, setError] = useState("");
+  const [keepPosts, setKeepPosts] = useState(true); // 기본값은 게시글을 남기고 탈퇴
+  const [deleteError, setDeleteError] = useState("");
 
   //사용자 정보 불러오기
   useEffect(() => {
@@ -110,6 +112,25 @@ function MyPage({ userData }) {
     }
   };
 
+  //회원 탈퇴 처리
+  const handleDeleteAccount = async () => {
+    if (!token) {
+      alert("로그인 후 탈퇴할 수 있습니다.");
+      return;
+    }
+
+    try {
+      const res = await MypageApi.deleteAccount(keepPosts); // 탈퇴 API 요청
+      if (res.status === 200) {
+        alert("회원 탈퇴가 완료되었습니다.");
+        // 탈퇴 후 로그인 화면으로 리디렉션 또는 홈으로 이동
+        window.location.href = '/';  // 탈퇴 후 로그인 화면으로 이동
+      }
+    } catch (err) {
+      setDeleteError("탈퇴 처리 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <div>
       <h1>회원 정보 수정</h1>
@@ -159,7 +180,26 @@ function MyPage({ userData }) {
         </div>
 
         <button className={style.submitBtn} type="submit">저장</button>
+        <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
+            회원 탈퇴</button>
+
       </form>
+      {/* 회원 탈퇴 처리 */}
+      <hr />
+      <div>
+        <h2>회원 탈퇴</h2>
+        <div>
+          <input 
+            type="checkbox" 
+            checked={keepPosts} 
+            onChange={() => setKeepPosts(!keepPosts)} 
+          />
+          <label>게시글 남기고 탈퇴</label>
+        </div>
+        {deleteError && <p style={{ color: 'red' }}>{deleteError}</p>}
+      </div>
+
+
     </div>
   );
 }

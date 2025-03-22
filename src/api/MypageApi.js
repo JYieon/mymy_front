@@ -15,6 +15,35 @@ const MypageApi = {
         });
     },
 
+    // 회원 탈퇴
+    deleteAccount: async (keepPosts) => {
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            console.error("토큰이 없습니다. 로그인 후 시도해주세요.");
+            return;
+        }
+
+        try {
+            const response = await axios.post(
+                `${domain}/userinfo/delete`,
+                null, 
+                {
+                    params: { keepPosts },
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    withCredentials: true
+                }
+            );
+            return response;
+        } catch (error) {
+            console.error("회원 탈퇴 실패:", error);
+            throw error;
+        }
+    },
+
     // 내가 쓴 글 목록 조회
     getMyPosts: async (token) => {
         try {

@@ -27,7 +27,7 @@ const MyComment = () => {
        // 댓글이 속한 게시글의 제목을 찾는 함수
        const getPostTitle = (boardNo,title) => {
         const post = posts.find(p => p.boardNo === boardNo);
-        return post ? post.title : "게시글 없음";
+        return post ? post.title : "탈퇴한 회원원";
     };
 
     
