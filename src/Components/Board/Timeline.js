@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
-  const Timeline = ({boardNo}) => {
+import { useNavigate } from "react-router-dom";
+const Timeline = ({ boardNo }) => {
 
-    
-    const today=(date)=>{
-      const year=date.getFullYear();
-      const month=String(date.getMonth()+1).padStart(2,0);
-      const day=String(date.getDate()).padStart(2,0)
-      return `${year}-${month}-${day}`;
-    }
+
+  const today = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, 0);
+    const day = String(date.getDate()).padStart(2, 0)
+    return `${year}-${month}-${day}`;
+  }
 
   const [startDate, setStartDate] = useState(today(new Date()));
   const [endDate, setEndDate] = useState(today(new Date()));
@@ -17,7 +18,7 @@ import style from "../../Css/Timeline.module.css";
   const [selectedDate, setSelectedDate] = useState(today(new Date()));
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
@@ -32,7 +33,7 @@ import style from "../../Css/Timeline.module.css";
   // 타임라인 데이터 가져오기
   const fetchTimeline = async () => {
     try {
-      console.log("타임라인 게시글 번호",boardNo)
+      console.log("타임라인 게시글 번호", boardNo)
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
         setStartDate(response.data.startDt);
@@ -64,7 +65,7 @@ import style from "../../Css/Timeline.module.css";
 
   // 입력값에 따라 높이 변경
   const handleResizeHeight = useCallback(() => {
-    subTaskRef.current.style.height="auto";
+    subTaskRef.current.style.height = "auto";
     subTaskRef.current.style.height = subTaskRef.current.scrollHeight + "px";
   }, []);
 
@@ -99,11 +100,12 @@ import style from "../../Css/Timeline.module.css";
       location,
       todo: JSON.stringify(todoList),
     };
-    console.log("타임라인 유저 데이터",data)
+    console.log("타임라인 유저 데이터", data)
     try {
       await TimelineApi.addTimeline(data, token);
       alert("여행 일정이 저장되었습니다!");
       fetchTimeline();
+      navigate(`/board/detail/${boardNo}`);
     } catch (error) {
       alert("작성되지 않은 부분이 있습니다!");
       console.error("저장 중 오류 발생:", error);
@@ -163,15 +165,15 @@ import style from "../../Css/Timeline.module.css";
             type="date"
             value={endDate}
             onChange={(e) => {
-              if (e.target.value.replaceAll('-', '')-startDate.replaceAll('-', "")<0)
-              {alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
+              if (e.target.value.replaceAll('-', '') - startDate.replaceAll('-', "") < 0) {
+                alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
                 console.log(startDate)
                 setEndDate(startDate);
-              }else{
+              } else {
                 setEndDate(e.target.value)
               }
-              }
-              } // endDate 업데이트
+            }
+            } // endDate 업데이트
             className={style.input}
           />
         </div>
@@ -194,7 +196,7 @@ import style from "../../Css/Timeline.module.css";
           <button className={style.addButton} onClick={handleAddTask}>
             + 일정 추가
           </button>
-          <hr/>
+          <hr />
           <div className={style.TodoList}>
             {/* 서버에서 자동으로 불러와짐 */}
             {selectedTasks.map((todo, index) => (

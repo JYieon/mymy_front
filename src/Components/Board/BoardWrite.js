@@ -151,7 +151,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
           setTimeline(
             <Timeline boardNo={res.data.boardNo} />);
             <KakaoMap boardNo={res.data.boardNo}/>
-          // navigate(`/timeline/${boardNo}`);
+
         } else if (category === 2) {
           alert("게시글이 등록되었습니다!");
           navigate(`/board/list?category=${category}`);
