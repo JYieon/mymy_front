@@ -1,24 +1,29 @@
-.UserInfo {
+/* .sidebarContainer {
+
+} */
+.userInfo {
+  background-color: white;
   width: 250px;
-  height: 450px;
-  border-radius: 40px;
+  height: fit-content;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   margin: 50px 20px;
   & * {
-    margin: 10px auto 0 auto;
+    margin: 0px auto;
   }
 }
 
-.UserProfilePic {
+
+.userProfilePic {
   width: 180px;
   height: 180px;
   border-radius: 100%;
   overflow: hidden;
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
-.Category {
+.category {
   width: 250px;
   height: 60%;
   overflow: hidden;
@@ -32,11 +37,11 @@ li {
   padding: 5px 5px;
   font-size: 25px;
   &:hover {
-    .MenuList,
-    .AlarmList {
+    .menuList,
+    .alarmList {
       display: block;
     }
-    & > .ContourLine {
+    & > .contourLine {
       display: none;
     }
   }
@@ -50,15 +55,12 @@ li {
   border-radius: 10px;
 }
 
-.Logout {
-  font-size: 13px;
-}
-.MenuList {
+.menuList {
   margin-right: 30px;
   width: 100%;
   background-color: #00284c;
   display: none;
-  .Menu {
+  .menu {
     color: white;
     text-decoration: none;
     &:hover {
@@ -67,7 +69,7 @@ li {
   }
 }
 
-.AlarmList {
+.alarmList {
   padding: 10px;
   width: 100%;
   background-color: white;
@@ -86,3 +88,49 @@ li {
 }
 
 
+.userLevel {
+  padding: 5px;
+  font-size: 12px;
+}
+.logoutBtn {
+  margin-right: 20px;
+  margin-bottom: 10px;
+  font-size: 10px;
+  background:none;
+  border: none;
+
+}
+
+.headerNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 0px;
+
+}
+
+.alramIcon {
+  width: 15px; height: 15px;
+  justify-self: flex-end;
+
+}
+
+.userNickContainer {
+  font-size: 20px;
+  display: flex;
+}
+
+.userNick {
+  font-size: 20px;
+  padding:0px 10px;
+  justify-self: center;
+}
+
+.userFollowerContainer {
+  display: flex;
+  margin: 10px auto;
+}
+
+.followBtn {
+  margin: 5px;
+}

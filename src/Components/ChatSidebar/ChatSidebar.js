@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { distance, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import "../Sidebar/Sidebar.css";
+// import sidebarStyle from "../Sidebar/Sidebar.module.css";
 import SidebarIcon from "../../Assets/line-3.svg";
 import ChttingRoom from "../Auth/ChttingRoom";
 import ChatApi from "../../api/ChatApi";
