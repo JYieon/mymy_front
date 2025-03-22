@@ -4,7 +4,7 @@ import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
 
 
-const TimelineModify = () => {
+const TimelineModify = ({settimelineData,setTimelineId}) => {
   const { boardNo } = useParams();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -29,11 +29,17 @@ const TimelineModify = () => {
       console.log("타임라인 게시글 번호",boardNo)
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
+
+        setTimelineId(response.data.timelineId);
         setStartDate(response.data.startDt);
         setEndDate(response.data.endDt);
         setLocation(response.data.location);
         setSelectedDate(response.data.startDt);
         setTodoList(JSON.parse(response.data.todo) || {});
+        settimelineData({
+          boardNo:response.data.boardNo,
+          todo:JSON.stringify(JSON.parse(response.data.todo))
+        });
       }
     } catch (error) {
       console.error("오류 발생:", error);
@@ -71,6 +77,10 @@ const TimelineModify = () => {
       ...prev,
       [selectedDate]: newTodoList,
     }));
+    settimelineData({
+      boardNo:boardNo,
+      todo:JSON.stringify(todoList)
+    });
   };
 
   // 일정 삭제 기능
@@ -90,7 +100,6 @@ const TimelineModify = () => {
       boardNo: boardNo,
       todo: JSON.stringify(todoList),
     };
-
     try {
       const response = await TimelineApi.updateTimelineTodo(data);
       alert("일정이 수정되었습니다!");

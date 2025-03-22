@@ -1,0 +1,14 @@
+.modifyContainer {
+    margin: 20px;
+    display: flex;
+}
+
+.btn {
+    margin: 20px;
+    float: right;
+   background-color: #00284C;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}

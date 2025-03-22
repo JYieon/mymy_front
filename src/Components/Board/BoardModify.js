@@ -8,6 +8,7 @@ import "react-summernote-lite/dist/summernote-lite.min.css";
 import ChatApi from "../../api/ChatApi";
 import TimelineApi from "../../api/TimelineApi";
 import TimelineModify from "./TimelineModify";
+import style from "../../Css/BoardModify.module.css";
 
 const BoardModify = (props) => {
     const { boardNo } = useParams();
@@ -18,7 +19,8 @@ const BoardModify = (props) => {
     const [boardCategory, setBoardCategory] = useState(1);
     const [authorId, setAuthorId] = useState(""); // 작성자 ID 저장
     const [loggedInUserId, setLoggedInUserId] = useState("")
-    const [timelineId, SetTimelineId] = useState("");
+    const [timelineId, setTimelineId] = useState("");
+    const [timelineData, settimelineData] = useState();
     const editorRef = useRef(null);
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
@@ -161,9 +163,19 @@ const BoardModify = (props) => {
         }
 
         //console.log("수정 요청 데이터:", postData);
-        console.log("보낼 토큰:", token);
+        // console.log("보낼 토큰:", token);
 
         try {
+            if (boardCategory===1) {
+                    try {
+                      const response = await TimelineApi.updateTimelineTodo(timelineData);
+                    } catch (error) {
+                      console.error(
+                        "수정 중 오류 발생:",
+                        error.response ? error.response.data : error.message
+                      );
+                    }
+            };
             console.log(postData)
             const res = await BoardApi.modify(postData, token);
             if (res.status === 200) {
@@ -180,7 +192,8 @@ const BoardModify = (props) => {
     return (
         <div>
             <h2>📝 게시글 수정</h2>
-            <form onSubmit={handleSubmit}>
+            <div className={style.modifyContainer}>
+            <form onSubmit={handleSubmit} id="modify">
                 <div>
                     <label>제목:</label>
                     <input
@@ -239,16 +252,13 @@ const BoardModify = (props) => {
                         </div>
                     </div>
                 )}
-
-                {/* {boardCategory == 1 && (
-                    <Timeline/>
-                )} */}
-
-                <button type="submit" className="btn btn-primary mt-3">수정 완료</button>
             </form>
             {boardCategory === 1 && (
-                        <TimelineModify SetTimelineId={SetTimelineId} />
-                    )}
+                <TimelineModify setTimelineId={setTimelineId} settimelineData={settimelineData} />
+            )}
+            </div>
+            <button type="submit" form="modify" className={`${style.btn} btn-primary mt-3`}>수정 완료</button>
+
         </div>
     );
 };
