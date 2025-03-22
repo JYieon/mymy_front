@@ -1,10 +1,14 @@
 // import { Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import TestCon from "../../Components/Test/TestCon";
 import styles from "../../Css/TestPage.module.css";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const TestPage = () => {
+  const headerDisplay = useOutletContext();
+  headerDisplay(false);
+
   const TestStart = () => {
     document.getElementById("StartPage").style.display = "none";
     document.getElementById("MainPage").style.display = "block";

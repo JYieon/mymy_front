@@ -9,7 +9,7 @@ import { useWebSocketContext } from "../../component/alarm/alramWebSocketProvide
 import ChatApi from "../../api/ChatApi";
 
 
-const HeaderCom = () => {
+const HeaderCom = ({ headerDisplay }) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken")
     // console.log("알림 리스트에서 받은 사용자 ID:", userId);
@@ -111,99 +111,98 @@ const HeaderCom = () => {
         <>
             <header>
                 {/* 웹사이트 로고 (클릭 시 메인) */}
-                <Link to="/" className="Logo link">MY<br />MY</Link>
+                <Link to="/" className={`link ${style.logo}`}>MY<br/>MY</Link>
                 <nav>
-                    <ul className={style.headerNav}>
-                        <li className={style.headerMenu} id="커뮤니티">
-                            <Link to={`/board/list?category=2`} className="link">커뮤니티</Link>
-                            <ul className={style.menuList}>
-                                {/* 로그인 상태일때만 보여지는 커뮤니티 카테고리 */}
-                                {isAuthenticated && (<>
-                                    <li>
-                                        <Link to="/board/bookmarkList" className={style.menu}>북마크</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/board/list?category=1" className={style.menu}>여행 계획</Link>
-                                    </li>
-                                </>)}
-                                {/* 로그아웃 상태일 때도 보여지는 커뮤티니 카테고리 */}
-                                <li>
-                                    <Link to="/board/list?category=2" className={style.menu}>여행 기록</Link>
-                                </li>
-                                <li>
-                                    <Link to="/mateboard/list" className={style.menu}>여행 메이트</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        {/* 로그인 상태에 따라 달라지는 헤더 */}
-                        {isAuthenticated ?
-                            //로그인 상태일 시 보여지는 헤더
-                            (<>
-                                <li className={style.headerMenu} id="채팅">채팅
-                                    <ul className={style.menuList}>
+                    {headerDisplay && (
+                        <ul className={style.headerNav}>
+                            <li className={style.headerMenu} id="커뮤니티">
+                                <Link to={`/board/list?category=2`} className={`link ${style.boardBtn}`}>커뮤니티</Link>
+                                <ul className={style.menuList}>
+                                    {/* 로그인 상태일때만 보여지는 커뮤니티 카테고리 */}
+                                    {isAuthenticated && (<>
                                         <li>
-                                            <Link to="/chat/list" className={style.menu}>채팅 목록</Link>
+                                            <Link to="/board/bookmarkList" className={style.menu}>북마크</Link>
                                         </li>
                                         <li>
-                                            <Link to="/chat/Create" className={style.menu}>새로운 채팅</Link>
+                                            <Link to="/board/list?category=1" className={style.menu}>여행 계획</Link>
                                         </li>
-                                    </ul>
-                                </li>
-                                {/* 사용자 정보 */}
-                                <div className={style.userInfo}>
-                                    {userNick}님 안녕하세요!
-                                    <span className={style.userLevel}>{userLevel}</span>
-
-                                    <li className={style.headerMenu} id="마이페이지">
-                                        <Link to={`/mypage/modify`} className="link">마이페이지</Link>
+                                    </>)}
+                                    {/* 로그아웃 상태일 때도 보여지는 커뮤티니 카테고리 */}
+                                    <li>
+                                        <Link to="/board/list?category=2" className={style.menu}>여행 기록</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/mateboard/list" className={style.menu}>여행 메이트</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            {/* 로그인 상태에 따라 달라지는 헤더 */}
+                            {isAuthenticated ?
+                                //로그인 상태일 시 보여지는 헤더
+                                (<>
+                                    <li className={style.headerMenu} id="채팅">채팅
                                         <ul className={style.menuList}>
                                             <li>
-                                                <Link to={`/mypage/my_story/${userId}`} className={`link ${style.menu}`}>
-                                                    내가 쓴 글
-                                                </Link>
+                                                <Link to="/chat/list" className={style.menu}>채팅 목록</Link>
                                             </li>
                                             <li>
-                                                <Link to={`/mypage/my_reply/${userId}`} className={`link ${style.menu}`}>
-                                                    내가 쓴 댓글
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`/mypage/modify/${userId}`} className={`link ${style.menu}`}>
-                                                    회원정보 수정
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    to={`/mypage/alarm/settings/${userId}`}
-                                                    className={`link ${style.menu}`}
-                                                >
-                                                    알림 설정
-                                                </Link>
+                                                <Link to="/chat/Create" className={style.menu}>새로운 채팅</Link>
                                             </li>
                                         </ul>
                                     </li>
-                                    <li className={style.headerMenu} id="로그아웃 버튼">
-                                        <button className={style.logoutBtn} onClick={onClickLogout}>로그아웃</button>
+                                    {/* 사용자 정보 */}
+                                    <div className={style.userInfo}>
+                                        {userNick}님 안녕하세요!
+                                        <span className={style.userLevel}>{userLevel}</span>
+
+                                        <li className={style.headerMenu} id="마이페이지">
+                                            <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>마이페이지</Link>
+                                            <ul className={style.menuList}>
+                                                <li>
+                                                    <Link to={`/mypage/my_story/${userId}`} className={`link ${style.menu}`}>
+                                                        내가 쓴 글
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={`/mypage/my_reply/${userId}`} className={`link ${style.menu}`}>
+                                                        내가 쓴 댓글
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={`/mypage/modify/${userId}`} className={`link ${style.menu}`}>
+                                                        회원정보 수정
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link
+                                                        to={`/mypage/alarm/settings/${userId}`}
+                                                        className={`link ${style.menu}`}
+                                                    >
+                                                        알림 설정
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li className={style.headerMenu} id="로그아웃 버튼">
+                                            <button className={style.logoutBtn} onClick={onClickLogout}>로그아웃</button>
+                                        </li>
+                                        <li className={style.headerMenu} id="알람 아이콘" onClick={handleClick}>
+                                            <AlarmIcon hasUnread={hasUnread} />
+                                        </li>
+                                    </div>
+                                </>) :
+                                //로그아웃 상태일 시 보여지는 헤더
+                                (<div className={style.userInfo}>
+                                    아직 회원이 아니십니다!
+                                    <li className={style.headerMenu} id="로그인">
+                                        <Link to={`/account/login`} className={`link ${style.loginBtn}`}>로그인</Link>
                                     </li>
-                                    <li className={style.headerMenu} id="알람 아이콘" onClick={handleClick}>
-                                        <AlarmIcon hasUnread={hasUnread} />
+                                    <li className={style.headerMenu} id="회원가입">
+                                        <Link to={`/account/register`} className={`link ${style.registerBtn}`}>회원가입</Link>
                                     </li>
-                                </div>
-                            </>) :
-                            //로그아웃 상태일 시 보여지는 헤더
-                            (<div className={style.userInfo}>
-                                아직 회원이 아니십니다!
-                                <li className={style.headerMenu} id="로그인">
-                                    <Link to={`/account/login`} className="link">로그인</Link>
-                                </li>
-                                <li className={style.headerMenu} id="회원가입">
-                                    <Link to={`/account/register`} className="link">회원가입</Link>
-                                </li>
-                            </div>)}
-
-
-
-                    </ul>
+                                </div>)}
+                        </ul>
+                    )}
                 </nav>
             </header>
         </>

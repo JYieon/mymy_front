@@ -1,8 +1,10 @@
-.LayoutWrap {
-  display: flex;
-  margin: 0 -8px;
+body {
+  margin: 0px;
 }
 
+.LayoutWrap {
+  display: flex;
+}
 :global .link {
   text-decoration: none;
   color: #00284c;
@@ -21,7 +23,7 @@
 @font-face {
   font-family: "ADLaMDisplay-Regular";
   src: url("../Assets/ADLaMDisplay-Regular.ttf") format("woff");
-  font-weight: 400;
+  font-weight: 100;
   font-style: normal;
 }
 
@@ -40,18 +42,12 @@
 }
 
 :global .ContentSection {
-  /* background-color: aquamarine; */
   border-radius: 20px;
-  margin: 0px;
+  margin: 20px;
   min-height: 700px;
   min-width: 600px;
-  width: 1000px;
-  /* width: fit-content; */
-  
+  width: 1000px; 
+  background-color: white;
 }
 
-.Logo {
-  font-family: "ADLaMDisplay-Regular";
-  font-size: 25px;
-}
 

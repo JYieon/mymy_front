@@ -1,17 +1,20 @@
 
 import { Outlet } from "react-router-dom";
-import styles from "../../Css/Layout.module.css"
+import style from "../../Css/Layout.module.css"
 import HeaderCom from "../..//Components/Header/HeaderCom";
+import { useState } from "react";
 
 const Layout=()=>{
+        const [headerDisplay, SetHeaderDisplay] = useState(true);
+    
     return (
-        <>
-            <HeaderCom/>
-            <div className={styles.LayoutWrap}>
-                <Outlet/>
+        <div className={style.ddd}>
+            <HeaderCom headerDisplay={headerDisplay}/>
+            <div className={style.LayoutWrap} >
+                <Outlet context={SetHeaderDisplay}/>
             </div>
 
-        </>
+        </div>
     )
 };
 

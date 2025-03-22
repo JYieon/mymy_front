@@ -1,106 +1,127 @@
 header {
-    /* width: 100vw; */
-    height: auto;
-    display: flex;
-    background-color: white;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  * {
+    margin: 2px 0px;
+    align-items: center;
+  }
+}
+
+.logo {
+    margin: auto;
+    margin-left: 20px;
+    font-size: 20px;
+    font-family: "ADLaMDisplay-Regular";
+    background-color: antiquewhite;
+    height: fit-content;
 }
 
 
 .headerNav {
-    display: flex;
-
+  max-width: 700px;
+  min-width: 500px;
+  justify-content: space-evenly;
+  display: flex;
+  table-layout: fixed;
 }
 
 .headerMenu {
-    display: table-cell;
-    .menuList, .alarmList {
-        width: auto;
-        position: absolute;
-        z-index: 100;
+  display: table-cell;
+  /* background-color: aqua; */
+  width: fit-content;
+  height: fit-content;
+  .menuList,
+  .alarmList {
+    /* background-color: aquamarine; */
+    text-align: start;
+    display: none;
+    width: fit-content;
+    position: absolute;
+  }
+  &:hover {
+    .menuList,
+    .alarmList {
+      display: block;
     }
-    &:hover {
-        .menuList, .alarmList {
-            display: block;
-        }
-    }
+  }
 }
 
-
 .logoutBtn {
-    background:none;
-    color: #00284C;
-    border: none;
-    font-size: 25px;
-    font-weight: 600;
-
+  background: none;
+  color: #00284c;
+  border: none;
+  font-size: 25px;
+  font-weight: 600;
 }
 
 .menuList {
-    margin-right: 30px;
-    width: 100%;
-    background-color: #00284c;
-    display: none;
-    .menu {
-      color: white;
-      text-decoration: none;
-      &:hover {
-        color: lightgrey;
-      }
+  margin-right: 30px;
+  width: 100%;
+  padding: 0px 10px;
+  background-color: #00284c;
+  .menu {
+    margin: 10px;
+    color: white;
+    text-decoration: none;
+    &:hover {
+      color: lightgrey;
     }
   }
+}
 
 .alarmList {
-    padding: 5px;
-    width: 100%;
-    background-color:white;
-    border-style:groove;
-    border-radius: 10px;
-    display: none;
-    .menu {
-        color: black;
-        font-size: 20px;
-        font-weight: 400;
-        text-decoration: none;
-        &:hover {
-            color: lightgrey;
-
-        }
-        
+  padding: 5px;
+  width: 100%;
+  background-color: white;
+  border-style: groove;
+  border-radius: 10px;
+  display: none;
+  .menu {
+    color: black;
+    font-size: 20px;
+    font-weight: 400;
+    text-decoration: none;
+    &:hover {
+      color: lightgrey;
     }
+  }
 }
 
 /* 지연_알람 */
 /* 알람 아이콘 컨테이너 스타일 */
 .alarm-icon-container {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 /* 알람 아이콘 기본 스타일 */
 .alarm-icon-container .Alarm {
-    cursor: pointer;
-    transition: color 0.3s ease-in-out;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
 }
 
 /* unread 상태일 때 알람 아이콘 빨간색 */
 .alarm-icon-container.red .Alarm {
-    fill: red;
+  fill: red;
 }
 
 /* 알람 점(불빛) */
 .alarm-dot {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 8px;
-    height: 8px;
-    background-color: red;
-    border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
 }
 
 .userInfo {
-    background-color: darkseagreen;
-    * {
-        font-size: 15px;
-    }
+  background-color: darkseagreen;
+  font-size: 12px;
+  * {
+  font-size: 15px;
+}
 }
