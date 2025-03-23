@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BoardApi from "../../api/BoardApi";
 import { useNavigate } from "react-router-dom";
+import style from "../../Css/BoardList.module.css";
 
 const BookmarkList = () => {
     const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
@@ -44,9 +45,8 @@ const BookmarkList = () => {
     }, []); // 최초 렌더링 시 실행
 
     return (
-        <div style={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
-            <h2>🔖 내 북마크 목록</h2>
-            
+        <div style={{ padding: "20px    ", maxWidth: "800px", margin: "auto" }}>
+            <h1>🔖 내 북마크 목록</h1>
             {Array.isArray(bookmarks) && bookmarks.length > 0 ? (
                 <ul style={{ listStyleType: "none", padding: 0 }}>
                     {bookmarks.map((bookmark) => (
@@ -60,14 +60,14 @@ const BookmarkList = () => {
                                 alignItems: "center"
                             }}
                         >
-                            <div style={{ flex: 1 }}>
+                            <div className={style.bookmarkItem}>
                                 <h3 
-                                    style={{ color: "#007bff", cursor: "pointer", textDecoration: "underline" }}
+                                    className={style.bookmakrPostTitle}
                                     onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
                                 >
                                     {bookmark.title}
                                 </h3>
-                                <p style={{ margin: "5px 0", color: "#555" }}>
+                                <p className={style.bookmarkUserId}>
                                     👤 {bookmark.id} | 📅 {new Date(bookmark.date).toLocaleDateString()}
                                 </p>
                             </div>

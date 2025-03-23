@@ -40,6 +40,7 @@ import MyComment from "./component/mypage/MyComment";
 import { WebSocketProvider } from "./component/alarm/alramWebSocketProvider";
 import SidebarPage from "./Pages/SidebarPage";
 import BoardWritePage from "./Pages/Board/BoardWritePage";
+import HashtagBoard from "./Components/Board/HashtagBoard";
 
 function App() {
   return (
@@ -140,6 +141,9 @@ function App() {
 
         {/* 카카오맵 */}
         <Route path="/map/:boardNo" element={<KakaoMap />} />
+
+        {/* 해시태그 게시판 추가 */}
+        <Route path="/board/hashtags" element={<HashtagBoard />} />
       </Route>
     </Routes>
     }</WebSocketProvider>

@@ -43,8 +43,12 @@ const MateBoardApi = {
     // 댓글 목록 조회
     getReplies: async (boardNo) => {
         try {
-            const response = await axios.get(`${domain}/replyList/${boardNo}`);
-            return response.data;
+            console.log(`🔍 댓글 불러오기 API 요청: boardNo = ${boardNo}`);
+    
+            const response = await axios.get(`${domain}/replyList/${boardNo}`); // response 위치 수정
+            console.log("✅ API 응답 데이터:", response.data);
+            
+            return response.data; // 데이터를 반환하도록 수정
         } catch (error) {
             console.error("❌ MateBoardApi getReplies 에러:", error);
             throw error;
@@ -69,23 +73,28 @@ const MateBoardApi = {
     // 댓글 삭제
     deleteReply: async (replyNo, token) => {
         try {
+            console.log(`🗑️ 댓글 삭제 요청: replyNo = ${replyNo}`);
             const response = await axios.delete(`${domain}/deleteReply/${replyNo}`, {
                 headers: { 
                     "Authorization": `Bearer ${token}`  // 토큰을 헤더에 포함
                 }
             });
+            console.log("✅ 댓글 삭제 성공:", response);
             return response.data;
         } catch (error) {
-            console.error("❌ MateBoardApi deleteReply 에러:", error);
+            console.error("❌ MateBoardApi deleteReply 에러:", error.response ? error.response.data : error);
             throw error;
         }
     },
 
     // 게시글 수정
-    modifyMateBoard: async (boardNo, updatedData) => {
+    modifyMateBoard: async (boardNo, updatedData, token) => {
         try {
             const response = await axios.post(`${domain}/modify/${boardNo}`, updatedData, {
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
             });
             return response.data;
         } catch (error) {
@@ -95,9 +104,13 @@ const MateBoardApi = {
     },
 
     // 게시글 삭제
-    deleteMateBoard: async (boardNo) => {
+    deleteMateBoard: async (boardNo, token) => {
         try {
-            const response = await axios.delete(`${domain}/delete/${boardNo}`);
+            const response = await axios.delete(`${domain}/delete/${boardNo}`, {
+                headers: { 
+                    "Authorization": `Bearer ${token}`  
+                }
+            });
             return response.data;
         } catch (error) {
             console.error("❌ MateBoardApi deleteMateBoard 에러:", error);

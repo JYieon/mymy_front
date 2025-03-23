@@ -177,3 +177,21 @@ table {
 /* .category {
   
 } */
+
+.bookmarkItem{
+  font-size: medium;
+  flex: 1;
+  * {
+    margin: 10px;
+  }
+}
+.bookmakrPostTitle {
+  color: #0076ff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.bookmarkUserId {
+  margin: 5px 0;
+  color: #555;
+}

@@ -1,50 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MateBoardApi from "../../api/MateBoardApi";
+import ChatApi from "../../api/ChatApi";
 
 const MateBoardModify = () => {
     const { boardNo } = useParams();
     const navigate = useNavigate();
+    const token = localStorage.getItem("accessToken");
+
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [authorId, setAuthorId] = useState(""); // 작성자 ID
+    const [loggedInUserId, setLoggedInUserId] = useState(""); // 로그인한 사용자 ID
 
-    // 기존 데이터 불러오기
+    // ✅ 로그인한 사용자 및 게시글 정보 가져오기
     useEffect(() => {
-        const fetchPost = async () => {
-            try {
-                const data = await MateBoardApi.getMateBoardDetail(boardNo);
-                // console.log("서버 데이터:", data.content);
-                if (data) {
-                    setTitle(data.title);
-                    setContent(data.content.replace(/<br\s*\/?>/g, "\n"));
-                }
-            } catch (error) {
-                console.error("게시글 수정 데이터 불러오기 실패:", error);
-            }
-        };
-        fetchPost();
-    }, [boardNo]);
-
-    // 수정 요청
-    const handleModify = async () => {
-        if (!title.trim() || !content.trim()) {
-            alert("제목과 내용을 입력해주세요.");
+        if (!token) {
+            alert("🚫 로그인이 필요합니다.");
+            navigate("/login");
             return;
         }
-        const convertedContent = content.replace(/\n/g, "<br>");
-        const updatedData = {
-            title,
-            content: convertedContent
+
+        const fetchData = async () => {
+            try {
+                // 🔹 로그인한 사용자 정보 가져오기
+                const userRes = await ChatApi.getUserInfo(token);
+                if (userRes && userRes.id) {
+                    setLoggedInUserId(userRes.id);
+                    console.log("🔑 로그인한 사용자 ID:", userRes.id);
+                }
+
+                // 🔹 게시글 상세 조회
+                const postRes = await MateBoardApi.getMateBoardDetail(boardNo);
+                if (postRes) {
+                    setTitle(postRes.title);
+                    setContent(postRes.content);
+                    setAuthorId(postRes.id); // 작성자 ID 저장
+                    console.log("📌 게시글 데이터:", postRes);
+                } else {
+                    alert("🚫 게시글을 찾을 수 없습니다.");
+                    navigate("/mateboard/list");
+                }
+            } catch (error) {
+                console.error("🚨 데이터 불러오기 실패:", error);
+                alert("🚫 게시글을 찾을 수 없습니다.");
+                navigate("/mateboard/list");
+            }
         };
 
+        fetchData();
+    }, [boardNo, token, navigate]);
+
+    // ✅ 게시글 수정 요청
+    const handleModify = async () => {
+        if (!title.trim() || !content.trim()) {
+            alert("🚨 제목과 내용을 입력해주세요.");
+            return;
+        }
+
+        // 🔹 로그인한 사용자와 작성자가 다르면 수정 불가
+        if (String(loggedInUserId).trim() !== String(authorId).trim()) {
+            alert("🚫 작성자만 수정할 수 있습니다.");
+            return;
+        }
+
+        const updatedData = { title, content };
+
         try {
-            const response = await MateBoardApi.modifyMateBoard(boardNo, updatedData);
-            if (response) {
-                alert("게시글이 수정되었습니다.");
-                navigate(`/mateboard/detail/${boardNo}`);
-            }
+            await MateBoardApi.modifyMateBoard(boardNo, updatedData, token);
+            alert("✅ 게시글이 성공적으로 수정되었습니다.");
+            navigate(`/mateboard/detail/${boardNo}`);
         } catch (error) {
-            console.error("게시글 수정 실패:", error);
+            console.error("❌ 게시글 수정 실패:", error);
             alert("게시글 수정 중 오류가 발생했습니다.");
         }
     };
