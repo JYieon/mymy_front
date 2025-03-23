@@ -39,6 +39,8 @@ const SidebarCom = () => {
                 if (res.data && res.data.id) {
                     const fetchedUserId = res.data.id;
                     setUserId(fetchedUserId);
+                    setUserNikcname(res.data.nick);
+                    setUserLevel(res.data.level)
                     setIsAuthenticated(true);
                     console.log(" 로그인한 사용자 ID:", fetchedUserId);
 
@@ -172,7 +174,7 @@ const SidebarCom = () => {
           내가 쓴 글
         </Link> */}
             <button className={style.profileEditBtn} onClick={ProfileEditOpenBtn}>프로필 수정</button>
-            <button onClick={onClickLogout} className={style.logoutBtn}>
+            <button onClick={handleLogout} className={style.logoutBtn}>
               로그아웃
             </button>
 
@@ -208,100 +210,6 @@ const SidebarCom = () => {
           </div>)}
 
       </div>
-    return (
-        <div className="Sidebar">
-            {/* 현재 로그인 유저 프로필 */}
-            <div className="UserInfo Shadow">
-                <div>
-                    <img
-                        src="https://picsum.photos/200/200"
-                        alt="can't read Img"
-                        className="UserProfilePic"
-                    />
-                    {/* 유저 프로필 사진 변경 모달 */}
-                    <Modal
-                        isOpen={ProfileEditOpen}
-                        ariaHideApp={true}
-                        onRequestClose={ProfileEditOpenBtn}
-                        className={`Shadow modal`}
-                    >
-                        <img
-                            src="https://picsum.photos/200/200"
-                            alt="can't read Img"
-                            className="UserProfilePic"
-                        />
-                        <input type="file" value={ProfilePic} onChange={(e) => setProfilePic(e.target.value)} />
-
-                        <div className="UserId">{userId}</div>
-                        <div className="UserLevel">고양이</div>
-
-                        <button onClick={ProfileEditBtn}>저장</button>
-                    </Modal>
-
-                    <button onClick={ProfileEditOpenBtn}>✏️</button>
-                </div>
-                <div className="HeaderNav">
-                    <svg onClick={handleClick}
-                        className="Alarm"
-                        width="20px"
-                        height="20px"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M3 5C3 2.23858 5.23858 0 8 0C10.7614 0 13 2.23858 13 5V8L15 10V12H1V10L3 8V5Z"
-                            fill="#000000"
-                        />
-                        <path
-                            d="M7.99999 16C6.69378 16 5.58254 15.1652 5.1707 14H10.8293C10.4175 15.1652 9.30621 16 7.99999 16Z"
-                            fill="#000000"
-                        />
-                    </svg>
-                    <ul className="AlarmList">
-                        {/* 임시 주소 */}
-                        <li>
-                            <Link to="/게시글" className="Menu">
-                                내가 쓴 댓글에 답글이 달렸습니다.
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/게시글" className="Menu">
-                                내가 쓴 댓글에 답글이 달렸습니다.
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-
-                {isAuthenticated && userId ? (
-                    <>
-
-
-                        <div className="UserId">{userId}</div>
-                        <div className="UserLevel">고양이</div>
-                        {/*  팔로잉 / 팔로워 버튼 추가 */}
-                        <div className="UserFollower">
-                            <Link to={`/mypage/following`} className="FollowButton">
-                                팔로잉{followingCount}
-                            </Link>
-                            &emsp;
-                            <Link to={`/mypage/followers`} className="FollowButton">
-                                팔로워{followerCount}
-                            </Link>
-                        </div>
-                        <Link to={`/mypage/my_story`} className="link">
-                            내가 쓴 글
-                        </Link>
-                        <button onClick={handleLogout} className="LogoutButton">로그아웃</button>
-                    </>
-                ) : (
-                    <>
-                        {/* 로그아웃 상태일 때 로그인 버튼 표시 */}
-                        <Link to="/account/login" className="LoginButton">로그인</Link>
-                    </>
-                )}
-
-            </div>
 
       {/* 메뉴 카테고리 */}
       <div className={`${style.category} Shadow`}>
@@ -368,17 +276,17 @@ const SidebarCom = () => {
               <span className={style.menuTitle}>마이페이지</span>
               <ul className={style.menuList}>
                 <li>
-                  <Link to={`/mypage/my_story/${userId}`} className={`link ${style.menu}`}>
+                  <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
                     내가 쓴 글
                   </Link>
                 </li>
                 <li>
-                  <Link to={`/mypage/my_reply/${userId}`} className={`link ${style.menu}`}>
+                  <Link to={`/mypage/my_reply`} className={`link ${style.menu}`}>
                     내가 쓴 댓글
                   </Link>
                 </li>
                 <li>
-                  <Link to={`/mypage/modify/${userId}`} className={`link ${style.menu}`}>
+                  <Link to={`/mypage/modify`} className={`link ${style.menu}`}>
                     회원정보 수정
                   </Link>
                 </li>
@@ -394,12 +302,9 @@ const SidebarCom = () => {
               <hr className={style.contourLine} />
             </li>
           </>)}
-
         </ul>
       </div>
     </div>
-
-
-
+  );
 };
 export default SidebarCom;
