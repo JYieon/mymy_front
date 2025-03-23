@@ -29,6 +29,17 @@ const ChatBubble = styled.div`
   }
 `;
 
+const NoticeMessage = styled.div`
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  font-weight: bold;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+`;
+
 const ChatMessage = styled.p`
   font-size: 14px;
   line-height: 1.4;
@@ -43,6 +54,9 @@ const UserProfile = styled.div`
 `;
 
 export default function MyChat({ chatMessage }) {
+  if (chatMessage.type === "ENTER" || chatMessage.type === "LEAVE") {
+    return <NoticeMessage>{chatMessage.msg}</NoticeMessage>;
+  }
   return (
     <ChatContainer key={chatMessage.id}>
       <UserProfile>
