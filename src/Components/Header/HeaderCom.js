@@ -30,17 +30,17 @@ const HeaderCom = ({ headerDisplay }) => {
                 const res = await ChatApi.getUserInfo(token);
                 setUserId(res.data.id);
                 setUserNick(res.data.nick);
-                  const resAlram = await MypageApi.getAlarms(token);
-                  console.log("🔹 받아온 알람 데이터:", resAlram.data);
-                  setNotifications(resAlram.data);
+            //       const resAlram = await MypageApi.getAlarms(token);
+            //       console.log("🔹 받아온 알람 데이터:", resAlram.data);
+            //       setNotifications(resAlram.data);
 
-              notifications.map((noti) => {
-                if(noti.isRead === 0){
-                    setHasUnread(true);
-                    console.log("!!!!!", hasUnread)
-                    return;
-                }
-              })
+            //   notifications.map((noti) => {
+            //     if(noti.isRead === 0){
+            //         setHasUnread(true);
+            //         console.log("!!!!!", hasUnread)
+            //         return;
+            //     }
+            //   })
         
              
                         // .then(response => {
@@ -104,7 +104,7 @@ const HeaderCom = ({ headerDisplay }) => {
         //     alert("로그인이 필요합니다.");
         //     return;
         // }
-        setHasUnread(false); // 알림 아이콘 클릭 시 읽지 않은 알림 상태 초기화
+        // setHasUnread(false); // 알림 아이콘 클릭 시 읽지 않은 알림 상태 초기화
     };
 
     return (
@@ -159,23 +159,23 @@ const HeaderCom = ({ headerDisplay }) => {
                                             <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>마이페이지</Link>
                                             <ul className={style.menuList}>
                                                 <li>
-                                                    <Link to={`/mypage/my_story/${userId}`} className={`link ${style.menu}`}>
+                                                    <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
                                                         내가 쓴 글
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={`/mypage/my_reply/${userId}`} className={`link ${style.menu}`}>
+                                                    <Link to={`/mypage/my_reply`} className={`link ${style.menu}`}>
                                                         내가 쓴 댓글
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={`/mypage/modify/${userId}`} className={`link ${style.menu}`}>
+                                                    <Link to={`/mypage/modify`} className={`link ${style.menu}`}>
                                                         회원정보 수정
                                                     </Link>
                                                 </li>
                                                 <li>
                                                     <Link
-                                                        to={`/mypage/alarm/settings/${userId}`}
+                                                        to={`/mypage/alarm/settings`}
                                                         className={`link ${style.menu}`}
                                                     >
                                                         알림 설정
@@ -187,7 +187,7 @@ const HeaderCom = ({ headerDisplay }) => {
                                             <button className={style.logoutBtn} onClick={onClickLogout}>로그아웃</button>
                                         </li>
                                         <li className={style.headerMenu} id="알람 아이콘" onClick={handleClick}>
-                                            <AlarmIcon hasUnread={hasUnread} />
+                                            <AlarmIcon hasUnread={hasUnread} style={style}/>
                                         </li>
                                     </div>
                                 </>) :

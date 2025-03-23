@@ -61,16 +61,17 @@ const AlarmList = () => {
     //     //     .catch(error => console.error("🚨 알림 목록 가져오기 실패:", error));
     // }, []);
 
-    const handleClick = async (type, sender, no) => {
-        console.log(type)
+    const handleClick = async (type, addr, no) => {
+        // console.log(type)
+        console.log("바로가기 클릭!!!")
+        await MypageApi.markAlarmsAsRead(token, no)
         if(type === 1){ //팔로우의 새로운 게시글
-            window.location.href = "/board/detail/" + no
+            window.location.href = "/board/detail/" + addr
         }else if(type === 2){ //새로운 댓글
-            window.location.href = "/board/detail/" + no
+            window.location.href = "/board/detail/" + addr
         }else if(type === 3){ //새로운 채팅
-            window.location.href = "/groupChat/" + no
+            window.location.href = "/groupChat/" + addr
         }else if(type === 4){ //새로운 팔로우 요청
-            await MypageApi.markAlarmsAsRead(token, no)
             window.location.href = "/mypage/followers"
         }
 
@@ -109,7 +110,7 @@ const AlarmList = () => {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{alarm.senderId + alarm.alarmContent}</td>
-                                    <td onClick={() => handleClick(alarm.alarmTypeId, alarm.senderId, alarm.addr)}>바로가기</td>
+                                    <td onClick={() => handleClick(alarm.alarmTypeId, alarm.addr, alarm.alarmNo)}>바로가기</td>
                                     <td>{alarm?.createdAt || "날짜 없음"}</td>
                                     <td>{alarm?.commentCount || 0}</td>
                                 </tr>

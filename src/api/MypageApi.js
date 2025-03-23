@@ -151,16 +151,17 @@ const MypageApi = {
         }
     },
     markAlarmsAsRead: async (token, no) => {
-
+        console.log("mark")
         try {
             const response = await axios.post(
-                "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
-                { no },
+                "http://localhost:8080/mymy/alarm/mark/read",  // ✅ API 경로 확인
+                null,
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
+                    params: {no: no},
                     withCredentials: true // ✅ 백엔드에서 CORS 설정이 필요
                 }
             );
