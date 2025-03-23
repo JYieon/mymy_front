@@ -6,13 +6,13 @@ import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
 
 //회원 정보 수정
-function MyPage({ userData }) { 
+function MyPage({ userData }) {
   const token = localStorage.getItem("accessToken")//사용자 토큰
 
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
   const [formData, setFormData] = useState(userData || {
     id: "",
-    nick:"",
+    nick: "",
     pwd: "",
     pwdCheck: "",
     phone: "",
@@ -26,32 +26,33 @@ function MyPage({ userData }) {
   //사용자 정보 불러오기
   useEffect(() => {
     const fetchUserInfo = async () => {
-        try {
-            const res = await ChatApi.getUserInfo(token);//api 요청
-            // console.log(res.data);
-            // 기존 formData의 기본값을 유지하면서 데이터 업데이트
-            setFormData(prevState => ({
-                ...prevState, 
-                ...res.data //기존값 유지하면서 새로운 값 추가
-            }));
-        } catch (error) {
-            console.error("로그인 정보 가져오기 실패:", error);
-        }
+      try {
+        const res = await ChatApi.getUserInfo(token);//api 요청
+        // console.log(res.data);
+        // 기존 formData의 기본값을 유지하면서 데이터 업데이트
+        console.log("유저 정보 확인!!!!!!!!:", res.data);
+        setFormData(prevState => ({
+          ...prevState,
+          ...res.data //기존값 유지하면서 새로운 값 추가
+        }));
+      } catch (error) {
+        console.error("로그인 정보 가져오기 실패:", error);
+      }
     };
 
     fetchUserInfo();
-}, [token]); 
+  }, [token]);
 
 
-    // axios.get("http://localhost:8080/mymy/userinfo/me", { })
-    //   .then(response => {
-    //     console.log("로그인된 사용자:", response.data);
-    //     setFormData(response.data); //로그인된 사용자 정보로 상태 업데이트
-    //   })
-    //   .catch(error => {
-    //     console.error("로그인 정보 가져오기 실패:", error);
-    //   });
-  
+  // axios.get("http://localhost:8080/mymy/userinfo/me", { })
+  //   .then(response => {
+  //     console.log("로그인된 사용자:", response.data);
+  //     setFormData(response.data); //로그인된 사용자 정보로 상태 업데이트
+  //   })
+  //   .catch(error => {
+  //     console.error("로그인 정보 가져오기 실패:", error);
+  //   });
+
 
   //입력값 변경 핸들러
   const handleChange = (e) => {
@@ -78,7 +79,7 @@ function MyPage({ userData }) {
     setError("");
 
     // 필수 입력 필드 검사
-    if (!formData.nick ||!formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
+    if (!formData.nick || !formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
       setError("모든 필드를 입력해야 합니다.");
       return;
     }
@@ -99,11 +100,11 @@ function MyPage({ userData }) {
       alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : field === "nick" ? "닉네임" : "전화번호"}를 입력해주세요.`);
       return;
     }
-  
+
     try {
       const updateData = { id: formData.id, [field]: formData[field] }; // 수정할 데이터 구성성
       const res = await MypageApi.modify(updateData);//api 요청청
-  
+
       if (res.status === 200) {
         alert(`${field === "pwd" ? "비밀번호" : field === "email" ? "이메일" : field === "nick" ? "닉네임" : "전화번호"} 성공적으로 변경되었습니다!`);
       }
@@ -136,10 +137,10 @@ function MyPage({ userData }) {
       <h1>회원 정보 수정</h1>
       <hr className={style.hr} />
       <form onSubmit={handleSubmit}
-      className={style.formContainer}>
+        className={style.formContainer}>
         <div className={style.form}>
           <label>아이디</label>
-          <input type='text'className={`${style.readOnlyId}`}  value={formData.id} readOnly />
+          <input type='text' className={`${style.readOnlyId}`} value={formData.id} readOnly />
           {/* 간격을 맞추기 위한 버튼 (화면상에서 보이지 않음) */}
           <button type="button" readOnly className={style.readonly}>변경</button>
 
@@ -153,7 +154,7 @@ function MyPage({ userData }) {
 
         <div className={style.form}>
           <label>비밀번호</label>
-          <input className={`Shadow`}  type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
+          <input className={`Shadow`} type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
           <button type="button" readOnly className={style.readonly}>변경</button>
 
 
@@ -169,7 +170,7 @@ function MyPage({ userData }) {
 
         <div className={style.form}>
           <label>이메일</label>
-          <input className={`Shadow`}  type="email" name="email" value={formData.email} onChange={handleChange} />
+          <input className={`Shadow`} type="email" name="email" value={formData.email} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("email")}>변경</button>
         </div>
 
@@ -181,7 +182,7 @@ function MyPage({ userData }) {
 
         <button className={style.submitBtn} type="submit">저장</button>
         <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
-            회원 탈퇴</button>
+          회원 탈퇴</button>
 
       </form>
       {/* 회원 탈퇴 처리 */}
@@ -189,10 +190,10 @@ function MyPage({ userData }) {
       <div>
         <h2>회원 탈퇴</h2>
         <div>
-          <input 
-            type="checkbox" 
-            checked={keepPosts} 
-            onChange={() => setKeepPosts(!keepPosts)} 
+          <input
+            type="checkbox"
+            checked={keepPosts}
+            onChange={() => setKeepPosts(!keepPosts)}
           />
           <label>게시글 남기고 탈퇴</label>
         </div>

@@ -7,7 +7,7 @@ import Modal from "react-modal";
 import MypageApi from "../../api/MypageApi";
 import { useNavigate } from "react-router-dom";
 
-//자 처음이야
+
 const SidebarCom = () => {
     const token = localStorage.getItem("accessToken");
     const [userId, setUserId] = useState("");
@@ -19,7 +19,21 @@ const SidebarCom = () => {
     const [unreadCount, setUnreadCount] = useState(0);
     const [followerCount, setFollowerCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
+    const [level, setLevel] = useState(1); // 기본 레벨은 1로 설정
 
+    // 숫자 레벨을 글자로 바꿔주는 함수
+    const getLevelName = (level) => {
+        switch (parseInt(level)) {
+            case 1:
+                return "생각하는 냥이";
+            case 2:
+                return "호기심 많은 냥이";
+            case 3:
+                return "활동적인 냥이";
+            case 4:
+                return "전설적인 냥이";
+        }
+    };
 
     useEffect(() => {
         const userInfo = async () => {
@@ -32,13 +46,17 @@ const SidebarCom = () => {
             }
 
             try {
+                // 사용자 정보 불러올 때 레벨도 같이 설정
                 const res = await ChatApi.getUserInfo(token);
+                console.log(" 받아온 사용자 정보:", res.data);
                 if (res.data && res.data.id) {
                     const fetchedUserId = res.data.id;
                     setUserId(fetchedUserId);
                     setIsAuthenticated(true);
                     console.log(" 로그인한 사용자 ID:", fetchedUserId);
 
+                    //사용자 레벨 저장
+                    setLevel(res.data.level);
 
                     // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
                     const followerRes = await MypageApi.getFollowerList();
@@ -108,7 +126,7 @@ const SidebarCom = () => {
         MypageApi.markAlarmsAsRead(userId).then(() => setUnreadCount(0));
 
         setShowDropdown(!showDropdown);
-        navigate(`/mypage/alarm/list/${userId}`);
+        navigate(`/mypage/alarm/list`);
     };
 
     return (
@@ -136,7 +154,7 @@ const SidebarCom = () => {
                         <input type="file" value={ProfilePic} onChange={(e) => setProfilePic(e.target.value)} />
 
                         <div className="UserId">{userId}</div>
-                        <div className="UserLevel">고양이</div>
+                        <div className="UserLevel">{getLevelName(level)}</div>
 
                         <button onClick={ProfileEditBtn}>저장</button>
                     </Modal>
@@ -181,7 +199,10 @@ const SidebarCom = () => {
 
 
                         <div className="UserId">{userId}</div>
-                        <div className="UserLevel">고양이</div>
+                        {/* 사이드바에서 레벨 이름 보여주기 */}
+                        <div className="UserLevel">{getLevelName(level)}</div>
+
+
                         {/*  팔로잉 / 팔로워 버튼 추가 */}
                         <div className="UserFollower">
                             <Link to={`/mypage/following`} className="FollowButton">

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; 
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
-import SummernoteLite from "react-summernote-lite"; 
+import SummernoteLite from "react-summernote-lite";
 import "react-summernote-lite/dist/summernote-lite.min.css";
+import MypageApi from "../../api/MypageApi";
 
 const BoardWrite = () => {
   const location = useLocation();
@@ -25,10 +26,10 @@ const BoardWrite = () => {
 
   // Summernote 초기화
   useEffect(() => {
-    if(!localStorage.getItem("accessToken")){
+    if (!localStorage.getItem("accessToken")) {
       alert("로그인 이후 이용 부탁드립니다")
       window.location.href = "/"
-    }else{
+    } else {
       if (!window.$ || !window.jQuery) {
         window.$ = window.jQuery = $;
       }
@@ -49,7 +50,7 @@ const BoardWrite = () => {
       };
     }
 
-    
+
   }, []);
 
   // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
@@ -94,6 +95,17 @@ const BoardWrite = () => {
     setHashtags(hashtags.filter((tag) => tag !== tagToRemove));
   };
 
+  //레벨 업데이트
+  const handleAfterActivity = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      await MypageApi.updateLevel(token);
+      console.log("레벨 갱신 성공");
+    } catch (e) {
+      console.error(" 레벨 갱신 실패:", e);
+    }
+  };
+
   // 계획 불러오기
   const handleLoadPlan = () => {
     if (selectedPlan) {
@@ -108,31 +120,34 @@ const BoardWrite = () => {
     e.preventDefault();
     const content = $(editorRef.current).summernote("code");
     const postData = { title, boardCategory: category, content };
-  
+
     if (category === 2) postData.boardOpen = boardOpen;
     if (category === 2) postData.hashtags = hashtags;
-    
-    console.log("전송할 데이터:",postData);
+
+    console.log("전송할 데이터:", postData);
     try {
       const token = localStorage.getItem("accessToken");
-  
+
       if (!token) {
         alert("로그인 후 이용 부탁드립니다.");
         window.location.href = "/login";
         return;
       }
-  
+
       // 게시글 저장 API 요청
       const res = await BoardApi.writeSave(postData, token);
       console.log("📩 서버 응답 데이터:", res.data);
-  
+
       if (res.status === 200) {
         const boardNo = res.data.boardNo;
         console.log("✅ 반환된 boardNo:", boardNo);
-  
+
+        // 레벨 갱신 호출 추가
+        await handleAfterActivity();
+
         if (category === 1) {
           // 계획 게시글 → 타임라인 페이지로 이동
-          navigate(`/timeline/${boardNo}`);  
+          navigate(`/timeline/${boardNo}`);
         } else if (category === 2) {
           alert("게시글이 등록되었습니다!");
           navigate(`/board/list?category=${category}`);
@@ -143,7 +158,8 @@ const BoardWrite = () => {
       console.error("❌ 게시글 작성 오류:", error);
     }
   };
-  
+
+
 
 
   return (
