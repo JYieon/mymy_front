@@ -32,6 +32,8 @@ const SidebarCom = () => {
                 return "활동적인 냥이";
             case 4:
                 return "전설적인 냥이";
+            default: 
+                return "생각하는 냥이"; 
         }
     };
 

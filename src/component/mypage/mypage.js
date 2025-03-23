@@ -143,6 +143,10 @@ function MyPage({ userData }) {
           <p><strong>여행자 유형</strong> {formData.testResult}</p>
           <Link to="/test">고양이 테스트 다시 하기</Link>
         </div>
+      //   <div> 회원가입하고 수정하기
+      //   <p><strong>여행자 유형</strong> {formData.testResult || "none"}</p>
+      //   <Link to="/test">고양이 테스트 다시 하기</Link>
+      // </div>
       )}
 
       <form onSubmit={handleSubmit}

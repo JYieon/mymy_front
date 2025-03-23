@@ -15,6 +15,16 @@ const MypageApi = {
         });
     },
 
+    getUserInfo: async () => {
+        const token = localStorage.getItem('token');
+        return await axios.get(`${domain}/userinfo/me`, {
+          headers: {
+            Authorization: token
+          },
+          withCredentials: true
+        });
+      },
+
     // 회원 탈퇴
     deleteAccount: async (keepPosts) => {
         const token = localStorage.getItem('accessToken');
