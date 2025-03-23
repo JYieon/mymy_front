@@ -4,25 +4,26 @@ import { useNavigate } from "react-router-dom";
 import style from "../../Css/BoardList.module.css";
 
 const BookmarkList = () => {
-    const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
-    const navigate = useNavigate();
-    const token = localStorage.getItem("accessToken"); 
+  const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
+  const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
 
-    // 북마크 목록 불러오기
-    const fetchBookmarks = async () => {
-        try {
-            if (!token) {
-                alert("로그인이 필요합니다.");
-                return;
-            }
-            const response = await BoardApi.getBookmarkList(token); 
-            //console.log("북마크 목록 API 응답:", response);
-            
-            setBookmarks(response.data.data || response.data); 
-        } catch (error) {
-            console.error("북마크 목록 불러오기 실패:", error);
-        }
-    };
+  // 북마크 목록 불러오기
+  const fetchBookmarks = async () => {
+    try {
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+      
+      const response = await BoardApi.getBookmarkList(token);
+      //console.log("북마크 목록 API 응답:", response);
+
+      setBookmarks(response.data.data || response.data);
+    } catch (error) {
+      console.error("북마크 목록 불러오기 실패:", error);
+    }
+  };
 
     // 북마크 해제
     const handleRemoveBookmark = async (boardNo) => {
@@ -39,10 +40,17 @@ const BookmarkList = () => {
         }
     };
 
-    // 페이지 로드 시 북마크 목록 불러오기
-    useEffect(() => {
-        fetchBookmarks();
-    }, []); // 최초 렌더링 시 실행
+  // 페이지 로드 시 북마크 목록 불러오기
+  useEffect(() => {
+    
+    fetchBookmarks();
+
+    
+  }, []); // 최초 렌더링 시 실행
+
+
+//   임시데이터
+
 
     return (
         <div style={{ padding: "20px    ", maxWidth: "800px", margin: "auto" }}>

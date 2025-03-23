@@ -6,14 +6,6 @@
     margin: 10px 0;
 }
 
-.newReplyBtn{
-    background:none;
-    border: none;
-    margin: 10px;
-    margin-left: auto;
-    float: right;
-}
-
 .id {
     /* background-color: aqua; */
     margin: 0 20px;
@@ -36,12 +28,14 @@
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-
 }
 
+.userNickname {
+    margin: 15px;
+    margin-bottom: 0px;
+}
 
-
-textarea {
+.textarea {
     margin: 0 auto;
     width: 95%;
     margin: 20px;
@@ -54,4 +48,22 @@ textarea {
         outline: none;
         box-shadow: none;
     }
+}
+
+.newReplyBtn{
+    background:none;
+    border: none;
+    margin: 10px;
+    font-size: 15px;
+    margin-left: auto;
+    float: right;
+    cursor: pointer;
+}
+
+h3 {
+    margin-bottom: 0;
+}
+
+.hr {
+    margin: 20px auto;
 }

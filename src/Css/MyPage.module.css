@@ -1,65 +1,66 @@
-input {
-    padding: 10px;
-    border-radius: 100px;
-    border: none;
-    &:focus {
-        background-color: whitesmoke;
-    }
+.hr {
+  margin: auto;
+  width: 90%;
 }
 
-form {
-    margin:20px auto;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
+.grid {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+  font-size: 20px;
+  width: fit-content;
+  margin: 20px auto;
+}
+
+.gridItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+
+  input {
     /* background-color: aqua; */
-    font-size: larger;
-
-}
-label {
-    width: 150px;
- 
-
-}
-.form {
-    margin: 15px;
-    display: flex;
-    justify-content: space-between;
-    button {
-        border: none;
-        border-radius: 10px;
-        color: #00284C;
-        background: none;
-    }
-
+    padding: 7px;
+    border: none;
+    border-radius: 100px;
+    max-width: 200px;
+    font-size: 18px;
+  }
 }
 
-h1 {
-    margin: 70px 50px 50px 50px;
+.readonly {
+  opacity: 0;
+}
+
+.label {
+  min-width: 150px;
+  font-size: 20px;
+  /* background-color: tomato; */
+}
+
+.modifybutton {
+  border: none;
+  font-size: 15px;
+  border-radius: 10px;
+  color: #00284c;
+  background: none;
 }
 
 .submitBtn {
-    font-size: 15px;
-    width: fit-content;
-    float: right;
-    margin: 50px;
-    padding: 5px 20px;
-    background-color: #00284C;
-    color: white;
-    border-radius: 10px;
+  font-size: 15px;
+  float: right;
+  padding: 5px 20px;
+  margin-right: 50px;
+  background-color: #00284c;
+  color: white;
+  border-radius: 10px;
 }
 
-.hr {
-    margin: auto;
-    width: 90%;
-}
-
-.readOnlyId{
-    font-size: 20px;
-    &:focus {
-    background-color: white;
-}}
-
-.readonly {
-    opacity:0;
+.deleteAccountBtn {
+    cursor: pointer;
+  color: #00284c;
+  background: none;
+  float: right;
+  margin-bottom: 0px;
+  margin-right: 10px;
 }

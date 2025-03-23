@@ -1,0 +1,179 @@
+.sidebarContainer {
+  display: inline-flex;
+  flex-direction: column;
+  /* background-color: antiquewhite; */
+  & > div {
+    margin: 20px;
+  }
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 250px;
+  border-radius: 20px;
+
+  * {
+    margin: 0px auto;
+  }
+  
+}
+
+.userProfilePic {
+  width: 180px;
+  height: 180px;
+  border-radius: 100%;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.category {
+  flex-grow: 1;
+  align-items: stretch;
+  width: 250px;
+  overflow: hidden;
+  border-radius: 25px 25px 0 0;
+  background-color: white;
+}
+
+ul {
+  padding-inline-start: 5%;
+  width: 90%;
+  .menuTitle {
+    margin-left: 20px;
+    font-size: 25px;
+    font-weight: 800;
+  }
+}
+li {
+  list-style: none;
+  font-size: 25px;
+
+  &:hover {
+    .menuList,
+    .alarmList {
+      display: block;
+    }
+    & > .contourLine {
+      display: none;
+    }
+  }
+}
+
+.profileEditBtn {
+  border: none;
+  padding: 5px 10px;
+  background-color: #00284c;
+  color: white;
+  border-radius: 10px;
+}
+
+.menuList {
+  display: none;
+  background-color: #00284c;
+  width: 100%;
+  line-height: 40px;
+
+  .menu {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+    &:hover {
+      color: lightgrey;
+    }
+  }
+}
+
+.alarmList {
+  padding: 10px;
+  width: 100%;
+  background-color: white;
+  border-style: groove;
+  border-radius: 10px;
+  display: none;
+  .Menu {
+    color: black;
+    font-size: 20px;
+    font-weight: 400;
+    text-decoration: none;
+    &:hover {
+      color: lightgrey;
+    }
+  }
+}
+
+.userLevel {
+  padding: 5px;
+  font-size: 12px;
+}
+.logoutBtn {
+  margin-right: 20px;
+  margin-bottom: 10px;
+  font-size: 10px;
+  background: none;
+  border: none;
+}
+
+.headerNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 0px;
+}
+
+.alramIcon {
+  width: 15px;
+  height: 15px;
+  justify-self: flex-end;
+}
+
+.userNickContainer {
+  font-size: 20px;
+  display: flex;
+}
+
+.userNick {
+  font-size: 20px;
+  padding: 0px 10px;
+  justify-self: center;
+}
+
+.userFollowerContainer {
+  display: flex;
+  margin: 10px auto;
+}
+
+.followBtn {
+  margin: 5px;
+}
+
+/* 비회원 표시 */
+
+.nonUserContainer {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0px auto;
+  text-align: center;
+  /* background-color: antiquewhite; */
+
+  h3 {
+    margin: 20px auto 5px auto;
+  }
+  h4 {
+    color: gray;
+  }
+}
+
+.registerBtn {
+  padding: 10px;
+  color: white;
+  background-color: #00284c;
+  border-radius: 10px;
+  margin: 30px auto 10px auto;
+}
+
+.loginBtn {
+  margin-bottom: 20px;
+}

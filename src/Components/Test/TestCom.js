@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Test.css";
+import style from "../../Css/TestPage.module.css";
 import { useNavigate } from "react-router-dom";
 const TestCom=()=>{
     const Questions=[
@@ -91,7 +91,7 @@ const TestCom=()=>{
                         answers[answer]=(answers[answer]||0)+1;
                 });
             
-                console.log(answers);
+                // console.log(answers);
                 const EnergyDirection=(answers.I > answers.E) ? "I":"E";
                 const Recognition=(answers.N > answers.S) ? "N":"S";
                 const Judgment=(answers.T > answers.F) ? "T":"F";
@@ -114,12 +114,12 @@ const TestCom=()=>{
 
         return(
             <form id="TravelerTest" name="TravelerTest" action="test/result" method="get">
-                <div key={Q.QuestionNum} id={Q.QuestionNum} style={{display:"none"}}>
-                    <div className="Question">{Q.Question}</div>
-                    {/* <img key={Q.QuestionNum} src="https://picsum.photos/700/500" alt="can't load img"/> */}
-                    <div className="AnswerWrap">
-                        <input className="Answer" onClick={()=>NextQuestion(Q.QuestionNum,Q.Answer1Value,Q.Question)} type="button" value={Q.Answer1}/>
-                        <input className="Answer" onClick={()=>NextQuestion(Q.QuestionNum,Q.Answer2Value,Q.Question)} type="button" value={Q.Answer2}/>
+                <div key={Q.QuestionNum} id={Q.QuestionNum} style={{display:"none"}} className={style.questionWrap}>
+                    <h1 className={style.title}>{Q.Question}</h1>
+                    <img key={Q.QuestionNum} className={style.testPic} src="https://picsum.photos/700/500" alt="can't load img"/>
+                    <div className={style.answerWrap}>
+                        <input className={style.answer} onClick={()=>NextQuestion(Q.QuestionNum,Q.Answer1Value,Q.Question)} type="button" value={Q.Answer1}/>
+                        <input className={style.answer} onClick={()=>NextQuestion(Q.QuestionNum,Q.Answer2Value,Q.Question)} type="button" value={Q.Answer2}/>
                     </div>
                 </div>
             </form>

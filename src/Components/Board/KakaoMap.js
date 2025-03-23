@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import MapApi from "../../api/MapApi"; 
 
-const KakaoMap = () => {
-    const { boardNo } = useParams();
+const KakaoMap = ({boardNo}) => {
+    // const { boardNo } = useParams();
+    const [selectedMarkers, setSelectedMarkers] = useState([]);
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
     const [infoWindows, setInfoWindows] = useState([]);
@@ -31,6 +32,7 @@ const KakaoMap = () => {
 
     const initMap = async () => {
         console.log("✅ initMap 실행됨!");
+        console.log("✅",boardNo);
         const container = document.getElementById("map");
         if (!container) return;
 
@@ -108,7 +110,7 @@ const KakaoMap = () => {
             longitude: pendingMarker.position.getLng(),
             info: newContent,
         };
-
+        console.log(markerData)
         try {
             await MapApi.addMarker(markerData);
             console.log("✅ 마커 저장 성공!", markerData);
@@ -147,8 +149,7 @@ const KakaoMap = () => {
     return (
         <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
             <h2>📌 게시판 {boardNo}의 지도</h2>
-            <div id="map" style={{ width: "90%", height: "700px", borderRadius: "10px" }}></div>
-
+            <div id="map" style={{ width: "500px", height: "400px", borderRadius: "10px" }}></div>
             {pendingMarker && (
                 <div style={{ marginTop: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "5px", background: "#fff" }}>
                     <h3>📝 인포윈도우 입력</h3>

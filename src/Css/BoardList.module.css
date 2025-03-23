@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .categoryBtns {
   display: flex;
   justify-content: center;
@@ -29,25 +30,25 @@
 .boardGrid {
   padding: 10px;
   display: grid;
-  height: fit-content;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   flex: 1;
+  height: 730px;
+  /* background-color: tomato; */
 }
 
 /* 게시글 */
 .boardItem {
-  height: fit-content;
+  background-color: white;
+  height: 350px;
+  min-width: 30%;
   border-radius: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  &:hover * {
+  &:hover {
     background-color: whitesmoke;
-    border-radius: 10px;
-    filter: brightness(-10);
-
   }
 }
 
@@ -58,10 +59,13 @@
   object-fit: cover;
   border-radius: 10px;
 }
+
 /* 게시글 제목 */
 .PostTitle {
-  margin: 5px;
-  /* white-space : nowrap; */
+  /* background-color: aqua; */
+
+  margin: 20px 10px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -103,6 +107,7 @@
 
 /* 검색창  */
 .searchContainer {
+  background-color: white;
   padding: 5px;
   margin: 20px 10px;
   display: flex;
@@ -123,21 +128,23 @@
     text-align: center;
     font-size: 12px;
   }
-  .SearchKeyword {
-    text-align: start;
-    font-weight: 400;
-    flex-grow: 1;
-  }
+}
 
-  .SearchTypeSelector {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .SearchBtn {
-    background-color: #00284c;
-    color: white;
-  }
+.SearchKeyword {
+  text-align: start;
+  font-weight: 400;
+  flex-grow: 1;
+}
+
+.SearchTypeSelector {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.SearchBtn {
+  background-color: #00284c;
+  color: white;
+  padding: 0 15px;
 }
 /* 페이지 넘기는 바 */
 
@@ -152,39 +159,40 @@
   }
 }
 
-.boardTable{
-  border: none;
-  /* background-color: aliceblue; */
-
-}
-
 hr {
   width: 100%;
 }
 
-.tr {
-  text-align: center;
-  font-size: smaller;
-}
 table {
-  padding: 10px;
+  margin: 0 20px;
+  border-spacing: 0px 5px;
+}
+th {
+  height: 30px;
+  border-bottom: 1px black solid;
+  width: 10%;
+}
 
+td,
+td {
+  text-align: center;
+  font-size: 12px;
+  padding: 5px 0px;
+  border-bottom: 1px black solid;
+  border-collapse: collapse;
+  white-space: nowrap;
 }
-.tbody {
-  height: auto;
-  /* background-color: yellowgreen; */
-}
-/* .category {
-  
-} */
 
-.bookmarkItem{
-  font-size: medium;
-  flex: 1;
-  * {
-    margin: 10px;
-  }
+.bmTitle {
+  width: 40%;
 }
+
+.boardTableContainer {
+  /* background-color: tomato; */
+  min-height: 400px;
+  max-height: 730px;
+}
+
 .bookmakrPostTitle {
   color: #0076ff;
   cursor: pointer;

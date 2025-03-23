@@ -1,12 +1,17 @@
 import BoardApi from "../../api/BoardApi";
 import ChatApi from "../../api/ChatApi";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import Reply from "./Reply";
 import style from "../../Css/BoardDetail.module.css";
-import axios from "axios";
+
+import ReadingOnlyTimeline from "./ReadingOnlyTimeline";
+import TimelineApi from "../../api/TimelineApi";
+import MapApi from "../../api/MapApi";
+import ReadingOnlyKakaoMap from "./ReadingOnlyKakaoMap";
 
 const Detail = () => {
+  const location = useLocation();
   const { boardNo } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -14,7 +19,11 @@ const Detail = () => {
   const [bookmarked, setBookmarked] = useState(false);
   const [hashtags, setHashtags] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState("");
+  const [timelineId, SetTimelineId] = useState("");
+
   const token = localStorage.getItem("accessToken");
+
+
 
   // 로그인한 사용자 정보 가져오기
   useEffect(() => {
@@ -59,7 +68,7 @@ const Detail = () => {
       const likesRes = await BoardApi.getLikes(boardNo);
 
       setLiked(likeRes.liked);
-      setData((prev) => prev ? { ...prev, boardLikes: likesRes } : prev);
+      setData((prev) => (prev ? { ...prev, boardLikes: likesRes } : prev));
     } catch (error) {
       console.error("❌ 좋아요 상태 확인 실패:", error);
     }
@@ -68,10 +77,17 @@ const Detail = () => {
   // 좋아요 토글
   const toggleLike = async () => {
     if (!data) return;
+  // 좋아요 토글
+  const toggleLike = async () => {
+    if (!data) return;
 
     const newLiked = !liked;
     const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
+    const newLiked = !liked;
+    const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
 
+    setLiked(newLiked);
+    setData((prev) => (prev ? { ...prev, boardLikes: newLikes } : prev));
     setLiked(newLiked);
     setData((prev) => (prev ? { ...prev, boardLikes: newLikes } : prev));
 
@@ -79,7 +95,7 @@ const Detail = () => {
       const res = await BoardApi.toggleLike(boardNo, token);
       if (res) {
         setLiked(res.liked);
-        setData((prev) => prev ? { ...prev, boardLikes: res.likes } : prev);
+        setData((prev) => (prev ? { ...prev, boardLikes: res.likes } : prev));
         if (window.updateBoardList) {
           window.updateBoardList();
         }
@@ -126,8 +142,54 @@ const Detail = () => {
 
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
+        const isBookmarted = await BoardApi.checkBookmark(boardNo, token);
+        // console.log("isbookmarked",isBookmarted.data);
+        if (isBookmarted.data) {
+          try {
+            const success = await BoardApi.toggleBookmark(boardNo, token);
+            if (success) {
+              console.log('✅ 북마크 삭제 완료!')
+
+            }
+          } catch (error) {
+            console.error("❌ 북마크 삭제 실패");
+          }
+        }
+        const isTimeline = await TimelineApi.getTimeline(boardNo)
+        // console.log("isTimeline",isTimeline.data.timelineId);
+
+        if (isTimeline.data.timelineId !== undefined) {
+          try {
+            const success = await TimelineApi.deleteTimeline(timelineId);
+            if (success === 200) {
+            console.log('✅ 타임라인 삭제 완료!')
+            }
+          } catch (error) {
+            console.error("❌ 타임라인 삭제 실패");
+
+          }
+        }
+        const isMapMaker = await MapApi.fetchMarkers(boardNo);
+        // console.log("isMapMaker",isMapMaker.data.length);
+        if (isMapMaker.data) {
+          try {
+            const success = await MapApi.deleteAllMarkersByBoard(boardNo);
+            if (success === 200) {
+            console.log('✅ 맵 마커 삭제 완료!')
+            }
+          } catch (error) {
+            console.error("❌ 맵 마커 삭제 실패");
+
+          }
+        }
+
         const res = await BoardApi.delete(boardNo, token);
+        console.log('게시글 삭제 완료!')
+
+        console.log("boardNo", boardNo, "\n token", token);
+
         if (res.status === 200) {
+          console.log('✅ 게시글 삭제 완료!')
           alert("게시글이 삭제되었습니다.");
           navigate("/board/list");
         }
@@ -154,9 +216,21 @@ const Detail = () => {
     navigate(`/board/modifyForm/${data.boardNo}`);
   };
 
+  // 공유 버튼
+  const kakaoShare = () => { };
+  const urlShare = () => {
+    var url = location.pathname;
+    navigator.clipboard.writeText(`localhost:3000${url}`);
+    alert("복사 완료!");
+  };
+  const PDFShare = () => { };
+
+  // 로딩 처리
   if (!data) {
     return <p>로딩 중...</p>;
   }
+
+
 
   return (
     <div className={style.boardDetailContainer}>
@@ -182,15 +256,10 @@ const Detail = () => {
             <div className={style.postStatus}>
               <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
               <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
-              <div
-                className={style.editBtnContainer}
-              >
+              <div className={style.editBtnContainer}>
                 {/* 계획 & 기록 게시글 모두 수정 & 삭제 가능 */}
 
-                <button
-                  onClick={handleModify}
-                  className={style.editBtn}
-                >
+                <button onClick={handleModify} className={style.editBtn}>
                   수정
                 </button>
                 <button onClick={deletePost} className={style.deleteBtn}>
@@ -202,21 +271,33 @@ const Detail = () => {
         </div>
 
         {/* 게시글 본문 렌더링 */}
-        <div
-          className={style.content}
-          dangerouslySetInnerHTML={{ __html: data.content }}
-        />
+        <div className={style.content}>
+          <pre className={style.post} dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\\n', '') }} />
 
+          {/* 타임라인 및 지도 (계획 게시글만) */}
+          {data.boardCategory === 1 &&
+            (<>
+              <ReadingOnlyKakaoMap boardNo={boardNo} />
+              <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
+            </>)
+          }
+        </div>
         {/* 해시태그 (기록 게시글만) */}
         {data.boardCategory === 2 && (
           <div>
-            <h4>📌 해시태그:</h4>
+            {/* <h5>📌 해시태그:</h5> */}
             {hashtags.length > 0 ? (
               hashtags.map((tag, index) => (
                 <span
                   key={index}
                   className={style.hashtag}
-                  onClick={() => navigate(`/board/list?category=2&searchType=tag&keyword=${encodeURIComponent(tag)}`)}
+                  onClick={() =>
+                    navigate(
+                      `/board/list?category=2&searchType=tag&keyword=${encodeURIComponent(
+                        tag
+                      )}`
+                    )
+                  }
                 >
                   #{tag}
                 </span>
@@ -236,8 +317,7 @@ const Detail = () => {
             <button onClick={toggleLike} className={style.likeBtn}>
               {liked ? (
                 <svg
-                  width="30px"
-                  height="30px"
+                  className={style.likeIcon}
                   viewBox="0 0 24 24"
                   fill="tomato"
                   xmlns="http://www.w3.org/2000/svg"
@@ -251,8 +331,8 @@ const Detail = () => {
                 </svg>
               ) : (
                 <svg
-                  width="30px"
-                  height="30px"
+                  className={style.likeIcon}
+
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -272,8 +352,6 @@ const Detail = () => {
               {bookmarked ? (
                 <svg
                   className={style.bookmarkIcon}
-                  width="30px"
-                  height="30px"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
@@ -286,8 +364,7 @@ const Detail = () => {
               ) : (
                 <svg
                   className={style.bookmarkIcon}
-                  width="30px"
-                  height="30px"
+
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
@@ -301,12 +378,20 @@ const Detail = () => {
             </button>
           </div>
         )}
-        <div>
-          <input type="url" value={`현재 주소`} readOnly />
+        <div className={style.shareContainer}>
+          {/* <input
+          type="url"
+          value={`localhost:3000${location.pathname}`}
+          onClick={urlShare}
+          readOnly
+        /> */}
           <button className={style.KakaoShare}>카톡 공유</button>
           <button className={style.pdfShare}>PDF 공유</button>
+          <button className="Sharebtn" onClick={urlShare}>
+          공유하기
+        </button>
         </div>
-        <button className="Sharebtn">공유하기</button>
+
         {/* 기록 게시글(2)만 댓글 가능 */}
         {data.boardCategory === 2 && (
           <>

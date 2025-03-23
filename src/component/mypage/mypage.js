@@ -4,9 +4,12 @@ import MypageApi from "../../api/MypageApi";
 import { Link } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
+import Modal from "react-modal";
+
 
 //회원 정보 수정
 function MyPage({ userData }) {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const token = localStorage.getItem("accessToken")//사용자 토큰
 
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
@@ -31,6 +34,7 @@ function MyPage({ userData }) {
         const res = await ChatApi.getUserInfo(token);//api 요청
         // console.log(res.data);
         // 기존 formData의 기본값을 유지하면서 데이터 업데이트
+
         console.log("유저 정보 확인!!!!!!!!:", res.data);
         setFormData(prevState => ({
           ...prevState,
@@ -114,6 +118,9 @@ function MyPage({ userData }) {
     }
   };
 
+  const openDeleteModalBtn = () => {
+    setOpenDeleteModal(!openDeleteModal);
+  };
   //회원 탈퇴 처리
   const handleDeleteAccount = async () => {
     if (!token) {
@@ -150,68 +157,81 @@ function MyPage({ userData }) {
       )}
 
       <form onSubmit={handleSubmit}
-        className={style.formContainer}>
-        <div className={style.form}>
-          <label>아이디</label>
+        className={style.grid} id='userInfoModifyForm'>
+
+
+        <div className={style.gridItem}>
+          <label className={style.label}>아이디</label>
           <input type='text' className={`${style.readOnlyId}`} value={formData.id} readOnly />
-          {/* 간격을 맞추기 위한 버튼 (화면상에서 보이지 않음) */}
+
           <button type="button" readOnly className={style.readonly}>변경</button>
-
-
-
         </div>
-        <div className={style.form}>
-          <label>닉네임</label>
+
+        <div className={style.gridItem}>
+          <label className={style.label}>닉네임</label>
           <input className={`Shadow`} type="text" name="nick" value={formData.nick} onChange={handleChange} />
-          <button type="button" onClick={() => handleUpdateField("nick")}>변경</button>
+          <button type="button" onClick={() => handleUpdateField("nick")} className={style.modifybutton}>변경</button>
         </div>
 
-        <div className={style.form}>
-          <label>비밀번호</label>
+        <div className={style.gridItem}>
+          <label className={style.label}>비밀번호</label>\
           <input className={`Shadow`} type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
           <button type="button" readOnly className={style.readonly}>변경</button>
 
 
         </div>
 
-        <div className={style.form}>
-          <label>비밀번호 확인</label>
+        <div className={style.gridItem}>
+          <label className={style.label}>비밀번호 확인</label>
           <input className={`Shadow`} type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
-          <button type="button" onClick={() => handleUpdateField("pwd")}>변경</button>
+          <button type="button" onClick={() => handleUpdateField("pwd")} className={style.modifybutton}>변경</button>
         </div>
         {/* 비밀번호 오류 메시지 표시 */}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <div className={style.form}>
-          <label>이메일</label>
+        <div className={style.gridItem}>
+          <label className={style.label}>이메일</label>
           <input className={`Shadow`} type="email" name="email" value={formData.email} onChange={handleChange} />
-          <button type="button" onClick={() => handleUpdateField("email")}>변경</button>
+          <button type="button" onClick={() => handleUpdateField("email")} className={style.modifybutton} >변경</button>
         </div>
 
-        <div className={style.form}>
-          <label>전화번호</label>
+        <div className={style.gridItem}>
+          <label className={style.label}>전화번호</label>
           <input className={`Shadow`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
-          <button type="button" onClick={() => handleUpdateField("phone")}>변경</button>
+          <button type="button" onClick={() => handleUpdateField("phone")} className={style.modifybutton}>변경</button>
         </div>
+      </form>
 
-        <button className={style.submitBtn} type="submit">저장</button>
-        <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
+      <button className={style.submitBtn} type="submit" form='userInfoModifyForm'>저장</button>
+
+
+      {/* 회원 탈퇴 처리 */}
+
+
+      <div>
+
+        <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
           회원 탈퇴</button>
 
-      </form>
-      {/* 회원 탈퇴 처리 */}
-      <hr />
-      <div>
-        <h2>회원 탈퇴</h2>
-        <div>
+        <Modal
+          isOpen={openDeleteModal}
+          ariaHideApp={true}
+          onRequestClose={openDeleteModalBtn}
+          className={`Shadow modal`}
+        >
+          <label className={style.label}>게시글을 남기고 탈퇴하시겠습니까?</label>
+          <span>게시글 삭제를 원하신다면 체크를 풀어주세요!</span>
           <input
             type="checkbox"
             checked={keepPosts}
             onChange={() => setKeepPosts(!keepPosts)}
           />
-          <label>게시글 남기고 탈퇴</label>
-        </div>
-        {deleteError && <p style={{ color: 'red' }}>{deleteError}</p>}
+
+          {deleteError && <p style={{ color: 'red' }}>{deleteError}</p>}
+
+          <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
+            탈퇴</button>
+        </Modal>
       </div>
 
 

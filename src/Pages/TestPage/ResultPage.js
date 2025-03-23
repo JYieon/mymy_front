@@ -1,11 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useOutletContext } from "react-router-dom";
 import style from "../../Css/TestPage.module.css";
 import { useState, useEffect } from "react";
 import MypageApi from "../../api/MypageApi";
 
 const ResultPage = () => {
+  const headerDisplay = useOutletContext();
+  headerDisplay(false);
   const location = useLocation();
-  const token = localStorage.getItem("accessToken");  
+  const token = localStorage.getItem("accessToken");
 
   // 변환된 여행자 유형을 저장할 상태
   const [userResult, setUserResult] = useState("");
@@ -26,7 +28,7 @@ const ResultPage = () => {
       case "ENFJ": return "세상을 밝히는 등불";
       case "ENFP": return "무지개 비행자";
       case "ISTJ": return "시간 설계자";
-      case "ESTJ": return "시간의 선장"; 
+      case "ESTJ": return "시간의 선장";
       case "ESFJ": return "별빛의 수호자";
       case "ISFJ": return "추억 수집가";
       default: return "알 수 없음";
@@ -64,14 +66,14 @@ const ResultPage = () => {
       <Link className={`link ${style.testAgain}`} to="/test">
       </Link>
 
-    <div className={`${style.TestLayout} Shadow`}>
-      <h2>당신은 {location.state.result} 입니다.</h2>
-      <h2>여행자 유형: {userResult}</h2>  {/* 변환된 유형 표시 */}
+      <div className={`${style.TestLayout} Shadow`}>
+        <h2>당신은 {location.state.result} 입니다.</h2>
+        <h2>여행자 유형: {userResult}</h2>  {/* 변환된 유형 표시 */}
 
 
-      <button className="ResultSave">저장하기</button>
-      <button className="ResultShare">공유하기</button>
-    </div>
+        <button className="ResultSave">저장하기</button>
+        <button className="ResultShare">공유하기</button>
+      </div>
     </div>
   );
 };

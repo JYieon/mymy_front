@@ -1,24 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
-import { useNavigate } from "react-router-dom";
-const Timeline = ({ boardNo }) => {
 
 
-  const today = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, 0);
-    const day = String(date.getDate()).padStart(2, 0)
-    return `${year}-${month}-${day}`;
-  }
-
-  const [startDate, setStartDate] = useState(today(new Date()));
-  const [endDate, setEndDate] = useState(today(new Date()));
-  const [location, setLocation] = useState("가고 싶은 장소를 적어보세요!");
-  const [selectedDate, setSelectedDate] = useState(today(new Date()));
+const TimelineModify = ({settimelineData,setTimelineId}) => {
+  const { boardNo } = useParams();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [location, setLocation] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
@@ -33,13 +26,20 @@ const Timeline = ({ boardNo }) => {
   // 타임라인 데이터 가져오기
   const fetchTimeline = async () => {
     try {
-      console.log("타임라인 게시글 번호", boardNo)
+      console.log("타임라인 게시글 번호",boardNo)
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
+
+        setTimelineId(response.data.timelineId);
         setStartDate(response.data.startDt);
         setEndDate(response.data.endDt);
         setLocation(response.data.location);
+        setSelectedDate(response.data.startDt);
         setTodoList(JSON.parse(response.data.todo) || {});
+        settimelineData({
+          boardNo:response.data.boardNo,
+          todo:JSON.stringify(JSON.parse(response.data.todo))
+        });
       }
     } catch (error) {
       console.error("오류 발생:", error);
@@ -65,7 +65,7 @@ const Timeline = ({ boardNo }) => {
 
   // 입력값에 따라 높이 변경
   const handleResizeHeight = useCallback(() => {
-    subTaskRef.current.style.height = "auto";
+    subTaskRef.current.style.height="auto";
     subTaskRef.current.style.height = subTaskRef.current.scrollHeight + "px";
   }, []);
 
@@ -77,6 +77,10 @@ const Timeline = ({ boardNo }) => {
       ...prev,
       [selectedDate]: newTodoList,
     }));
+    settimelineData({
+      boardNo:boardNo,
+      todo:JSON.stringify(todoList)
+    });
   };
 
   // 일정 삭제 기능
@@ -90,35 +94,12 @@ const Timeline = ({ boardNo }) => {
     }));
   };
 
-  // 일정 처음 저장 (DB 반영)
-  const handleSaveTasks = async () => {
-    const data = {
-      boardNo,
-      token: token,
-      startDt: startDate,
-      endDt: endDate,
-      location,
-      todo: JSON.stringify(todoList),
-    };
-    console.log("타임라인 유저 데이터", data)
-    try {
-      await TimelineApi.addTimeline(data, token);
-      alert("여행 일정이 저장되었습니다!");
-      fetchTimeline();
-      navigate(`/board/detail/${boardNo}`);
-    } catch (error) {
-      alert("작성되지 않은 부분이 있습니다!");
-      console.error("저장 중 오류 발생:", error);
-    }
-  };
-
   // 일정 전체 수정 (todo만 덮어쓰기)
   const handleUpdateTasks = async () => {
     const data = {
       boardNo: boardNo,
       todo: JSON.stringify(todoList),
     };
-
     try {
       const response = await TimelineApi.updateTimelineTodo(data);
       alert("일정이 수정되었습니다!");
@@ -155,7 +136,7 @@ const Timeline = ({ boardNo }) => {
             value={startDate}
             onChange={(e) => {
               setStartDate(e.target.value)
-              setSelectedDate(startDate)
+              setSelectedDate(e.target.value)
             }} // startDate 업데이트
             className={style.input}
           />
@@ -165,15 +146,14 @@ const Timeline = ({ boardNo }) => {
             type="date"
             value={endDate}
             onChange={(e) => {
-              if (e.target.value.replaceAll('-', '') - startDate.replaceAll('-', "") < 0) {
-                alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
-                console.log(startDate)
+              if (e.target.value.replaceAll('-', '')-startDate.replaceAll('-', "")<0)
+              {alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
                 setEndDate(startDate);
-              } else {
+              }else{
                 setEndDate(e.target.value)
               }
-            }
-            } // endDate 업데이트
+              }
+              } // endDate 업데이트
             className={style.input}
           />
         </div>
@@ -182,6 +162,7 @@ const Timeline = ({ boardNo }) => {
       {/* <div className={`Shadow`}></div> */}
       <div className={`Shadow ${style.dateSelection}`}>
         <label className={style.label}>📅</label>
+
         <input
           type="date"
           value={selectedDate}
@@ -196,7 +177,7 @@ const Timeline = ({ boardNo }) => {
           <button className={style.addButton} onClick={handleAddTask}>
             + 일정 추가
           </button>
-          <hr />
+          <hr/>
           <div className={style.TodoList}>
             {/* 서버에서 자동으로 불러와짐 */}
             {selectedTasks.map((todo, index) => (
@@ -254,13 +235,11 @@ const Timeline = ({ boardNo }) => {
           <button className={style.updateButton} onClick={handleUpdateTasks}>
             🔄 수정
           </button>
-          <button className={style.saveButton} onClick={handleSaveTasks}>
-            💾 저장
-          </button>
+
         </div>
       </div>
     </div>
   );
 };
 
-export default Timeline;
+export default TimelineModify;
