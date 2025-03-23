@@ -46,58 +46,58 @@ const BoardList = () => {
     let loggedInUserId = null;
 
     if (token) {
-        try {
-          //console.log("저장된 토큰:", token);
-            const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
-            loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
-           // console.log("로그인한 사용자 ID:", loggedInUserId);
-        } catch (error) {
-            console.error("토큰 디코딩 오류:", error);
-        }
+      try {
+        //console.log("저장된 토큰:", token);
+        const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
+        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
+        // console.log("로그인한 사용자 ID:", loggedInUserId);
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+      }
     }
 
     console.log("📝 필터링 전 게시글 목록:", boardList);
 
     const filteredList = boardList.filter(
-        (post) => post.boardOpen === 1 || (loggedInUserId && post.id === loggedInUserId)
+      (post) => post.boardOpen === 1 || (loggedInUserId && post.id === loggedInUserId)
     );
 
     // console.log("필터링 후 게시글 목록:", filteredList);
 
     return filteredList;
-};
+  };
 
 
-  
+
   const fetchBoardList = async (page, category, token) => {
     try {
-        let params = { page, category, token };
-        if (category === 1) {
-            params.token = localStorage.getItem("accessToken");
-        }
-        const response = await axios.get(
-            `http://localhost:8080/mymy/board/list`,
-            { params }
-        );
+      let params = { page, category, token };
+      if (category === 1) {
+        params.token = localStorage.getItem("accessToken");
+      }
+      const response = await axios.get(
+        `http://localhost:8080/mymy/board/list`,
+        { params }
+      );
 
-        // 비공개 글 필터링 추가
-        const filteredBoardList = filterBoardList(response.data.boardList, localStorage.getItem("accessToken"));
+      // 비공개 글 필터링 추가
+      const filteredBoardList = filterBoardList(response.data.boardList, localStorage.getItem("accessToken"));
 
-        const updatedPageState = { ...pageState };
-        updatedPageState[category] = {
-            boardList: filteredBoardList.map((post) => ({
-                ...post,
-                thumbnail: extractThumbnail(post),
-            })),
-            currentPage: response.data.currentPage,
-            totalPages: response.data.totalPages,
-        };
-        setPageState(updatedPageState);
-        setIsSearching(false);
+      const updatedPageState = { ...pageState };
+      updatedPageState[category] = {
+        boardList: filteredBoardList.map((post) => ({
+          ...post,
+          thumbnail: extractThumbnail(post),
+        })),
+        currentPage: response.data.currentPage,
+        totalPages: response.data.totalPages,
+      };
+      setPageState(updatedPageState);
+      setIsSearching(false);
     } catch (error) {
-        console.error("게시글 목록 불러오기 실패:", error);
+      console.error("게시글 목록 불러오기 실패:", error);
     }
-};
+  };
 
   const searchBoardList = async (page) => {
     if (keyword.trim() === "") return;
@@ -244,11 +244,12 @@ const BoardList = () => {
         {boardList.map((post) => {
           console.log(post);
           return (
+
             <div key={post.boardNo} className={style.boardItem}>
               <Link to={`/board/detail/${post.boardNo}`} className="link">
                 <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
                 <h3 className="PostTitle">
-                  {post.boardOpen === 0 ? "🔒 " : ""}{post.title} 
+                  {post.boardOpen === 0 ? "🔒 " : ""}{post.title}
                 </h3>
 
                 <div className="PostInfo">
@@ -257,8 +258,14 @@ const BoardList = () => {
                   <span>좋아요 {post.boardLikes}</span>
                   <span>댓글 수 {post.repCnt}</span>
                 </div>
-                <Link to={`/profile/${post.id}`} className="WriterId">{post.id}
-                </Link>
+                <div className="WriterId">
+                  {/* 'anonymous'일 경우 '알 수 없음'으로 표시하고, 그 외의 경우에는 프로필 링크로 */}
+                  {post.id === 'anonymous' ? '알 수 없음' :
+                    <Link to={`/profile/${post.id}`} className={style.writer}>
+                      {post.id}
+                    </Link>}
+                </div>
+
               </Link>
             </div>
           );

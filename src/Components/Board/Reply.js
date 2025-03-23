@@ -3,6 +3,8 @@ import BoardApi from "../../api/BoardApi";
 import MateBoardApi from "../../api/MateBoardApi";
 import ChatApi from "../../api/ChatApi";
 import style from "../../Css/Replay.module.css";
+import { Link } from "react-router-dom";
+import MypageApi from "../../api/MypageApi";
 
 const Reply = ({ boardNo, category }) => {
     const [replies, setReplies] = useState([]);
@@ -86,79 +88,95 @@ const Reply = ({ boardNo, category }) => {
         return roots;
     };
 
-
-    // ✅ 댓글 작성 (기록 게시판 & 메이트 게시판 대응)
-const handleAddReply = async (parentNo = 0) => {
-    const content = replyContent[parentNo] || newReply;
-
-    if (!content.trim()) {
-        alert("🚨 댓글 내용을 입력하세요.");
-        return;
-    }
-
-    if (!token) {
-        alert("🚨 로그인이 필요합니다.");
-        return;
-    }
-
-    // 🔹 현재 게시판의 category 가져오기 (2: 기록 게시판, 3: 메이트 게시판)
-    const replyData = {
-        boardNo: boardNo,
-        repContent: content,
-        parentNo: parentNo,
-        id: loggedInUserId,
+    // 댓글 작성 또는 삭제 후 레벨 업데이트
+    const handleAfterActivity = async () => {
+        try {
+            const token = localStorage.getItem("accessToken");
+            await MypageApi.updateLevel(token);
+            console.log(" 레벨 갱신 성공");
+        } catch (e) {
+            console.error(" 레벨 갱신 실패:", e);
+        }
     };
 
-    try {
-        const res = await api.addReply(replyData, token);
-        if (res.status === 200) {
-            alert("✅ 댓글이 작성되었습니다.");
-            setReplyContent({ ...replyContent, [parentNo]: "" });
-            setNewReply("");
 
-            // ✅ 기록 게시판(2)과 메이트 게시판(3)에 따라 댓글 API 분리
-            let updatedReplies;
-            if (category === 2) {
-                updatedReplies = await BoardApi.getReplies(boardNo);
-            } else {
-                updatedReplies = await MateBoardApi.getReplies(boardNo);
-            }
+    // ✅ 댓글 작성 (기록 게시판 & 메이트 게시판 대응)
+    const handleAddReply = async (parentNo = 0) => {
+        const content = replyContent[parentNo] || newReply;
 
-            setReplies(buildReplyTree(updatedReplies.data || updatedReplies));
+        if (!content.trim()) {
+            alert("🚨 댓글 내용을 입력하세요.");
+            return;
         }
-    } catch (error) {
-        console.error("❌ 댓글 작성 실패:", error);
-    }
-};
+
+        if (!token) {
+            alert("🚨 로그인이 필요합니다.");
+            return;
+        }
+
+        // 🔹 현재 게시판의 category 가져오기 (2: 기록 게시판, 3: 메이트 게시판)
+        const replyData = {
+            boardNo: boardNo,
+            repContent: content,
+            parentNo: parentNo,
+            id: loggedInUserId,
+        };
+
+        try {
+            const res = await api.addReply(replyData, token);
+            if (res.status === 200) {
+                alert("✅ 댓글이 작성되었습니다.");
+                setReplyContent({ ...replyContent, [parentNo]: "" });
+                setNewReply("");
+
+                //레벨 갱신 호출 추가
+                await handleAfterActivity();
+
+                // ✅ 기록 게시판(2)과 메이트 게시판(3)에 따라 댓글 API 분리
+                let updatedReplies;
+                if (category === 2) {
+                    updatedReplies = await BoardApi.getReplies(boardNo);
+                } else {
+                    updatedReplies = await MateBoardApi.getReplies(boardNo);
+                }
+
+                setReplies(buildReplyTree(updatedReplies.data || updatedReplies));
+            }
+        } catch (error) {
+            console.error("❌ 댓글 작성 실패:", error);
+        }
+    };
 
 
     // ✅ 댓글 삭제
-const handleDeleteReply = async (replyNo) => {
-    if (window.confirm("⚠️ 정말 삭제하시겠습니까?")) {
-        try {
-            await api.deleteReply(replyNo, token);
-            alert("✅ 댓글이 삭제되었습니다.");
+    const handleDeleteReply = async (replyNo) => {
+        if (window.confirm("⚠️ 정말 삭제하시겠습니까?")) {
+            try {
+                await api.deleteReply(replyNo, token);
+                alert("✅ 댓글이 삭제되었습니다.");
 
-            // ✅ 삭제 후 목록 갱신 (기록 게시판 & 메이트 게시판 구분)
-            let updatedReplies;
-            if (category === 2) {
-                updatedReplies = await BoardApi.getReplies(boardNo);
-            } else {
-                updatedReplies = await MateBoardApi.getReplies(boardNo);
-            }
+                // 레벨 갱신 추가
+                await handleAfterActivity();
+                // ✅ 삭제 후 목록 갱신 (기록 게시판 & 메이트 게시판 구분)
+                let updatedReplies;
+                if (category === 2) {
+                    updatedReplies = await BoardApi.getReplies(boardNo);
+                } else {
+                    updatedReplies = await MateBoardApi.getReplies(boardNo);
+                }
 
-            setReplies(buildReplyTree(updatedReplies.data || updatedReplies));
-        } catch (error) {
-            console.error("❌ 댓글 삭제 실패:", error);
+                setReplies(buildReplyTree(updatedReplies.data || updatedReplies));
+            } catch (error) {
+                console.error("❌ 댓글 삭제 실패:", error);
 
-            if (error.response && error.response.status === 403) {
-                alert("🚨 삭제 권한이 없습니다.");
-            } else {
-                alert("❌ 댓글 삭제에 실패했습니다.");
+                if (error.response && error.response.status === 403) {
+                    alert("🚨 삭제 권한이 없습니다.");
+                } else {
+                    alert("❌ 댓글 삭제에 실패했습니다.");
+                }
             }
         }
-    }
-};
+    };
 
 
 
@@ -188,7 +206,15 @@ const handleDeleteReply = async (replyNo) => {
         return replies.map(reply => (
             <div key={reply.repNo} className={`${style.replyItem}`} style={{ marginLeft: `${depth * 20}px` }}>
                 <p>
-                    <span className={style.id}>{reply.id}</span>
+                    {reply.id === 'anonymous' ? (
+                        <span className={style.id}>알 수 없음</span>
+                    ) : (
+                        <Link to={`/profile/${reply.id}`} className={style.id}>
+                            {reply.id}
+                        </Link>
+                    )}
+
+
                     <span className={style.date}>{formatDate(reply.repDate)}</span>
                 </p>
                 <span className={style.content}>{reply.repContent}</span>

@@ -9,41 +9,113 @@ const MypageApi = {
         return await axios.post(`${domain}/modify`, formData, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`//인증 토큰
             },
-            withCredentials: true
+            withCredentials: true// 쿠키 전송을 위한 설정
         });
     },
 
-    // 내가 쓴 글 목록 조회
-    getMyPosts: async (userId) => {
+    getUserInfo: async () => {
+        const token = localStorage.getItem('token');
+        return await axios.get(`${domain}/userinfo/me`, {
+          headers: {
+            Authorization: token
+          },
+          withCredentials: true
+        });
+      },
+
+    // 회원 탈퇴
+    deleteAccount: async (keepPosts) => {
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            console.error("토큰이 없습니다. 로그인 후 시도해주세요.");
+            return;
+        }
+
         try {
-            const res = await axios.get(`${domain}/myboard/my-posts/${userId}`);  // ✅ 경로 수정
+            const response = await axios.post(
+                `${domain}/userinfo/delete`,
+                null,
+                {
+                    params: { keepPosts },
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    withCredentials: true
+                }
+            );
+            return response;
+        } catch (error) {
+            console.error("회원 탈퇴 실패:", error);
+            throw error;
+        }
+    },
+
+    // 내가 쓴 글 목록 조회
+    getMyPosts: async (token) => {
+        try {
+            const res = await axios.get(`${domain}/myboard/my-posts`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}}`//인증 토큰
+                }
+            });
             return res.data;
         } catch (error) {
-            console.error("❌ MyBoardApi getMyPosts 에러:", error);
+            console.error(" MyBoardApi getMyPosts 에러:", error);
             return [];
         }
     },
 
     // 내가 쓴 댓글 목록 조회
-    getMyComments: async (userId) => {
+    getMyComments: async (token) => {
         try {
-            const res = await axios.get(`${domain}/myboard/my-comments/${userId}`);
+            const res = await axios.get(`${domain}/myboard/my-comments`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}}`//인증 토큰
+                }
+            });
             return res.data;
         } catch (error) {
-            console.error("❌ MyBoardApi getMyComments 에러:", error);
+            console.error("MyBoardApi getMyComments 에러:", error);
             return [];
         }
     },
 
+    //레벨 등업, 다운에 대한 api
+    updateLevel: async (token) => {
+        try {
+            const response = await axios.post(
+                `${domain}/level/update`,
+                null,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    withCredentials: true
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("레벨 갱신 실패:", error);
+            throw error;
+        }
+    },
+
+
+
 
     // 알림 관련 API
-    //알림 셋팅 
+    //알림 셋팅 업데이트트
     updateAlarmSettings: async (settings) => {
         return await axios.post(`${domain}/alarm/settings/update`, settings, {
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`, // ✅ 토큰 추가
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`, // 토큰 추가
                 "Content-Type": "application/json"
             },
             withCredentials: true
@@ -51,17 +123,17 @@ const MypageApi = {
     },
 
 
-    // 알림 체크박스 
-    getAlarmSettings: async (memberId) => {
-        return await axios.get(`${domain}/alarm/settings/${memberId}`, { // ✅ memberId를 경로에 추가
+    // 알림 설정 조회
+    getAlarmSettings: async (token) => {
+        return await axios.get(`${domain}/alarm/settings`, { //  memberId를 경로에 추가
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                "Authorization": `Bearer ${token}`
             },
             withCredentials: true
         });
     },
-    
-    
+
+    //알림 목록
     getAlarms: async (token) => {
 
         try {
@@ -79,11 +151,11 @@ const MypageApi = {
         }
     },
     markAlarmsAsRead: async (token, no) => {
-    
+
         try {
             const response = await axios.post(
                 "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
-                {no},  
+                { no },
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -103,6 +175,7 @@ const MypageApi = {
             }
         }
     },
+
 
 
 
@@ -141,7 +214,7 @@ const MypageApi = {
         const token = localStorage.getItem("accessToken");
 
         if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
+            console.error(" 토큰이 없습니다! API 요청 중단.");
             return;
         }
 
@@ -151,10 +224,10 @@ const MypageApi = {
                 withCredentials: true
             });
 
-            console.log("✅ 팔로우 성공:", response.data);
+            console.log(" 팔로우 성공:", response.data);
             return response.data;
         } catch (error) {
-            console.error("🚨 팔로우 실패:", error);
+            console.error(" 팔로우 실패:", error);
             throw error;
         }
     },
@@ -165,10 +238,10 @@ const MypageApi = {
             const response = await axios.delete(`${domain}/follow/${followingId}`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
-            console.log("✅ 언팔로우 성공:", response.data);
+            console.log(" 언팔로우 성공:", response.data);
             return response.data;
         } catch (error) {
-            console.error("🚨 언팔로우 실패:", error);
+            console.error(" 언팔로우 실패:", error);
             throw error;
         }
     },
@@ -181,16 +254,16 @@ const MypageApi = {
             });
             return response.data;
         } catch (error) {
-            console.error("🚨 팔로우 여부 확인 실패:", error);
+            console.error(" 팔로우 여부 확인 실패:", error);
             return false; // 기본값 반환
         }
     },
 
-    //내가 팔로우한 사람 가져오기기
+    //내가 팔로우한 사람 가져오기
     getFollowingList: async () => {
         const token = localStorage.getItem("accessToken");
         if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
+            console.error(" 토큰이 없습니다! API 요청 중단.");
             return [];
         }
         try {
@@ -199,19 +272,19 @@ const MypageApi = {
                 withCredentials: true
             });
 
-            console.log("✅ 팔로우우 목록 응답:", response.data);
+            console.log(" 팔로우우 목록 응답:", response.data);
             return response.data;
         } catch (error) {
-            console.error("🚨 팔로우 목록 가져오기 실패:", error);
+            console.error(" 팔로우 목록 가져오기 실패:", error);
             return [];
         }
     },
 
-    //나를 팔로우한 사람 가져오기기
+    //나를 팔로우한 사람 가져오기
     getFollowerList: async () => {
         const token = localStorage.getItem("accessToken");
         if (!token) {
-            console.error("🚨 토큰이 없습니다! API 요청 중단.");
+            console.error(" 토큰이 없습니다! API 요청 중단.");
             return [];
         }
 
@@ -221,7 +294,6 @@ const MypageApi = {
                 withCredentials: true
             });
 
-            console.log("팔로워 목록 응답:", response.data);
             return response.data;
         } catch (error) {
             console.error("🚨 팔로워 목록 가져오기 실패:", error);
@@ -235,16 +307,16 @@ const MypageApi = {
             const response = await axios.get(`${domain}/user/profile/${userId}`);
             return response.data;
         } catch (error) {
-            console.error("🚨 프로필 이미지 가져오기 실패:", error);
+            console.error("프로필 이미지 가져오기 실패:", error);
             return { profileImage: "/default-profile.jpg" }; // 기본 이미지 제공
         }
     },
 
     // 여행자 테스트 결과 저장
     saveTestResult: async (testResult, token) => {
-        return await axios.post(`${domain}/userinfo/updateTestResult`, null,{
-                params: { testResult, token }
-            });
+        return await axios.post(`${domain}/userinfo/updateTestResult`, null, {
+            params: { testResult, token }
+        });
     },
 
    // 여행자 테스트 결과 조회 (수정)
