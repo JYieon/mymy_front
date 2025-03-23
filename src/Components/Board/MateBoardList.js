@@ -23,37 +23,37 @@ const MateBoardList = () => {
     }
   }, [page]);
 
-    const searchBoardList = async () => {
-        if (!keyword.trim()) {
-            alert("검색어를 입력하세요!");
-            return;
-        }
-    
-        // console.log("검색 요청 파라미터 확인:", { searchType, keyword: keyword.trim(), page });
-    
-        try {
-            const boardList = await MateBoardApi.searchMateBoardList(page, 3, searchType, keyword.trim());
-    
-            // console.log("boardList:", boardList);
-    
-            if (!boardList || boardList.length === 0) {
-                // console.warn("검색 결과 없음!");
-                alert("검색 결과가 없습니다.");
-                setBoardList([]);
-            } else {
-                // console.log("boardList:", boardList);
-                setBoardList([...boardList]);  // 배열 복사 후 상태 업데이트
-            }
-    
-            setPage(1);
-            setIsSearching(true);
-        } catch (error) {
-            console.error("❌ 검색 실패:", error);
-            setBoardList([]);
-        }
-    };
-    
-    
+  const searchBoardList = async () => {
+    if (!keyword.trim()) {
+      alert("검색어를 입력하세요!");
+      return;
+    }
+
+    // console.log("검색 요청 파라미터 확인:", { searchType, keyword: keyword.trim(), page });
+
+    try {
+      const boardList = await MateBoardApi.searchMateBoardList(page, 3, searchType, keyword.trim());
+
+      // console.log("boardList:", boardList);
+
+      if (!boardList || boardList.length === 0) {
+        // console.warn("검색 결과 없음!");
+        alert("검색 결과가 없습니다.");
+        setBoardList([]);
+      } else {
+        // console.log("boardList:", boardList);
+        setBoardList([...boardList]);  // 배열 복사 후 상태 업데이트
+      }
+
+      setPage(1);
+      setIsSearching(true);
+    } catch (error) {
+      console.error("❌ 검색 실패:", error);
+      setBoardList([]);
+    }
+  };
+
+
 
   // 페이지 변경 시 목록 불러오기 (검색 중이면 실행 안 함)
   useEffect(() => {
@@ -90,59 +90,56 @@ const MateBoardList = () => {
       </div>
 
       {/* 게시글 목록 테이블 */}
-      <table className={style.boardTable} border="0" width="100%">
-        <thead>
-          <tr className={style.category}>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>댓글</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody className={style.tbody}>
-          {boardList.length > 0 ? (
-            boardList.map((post, index) => (
-              <tr
-               className={style.tr}
-                key={post.boardNo}
-                onClick={() => {
-                  navigate(`/mateboard/detail/${post.boardNo}`);
-                }}
-                
-              >
-                <td>{index + 1}</td>
-                <td>{post.title}</td>
-                <td>{post.id}</td>
-                <td>{post.date ? post.date : "날짜 없음"}</td>
-                <td>{post.repCnt}</td>
-                <td>{post.boardCnt}</td>
-              </tr>
-            ))
-          ) : (
+      <div className={style.boardTableContainer}>
+        <table className={style.boardTable}>
+          <thead className={style.thead}>
+            <th className={style.bmNo}>번호</th>
+            <th className={style.bmTitle}>제목</th>
+            <th className={style.bmWriter}>작성자</th>
+            <th className={style.bmDate}>작성일</th>
+            <th className={style.bmReply}>댓글</th>
+            <th className={style.bmView}>조회수</th>
+          </thead>
+          <tbody className={style.tbody}>
+            {boardList.length > 0 ? (
+              boardList.map((post, index) => (
+                <tr
+                  className={style.bookmarkItem}
+                  key={post.boardNo}
+                  onClick={() => {
+                    navigate(`/mateboard/detail/${post.boardNo}`);
+                  }}>
+                  <td>{index + 1}</td>
+                  <td>{post.title}</td>
+                  <td>{post.id}</td>
+                  <td>{!!post.date ? post.date.substring(0, 13) : "날짜 없음"}</td>
+                  <td>{post.repCnt}</td>
+                  <td>{post.boardCnt}</td>
+                </tr>
+              ))
+            ) : (
               <tr>
-              <td 
-               className={style.tr}
-              colSpan="6">등록된 게시글이 없습니다.</td>
+                <td
+                  colSpan="6">등록된 게시글이 없습니다.</td>
               </tr>
-          )}
-        </tbody>
-      </table>
-
+            )}
+          </tbody>
+        </table>
+      </div>
       {/* 글쓰기 버튼 */}
       <button
         className={style.writePostBtn}
         onClick={() => {
           console.log("글쓰기 버튼 클릭!");
           navigate("/mateboard/write");
-        }}
-      >
+        }}>
         게시글 작성
       </button>
-
       {/* 페이지네이션 */}
-      <div className={style.Paginations}>
+
+
+
+      {/* <div className={style.Paginations}>
         <div className={style.Pagination}>
           <button onClick={() => setPage(page - 1)} disabled={page === 1}>
             &lt; 이전
@@ -150,7 +147,7 @@ const MateBoardList = () => {
           <span> {page} </span>
           <button onClick={() => setPage(page + 1)}>다음 &gt;</button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

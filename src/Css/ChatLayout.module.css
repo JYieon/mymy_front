@@ -21,7 +21,7 @@ hr {
 
 
 .ChatLayoutWrap {
-  /* margin: 20px; */
+  margin: 20px 20px 20px;
   padding: 10px;
 }
 
@@ -57,21 +57,21 @@ hr {
 
 /* 채팅 */
 .GroupChatContiner {
-  /* resize: both; */
+  background-color: aliceblue;
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 600px;
   height:600px;
+  
   * {
     overflow:  hidden;
-    margin: 10px 0;
-  }
+    margin: 10px 0;}
 }
 
 .RoomTitle {
   width: max-content;
-  margin: -50px auto 10px;
+  margin: auto;
   color: #00284c;
   font-weight: 900;
 }
@@ -83,6 +83,7 @@ hr {
   height:600px;
   width: 100%;
   padding: 20px;
+  
 }
 
 .MessageList {
@@ -90,7 +91,6 @@ hr {
   overflow-y: auto; /* ✅ 메시지가 많아지면 스크롤 가능 */
   list-style: none;
   padding-top: 10px;
-  width: auto;
   margin: 0px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -132,5 +132,5 @@ hr {
 
 .ChatListContainer {
   margin: 20px;
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
 }

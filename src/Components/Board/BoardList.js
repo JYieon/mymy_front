@@ -212,45 +212,38 @@ const BoardList = () => {
           여행 메이트 게시글
         </button>
       </div>
-
-      {(category === 1 || category === 2) && (
-        <div className={`${style.searchContainer} Shadow`}>
-          <select
-            value={searchType}
-            className={style.SearchTypeSelector}
-            onChange={(e) => setSearchType(e.target.value)}
-          >
-            <option value="title">제목</option>
-            <option value="content">게시글</option>
-            <option value="titleContent">제목 + 게시글</option>
-            <option value="user">사용자 (ID + 닉네임)</option>
-            {category === 2 && <option value="tag">해시태그</option>}
-          </select>
-          <input
-            type="text"
-            className={style.SearchKeyword}
-            placeholder="검색어 입력"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-
-          <button className={style.SearchBtn} onClick={handleSearch}>
-            검색
-          </button>
-        </div>
-      )}
+      <div className={`${style.searchContainer} Shadow`}>
+        <select
+          value={searchType}
+          className={style.SearchTypeSelector}
+          onChange={(e) => setSearchType(e.target.value)}
+        >
+          <option value="title">제목</option>
+          <option value="content">내용</option>
+          <option value="titleContent">제목+내용</option>
+        </select>
+        <input
+          type="text"
+          className={style.SearchKeyword}
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="검색어를 입력하세요"
+        />
+        <button className={style.SearchBtn} onClick={searchBoardList}>
+          검색
+        </button>
+      </div>
 
       <div className={style.boardGrid}>
         {boardList.map((post) => {
           console.log(post);
           return (
-            <div key={post.boardNo} className={style.boardItem}>
+            <div key={post.boardNo} className={`Shadow ${style.boardItem}`}>
               <Link to={`/board/detail/${post.boardNo}`} className="link">
                 <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
-                <h3 className="PostTitle">
+                <h3 className={style.PostTitle}>
                   {post.boardOpen === 0 ? "🔒 " : ""}{post.title} 
                 </h3>
-
                 <div className="PostInfo">
                   <div>조회수<span className="value">{post.boardCnt}</span></div>
 
@@ -268,6 +261,8 @@ const BoardList = () => {
       <button className={style.writePostBtn} onClick={handleWritePost}>
         게시글 작성
       </button>
+
+      
 
       <div className={style.Paginations}>
         {totalPages > 1 && (
