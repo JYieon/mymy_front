@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
@@ -9,6 +9,7 @@ import ChatApi from "../../api/ChatApi";
 import MypageApi from "../../api/MypageApi";
 import Timeline from "./Timeline";
 import KakaoMap from "./KakaoMap";
+import style from "../../Css/BoardModify.module.css";
 
 const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   // 아래 기능들은 BoardWritePage.js에 있음
@@ -35,25 +36,26 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     if (!token) return;
 
     const fetchUserTestResult = async () => {
-        try {
-            const res = await MypageApi.getTestResult(token);
-            console.log("✅ 서버 응답:", res);
+      try {
+        const res = await MypageApi.getTestResult(token);
+        console.log("✅ 서버 응답:", res);
 
-            if (res) {
-                console.log("✅ 여행자 테스트 결과:", res);
-                setUserResult(res);
-                setHashtags((prev) => [...prev, res]);
-            }
-        } catch (error) {
-            console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
+        if (res) {
+          console.log("✅ 여행자 테스트 결과:", res);
+          setUserResult(res);
+          setHashtags((prev) => [...prev, res]);
         }
+      } catch (error) {
+        console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
+      }
     };
 
     fetchUserTestResult();
-}, [token]);
+  }, [token]);
 
 
   // Summernote 초기화
+
   useEffect(() => {
     if (!token) {
       alert("로그인 이후 이용 부탁드립니다");
@@ -86,16 +88,16 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     formData.append("file", file);
 
     try {
-        const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
+      const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-        if (res.data.fileName) {
-            let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
-            $(editorRef.current).summernote("insertImage", imageUrl);
-        }
+      if (res.data.fileName) {
+        let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
+        $(editorRef.current).summernote("insertImage", imageUrl);
+      }
     } catch (err) {
-        alert("이미지 업로드 실패");
+      alert("이미지 업로드 실패");
     }
   };
 
@@ -103,8 +105,8 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   const addHashtag = (e) => {
     e.preventDefault();
     if (tagInput.trim() && !hashtags.includes(tagInput.trim())) {
-        setHashtags([...hashtags, tagInput.trim()]);
-        setTagInput(""); // 입력 필드 초기화
+      setHashtags([...hashtags, tagInput.trim()]);
+      setTagInput(""); // 입력 필드 초기화
     }
   };
 
@@ -150,7 +152,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
           setTimelineOpen(true);
           setTimeline(
             <Timeline boardNo={res.data.boardNo} />);
-            <KakaoMap boardNo={res.data.boardNo}/>
+          <KakaoMap boardNo={res.data.boardNo} />
 
         } else if (category === 2) {
           alert("게시글이 등록되었습니다!");
@@ -158,32 +160,36 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
         }
       }
     } catch (error) {
-        alert("게시글 등록 실패");
-        console.error("❌ 게시글 작성 오류:", error);
+      alert("게시글 등록 실패");
+      console.error("❌ 게시글 작성 오류:", error);
     }
   };
 
   return (
-    <div>
-      <button>뒤로가기</button>
-      <h2>📄 {category === 1 ? "계획 게시글 작성" : "기록 게시글 작성"}</h2>
+    <div className={style.editorContainer}>
+      <Link to={`../list?category=${category}`} className={`link`}>
+        뒤로가기
+      </Link>
+      <h1>📄 {category === 1 ? "계획 게시글 작성" : "기록 게시글 작성"}</h1>
       <form onSubmit={handleSubmit}>
         {/* 제목 입력 */}
-        <div>
-          <label>제목:</label>
+        <div className={`Shadow ${style.editorContainerItem}`}>
+          <label className={style.titleInput}>제목</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력해주세요."
             required
           />
         </div>
 
         {/* 기록 게시글에만 공개 여부 & 해시태그 추가 */}
         {category === 2 && (
-          <>
+          <div className={`Shadow ${style.editorContainerItem} ${style.category2Option}`}>
+            {/* 공개 여부 */}
             <div>
-              <label>공개 여부:</label>
+              <label>공개 설정</label>
               <select
                 value={boardOpen}
                 onChange={(e) => setBoardOpen(parseInt(e.target.value))}
@@ -192,40 +198,42 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
                 <option value={0}>비공개</option>
               </select>
             </div>
-
-            <div>
-              <label>해시태그:</label>
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-              />
-              <button onClick={addHashtag}>추가</button>
-              {hashtags.map((tag, index) => (
-                <span key={index} onClick={() => removeHashtag(tag)}>
-                  #{tag} ❌
-                </span>
-              ))}
-            </div>
-
             {/* 계획 불러오기 버튼 */}
             <div>
-              <label>계획 불러오기:</label>
-              <select onChange={(e) => setSelectedPlan(e.target.value)}>
+              <label>내 계획</label>
+              <select onChange={(e) => setSelectedPlan(e.target.value)} >
                 <option value="">선택</option>
                 {plans.map((plan) => (
                   <option key={plan.boardNo} value={plan.boardNo}>{plan.title}</option>
                 ))}
               </select>
-              <button type="button" onClick={handleLoadPlan}>불러오기</button>
+              <button type="button" onClick={handleLoadPlan} className="Shadow">불러오기</button>
             </div>
-          </>
+          </div>
         )}
 
         {/* 본문 */}
-        <div>
-          <label>본문:</label>
-          <div ref={editorRef}></div>
+        <div ref={editorRef} className={style.editor} />
+        {/* 해시태그 */}
+        <div className={`${style.editorContainerItem} ${style.hashtagContainer}`}>
+          <div>
+            <label>해시태그</label>
+            <input
+              type="text"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              className={style.hashtagInput}
+              placeholder="태그를 추가해보세요"
+            />
+            <button onClick={addHashtag}>추가</button>
+          </div>
+          <div>
+            {hashtags.map((tag, index) => (
+              <span key={index} onClick={() => removeHashtag(tag)} className={style.hashtag}>
+                #{tag}
+              </span>
+            ))}
+          </div>
         </div>
         {/* 작성 완료 */}
         <button type="submit">작성 완료</button>

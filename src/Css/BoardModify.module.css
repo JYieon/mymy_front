@@ -1,14 +1,108 @@
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 0px auto;
+}
+
+button {
+  border: none;
+  background-color: #00284c;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 100px;
+}
+
+.editorContainerItem {
+  margin-bottom: 20px;
+  background-color: white;
+  display: flex;
+  padding: 5px 0px;
+
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 10px;
+  & * {
+    margin: auto 5px;
+  }
+}
+
+.category2Option {
+  padding: 10px 0px;
+}
+
+.cancleBtn {
+  width: fit-content;
+  background: none;
+  border: none;
+}
+
+input[type="text"] {
+  flex: 1;
+  margin: 0px 10px;
+  border-radius: 100px;
+  border: none;
+  padding: 10px;
+  &:focus {
+    outline: none;
+    background: none;
+  }
+}
+
+select {
+  border: none;
+  border-radius: 10px;
+  padding: 2px;
+  margin: 0 auto;
+  border: 1px solid whitesmoke;
+}
+
+.hashtagInput {
+  background-color: whitesmoke;
+}
+
+.hashtag {
+  font-size: 15px;
+  color: cornflowerblue;
+}
+
+.hashtagContainer {
+  /* background-color: antiquewhite; */
+  flex-direction: column;
+  & > div {
+    margin: auto;
+    margin-left: 10px;
+  }
+}
+
+label {
+  width: max-content;
+  font-size: 18px;
+}
+
+.titleInput {
+  margin-left: 20px;
+}
+
+textarea {
+  resize: none;
+}
+
 .modifyContainer {
-    margin: 20px;
-    display: flex;
+  margin: 20px;
+  display: flex;
 }
 
 .btn {
-    margin: 20px;
-    float: right;
-   background-color: #00284C;
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
+  margin: 20px;
+  float: right;
+  background-color: #00284c;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
 }
