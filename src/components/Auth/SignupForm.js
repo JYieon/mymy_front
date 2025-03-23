@@ -23,7 +23,7 @@ const SignupForm = () => {
 
     const navigate = useNavigate();  
 
-    // 🔹 인증번호 발송 타이머
+    // 인증번호 발송 타이머
     useEffect(() => {
         if (authTime > 0 && buttonText === "인증" && !isAuthTimeOver) {
             const timer = setInterval(() => {
@@ -41,7 +41,7 @@ const SignupForm = () => {
         }
     }, [authTime, buttonText, isAuthTimeOver]);
 
-    // 🔹 비밀번호 실시간 검증 (8자 이상 + 숫자 포함)
+    // 비밀번호 실시간 검증 (8자 이상 + 숫자 포함)
     useEffect(() => {
         if (pwd.length > 0 && pwd.length < 8) {
             setPwdError("비밀번호는 최소 8자 이상이어야 합니다.");
@@ -52,7 +52,7 @@ const SignupForm = () => {
         }
     }, [pwd]);
 
-    // 🔹 비밀번호 확인 검증 (서로 다를 때 오류 메시지 출력)
+    // 비밀번호 확인 검증 (서로 다를 때 오류 메시지 출력)
     useEffect(() => {
         if (pwd2.length > 0 && pwd !== pwd2) {
             setPwdMatchError("비밀번호가 일치하지 않습니다.");
@@ -113,7 +113,7 @@ const SignupForm = () => {
         }
     };
 
-     // 🔹 인증번호 발송 & 재전송
+     // 인증번호 발송 & 재전송
      const handleSendAuthCode = async (buttonStatus) => {
         if (!email) {
             setError("이메일을 입력하세요.");

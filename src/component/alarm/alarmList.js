@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import MypageApi from "../../api/MypageApi"; // ✅ API 호출 파일
-import ChatApi from "../../api/ChatApi"; // ✅ 로그인한 유저 정보 가져오기
+import MypageApi from "../../api/MypageApi"; //  API 호출 파일
+import ChatApi from "../../api/ChatApi"; //  로그인한 유저 정보 가져오기
 import SidebarCom from "../../Components/Sidebar/SidebarCom";
 import { Link } from "react-router-dom";
 
@@ -15,18 +15,18 @@ const AlarmList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const alarmsPerPage = 10; // 한 페이지에 보여줄 알림 개수
 
+    //로그인한 사용자 정보 가져오기
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
+                const res = await ChatApi.getUserInfo(token); //  로그인한 사용자 정보 유지
                 console.log("백엔드에서 가져온 userId:", res.data.id);
-
                 // const userId = res.data.id;
                 // localStorage.setItem("userId", userId); // ✅ `localStorage`에 userId 저장
                 setUserId(res.data.id);
             } catch (error) {
-                console.error("🚨 userId 가져오기 실패:", error);
-                navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+                console.error(" userId 가져오기 실패:", error);
+                navigate("/login"); //  실패하면 로그인 페이지로 이동
             }
         };
 
@@ -77,7 +77,7 @@ const AlarmList = () => {
         // window.location.href = ""
     }
 
-    // 페이지네이션 처리
+    // 페이지네이션 처리(한 페이지를 10개씩 나눠서 보여줌)
     const indexOfLastAlarm = currentPage * alarmsPerPage;
     const indexOfFirstAlarm = indexOfLastAlarm - alarmsPerPage;
     const currentAlarms = alarms.slice(indexOfFirstAlarm, indexOfLastAlarm);

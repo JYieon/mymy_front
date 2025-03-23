@@ -29,8 +29,8 @@
 //     // 설정 저장 요청 (백엔드로 전송)
 //     const saveSettings = () => {
 //         axios.post(`http://localhost:8080/mymy/alarm/settings/update`, {
-//             memberId: userId, // ✅ 백엔드가 기대하는 형식으로 userId 전달
-//             ...settings       // ✅ 상태값 전달
+//             memberId: userId, // 백엔드가 기대하는 형식으로 userId 전달
+//             ...settings       //  상태값 전달
 //         })
 //         .then(() => alert("설정이 저장되었습니다!"))
 //         .catch(error => console.error("설정 저장 실패:", error));

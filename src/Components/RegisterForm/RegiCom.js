@@ -140,7 +140,7 @@ const RegiCom=()=>{
         }
     };
 
-    // 🔹 인증번호 발송 & 재전송
+    // 인증번호 발송 & 재전송
     const handleSendAuthCode = async (buttonStatus) => {
         if (!email) {
             setError("이메일을 입력하세요.");

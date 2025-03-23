@@ -77,10 +77,17 @@ const Detail = () => {
   // 좋아요 토글
   const toggleLike = async () => {
     if (!data) return;
+  // 좋아요 토글
+  const toggleLike = async () => {
+    if (!data) return;
 
     const newLiked = !liked;
     const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
+    const newLiked = !liked;
+    const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
 
+    setLiked(newLiked);
+    setData((prev) => (prev ? { ...prev, boardLikes: newLikes } : prev));
     setLiked(newLiked);
     setData((prev) => (prev ? { ...prev, boardLikes: newLikes } : prev));
 
@@ -108,16 +115,16 @@ const Detail = () => {
     }
   };
 
+  // 북마크 토글
   const toggleBookmark = async () => {
     try {
-      console.log("bookmark token",token)
-        const success = await BoardApi.toggleBookmark(boardNo, token);
-        if (success) {
-            setBookmarked((prev) => !prev);
-        }
+      const success = await BoardApi.toggleBookmark(boardNo, token);
+      if (success) {
+        setBookmarked((prev) => !prev);
+      }
     } catch (error) {
-        console.error("❌ 북마크 토글 실패", error);
-    };
+      console.error("❌ 북마크 토글 실패", error);
+    }
   };
 
   // 게시글 삭제
@@ -235,7 +242,14 @@ const Detail = () => {
           <h1 className={style.title}>{data.title}</h1>
           <div className={style.postInfo}>
             <div>
-              <span className={style.writer}>작성자 | {data.id}</span>
+              <span className={style.writer}>
+                {/* 'anonymous'일 경우 '알 수 없음'으로 표시하고, 그 외의 경우에는 프로필 링크로 */}
+                작성자 | {data.id === 'anonymous' ? '알 수 없음' :
+                  <Link to={`/profile/${data.id}`} className={style.writer}>
+                    {data.id}
+                  </Link>}
+              </span>
+
               <span className={style.date}>{data.date} 작성</span>
             </div>
             <hr />
