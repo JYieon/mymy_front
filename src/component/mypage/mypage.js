@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import MypageApi from "../../api/MypageApi";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
 
@@ -12,6 +12,7 @@ function MyPage({ userData }) {
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
   const [formData, setFormData] = useState(userData || {
     id: "",
+    testResult: "",
     nick: "",
     pwd: "",
     pwdCheck: "",
@@ -136,6 +137,14 @@ function MyPage({ userData }) {
     <div>
       <h1>회원 정보 수정</h1>
       <hr className={style.hr} />
+      {/* 여행자 테스트 결과 표시 */}
+      {formData.testResult && (
+        <div>
+          <p><strong>여행자 유형</strong> {formData.testResult}</p>
+          <Link to="/test">고양이 테스트 다시 하기</Link>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}
         className={style.formContainer}>
         <div className={style.form}>
@@ -143,6 +152,7 @@ function MyPage({ userData }) {
           <input type='text' className={`${style.readOnlyId}`} value={formData.id} readOnly />
           {/* 간격을 맞추기 위한 버튼 (화면상에서 보이지 않음) */}
           <button type="button" readOnly className={style.readonly}>변경</button>
+
 
 
         </div>
