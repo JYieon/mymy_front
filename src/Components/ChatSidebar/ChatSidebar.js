@@ -9,8 +9,8 @@ import ChttingRoom from "../Auth/ChttingRoom";
 import ChatApi from "../../api/ChatApi";
 import "../../Css/Modal.css";
 import AdjustmentListModal from "./AdjustmentListModal"
-import temPic from "../../Assets/temPic.jpg";
 import SidebarCom from "../Sidebar/SidebarCom";
+import BankModal from "./BankModal";
 const ChatSidebarCom = () => {
   const { roomNum } = useParams();
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ const ChatSidebarCom = () => {
   const [chatInfo, setChatInfo] = useState([]);
   const [adList, setAdList] = useState([]);
   const [bankList, setBankList] = useState([]);
+  const [bankServiceList, setBankServiceList] = useState([]);
   
   const token = localStorage.getItem("accessToken");
   const bankCodeList = [
@@ -148,22 +149,22 @@ const ChatSidebarCom = () => {
     getUserInfo();
   }, [token])
 
-  useEffect(() => {    
-    if (!roomNum) return;
-    fetchAdjustmentList(); // 초기 정산 리스트 불러오기
-  }, [roomNum]);
+  // useEffect(() => {    
+  //   if (!roomNum) return;
+  //   fetchAdjustmentList(); // 초기 정산 리스트 불러오기
+  // }, [roomNum]);
 
   const fetchAdjustmentList = async () => {
     try {
         const res = await ChatApi.getAdjustmentList(roomNum);
+        console.log("정산패치", res.data)
         if (res.data !== null) {
             setAdList(res.data);
         }
     } catch (err) {
         console.log(err);
     }
-};
-
+  };
 
   const [TargetAmountOpen, SetTargetAmountOpen] = useState(false);
 
@@ -195,9 +196,20 @@ const VerfiyBeforeAction = (action) => {
   }
 };
 
+
+const fetchBankList = async () => {
+  const resBank = await ChatApi.getBankList(roomNum);
+  const resSer = await ChatApi.getBankServiceList(roomNum);
+  setBankList(resBank.data)
+  setBankServiceList(resSer.data)
+  console.log(bankServiceList)
+}
+
   // 모임 통장 모달 여는 버튼
   const JointAccountOpenBtn = () => {
-    console.log("모임통장")
+    // console.log("모임통장")
+    console.log(filteredOther)
+    fetchBankList();
     setJointAccountOpen(!JointAccountOpen);
   };
 
@@ -209,6 +221,7 @@ const VerfiyBeforeAction = (action) => {
   // 정산 모달 여는 버튼
   const AdjustmentOpenBtn = async () => {
     console.log("정산하기")
+    fetchAdjustmentList();
     setAdjustmentOpen(!AdjustmentOpen);
   };
 
@@ -361,144 +374,24 @@ const VerfiyBeforeAction = (action) => {
             저장된 이름 정보가 실명인지 확인하세요.
           </h3>
         </Modal>
+
         {/* 모임통장 거래 모달 */}
-        <Modal
-          isOpen={JointAccountOpen}
-          ariaHideApp={true}
-          onRequestClose={JointAccountOpenBtn}
-          className={`Shadow modal ${style.JointAccountModal}`}
+        <BankModal
+          JointAccountOpen={JointAccountOpen}
+          JointAccountOpenBtn={JointAccountOpenBtn}
+          TargetAmountOpenBtn={TargetAmountOpenBtn}
+          TargetAmountOpen={TargetAmountOpen}
+          bankList={bankList}
+          isHost={isHost}
+          roomNum={roomNum}
+          fetchBankList={fetchBankList}
+          bankServiceList={bankServiceList}
+          filteredOther={filteredOther}
+          filteredUser={filteredUser}
+          memberNum={memberNum}
         >
-          {/* 계좌번호 */}
-          <div className={style.JointAccountMainArea}>
-            <h3>123-45678-123</h3>
-            {/* 현재 잔고 */}
-            <h1 className={style.Title}>150,000</h1>
-            {/* 이체 버튼 */}
-            <button onClick={inviteChatUser} className={style.ModalBtn}>
-              이체하기
-            </button>
-            {/* 출금 버튼 */}
-            <button onClick={inviteChatUser} className={style.ModalBtn}>
-              출금하기
-            </button>
-          </div>
-          <button onClick={TargetAmountOpenBtn}>목표 금액</button>
-          {/* <button onClick={TargetAmountOpenBtn}>거래 내역</button> */}
-          {/* 이체 내역 및 목표 금액 */}
-          {/* 목표 금액 */}
-          <motion.div
-            className={`${style.TargetAmount} ${style.JointAccountDetailedArea}`}
-            initial={{
-              display: "none",
-            }}
-            animate={{
-              height: TargetAmountOpen ? "auto" : 0,
-              display: TargetAmountOpen ? "block" : "none"
-            }}
-          >
-            <div>
-              {/* 목표 금액 */}
-              <h1 className={style.Goal}>1,000,000</h1>
-              <div>게이지바</div>
-              <ul className={style.UserTargetAmountList}>
-                {/* 방장 */}
-                <li>
-                  <img src={temPic} className={style.MasterUserPic} alt="" />
-                  <div className={style.UserAmountWrap}>
-                    <span>100,000 </span>
-                    <span className={style.UserTargetAmount}>/ 250,000</span>
-                  </div>
-                </li>
-                <hr />
-                {/* 일반 멤버 */}
-                <li>
-                  <img src={temPic} className={style.UserPic} alt="" />
-                  <div className={style.UserAmountWrap}>
-                    <span>250,000 </span>
-                    <span className={style.UserTargetAmount}>/ 250,000</span>
-                  </div>
-                </li>
-                <li>
-                  <img src={temPic} className={style.UserPic} alt="" />
-                  <div className={style.UserAmountWrap}>
-                    <span>0 </span>
-                    <span className={style.UserTargetAmount}>/ 250,000</span>
-                  </div>
-                </li>
-                <li>
-                  <img src={temPic} className={style.UserPic} alt="" />
-                  <div className={style.UserAmountWrap}>
-                    <span>0 </span>
-                    <span className={style.UserTargetAmount}>/ 250,000</span>
-                  </div>
-                </li>
-                <li>
-                  <img src={temPic} className={style.UserPic} alt="" />
-                  <div className={style.UserAmountWrap}>
-                    <span>0 </span>
-                    <span className={style.UserTargetAmount}>/ 250,000</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </motion.div>
-          {/* 이체 내역 */}
-          <motion.div className={`${style.JointAccountDetailedArea}`}
-            initial={{
-              display: "none",
-            }}
-            animate={{
-              height: !TargetAmountOpen ? "auto" : 0,
-              display: !TargetAmountOpen ? "block" : "none"
-            }}
-          >
-            <ul className={style.TransactionHistoryList}>
-              {/* 방장 출금 */}
-              <li>
-                {/* 거래자 정보 */}
-                <div className={style.UserInfo}>
-                  <span>방장</span>
-                  <span className={style.SubInfo}>02/11 11:30</span>
-                </div>
-                {/* 거래 상세 내역 */}
-                <div className={style.UserTransactionHistory}>
-                  <span className={style.Withdrawal}>-200,000</span>
-                  <span className={style.SubInfo}>50,000</span>
-                </div>
-              </li>
-              {/* 김마이 입금*/}
-              <li>
-                {/* 거래자 정보 */}
-                <div className={style.UserInfo}>
-                  {/* 거래자 이름 */}
-                  <span>김마이</span>
-                  {/* 거래 시간 */}
-                  <span className={style.SubInfo}>02/11 9:02</span>
-                </div>
-                {/* 거래 상세 내역 */}
-                <div className={style.UserTransactionHistory}>
-                  <span className={style.Deposit}>-150,000</span>
-                  <span className={style.SubInfo}>250,000</span>
-                </div>
-              </li>
-              {/* 이마희 입금 */}
-              <li>
-                {/* 거래자 정보 */}
-                <div className={style.UserInfo}>
-                  {/* 거래자 이름 */}
-                  <span>이마희</span>
-                  {/* 거래 시간 */}
-                  <span className={style.SubInfo}>02/10 15:22</span>
-                </div>
-                {/* 거래 상세 내역 */}
-                <div className={style.UserTransactionHistory}>
-                  <span className={style.Deposit}>+150,000</span>
-                  <span className={style.SubInfo}>100,000</span>
-                </div>
-              </li>
-            </ul>
-          </motion.div>
-        </Modal>
+
+        </BankModal>        
         {isHost && (
           <button onClick={inviteOpenBtn} className={style.ModalBtn}>
             초대하기
@@ -523,16 +416,33 @@ const VerfiyBeforeAction = (action) => {
         </Modal>
         <hr />
         <ul className={style.GrounpMemList}>
-          {filteredOther.map((user)=>(
-            <li className={style.GrounpMem}>
-            <img src={`/images/${user.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
-            {user.nick}
+          <li className={style.GrounpMem} key={filteredUser?.id}>
+          <img
+            src={`/images/${filteredUser?.profile}.jpg`}
+            style={{
+              width: "30px",
+              borderRadius: "50%",
+              border: filteredUser?.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
+            }}
+            alt={filteredUser?.nick}
+          />
+          {filteredUser?.nick}
+        </li>
+          <hr />
+          {filteredOther.map((user) => (
+            <li className={style.GrounpMem} key={user.id}>
+              <img
+                src={`/images/${user.profile}.jpg`}
+                style={{
+                  width: "30px",
+                  borderRadius: "50%",
+                  border: user.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
+                }}
+                alt={user.nick}
+              />
+              {user.nick}
             </li>
           ))}
-
-          {/* <li className={style.GrounpMem}>바보</li>
-          <li className={style.GrounpMem}>바보</li>
-          <li className={style.GrounpMem}>바보</li> */}
         </ul>
         <button onClick={endChat}>채팅방 나가기</button>
       </motion.div>

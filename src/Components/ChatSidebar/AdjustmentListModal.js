@@ -14,9 +14,13 @@ const AdjustmentListModal = ({isOpen, onRequestClose, adList, sendAdjustment, ad
     const [adService, setAdService] = useState([]);
 
 
-    // console.log(adList)
+    console.log("정산하기", adList)
 
     const handleAddAdjustment = async () => {
+        if(!amount && !toMember){
+            alert("모든 사항을 입력해주세요");
+            return;
+        }
         await addAdjustment(amount, toMember)
         await fetchAdjustmentList(); // 정산 리스트 다시 불러오기
         setAddModalOpen(false)
@@ -79,7 +83,7 @@ const AdjustmentListModal = ({isOpen, onRequestClose, adList, sendAdjustment, ad
 
                 {isHost && <button 
                 className={style.ModalBtn}
-                onClick={() => setAddModalOpen(true)}    
+                onClick={() => setAddModalOpen(true)}
             >
             정산 추가
             </button>}

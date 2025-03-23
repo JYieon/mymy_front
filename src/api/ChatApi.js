@@ -105,6 +105,46 @@ const ChatApi =  {
                 settleNum: adNum
             }
         })
+    },
+
+    getBankList : async (roomNum) => {
+        return await axios.get(domain + "/bank/check", {
+            params: {
+                roomNum: roomNum
+            }
+        })
+    },
+
+    makeBank : async (roomNum, bankName, targetMoney) => {
+        return await axios.post(domain + "/bank/make", null, {
+            params: {
+                roomNum: roomNum,
+                bankName: bankName,
+                target: targetMoney
+            }
+        })
+    },
+
+    getBankServiceList : async (roomNum) => {
+        return await axios.get(domain + "/bank/service/info", {
+            params: {
+                roomNum: roomNum
+            }
+        })
+    },
+
+    updateBank : async (token, roomNum, type, money) => {
+        return await axios.post(domain + "/bank/service", null,  {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            params: {
+                roomNum: roomNum,
+                type: type,
+                money: money
+            }
+        })
     }
 }
 
