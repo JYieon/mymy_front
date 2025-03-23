@@ -35,13 +35,13 @@
   flex: 1;
   height: 730px;
   /* background-color: tomato; */
-
 }
 
 /* 게시글 */
 .boardItem {
   background-color: white;
   height: 350px;
+  min-width: 30%;
   border-radius: 10px;
   text-align: center;
   display: flex;
@@ -62,14 +62,16 @@
 
 /* 게시글 제목 */
 .PostTitle {
-  margin-bottom: 20px;
-  white-space : nowrap;
+  /* background-color: aqua; */
+
+  margin: 20px 10px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .PostInfo {
@@ -157,30 +159,28 @@
   }
 }
 
-
 hr {
   width: 100%;
 }
 
-
 table {
   margin: 0 20px;
   border-spacing: 0px 5px;
-
 }
 th {
   height: 30px;
-	border-bottom: 1px black solid;
+  border-bottom: 1px black solid;
   width: 10%;
 }
 
-td, td {
+td,
+td {
   text-align: center;
   font-size: 12px;
   padding: 5px 0px;
-	border-bottom: 1px black solid;
-  border-collapse:collapse;
-  white-space : nowrap;
+  border-bottom: 1px black solid;
+  border-collapse: collapse;
+  white-space: nowrap;
 }
 
 .bmTitle {

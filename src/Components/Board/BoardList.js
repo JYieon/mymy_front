@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import style from "../../Css/BoardList.module.css";
-import { toBeChecked } from "@testing-library/jest-dom/matchers";
+// import { toBeChecked } from "@testing-library/jest-dom/matchers";
 
 
 // 썸네일이 보이는 게시판
