@@ -20,16 +20,33 @@ const HeaderCom = ({ headerDisplay }) => {
     const isAuthenticated = !!token;//로그인 여부 확인
     const { hasUnread, setHasUnread } = useWebSocketContext();
     const [userId, setUserId] = useState("unknownUser");
-    const [userNick, setUserNick] = useState("알 수 없는 사용자");
-    const [userLevel, setUserLevel] = useState("생각 하는 냥이");
+    const [userNick, setUserNick] = useState("");
+    const [userLevel, setUserLevel] = useState("");
     console.log("header", hasUnread)
+
+    const getLevelName = (level) => {
+        switch (parseInt(level)) {
+            case 1:
+                return "생각하는 냥이";
+            case 2:
+                return "호기심 많은 냥이";
+            case 3:
+                return "활동적인 냥이";
+            case 4:
+                return "전설적인 냥이";
+            default: 
+                return "생각하는 냥이"; 
+        }
+    };
 
     useEffect(() => {
         const getUserInfo = async (token) => {
             try {
                 const res = await ChatApi.getUserInfo(token);
+                console.log("ddd",res.data);
                 setUserId(res.data.id);
                 setUserNick(res.data.nick);
+                setUserLevel(getLevelName(res.data.level))
                   const resAlram = await MypageApi.getAlarms(token);
                   console.log("🔹 받아온 알람 데이터:", resAlram.data);
                   setNotifications(resAlram.data);
@@ -41,7 +58,7 @@ const HeaderCom = ({ headerDisplay }) => {
                     return;
                 }
               })
-        
+    
              
                         // .then(response => {
                         //     console.log("🔹 받아온 알람 데이터:", response.data);
@@ -65,21 +82,21 @@ const HeaderCom = ({ headerDisplay }) => {
         if (localStorage.getItem("accessToken")) {
             console.log("로그인 사용자")
             getUserInfo(localStorage.getItem("accessToken"));
-            // if (userId) {
-            //     MypageApi.getAlarms(token)
-            //         .then(response => {
-            //             console.log("🔹 받아온 알람 데이터:", response.data);
+            if (userId) {
+                MypageApi.getAlarms(token)
+                    .then(response => {
+                        console.log("🔹 받아온 알람 데이터:", response.data);
 
-            //             // ✅ null 값 제거 및 기본값 설정
-            //             const validNotifications = (response.data || []).filter(alarm => alarm !== null);
+                        // ✅ null 값 제거 및 기본값 설정
+                        const validNotifications = (response.data || []).filter(alarm => alarm !== null);
 
-            //             setNotifications(validNotifications);
+                        setNotifications(validNotifications);
 
-            //             // ✅ 오류 방지를 위해 every() 또는 some() 사용 시 기본값 처리
-            //             setHasUnread(validNotifications.length > 0 && validNotifications.some(alarm => alarm?.read === false));
-            //         })
-            //         .catch(error => console.error("🚨 알림 가져오기 실패:", error));
-            // }
+                        // ✅ 오류 방지를 위해 every() 또는 some() 사용 시 기본값 처리
+                        setHasUnread(validNotifications.length > 0 && validNotifications.some(alarm => alarm?.read === false));
+                    })
+                    .catch(error => console.error("🚨 알림 가져오기 실패:", error));
+            }
         }
     }, []);
 
@@ -193,7 +210,7 @@ const HeaderCom = ({ headerDisplay }) => {
                                 </>) :
                                 //로그아웃 상태일 시 보여지는 헤더
                                 (<div className={style.userInfo}>
-                                    아직 회원이 아니십니다!
+                                    비회원 상태입니다.
                                     <li className={style.headerMenu} id="로그인">
                                         <Link to={`/account/login`} className={`link ${style.loginBtn}`}>로그인</Link>
                                     </li>
