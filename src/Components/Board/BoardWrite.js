@@ -215,7 +215,8 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
         {/* 본문 */}
         <div ref={editorRef} className={style.editor} />
         {/* 해시태그 */}
-        <div className={`${style.editorContainerItem} ${style.hashtagContainer}`}>
+        { category === 2 && (
+          <div className={`${style.editorContainerItem} ${style.hashtagContainer}`}>
           <div>
             <label>해시태그</label>
             <input
@@ -235,8 +236,10 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
             ))}
           </div>
         </div>
+        )}
+
         {/* 작성 완료 */}
-        <button type="submit">작성 완료</button>
+        <button type="submit" className={style.writeSavebutton}>작성 완료</button>
       </form>
     </div>
   );

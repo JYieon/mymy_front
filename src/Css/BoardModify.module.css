@@ -3,10 +3,17 @@
   flex-direction: column;
 }
 
+
 form {
   display: flex;
   flex-direction: column;
   margin: 0px auto;
+}
+
+.writeSavebutton{
+
+  margin: 20px;
+
 }
 
 button {
