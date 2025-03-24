@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import style from "../../Css/BoardList.module.css";
 
@@ -7,7 +7,6 @@ import style from "../../Css/BoardList.module.css";
 const MyPost = () => {
     const [posts, setPosts] = useState([]);//내가 쓴 글 목록 저장 
     const token = localStorage.getItem("accessToken");
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPosts = async () => {

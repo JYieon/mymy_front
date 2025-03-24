@@ -11,13 +11,6 @@ import Timeline from "./Timeline";
 import KakaoMap from "./KakaoMap";
 import style from "../../Css/BoardModify.module.css";
 
-// import ChatApi from "../../api/ChatApi";
-// import SummernoteLite from "react-summernote-lite";
-
-import MypageApi from "../../api/MypageApi";
-import Timeline from "./Timeline";
-import KakaoMap from "./KakaoMap";
-import style from "../../Css/BoardModify.module.css";
 
 const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   // 아래 기능들은 BoardWritePage.js에 있음
@@ -170,6 +163,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
       if (res.status === 200) {
         setBoardNo(res.data.boardNo);
         console.log("✅ 반환된 boardNo:", res.data.boardNo);
+
         // 레벨 갱신 호출 추가
         await handleAfterActivity();
         
