@@ -23,12 +23,10 @@ const MyPost = () => {
 
         fetchPosts();
     }, [token]);
-
-
-
     return (
         <div className={style.mypostContainer}>
             <h1>📄내가 쓴 글</h1>
+            
             <table className="mypost-table">
                 <thead>
                     <tr>
@@ -49,13 +47,11 @@ const MyPost = () => {
                             <td>{post.boardLikes}</td>
                         </tr>
                     ))}
+                    {posts.length === 0 && (
+                        <tr><td colSpan="5">등록된 게시글이 없습니다.</td></tr>
+                    )}
                 </tbody>
             </table>
-            {posts.length === 0 && (
-                <tr><td colSpan="5">등록된 게시글이 없습니다.</td></tr>
-            )}
-
-
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
 import MypageApi from "../../api/MypageApi";
-import { useParams } from "react-router-dom";
+// import axios from "axios";
+// import { useParams } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
 import Modal from "react-modal";
@@ -140,27 +140,27 @@ function MyPage({ userData }) {
   return (
     <div>
       <h1>회원 정보 수정</h1>
-      <hr className={style.hr} />
+      <hr className="hr"/>
       <form onSubmit={handleSubmit}
         className={style.grid} id='userInfoModifyForm'>
 
 
         <div className={style.gridItem}>
           <label className={style.label}>아이디</label>
-          <input type='text' className={`${style.readOnlyId}`} value={formData.id} readOnly />
+          <input type='text' className={`${style.input} ${style.readOnlyId}`} value={formData.id} readOnly />
 
           <button type="button" readOnly className={style.readonly}>변경</button>
         </div>
 
         <div className={style.gridItem}>
           <label className={style.label}>닉네임</label>
-          <input className={`Shadow`} type="text" name="nick" value={formData.nick} onChange={handleChange} />
+          <input className={`Shadow ${style.input}`} type="text" name="nick" value={formData.nick} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("nick")} className={style.modifybutton}>변경</button>
         </div>
 
         <div className={style.gridItem}>
           <label className={style.label}>비밀번호</label>
-          <input className={`Shadow`} type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
+          <input className={`Shadow ${style.input}`} type="password" name="pwd" value={formData.pwd} onChange={handleChange} />
           <button type="button" readOnly className={style.readonly}>변경</button>
 
 
@@ -168,7 +168,7 @@ function MyPage({ userData }) {
 
         <div className={style.gridItem}>
           <label className={style.label}>비밀번호 확인</label>
-          <input className={`Shadow`} type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
+          <input className={`Shadow ${style.input}`} type="password" name="pwdCheck" value={formData.pwdCheck} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("pwd")} className={style.modifybutton}>변경</button>
         </div>
         {/* 비밀번호 오류 메시지 표시 */}
@@ -176,13 +176,13 @@ function MyPage({ userData }) {
 
         <div className={style.gridItem}>
           <label className={style.label}>이메일</label>
-          <input className={`Shadow`} type="email" name="email" value={formData.email} onChange={handleChange} />
+          <input className={`Shadow ${style.input}`} type="email" name="email" value={formData.email} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("email")} className={style.modifybutton} >변경</button>
         </div>
 
         <div className={style.gridItem}>
           <label className={style.label}>전화번호</label>
-          <input className={`Shadow`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
+          <input className={`Shadow ${style.input}`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("phone")} className={style.modifybutton}>변경</button>
         </div>
       </form>
@@ -194,10 +194,6 @@ function MyPage({ userData }) {
 
 
       <div>
-
-        <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
-          회원 탈퇴</button>
-
         <Modal
           isOpen={openDeleteModal}
           ariaHideApp={true}
@@ -219,7 +215,8 @@ function MyPage({ userData }) {
         </Modal>
       </div>
 
-
+      <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
+      회원 탈퇴</button>
     </div>
   );
 }
