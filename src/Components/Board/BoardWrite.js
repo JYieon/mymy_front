@@ -177,6 +177,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
           <label className={style.titleInput}>제목</label>
           <input
             type="text"
+            className={style.input}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="제목을 입력해주세요."
@@ -223,7 +224,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              className={style.hashtagInput}
+              className={`${style.hashtagInput} ${style.input}`}
               placeholder="태그를 추가해보세요"
             />
             <button onClick={addHashtag}>추가</button>
