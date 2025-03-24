@@ -15,15 +15,12 @@ const MypageApi = {
         });
     },
 
-    getUserInfo: async () => {
-        const token = localStorage.getItem('token');
-        return await axios.get(`${domain}/userinfo/me`, {
-          headers: {
-            Authorization: token
-          },
-          withCredentials: true
+    getUserInfo: async (token) => {
+        const res = await axios.get("/userinfo/me", {
+            headers: { Authorization: `Bearer ${token}` },
         });
-      },
+        return res.data;
+    },
 
     // 회원 탈퇴
     deleteAccount: async (keepPosts) => {
@@ -84,6 +81,11 @@ const MypageApi = {
             console.error("MyBoardApi getMyComments 에러:", error);
             return [];
         }
+    },
+    //유저의 글
+    getUserPosts: async (userId) => {
+        const res = await axios.get(`${domain}/myboard/${userId}`);
+        return res.data;
     },
 
     //레벨 등업, 다운에 대한 api

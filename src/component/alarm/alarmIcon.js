@@ -43,7 +43,7 @@ const AlarmIcon = ({hasUnread}) => {
         // MypageApi.markAlarmsAsRead(token).then(() => setUnreadCount(0));
 
         // setShowDropdown(!showDropdown);
-        navigate(`/mypage/alarm/list/`);
+        navigate(`/mypage/alarm/list`);
     };
 
     return (
