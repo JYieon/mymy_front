@@ -25,6 +25,7 @@ button {
 }
 
 .editorContainerItem {
+  width: 700px;
   margin-bottom: 20px;
   background-color: white;
   display: flex;
@@ -48,12 +49,13 @@ button {
   border: none;
 }
 
-input[type="text"] {
+.input{
   flex: 1;
   margin: 0px 10px;
   border-radius: 100px;
   border: none;
   padding: 10px;
+
   &:focus {
     outline: none;
     background: none;
@@ -79,6 +81,7 @@ select {
 
 .hashtagContainer {
   /* background-color: antiquewhite; */
+  
   flex-direction: column;
   & > div {
     margin: auto;
@@ -95,8 +98,11 @@ label {
   margin-left: 20px;
 }
 
-textarea {
-  resize: none;
+.textarea {
+  border-radius: 10px;
+  padding: 20px;
+  resize: vertical;
+  height: 400px;
 }
 
 .modifyContainer {
