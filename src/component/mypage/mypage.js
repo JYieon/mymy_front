@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import MypageApi from "../../api/MypageApi";
 // import axios from "axios";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
 import Modal from "react-modal";
 
 
 //회원 정보 수정
-function MyPage({ userData }) {
+const MyPage=({ userData })=> {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const token = localStorage.getItem("accessToken")//사용자 토큰
 
@@ -21,7 +21,7 @@ function MyPage({ userData }) {
     pwdCheck: "",
     phone: "",
     email: "",
-  });
+  }); 
 
   const [error, setError] = useState("");
   const [keepPosts, setKeepPosts] = useState(true); // 기본값은 게시글을 남기고 탈퇴
@@ -32,7 +32,7 @@ function MyPage({ userData }) {
     const fetchUserInfo = async () => {
       try {
         const res = await ChatApi.getUserInfo(token);//api 요청
-        // console.log(res.data);
+        console.log("userInfo",res.data);
         // 기존 formData의 기본값을 유지하면서 데이터 업데이트
         console.log("유저 정보 확인!!!!!!!!:", res.data);
         setFormData(prevState => ({
@@ -45,7 +45,6 @@ function MyPage({ userData }) {
     };
 
     fetchUserInfo();
-  }, [token]);
   }, [token]);
 
 
@@ -107,7 +106,7 @@ function MyPage({ userData }) {
     } catch (err) {
       alert("수정에 실패했습니다. 다시 시도해주세요.");
     }
-  };
+  }; }
 
   //특정 필드만 업데이트하는 함수
   const handleUpdateField = async (field) => {
@@ -149,7 +148,7 @@ function MyPage({ userData }) {
       setDeleteError("탈퇴 처리 중 오류가 발생했습니다.");
     }
   };
-
+ 
   return (
     <div>
       <h1>회원 정보 수정</h1>
@@ -202,13 +201,12 @@ function MyPage({ userData }) {
               {/* 여행자 테스트 결과 표시 */}
       {formData.testResult && (
         <div>
-          <p><strong>여행자 유형</strong> {formData.testResult}</p>
+          <label className={style.label}>여행자 유형</label>
+          <input type='text' className={`${style.input} ${style.readOnlyId}`} value={formData.testResult} readOnly />
+          <button type="button" readOnly className={style.readonly}>변경</button>
           <Link to="/test">고양이 테스트 다시 하기</Link>
         </div>
-      //   <div> 회원가입하고 수정하기
-      //   <p><strong>여행자 유형</strong> {formData.testResult || "none"}</p>
-      //   <Link to="/test">고양이 테스트 다시 하기</Link>
-      // </div>
+
       )}
 
       </form>
@@ -240,5 +238,6 @@ function MyPage({ userData }) {
     </div>
   );
 }
+
 
 export default MyPage;
