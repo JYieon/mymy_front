@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import style from "../../Css/Alarm.module.css";
 // import { useParams } from "react-router-dom";
+// import axios from "axios";
 import MypageApi from "../../api/MypageApi";
 
 //알림 설정정
@@ -46,15 +46,15 @@ const AlarmSettings = () => {
         }));
     };
     //로딩 중 메세지지
-    if (!settings) return <p className={style.context}>알림 설정을 불러오는 중</p>;
+    if (!settings) return <p>알림 설정을 불러오는 중</p>;
 
     //에러 발생 시 메세지지
-    if (error) return <p className={style.context}>에러 발생 {error}</p>;
+    if (error) return <p>에러 발생 {error}</p>;
 
     return (
         <div className={style.alarmConatiner}>
             <h1>🔔 알림 설정</h1>
-            <hr className="hr"/>
+            <hr className=""/>
             {/* 게시글 알림 설정 */}
             <div className={style.settingContainer}>
             <div className={style.setting}>
@@ -63,7 +63,7 @@ const AlarmSettings = () => {
                     <input type="checkbox" checked={settings.postAlarm} onChange={() => toggleSetting("postAlarm")} />
                     <span className="slider round"></span>
                 </label>
-                <p className={style.context}>내가 팔로우하는 사람의 게시글이 올라오면 받는 알림을 끌 수 있어요.</p>
+                <p>내가 팔로우하는 사람의 게시글이 올라오면 받는 알림을 끌 수 있어요.</p>
             </div>
             {/* 댓글 알림 설정 */}
             <div className={style.setting}>
@@ -72,7 +72,7 @@ const AlarmSettings = () => {
                     <input type="checkbox" checked={settings.commentAlarm} onChange={() => toggleSetting("commentAlarm")} />
                     <span className="slider round"></span>
                 </label>
-                <p className={style.context}>내가 쓴 댓글에 달리는 모든 댓글 알림을 끌 수 있어요.</p>
+                <p>내가 쓴 댓글에 달리는 모든 댓글 알림을 끌 수 있어요.</p>
             </div>
             {/* 채팅 알림 설정 */}
             <div className={style.setting}>
@@ -81,7 +81,7 @@ const AlarmSettings = () => {
                     <input type="checkbox" checked={settings.chatAlarm} onChange={() => toggleSetting("chatAlarm")} />
                     <span className="slider round"></span>
                 </label>
-                <p className={style.context}>내가 속해있는 모든 채팅방의 알림을 끌 수 있어요.</p>
+                <p>내가 속해있는 모든 채팅방의 알림을 끌 수 있어요.</p>
             </div>
             {/* 팔로우 알림 설정 */}
             <div className={style.setting}>
@@ -90,7 +90,7 @@ const AlarmSettings = () => {
                     <input type="checkbox" checked={settings.followAlarm} onChange={() => toggleSetting("followAlarm")} />
                     <span className="slider round"></span>
                 </label>
-                <p className={style.context}>누군가 나를 팔로우할 때 받는 알림을 끌 수 있어요.</p>
+                <p>누군가 나를 팔로우할 때 받는 알림을 끌 수 있어요.</p>
             </div>
             </div>
             
