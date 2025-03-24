@@ -15,6 +15,16 @@ const MypageApi = {
         });
     },
 
+    getUserInfo: async () => {
+        const token = localStorage.getItem('token');
+        return await axios.get(`${domain}/userinfo/me`, {
+          headers: {
+            Authorization: token
+          },
+          withCredentials: true
+        });
+      },
+
     // 회원 탈퇴
     deleteAccount: async (keepPosts) => {
         const token = localStorage.getItem('accessToken');
@@ -27,7 +37,7 @@ const MypageApi = {
         try {
             const response = await axios.post(
                 `${domain}/userinfo/delete`,
-                null, 
+                null,
                 {
                     params: { keepPosts },
                     headers: {
@@ -52,7 +62,7 @@ const MypageApi = {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}}`//인증 토큰
                 }
-            });  
+            });
             return res.data;
         } catch (error) {
             console.error(" MyBoardApi getMyPosts 에러:", error);
@@ -75,7 +85,29 @@ const MypageApi = {
             return [];
         }
     },
-    
+
+    //레벨 등업, 다운에 대한 api
+    updateLevel: async (token) => {
+        try {
+            const response = await axios.post(
+                `${domain}/level/update`,
+                null,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    withCredentials: true
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("레벨 갱신 실패:", error);
+            throw error;
+        }
+    },
+
+
 
 
     // 알림 관련 API
@@ -119,11 +151,11 @@ const MypageApi = {
         }
     },
     markAlarmsAsRead: async (token, no) => {
-    
+
         try {
             const response = await axios.post(
                 "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
-                {no},  
+                { no },
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -283,9 +315,9 @@ const MypageApi = {
 
     // 여행자 테스트 결과 저장
     saveTestResult: async (testResult, token) => {
-        return await axios.post(`${domain}/userinfo/updateTestResult`, null,{
-                params: { testResult, token }
-            });
+        return await axios.post(`${domain}/userinfo/updateTestResult`, null, {
+            params: { testResult, token }
+        });
     },
 
    // 여행자 테스트 결과 조회 (수정)

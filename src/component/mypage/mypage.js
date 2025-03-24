@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MypageApi from "../../api/MypageApi";
 // import axios from "axios";
-// import { useParams } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ChatApi from '../../api/ChatApi';
 import style from "../../Css/MyPage.module.css";
 import Modal from "react-modal";
@@ -15,6 +15,7 @@ function MyPage({ userData }) {
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
   const [formData, setFormData] = useState(userData || {
     id: "",
+    testResult: "",
     nick: "",
     pwd: "",
     pwdCheck: "",
@@ -33,6 +34,7 @@ function MyPage({ userData }) {
         const res = await ChatApi.getUserInfo(token);//api 요청
         // console.log(res.data);
         // 기존 formData의 기본값을 유지하면서 데이터 업데이트
+        console.log("유저 정보 확인!!!!!!!!:", res.data);
         setFormData(prevState => ({
           ...prevState,
           ...res.data //기존값 유지하면서 새로운 값 추가
@@ -44,7 +46,17 @@ function MyPage({ userData }) {
 
     fetchUserInfo();
   }, [token]);
+  }, [token]);
 
+
+  // axios.get("http://localhost:8080/mymy/userinfo/me", { })
+  //   .then(response => {
+  //     console.log("로그인된 사용자:", response.data);
+  //     setFormData(response.data); //로그인된 사용자 정보로 상태 업데이트
+  //   })
+  //   .catch(error => {
+  //     console.error("로그인 정보 가져오기 실패:", error);
+  //   });
 
   // axios.get("http://localhost:8080/mymy/userinfo/me", { })
   //   .then(response => {
@@ -81,6 +93,7 @@ function MyPage({ userData }) {
     setError("");
 
     // 필수 입력 필드 검사
+    if (!formData.nick || !formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
     if (!formData.nick || !formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
       setError("모든 필드를 입력해야 합니다.");
       return;
@@ -141,6 +154,7 @@ function MyPage({ userData }) {
     <div>
       <h1>회원 정보 수정</h1>
       <hr className="hr" />
+
       <form onSubmit={handleSubmit}
         className={style.grid} id='userInfoModifyForm'>
 
@@ -185,6 +199,18 @@ function MyPage({ userData }) {
           <input className={`Shadow ${style.input}`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("phone")} className={style.modifybutton}>변경</button>
         </div>
+              {/* 여행자 테스트 결과 표시 */}
+      {formData.testResult && (
+        <div>
+          <p><strong>여행자 유형</strong> {formData.testResult}</p>
+          <Link to="/test">고양이 테스트 다시 하기</Link>
+        </div>
+      //   <div> 회원가입하고 수정하기
+      //   <p><strong>여행자 유형</strong> {formData.testResult || "none"}</p>
+      //   <Link to="/test">고양이 테스트 다시 하기</Link>
+      // </div>
+      )}
+
       </form>
     <div className={style.btnContainer}>
     <button className={style.submitBtn} type="submit" form='userInfoModifyForm'>저장</button>

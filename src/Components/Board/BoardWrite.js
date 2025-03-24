@@ -3,9 +3,17 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
-import SummernoteLite from "react-summernote-lite";
+import SummernoteLite from "react-summernote-lite"; 
 import "react-summernote-lite/dist/summernote-lite.min.css";
 import ChatApi from "../../api/ChatApi";
+import MypageApi from "../../api/MypageApi";
+import Timeline from "./Timeline";
+import KakaoMap from "./KakaoMap";
+import style from "../../Css/BoardModify.module.css";
+
+// import ChatApi from "../../api/ChatApi";
+// import SummernoteLite from "react-summernote-lite";
+
 import MypageApi from "../../api/MypageApi";
 import Timeline from "./Timeline";
 import KakaoMap from "./KakaoMap";
@@ -57,9 +65,9 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   // Summernote 초기화
 
   useEffect(() => {
-    if (!token) {
-      alert("로그인 이후 이용 부탁드립니다");
-      window.location.href = "/";
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 이후 이용 부탁드립니다")
+      window.location.href = "/"
     } else {
       if (!window.$ || !window.jQuery) {
         window.$ = window.jQuery = $;
@@ -115,6 +123,17 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     setHashtags(hashtags.filter((tag) => tag !== tagToRemove));
   };
 
+  //레벨 업데이트
+  const handleAfterActivity = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      await MypageApi.updateLevel(token);
+      console.log("레벨 갱신 성공");
+    } catch (e) {
+      console.error(" 레벨 갱신 실패:", e);
+    }
+  };
+
   // 계획 불러오기
   const handleLoadPlan = () => {
     if (selectedPlan) {
@@ -129,8 +148,11 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     e.preventDefault();
     const content = $(editorRef.current).summernote("code");
     const postData = { title, boardCategory: category, content };
+
     if (category === 2) postData.boardOpen = boardOpen;
     if (category === 2) postData.hashtags = hashtags;
+
+    console.log("전송할 데이터:", postData);
     try {
       const token = localStorage.getItem("accessToken");
 
@@ -144,9 +166,13 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
       const res = await BoardApi.writeSave(postData, token);
       console.log("📩 서버 응답 데이터:", res.data);
 
+
       if (res.status === 200) {
         setBoardNo(res.data.boardNo);
         console.log("✅ 반환된 boardNo:", res.data.boardNo);
+        // 레벨 갱신 호출 추가
+        await handleAfterActivity();
+        
         if (category === 1) {
           // 계획 게시글 → 타임라인 페이지로 이동
           setTimelineOpen(true);

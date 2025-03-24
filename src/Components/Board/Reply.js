@@ -4,6 +4,7 @@ import MateBoardApi from "../../api/MateBoardApi";
 import ChatApi from "../../api/ChatApi";
 import style from "../../Css/Replay.module.css";
 import { Link } from "react-router-dom";
+import MypageApi from "../../api/MypageApi";
 
 const Reply = ({ boardNo, category }) => {
     const [replies, setReplies] = useState([]);
@@ -89,6 +90,17 @@ const Reply = ({ boardNo, category }) => {
         return roots;
     };
 
+    // 댓글 작성 또는 삭제 후 레벨 업데이트
+    const handleAfterActivity = async () => {
+        try {
+            const token = localStorage.getItem("accessToken");
+            await MypageApi.updateLevel(token);
+            console.log(" 레벨 갱신 성공");
+        } catch (e) {
+            console.error(" 레벨 갱신 실패:", e);
+        }
+    };
+
 
     // ✅ 댓글 작성 (기록 게시판 & 메이트 게시판 대응)
     const handleAddReply = async (parentNo = 0) => {
@@ -119,6 +131,9 @@ const Reply = ({ boardNo, category }) => {
                 setReplyContent({ ...replyContent, [parentNo]: "" });
                 setNewReply("");
 
+                //레벨 갱신 호출 추가
+                await handleAfterActivity();
+
                 // ✅ 기록 게시판(2)과 메이트 게시판(3)에 따라 댓글 API 분리
                 let updatedReplies;
                 if (category === 2) {
@@ -142,6 +157,8 @@ const Reply = ({ boardNo, category }) => {
                 await api.deleteReply(replyNo, token);
                 alert("✅ 댓글이 삭제되었습니다.");
 
+                // 레벨 갱신 추가
+                await handleAfterActivity();
                 // ✅ 삭제 후 목록 갱신 (기록 게시판 & 메이트 게시판 구분)
                 let updatedReplies;
                 if (category === 2) {
