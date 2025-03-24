@@ -70,7 +70,7 @@ const ReadingOnlyKakaoMap = ({boardNo}) => {
     
 
     return (
-        <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div>
             <h2>📌 게시판 {boardNo}의 지도</h2>
             <div id="map" style={{ width: "500px", height: "400px", borderRadius: "10px" }}></div>
         </div>
