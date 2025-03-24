@@ -159,23 +159,23 @@ const HeaderCom = ({ headerDisplay }) => {
                                             <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>마이페이지</Link>
                                             <ul className={style.menuList}>
                                                 <li>
-                                                    <Link to={`/mypage/my_story/${userId}`} className={`link ${style.menu}`}>
+                                                    <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
                                                         내가 쓴 글
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={`/mypage/my_reply/${userId}`} className={`link ${style.menu}`}>
+                                                    <Link to={`/mypage/my_reply`} className={`link ${style.menu}`}>
                                                         내가 쓴 댓글
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={`/mypage/modify/${userId}`} className={`link ${style.menu}`}>
+                                                    <Link to={`/mypage/modify`} className={`link ${style.menu}`}>
                                                         회원정보 수정
                                                     </Link>
                                                 </li>
                                                 <li>
                                                     <Link
-                                                        to={`/mypage/alarm/settings/${userId}`}
+                                                        to={`/mypage/alarm/settings`}
                                                         className={`link ${style.menu}`}
                                                     >
                                                         알림 설정

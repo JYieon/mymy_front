@@ -292,7 +292,7 @@ const SidebarCom = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/mypage/alarm/settings/${userId}`}
+                    to={`/mypage/alarm/settings`}
                     className={`link ${style.menu}`}
                   >
                     알림 설정
