@@ -47,9 +47,9 @@ const BoardList = () => {
 
     if (token) {
       try {
-        //console.log("저장된 토큰:", token);
+        // console.log("저장된 토큰:", token);
         const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
-        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
+        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨`
         // console.log("로그인한 사용자 ID:", loggedInUserId);
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
@@ -179,26 +179,26 @@ const BoardList = () => {
       navigate(`/board/write?category=${category}`); // 계획 & 기록 게시판 → BoardWrite.js
     }
   };
-
   const handlePageChange = (page) => {
     const updatedPageState = { ...pageState };
     updatedPageState[category].currentPage = page;
     setPageState(updatedPageState);
   };
-
   const { boardList, currentPage, totalPages } = pageState[category];
-
   return (
     <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
 
       <div className={style.categoryBtns}>
+      { token == 0  && (
         <button
           className={category === 1 ? "active" : ""}
           onClick={() => handleCategoryChange(1)}
         >
           계획 게시글
         </button>
+      )}
+
         <button
           className={category === 2 ? "active" : ""}
           onClick={() => handleCategoryChange(2)}

@@ -9,8 +9,10 @@
 
 .categoryBtns {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   margin-bottom: 20px;
+  margin-right: 20px;
+  * {margin: 0px 5px;}
 }
 
 .categoryBtns a {
@@ -159,13 +161,11 @@
   }
 }
 
-hr {
-  width: 100%;
-}
 
 table {
-  margin: 0 20px;
+  margin: 30px auto;
   border-spacing: 0px 5px;
+  width: 90%;
 }
 th {
   height: 30px;
