@@ -140,7 +140,7 @@ function MyPage({ userData }) {
   return (
     <div>
       <h1>회원 정보 수정</h1>
-      <hr className="hr"/>
+      <hr className="hr" />
       <form onSubmit={handleSubmit}
         className={style.grid} id='userInfoModifyForm'>
 
@@ -186,37 +186,31 @@ function MyPage({ userData }) {
           <button type="button" onClick={() => handleUpdateField("phone")} className={style.modifybutton}>변경</button>
         </div>
       </form>
-
-      <button className={style.submitBtn} type="submit" form='userInfoModifyForm'>저장</button>
-
-
-      {/* 회원 탈퇴 처리 */}
-
-
-      <div>
-        <Modal
-          isOpen={openDeleteModal}
-          ariaHideApp={true}
-          onRequestClose={openDeleteModalBtn}
-          className={`Shadow modal`}
-        >
-          <label className={style.label}>게시글을 남기고 탈퇴하시겠습니까?</label>
-          <span>게시글 삭제를 원하신다면 체크를 풀어주세요!</span>
-          <input
-            type="checkbox"
-            checked={keepPosts}
-            onChange={() => setKeepPosts(!keepPosts)}
-          />
-
-          {deleteError && <p style={{ color: 'red' }}>{deleteError}</p>}
-
-          <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
-            탈퇴</button>
-        </Modal>
-      </div>
-
+    <div className={style.btnContainer}>
+    <button className={style.submitBtn} type="submit" form='userInfoModifyForm'>저장</button>
       <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
       회원 탈퇴</button>
+    </div>
+
+      <Modal
+        isOpen={openDeleteModal}
+        ariaHideApp={true}
+        onRequestClose={openDeleteModalBtn}
+        className={`Shadow modal`}
+      >
+        <label className={style.label}>게시글을 남기고 탈퇴하시겠습니까?</label>
+        <span>게시글 삭제를 원하신다면 체크를 풀어주세요!</span>
+        <input
+          type="checkbox"
+          checked={keepPosts}
+          onChange={() => setKeepPosts(!keepPosts)}
+        />
+
+        {deleteError && <p style={{ color: 'red' }}>{deleteError}</p>}
+
+        <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
+          탈퇴</button>
+      </Modal>
     </div>
   );
 }
