@@ -119,3 +119,11 @@ label {
   border-radius: 10px;
   border: none;
 }
+
+.boardCategory1Option{
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  /* background-color: aliceblue; */
+  
+}
