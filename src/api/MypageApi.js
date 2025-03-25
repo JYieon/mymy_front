@@ -85,6 +85,11 @@ const MypageApi = {
             return [];
         }
     },
+    //유저의 글
+    getUserPosts: async (userId) => {
+        const res = await axios.get(`${domain}/myboard/${userId}`);
+        return res.data;
+    },
 
     //레벨 등업, 다운에 대한 api
     updateLevel: async (token) => {
