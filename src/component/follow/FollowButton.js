@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MypageApi from "../../api/MypageApi";
+import style from "../../Css/Profile.module.css";
+
 
 //사용자 팔로우, 언팔로우 상태를 관리하는 버튼
 //현재 로그인한 사용자가 특정 프로필 사용자를 
@@ -44,7 +46,7 @@ const FollowButton = ({ profileUser }) => {
 
     return (
         <button 
-            className={`follow-btn ${isFollowed ? "unfollow" : "follow"}`} 
+            className={`${style.followBtn} ${isFollowed ? "unfollow" : "follow"}`} 
             onClick={handleFollow}
             disabled={loading}  //버튼을 누르는 동안에는 다시 못 누르게 함 
         >
