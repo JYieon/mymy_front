@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MateBoardApi from "../../api/MateBoardApi";
 import style from "../../Css/BoardList.module.css";
 
@@ -111,7 +111,7 @@ const MateBoardList = () => {
                   }}>
                   <td>{index + 1}</td>
                   <td>{post.title}</td>
-                  <td><Link to={`../../profile/${post.id}`} className={`link`}>{post.id}</Link></td>
+                  <td>{post.id}</td>
                   <td>{!!post.date ? post.date.substring(0, 13) : "날짜 없음"}</td>
                   <td>{post.repCnt}</td>
                   <td>{post.boardCnt}</td>
