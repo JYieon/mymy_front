@@ -1,0 +1,57 @@
+.infoInput {
+  padding: 5px;
+  margin-right: 10px;
+  border-radius: 100px;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+
+
+.infoWindow {
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+/* style={{ width: "600px", height: "500px", display: "flex", flexDirection: "column", alignItems: "center" }} */
+
+/* style={{ width: "500px", height: "400px", borderRadius: "10px" }}  */
+
+.mapContainer {
+    margin: 0 auto;
+  width: fit-content;
+  padding: 10px;
+  /* background-color: aqua; */
+}
+
+.map {
+  width: 500px;
+  height: 400px;
+  border-radius: 10px;
+}
+
+:global .markerinfo{
+    background-color: tan;
+    padding: 10px;
+}
+
+.markerDeleteBtn {
+    float: right;
+    font-style: italic;
+    background: none;
+    border: none;
+    color: tomato;
+}
+
+.saveBtn {
+    background-color: green;
+    padding: 5px 10px;
+}
+
+/* style={{ padding: "8px 15px", background: "#28a745", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }} */
