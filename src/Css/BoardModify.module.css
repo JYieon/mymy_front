@@ -121,9 +121,10 @@ label {
 }
 
 .boardCategory1Option{
+  align-items: center;
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
-  /* background-color: aliceblue; */
+  background-color: aliceblue;
   
 }
+

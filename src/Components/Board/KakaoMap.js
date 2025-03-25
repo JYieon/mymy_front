@@ -147,7 +147,7 @@ const KakaoMap = ({boardNo}) => {
     };
 
     return (
-        <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div id="map" style={{ minWidth:"300px", width:"500px", height:"400px", minHeight:"200px", maxWidth: "700px", maxHeight: "500px",borderRadius: "10px" }}/>
             {pendingMarker && (
                 <div style={{ marginTop: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "5px", background: "#fff" }}>

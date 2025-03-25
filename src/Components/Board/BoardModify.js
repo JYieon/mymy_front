@@ -167,18 +167,15 @@ const BoardModify = (props) => {
         // console.log("보낼 토큰:", token);
 
         try {
-            if (boardCategory===1) {
-
-
-
-                    try {
-                      const response = await TimelineApi.updateTimelineTodo(timelineData);
-                    } catch (error) {
-                      console.error(
+            if (boardCategory === 1) {
+                try {
+                    const response = await TimelineApi.updateTimelineTodo(timelineData);
+                } catch (error) {
+                    console.error(
                         "수정 중 오류 발생:",
                         error.response ? error.response.data : error.message
-                      );
-                    }
+                    );
+                }
             };
             console.log(postData)
             const res = await BoardApi.modify(postData, token);
@@ -194,7 +191,7 @@ const BoardModify = (props) => {
         }
     };
 
-    const TimelineBtn=()=>{
+    const TimelineBtn = () => {
 
     };
 
@@ -203,75 +200,70 @@ const BoardModify = (props) => {
         <div>
             <h1>📝 게시글 수정</h1>
             <div className={style.modifyContainer}>
-            <form onSubmit={handleSubmit} id="modify">
-                <div className={`Shadow ${style.editorContainerItem}`}>
-                    <label  className={style.titleInput}>제목</label>
-                    <input
-                        type="text"
-                        className={style.input}
-                        placeholder="제목을 입력하세요"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit} id="modify">
+                    <div className={`Shadow ${style.editorContainerItem}`}>
+                        <label className={style.titleInput}>제목</label>
+                        <input
+                            type="text"
+                            className={style.input}
+                            placeholder="제목을 입력하세요"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                        />
+                    </div>
 
-                <div>
+                    <div>
+                        {boardCategory === 2 && (
+                            <>
+                                <label>공개 여부:</label>
+                                <select value={boardOpen} onChange={(e) => setBoardOpen(parseInt(e.target.value))} className="form-control">
+                                    <option value={1}>공개</option>
+                                    <option value={0}>비공개</option>
+                                </select>
+                            </>
+                        )}
+                    </div>
+                    <div>
+                        <label></label>
+                        <div ref={editorRef}></div>
+
+                    </div>
+
                     {boardCategory === 2 && (
-                        <>
-                            <label>공개 여부:</label>
-                            <select value={boardOpen} onChange={(e) => setBoardOpen(parseInt(e.target.value))} className="form-control">
-                                <option value={1}>공개</option>
-                                <option value={0}>비공개</option>
-                            </select>
-                        </>
+                        <div>
+                            <label>해시태그:</label>
+                            <div className="hashtag-input">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="해시태그 입력 후 Enter"
+                                    value={tagInput}
+                                    onChange={(e) => setTagInput(e.target.value)}
+                                    onKeyDownCapture={(e) => e.key === "Enter" && addHashtag(e)}
+                                />
+                                <button onClick={addHashtag} className="btn btn-secondary mt-1">추가</button>
+                            </div>
+
+                            <div className="hashtag-list mt-2">
+                                {hashtags.map((tag, index) => (
+                                    <span key={index} className="badge bg-primary me-1">
+                                        #{tag}
+                                        <button type="button" className="btn btn-sm btn-danger ms-1" onClick={() => removeHashtag(tag)}>x</button>
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    <br />
+                    {boardCategory === 1 && (
+                        <div className={style.boardCategory1Option}>
+                            <KakaoMap boardNo={boardNo} />
+                            <TimelineModify />
+                        </div>
 
                     )}
-
-                </div>
-
-                <div>
-                    <label></label>
-                    <div ref={editorRef}></div>
-
-                </div>
-
-                {boardCategory === 2 && (
-                    <div>
-                        <label>해시태그:</label>
-                        <div className="hashtag-input">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="해시태그 입력 후 Enter"
-                                value={tagInput}
-                                onChange={(e) => setTagInput(e.target.value)}
-                                onKeyDownCapture={(e) => e.key === "Enter" && addHashtag(e)}
-                            />
-                            <button onClick={addHashtag} className="btn btn-secondary mt-1">추가</button>
-                        </div>
-
-                        <div className="hashtag-list mt-2">
-                            {hashtags.map((tag, index) => (
-                                <span key={index} className="badge bg-primary me-1">
-                                    #{tag}
-                                    <button type="button" className="btn btn-sm btn-danger ms-1" onClick={() => removeHashtag(tag)}>x</button>
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
-                <br/>
-                {boardCategory === 1 && (
-                <div className={style.boardCategory1Option}>
-                <KakaoMap boardNo={boardNo} />
-
-                <TimelineModify setTimelineId={setTimelineId} settimelineData={settimelineData} />
-
-                </div>
-
-            )}
-            </form>
+                </form>
 
             </div>
             <button type="submit" form="modify" className={`${style.btn} btn-primary mt-3`}>수정 완료</button>

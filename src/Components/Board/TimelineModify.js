@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, use } from "react";
 import { useParams } from "react-router-dom";
 import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
 
 
-const TimelineModify = ({settimelineData,setTimelineId}) => {
+const TimelineModify = () => {
   const { boardNo } = useParams();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -12,6 +12,8 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
+  const [ timelineData, settimelineData ] =useState();
+  const [ timelineId, setTimelineId] =useState();
 
   useEffect(() => {
     if (!token) {
@@ -26,7 +28,7 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
   // 타임라인 데이터 가져오기
   const fetchTimeline = async () => {
     try {
-      console.log("타임라인 게시글 번호",boardNo)
+      console.log("타임라인 게시글 번호", boardNo)
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
 
@@ -37,9 +39,11 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
         setSelectedDate(response.data.startDt);
         setTodoList(JSON.parse(response.data.todo) || {});
         settimelineData({
-          boardNo:response.data.boardNo,
-          todo:JSON.stringify(JSON.parse(response.data.todo))
+          boardNo: response.data.boardNo,
+          todo: JSON.stringify(JSON.parse(response.data.todo))
         });
+
+        console.log(endDate, startDate);
       }
     } catch (error) {
       console.error("오류 발생:", error);
@@ -65,7 +69,7 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
 
   // 입력값에 따라 높이 변경
   const handleResizeHeight = useCallback(() => {
-    subTaskRef.current.style.height="auto";
+    subTaskRef.current.style.height = "auto";
     subTaskRef.current.style.height = subTaskRef.current.scrollHeight + "px";
   }, []);
 
@@ -78,8 +82,8 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
       [selectedDate]: newTodoList,
     }));
     settimelineData({
-      boardNo:boardNo,
-      todo:JSON.stringify(todoList)
+      boardNo: boardNo,
+      todo: JSON.stringify(todoList)
     });
   };
 
@@ -101,7 +105,7 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
       todo: JSON.stringify(todoList),
     };
     try {
-      const response = await TimelineApi.updateTimelineTodo(data);
+      const res = await TimelineApi.updateTimelineTodo(data);
       alert("일정이 수정되었습니다!");
       fetchTimeline();
     } catch (error) {
@@ -146,14 +150,14 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
             type="date"
             value={endDate}
             onChange={(e) => {
-              if (e.target.value.replaceAll('-', '')-startDate.replaceAll('-', "")<0)
-              {alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
+              if (e.target.value.replaceAll('-', '') - startDate.replaceAll('-', "") < 0) {
+                alert('여행 마지막 날은 첫 날보다 이전일 수 없습니다!')
                 setEndDate(startDate);
-              }else{
+              } else {
                 setEndDate(e.target.value)
               }
-              }
-              } // endDate 업데이트
+            }
+            } // endDate 업데이트
             className={style.input}
           />
         </div>
@@ -173,15 +177,36 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
         />
 
         <div className={`${style.todoSection}`}>
-          <h3>📍 일정 추가 ({selectedDate || "날짜 선택"})</h3>
+          <h3>{selectedDate || "날짜 선택"}</h3>
           <button className={style.addButton} onClick={handleAddTask}>
-            + 일정 추가
+            일정 추가
           </button>
-          <hr/>
+          <hr />
+
           <div className={style.TodoList}>
             {/* 서버에서 자동으로 불러와짐 */}
             {selectedTasks.map((todo, index) => (
               <div key={index} className={`Shadow ${style.todoItem}`}>
+
+                {/* 일정 */}
+                <input
+                  type="text"
+                  value={todo.task}
+                  placeholder="일정을 적어보세요!"
+                  onChange={(e) => handleChange(index, "task", e.target.value)}
+                  className={style.taskInput}
+                />
+                <textarea
+                  ref={subTaskRef}
+                  value={todo.subTask}
+                  placeholder="세부 사항"
+                  onChange={(e) =>
+                    handleChange(index, "subTask", e.target.value)
+                  }
+                  onInput={handleResizeHeight}
+                  rows={1}
+                  className={style.subTaskInput}
+                ></textarea>
                 {/* 일정 시간 묶음 */}
                 <div>
                   {/* 시작 시각 */}
@@ -204,25 +229,6 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
                     className={style.timeInput}
                   />
                 </div>
-                {/* 일정 */}
-                <input
-                  type="text"
-                  value={todo.task}
-                  placeholder="일정을 적어보세요!"
-                  onChange={(e) => handleChange(index, "task", e.target.value)}
-                  className={style.taskInput}
-                />
-                <textarea
-                  ref={subTaskRef}
-                  value={todo.subTask}
-                  placeholder="세부 사항"
-                  onChange={(e) =>
-                    handleChange(index, "subTask", e.target.value)
-                  }
-                  onInput={handleResizeHeight}
-                  rows={1}
-                  className={style.subTaskInput}
-                ></textarea>
                 <button
                   className={style.deleteButton}
                   onClick={() => handleDeleteTask(index)}
@@ -230,6 +236,7 @@ const TimelineModify = ({settimelineData,setTimelineId}) => {
                   삭제
                 </button>
               </div>
+
             ))}
           </div>
           <button className={style.updateButton} onClick={handleUpdateTasks}>
