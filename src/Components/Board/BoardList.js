@@ -47,9 +47,9 @@ const BoardList = () => {
 
     if (token) {
       try {
-        // console.log("저장된 토큰:", token);
+        //console.log("저장된 토큰:", token);
         const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
-        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨`
+        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
         // console.log("로그인한 사용자 ID:", loggedInUserId);
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
@@ -108,9 +108,12 @@ const BoardList = () => {
           params: { page, category, searchType, keyword },
         }
       );
+
+      const filteredBoardList = filterBoardList(response.data.boardList, localStorage.getItem("accessToken"));
+
       const updatedPageState = { ...pageState };
       updatedPageState[category] = {
-        boardList: response.data.boardList.map((post) => ({
+        boardList: filteredBoardList.map((post) => ({
           ...post,
           thumbnail: extractThumbnail(post),
         })),
@@ -179,26 +182,26 @@ const BoardList = () => {
       navigate(`/board/write?category=${category}`); // 계획 & 기록 게시판 → BoardWrite.js
     }
   };
+
   const handlePageChange = (page) => {
     const updatedPageState = { ...pageState };
     updatedPageState[category].currentPage = page;
     setPageState(updatedPageState);
   };
+
   const { boardList, currentPage, totalPages } = pageState[category];
+
   return (
     <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
 
       <div className={style.categoryBtns}>
-      { token == 0  && (
         <button
           className={category === 1 ? "active" : ""}
           onClick={() => handleCategoryChange(1)}
         >
           계획 게시글
         </button>
-      )}
-
         <button
           className={category === 2 ? "active" : ""}
           onClick={() => handleCategoryChange(2)}
@@ -221,6 +224,7 @@ const BoardList = () => {
           <option value="title">제목</option>
           <option value="content">내용</option>
           <option value="titleContent">제목+내용</option>
+          {category === 2 && <option value="tag">해시태그</option>}
         </select>
         <input
           type="text"
@@ -229,20 +233,19 @@ const BoardList = () => {
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="검색어를 입력하세요"
         />
-        <button className={style.SearchBtn} onClick={searchBoardList}>
+        <button className={style.SearchBtn} onClick={handleSearch}>
           검색
         </button>
       </div>
 
       <div className={style.boardGrid}>
         {boardList.map((post) => {
-          console.log(post);
-          return (
-            <div key={post.boardNo} className={`Shadow ${style.boardItem}`}>
+          {post.boardOpen === 0 ? (<></>):
+          (<div key={post.boardNo} className={`Shadow ${style.boardItem}`}>
               <Link to={`/board/detail/${post.boardNo}`} className="link">
                 <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
                 <h3 className={style.PostTitle}>
-                  {post.boardOpen === 0 ? "🔒 " : ""}{post.title} 
+                  {post.title} 
                 </h3>
                 <div className="PostInfo">
                   <div>조회수<span className="value">{post.boardCnt}</span></div>
@@ -253,14 +256,14 @@ const BoardList = () => {
                 <div className="WriterId">
                   {/* 'anonymous'일 경우 '알 수 없음'으로 표시하고, 그 외의 경우에는 프로필 링크로 */}
                   {post.id === 'anonymous' ? '알 수 없음' :
-                    <Link to={`/profile/${post.id}`} className={style.writer}>
+                    <Link to={`/profile/${post.id}`} className={`link ${style.writer}`}>
                       {post.id}
                     </Link>}
                 </div>
 
               </Link>
             </div>
-          );
+          ); }
         })}
       </div>
       {/* 글쓰기 버튼 추가 */}
