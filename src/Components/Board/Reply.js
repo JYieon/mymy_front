@@ -211,7 +211,7 @@ const Reply = ({ boardNo, category }) => {
                     {reply.id === 'anonymous' ? (
                         <span className={style.id}>알 수 없음</span>
                     ) : (
-                        <Link to={`/profile/${reply.id}`} className={style.id}>
+                        <Link to={`/profile/${reply.id}`} className={`link ${style.id}`}>
                             {reply.id}
                         </Link>
                     )}
@@ -251,7 +251,7 @@ const Reply = ({ boardNo, category }) => {
         <hr className={style.hr}/>
 
             {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>}
-            
+        
             {/* 새 댓글 작성 */}
             {/* <h3>📝 댓글 작성</h3> */}
             <div className={`Shadow ${style.newReplyContainer}`}>
@@ -264,7 +264,7 @@ const Reply = ({ boardNo, category }) => {
                     onChange={(e) => setNewReply(e.target.value)}
                     placeholder="댓글을 입력하세요"
                 />
-                <button onClick={() => handleAddReply(0)}>등록</button>
+                <button className={style.newReplyBtn} onClick={() => handleAddReply(0)}>등록</button>
             </div>
         </div>
     );

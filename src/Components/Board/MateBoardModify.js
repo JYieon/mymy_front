@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MateBoardApi from "../../api/MateBoardApi";
 import ChatApi from "../../api/ChatApi";
-
+import style from "../../Css/BoardModify.module.css";
 const MateBoardModify = () => {
     const { boardNo } = useParams();
     const navigate = useNavigate();
@@ -77,12 +77,18 @@ const MateBoardModify = () => {
     };
 
     return (
-        <div>
-            <h2>📝 여행 메이트 게시글 수정</h2>
+
+
+        <div className={style.editorContainer}>
+            <Link to={`../list`} className={`link`}>
+                뒤로가기
+            </Link>
+            <h1>📝 여행 메이트 게시글 수정</h1>
             <form onSubmit={(e) => e.preventDefault()}>
-                <div>
+                <div className={`Shadow ${style.editorContainerItem}`}>
                     <label>제목:</label>
                     <input
+                        className={style.input}
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -92,8 +98,8 @@ const MateBoardModify = () => {
                 </div>
 
                 <div>
-                    <label>본문:</label>
                     <textarea
+                        className={style.textarea}
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required

@@ -3,13 +3,14 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import $, { post } from "jquery";
 import BoardApi from "../../api/BoardApi";
-import SummernoteLite from "react-summernote-lite";
+import SummernoteLite from "react-summernote-lite"; 
 import "react-summernote-lite/dist/summernote-lite.min.css";
 import ChatApi from "../../api/ChatApi";
 import MypageApi from "../../api/MypageApi";
 import Timeline from "./Timeline";
 import KakaoMap from "./KakaoMap";
 import style from "../../Css/BoardModify.module.css";
+
 
 const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
   // 아래 기능들은 BoardWritePage.js에 있음
@@ -154,7 +155,6 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     if (category === 2) postData.hashtags = hashtags;
 
     console.log("전송할 데이터:", postData);
-
     try {
       const token = localStorage.getItem("accessToken");
 
@@ -168,9 +168,14 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
       const res = await BoardApi.writeSave(postData, token);
       console.log("📩 서버 응답 데이터:", res.data);
 
+
       if (res.status === 200) {
         setBoardNo(res.data.boardNo);
         console.log("✅ 반환된 boardNo:", res.data.boardNo);
+
+        // 레벨 갱신 호출 추가
+        await handleAfterActivity();
+        
         if (category === 1) {
           // 계획 게시글 → 타임라인 페이지로 이동
           setTimelineOpen(true);
@@ -189,7 +194,6 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     }
   };
 
-
   return (
     <div className={style.editorContainer}>
       <Link to={`../list?category=${category}`} className={`link`}>
@@ -202,6 +206,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
           <label className={style.titleInput}>제목</label>
           <input
             type="text"
+            className={style.input}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="제목을 입력해주세요."
@@ -240,14 +245,15 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
         {/* 본문 */}
         <div ref={editorRef} className={style.editor} />
         {/* 해시태그 */}
-        <div className={`${style.editorContainerItem} ${style.hashtagContainer}`}>
+        { category === 2 && (
+          <div className={`${style.editorContainerItem} ${style.hashtagContainer}`}>
           <div>
             <label>해시태그</label>
             <input
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              className={style.hashtagInput}
+              className={`${style.hashtagInput} ${style.input}`}
               placeholder="태그를 추가해보세요"
             />
             <button onClick={addHashtag}>추가</button>
@@ -260,8 +266,10 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
             ))}
           </div>
         </div>
+        )}
+
         {/* 작성 완료 */}
-        <button type="submit">작성 완료</button>
+        <button type="submit" className={style.writeSavebutton}>작성 완료</button>
       </form>
     </div>
   );
