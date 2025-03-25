@@ -96,6 +96,12 @@ const ChatSidebarCom = () => {
     const getChatRoom = async () => {
           try {
             const res = await ChatApi.getChatMessages(roomNum);
+
+            if(res.status === 204){
+              alert("존재하지 않는 채팅방입니다.");
+              navigate("/");
+            }
+
             console.log(res.data);
             setMemberNum(res.data.member.length);
             setChatUserInfo(res.data.member);
@@ -261,7 +267,7 @@ const fetchBankList = async () => {
       const res = await ChatApi.endChat(roomNum, token);
       console.log("delete", res);
       if (res.status === 200) {
-        window.location.href = "/chat/List"; // 채팅방 목록으로 이동
+        window.location.href = "/chat/list"; // 채팅방 목록으로 이동
       } else {
         alert("채팅방 나가기 실패");
       }

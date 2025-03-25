@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
-import style from "../../Css/BoardList.module.css";
-
 
 //내가 쓴 댓글 목록
 const MyComment = () => {
@@ -26,39 +24,38 @@ const MyComment = () => {
         fetchComments();
     }, [token]);
 
-       // 댓글이 속한 게시글의 제목을 찾는 함수
-       const getPostTitle = (boardNo,title) => {
-        const post = posts.find(p => p.boardNo === boardNo);
-        return post ? post.title : "탈퇴한 회원 게시물";
-    };
-
     
     return (
         
         <div className="mycomment-container">
-            <h1>📄내가 쓴 댓글</h1>
-            
+            <h2>📄내가 쓴 댓글</h2>
             <table className="mycomment-table">
                 <thead>
                     <tr>
-                        <th className={style.bmNo}>번호</th>
-                        <th className={style.bmTitle}>게시글 제목</th>
-                        <th className={style.bmDate}>댓글 내용</th>
+                        <th>번호</th>
+                        <th>게시글 제목</th>
+                        <th>댓글 내용</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {comments.map((cmt) => (
-                        <tr>
-                            <td>{cmt.boardNo}</td>
-                            <td>{getPostTitle(cmt.boardNo)}</td>
-                            <td>{cmt.content}</td>
-                        </tr>
-                    ))}
-                    {posts.length === 0 && (
-                        <tr><td colSpan="3">등록된 댓글이 없습니다.</td></tr>
-                    )}
-                </tbody>
             </table>
+            {comments.length === 0 ? (
+                <p className="noDataContext">작성한 댓글이 없습니다.</p>
+            ) : (
+                <ul className="mycomment-list">
+                    {comments.map((comment) => (
+                        
+                        <li key={comment.boardNo} className="mycomment-item">
+                            <span>{comment.boardNo}</span>
+                            <span>{comment.title}</span>
+                            <Link to={`/board/detail/${comment.boardNo}`}>
+                                {comment.originalPost}
+                            </Link>
+
+                            <span className="comment-content">{comment.content}</span>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

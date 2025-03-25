@@ -4,30 +4,40 @@
 }
 
 .Gradient {
+    padding: 50px 0px;
     background: linear-gradient(to right,#00284C 50%,white);
 }
 .Bottom {
-    display: flex;
+    display: flex; 
+    justify-content: space-evenly;
 }
 
 .Catchphrase {
     color: white;
     font-size: 90px;
     font-weight: 900;
+    padding: 10px;
 }
 
 .Info{
     color: white;
-    padding: 0;
+    margin-left: 10px;
+    font-weight: 700;
 }
 
 .TestLink {
+    width: 200px; height: 100px;
     background-color: gold;
     padding: 50px;
+    border: 3px solid tomato;
+    background-image: url("../Assets/temPic.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 20px;
 }
 
 .Lastest{
-    width: 300px; height: 200px;
+    width: 200px; height: 100px;
     position: relative;
     &:hover .TestLink{
         opacity: 100;

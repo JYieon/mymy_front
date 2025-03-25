@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import BoardApi from "../../api/BoardApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import style from "../../Css/BoardList.module.css";
 
 const BookmarkList = () => {
+    const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
+    const navigate = useNavigate();
+    const token = localStorage.getItem("accessToken");
     const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
@@ -17,7 +20,21 @@ const BookmarkList = () => {
             }
 
             const response = await BoardApi.getBookmarkList(token);
+    // 북마크 목록 불러오기
+    const fetchBookmarks = async () => {
+        try {
+            if (!token) {
+                alert("로그인이 필요합니다.");
+                return;
+            }
 
+            const response = await BoardApi.getBookmarkList(token);
+
+            setBookmarks(response.data.data || response.data);
+        } catch (error) {
+            console.error("북마크 목록 불러오기 실패:", error);
+        }
+    };
             setBookmarks(response.data.data || response.data);
         } catch (error) {
             console.error("북마크 목록 불러오기 실패:", error);
@@ -69,9 +86,12 @@ const BookmarkList = () => {
                                     {bookmark.title}
                                 </h3>
                                 <p className={style.bookmarkUserId}>
-                                    {bookmark.id} | {bookmark.date}
+                                    <Link to={`/profile/${bookmark.id}`} className={`link`}>{bookmark.id}</Link> | {bookmark.date}
                                 </p>
                             </div>
+                            <div className={style.bmController}>
+                                <button
+                                    onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
                             <div className={style.bmController}>
                                 <button
                                     onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
@@ -79,6 +99,8 @@ const BookmarkList = () => {
                                 >
                                     게시글 보기
                                 </button>
+                                <button
+                                    onClick={() => handleRemoveBookmark(bookmark.boardNo)}
                                 <button
                                     onClick={() => handleRemoveBookmark(bookmark.boardNo)}
                                     className={style.removeBmBtn}

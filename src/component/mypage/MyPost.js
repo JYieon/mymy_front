@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import style from "../../Css/BoardList.module.css";
 
@@ -10,9 +10,8 @@ const MyPost = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-
             try {
-                const response = await MypageApi.getMyPosts(token);//api 요청청
+                const response = await MypageApi.getMyPosts(token);//api 요청
                 setPosts(response || []);//게시글이 없으면 빈 배열 저장
                 console.log("내가 쓴 글 데이터 확인:", response);
             } catch (error) {
@@ -25,7 +24,6 @@ const MyPost = () => {
     return (
         <div className={style.mypostContainer}>
             <h1>📄내가 쓴 글</h1>
-            
             <table className="mypost-table">
                 <thead>
                     <tr>

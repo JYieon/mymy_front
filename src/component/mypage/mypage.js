@@ -9,8 +9,13 @@ import Modal from "react-modal";
 
 //회원 정보 수정
 const MyPage=({ userData })=> {
+  
+ 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const token = localStorage.getItem("accessToken")//사용자 토큰
+  const [error, setError] = useState("");
+  const [keepPosts, setKeepPosts] = useState(true); // 기본값은 게시글을 남기고 탈퇴
+  const [deleteError, setDeleteError] = useState("");
 
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
   const [formData, setFormData] = useState(userData || {
@@ -23,9 +28,6 @@ const MyPage=({ userData })=> {
     email: "",
   }); 
 
-  const [error, setError] = useState("");
-  const [keepPosts, setKeepPosts] = useState(true); // 기본값은 게시글을 남기고 탈퇴
-  const [deleteError, setDeleteError] = useState("");
 
   //사용자 정보 불러오기
   useEffect(() => {
@@ -93,7 +95,6 @@ const MyPage=({ userData })=> {
 
     // 필수 입력 필드 검사
     if (!formData.nick || !formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
-    if (!formData.nick || !formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
       setError("모든 필드를 입력해야 합니다.");
       return;
     }
@@ -106,7 +107,7 @@ const MyPage=({ userData })=> {
     } catch (err) {
       alert("수정에 실패했습니다. 다시 시도해주세요.");
     }
-  }; }
+  };
 
   //특정 필드만 업데이트하는 함수
   const handleUpdateField = async (field) => {
@@ -130,13 +131,13 @@ const MyPage=({ userData })=> {
   const openDeleteModalBtn = () => {
     setOpenDeleteModal(!openDeleteModal);
   };
+
   //회원 탈퇴 처리
   const handleDeleteAccount = async () => {
     if (!token) {
       alert("로그인 후 탈퇴할 수 있습니다.");
       return;
     }
-
     try {
       const res = await MypageApi.deleteAccount(keepPosts); // 탈퇴 API 요청
       if (res.status === 200) {
@@ -148,7 +149,7 @@ const MyPage=({ userData })=> {
       setDeleteError("탈퇴 처리 중 오류가 발생했습니다.");
     }
   };
- 
+
   return (
     <div>
       <h1>회원 정보 수정</h1>
@@ -156,12 +157,9 @@ const MyPage=({ userData })=> {
 
       <form onSubmit={handleSubmit}
         className={style.grid} id='userInfoModifyForm'>
-
-
         <div className={style.gridItem}>
           <label className={style.label}>아이디</label>
           <input type='text' className={`${style.input} ${style.readOnlyId}`} value={formData.id} readOnly />
-
           <button type="button" readOnly className={style.readonly}>변경</button>
         </div>
 
@@ -185,7 +183,7 @@ const MyPage=({ userData })=> {
           <button type="button" onClick={() => handleUpdateField("pwd")} className={style.modifybutton}>변경</button>
         </div>
         {/* 비밀번호 오류 메시지 표시 */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <label className={`${style.label} ${style.error}`}>{error}</label>}
 
         <div className={style.gridItem}>
           <label className={style.label}>이메일</label>
@@ -198,24 +196,21 @@ const MyPage=({ userData })=> {
           <input className={`Shadow ${style.input}`} type="text" name="phone" value={formData.phone} onChange={handleChange} />
           <button type="button" onClick={() => handleUpdateField("phone")} className={style.modifybutton}>변경</button>
         </div>
-              {/* 여행자 테스트 결과 표시 */}
-      {formData.testResult && (
-        <div>
+        <br/>
+        {/* 여행자 테스트 결과 표시 */}
+        {formData.testResult && (
+        <div className={style.gridItem}>
           <label className={style.label}>여행자 유형</label>
-          <input type='text' className={`${style.input} ${style.readOnlyId}`} value={formData.testResult} readOnly />
-          <button type="button" readOnly className={style.readonly}>변경</button>
-          <Link to="/test">고양이 테스트 다시 하기</Link>
+          <input type='text' className={`${style.input} ${style.readOnlyTestResult}`} value={formData.testResult} readOnly />
+          <button type="button" className={style.modifybutton} ><Link to="/test" className={`link`}>변경</Link></button>
         </div>
-
       )}
-
       </form>
     <div className={style.btnContainer}>
     <button className={style.submitBtn} type="submit" form='userInfoModifyForm'>저장</button>
       <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
       회원 탈퇴</button>
     </div>
-
       <Modal
         isOpen={openDeleteModal}
         ariaHideApp={true}
@@ -230,14 +225,14 @@ const MyPage=({ userData })=> {
           onChange={() => setKeepPosts(!keepPosts)}
         />
 
-        {deleteError && <p style={{ color: 'red' }}>{deleteError}</p>}
+        {deleteError && <lebel className={`${style.label} ${style.error}`}>{deleteError}</lebel>}
 
         <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
           탈퇴</button>
       </Modal>
     </div>
   );
-}
+};
 
 
 export default MyPage;

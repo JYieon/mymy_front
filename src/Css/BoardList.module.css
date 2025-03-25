@@ -184,6 +184,8 @@ td {
   border-bottom: 1px black solid;
   border-collapse: collapse;
   white-space: nowrap;
+  background-color: #0076ff;
+
 }
 
 .bmTitle {

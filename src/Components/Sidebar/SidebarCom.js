@@ -40,8 +40,8 @@ const SidebarCom = () => {
     }
   };
 
-  useEffect(() => {
-    const userInfo = async () => {
+    useEffect(() => {
+        const userInfo = async () => {
 
       if (!token) {
         console.log("토큰이 없습니다! 로그아웃 상태입니다.");
@@ -65,10 +65,10 @@ const SidebarCom = () => {
           //사용자 레벨 저장
           setLevel(res.data.level);
 
-          // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
-          const followerRes = await MypageApi.getFollowerList();
-          console.log(" 팔로워 리스트 응답:", followerRes);
 
+                    // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
+                    const followerRes = await MypageApi.getFollowerList();
+                    console.log(" 팔로워 리스트 응답:", followerRes);
 
           //  followerId가 현재 로그인한 userId인 경우만 필터링
           const filteredFollowers = followerRes.filter(user => user.followerId === userId);
@@ -158,7 +158,7 @@ const SidebarCom = () => {
             <div className={style.headerNav}>
               <div className={style.userNickContainer}>
                 <span className={style.userNick}> {userNickname} </span>
-                <svg onClick={handleClick}
+                {/* <svg onClick={handleClick}
                   className={style.alramIcon}
                   viewBox="0 0 16 16"
                   fill="none"
@@ -172,7 +172,7 @@ const SidebarCom = () => {
                     d="M7.99999 16C6.69378 16 5.58254 15.1652 5.1707 14H10.8293C10.4175 15.1652 9.30621 16 7.99999 16Z"
                     fill="#000000"
                   />
-                </svg>
+                </svg> */}
 
 
               </div>
@@ -287,10 +287,10 @@ const SidebarCom = () => {
 
           </li>
           {/* 해시태그 게시판 */}
-          <li className="link">
-            <span className={style.menuTitle}><Link to="/board/hashtags" className={`link ${style.menu}`}>
-              해시태그
-            </Link></span>
+          <li>
+            <Link to="/board/hashtags" className={`link ${style.menu}`}>
+              <span className={style.menuTitle}>해시태그</span>
+            </Link>
             {!!token && <hr />}
           </li>
           {!!token && (<>

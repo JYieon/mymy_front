@@ -172,10 +172,10 @@ const HeaderCom = ({ headerDisplay }) => {
                                     </li>
                                     {/* 사용자 정보 */}
                                     <div className={style.userInfo}>
-                                        {userNick}님 안녕하세요!
+                                        <span className={style.userId}>{userNick}님 안녕하세요!</span>
                                         <span className={style.userLevel}>{userLevel}</span>
-
-                                        <li className={style.headerMenu} id="마이페이지">
+                                        <div>
+                                        <li className={`${style.mypage} ${style.headerMenu}`} id="마이페이지">
                                             <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>마이페이지</Link>
                                             <ul className={style.menuList}>
                                                 <li>
@@ -203,13 +203,15 @@ const HeaderCom = ({ headerDisplay }) => {
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li className={style.headerMenu} id="로그아웃 버튼">
+                                        <li className={`${style.mypage} ${style.headerMenu}`} id="로그아웃 버튼">
                                             <button className={style.logoutBtn} onClick={onClickLogout}>로그아웃</button>
                                         </li>
-                                        <li className={style.headerMenu} id="알람 아이콘" onClick={handleClick}>
+
+                                        </div>
+                                    </div>
+                                    <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick}>
                                             <AlarmIcon hasUnread={hasUnread} />
                                         </li>
-                                    </div>
                                 </>) :
                                 //로그아웃 상태일 시 보여지는 헤더
                                 (<div className={style.userInfo}>

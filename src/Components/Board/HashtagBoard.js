@@ -39,17 +39,24 @@ const HashtagBoard = () => {
 
   return (
     <div className={style.hashtagBoard}>
-      <h1>여행자 유형 해시태그</h1>
-      <div className={style.hashtagList}>
-        {testTags.length > 0 ? renderTags(testTags) : <p>등록된 해시태그가 없습니다.</p>}
-      </div>
+      <section className={style.section}>
+  <h2 className={`${style.title} ${style.cat}`}>여행자 유형 해시태그</h2>
+  <div className={style.hashtagList}>
+    {testTags.length > 0 ? renderTags(testTags) : <p>등록된 해시태그가 없습니다.</p>}
+  </div>
+</section>
 
-      <h1>일반 해시태그</h1>
-      <div className={style.hashtagList}>
-        {normalTags.length > 0 ? renderTags(normalTags) : <p>등록된 해시태그가 없습니다.</p>}
-      </div>
+<section className={style.section}>
+  <h2 className={`${style.title} ${style.pin}`}>일반 해시태그</h2>
+  <div className={style.hashtagList}>
+    {normalTags.length > 0 ? renderTags(normalTags) : <p>등록된 해시태그가 없습니다.</p>}
+  </div>
+</section>
+
+
     </div>
   );
+  
 };
 
 export default HashtagBoard;

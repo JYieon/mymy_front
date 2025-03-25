@@ -85,6 +85,11 @@ const MypageApi = {
             return [];
         }
     },
+    //유저의 글
+    getUserPosts: async (userId) => {
+        const res = await axios.get(`${domain}/myboard/${userId}`);
+        return res.data;
+    },
 
     //레벨 등업, 다운에 대한 api
     updateLevel: async (token) => {
@@ -294,7 +299,6 @@ const MypageApi = {
                 withCredentials: true
             });
 
-            console.log(" 팔로워 목록 응답:", response.data);
             return response.data;
         } catch (error) {
             console.error("🚨 팔로워 목록 가져오기 실패:", error);

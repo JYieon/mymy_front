@@ -68,3 +68,13 @@
   margin-top: 60px;
   margin-left: 10px;
 }
+
+
+.error {
+  height: fit-content;
+  color: tomato;
+  text-align: center;
+  margin: auto;
+  margin-right: 50px;
+  font-size: 15px;
+}
