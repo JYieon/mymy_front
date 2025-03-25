@@ -250,7 +250,7 @@ const Reply = ({ boardNo, category }) => {
             <h3>💬</h3>
         <hr className={style.hr}/>
 
-            {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>} 
+            {/* {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>} */}
             
             {/* 새 댓글 작성 */}
             {/* <h3>📝 댓글 작성</h3> */}
