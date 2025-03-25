@@ -10,120 +10,134 @@ import AuthApi from "../../api/AuthApi";
 
 
 const SidebarCom = () => {
-    const token = localStorage.getItem("accessToken");
-    const [userId, setUserId] = useState("");
-    const [userNickname, setUserNikcname] = useState("");
+  const token = localStorage.getItem("accessToken");
+  const [userId, setUserId] = useState("");
+  const [userNickname, setUserNikcname] = useState("");
   const [userLevel, setUserLevel] = useState("");
   const [ProfileEditOpen, setProfileEditOpen] = useState(false);
-    const [ProfilePic, setProfilePic] = useState("");
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
-    const navigate = useNavigate();
-    const [unreadCount, setUnreadCount] = useState(0);
-    const [followerCount, setFollowerCount] = useState(0);
-    const [followingCount, setFollowingCount] = useState(0);
-    const [level, setLevel] = useState(1); // 기본 레벨은 1로 설정
+  const [ProfilePic, setProfilePic] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [level, setLevel] = useState(1); // 기본 레벨은 1로 설정
 
-    // 숫자 레벨을 글자로 바꿔주는 함수
-    const getLevelName = (level) => {
-        switch (parseInt(level)) {
-            case 1:
-                return "생각하는 냥이";
-            case 2:
-                return "호기심 많은 냥이";
-            case 3:
-                return "활동적인 냥이";
-            case 4:
-                return "전설적인 냥이";
-            default: 
-                return "생각하는 냥이"; 
-        }
-    };
+  // 숫자 레벨을 글자로 바꿔주는 함수
+  const getLevelName = (level) => {
+    switch (parseInt(level)) {
+      case 1:
+        return "생각하는 냥이";
+      case 2:
+        return "호기심 많은 냥이";
+      case 3:
+        return "활동적인 냥이";
+      case 4:
+        return "전설적인 냥이";
+      default:
+        return "생각하는 냥이";
+    }
+  };
 
     useEffect(() => {
         const userInfo = async () => {
 
-            if (!token) {
-                console.log("토큰이 없습니다! 로그아웃 상태입니다.");
-                setIsAuthenticated(false);
-                setUserId(null);
-                return;
-            }
+      if (!token) {
+        console.log("토큰이 없습니다! 로그아웃 상태입니다.");
+        setIsAuthenticated(false);
+        setUserId(null);
+        return;
+      }
 
-            try {
-                // 사용자 정보 불러올 때 레벨도 같이 설정
-                const res = await ChatApi.getUserInfo(token);
-                console.log(" 받아온 사용자 정보:", res.data);
-                if (res.data && res.data.id) {
-                    const fetchedUserId = res.data.id;
-                    setUserId(fetchedUserId);
-                    setUserNikcname(res.data.nick);
-                    setUserLevel(res.data.level)
-                    setIsAuthenticated(true);
-                    console.log(" 로그인한 사용자 ID:", fetchedUserId);
+      try {
+        // 사용자 정보 불러올 때 레벨도 같이 설정
+        const res = await ChatApi.getUserInfo(token);
+        console.log(" 받아온 사용자 정보:", res.data);
+        if (res.data && res.data.id) {
+          const fetchedUserId = res.data.id;
+          setUserId(fetchedUserId);
+          setUserNikcname(res.data.nick);
+          setUserLevel(res.data.level)
+          setIsAuthenticated(true);
+          console.log(" 로그인한 사용자 ID:", fetchedUserId);
 
-                    //사용자 레벨 저장
-                    setLevel(res.data.level);
+          //사용자 레벨 저장
+          setLevel(res.data.level);
+
 
                     // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
                     const followerRes = await MypageApi.getFollowerList();
                     console.log(" 팔로워 리스트 응답:", followerRes);
 
-                    //  followerId가 현재 로그인한 userId인 경우만 필터링
-                    const filteredFollowers = followerRes.filter(user => user.followerId === userId);
-                    console.log(" 필터링된 팔로워 리스트:", filteredFollowers);
-                    setFollowerCount(followerRes.length);
-                } else {
-                    console.log(" [오류] 팔로워 데이터가 배열이 아닙니다.");
-                }
-            } catch (error) {
-                console.error(" 팔로워 리스트 가져오기 실패:", error);
-            }
+          //  followerId가 현재 로그인한 userId인 경우만 필터링
+          const filteredFollowers = followerRes.filter(user => user.followerId === userId);
+          console.log(" 필터링된 팔로워 리스트:", filteredFollowers);
+          setFollowerCount(followerRes.length);
+        } else {
+          console.log(" [오류] 팔로워 데이터가 배열이 아닙니다.");
+        }
+      } catch (error) {
+        console.error(" 팔로워 리스트 가져오기 실패:", error);
+      }
 
-            try {
-                const followingRes = await MypageApi.getFollowingList();
-                console.log(" 팔로잉 리스트 응답:", followingRes);
+      try {
+        const followingRes = await MypageApi.getFollowingList();
+        console.log(" 팔로잉 리스트 응답:", followingRes);
 
-                if (Array.isArray(followingRes)) {
-                    //  followingId가 현재 로그인한 userId인 경우만 필터링
-                    const filteredFollowing = followingRes.filter(user => user.followerId === userId);
-                    console.log(" 필터링된 팔로잉 리스트:", filteredFollowing);
-                    setFollowingCount(followingRes.length);
-                } else {
-                    console.log(" [오류] 팔로잉 데이터가 배열이 아닙니다.");
-                }
-            } catch (error) {
-                console.error(" 팔로잉 리스트 가져오기 실패:", error);
-            }
-        };
-        userInfo();
-    }, []);
-
-    //  로그아웃 함수
-    const handleLogout = () => {
-        console.log("로그아웃 실행");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("userId");
-        setIsAuthenticated(false);
-        setUserId(null);
-        window.location.href = "/account/login";
+        if (Array.isArray(followingRes)) {
+          //  followingId가 현재 로그인한 userId인 경우만 필터링
+          const filteredFollowing = followingRes.filter(user => user.followerId === userId);
+          console.log(" 필터링된 팔로잉 리스트:", filteredFollowing);
+          setFollowingCount(followingRes.length);
+        } else {
+          console.log(" [오류] 팔로잉 데이터가 배열이 아닙니다.");
+        }
+      } catch (error) {
+        console.error(" 팔로잉 리스트 가져오기 실패:", error);
+      }
     };
+    userInfo();
+  }, []);
+
+  //     setShowDropdown(!showDropdown);
+  //     navigate(`/mypage/alarm/list`);
+  // };
+
+  //  로그아웃 함수
+  const handleLogout = () => {
+    console.log("로그아웃 실행");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userId");
+    setIsAuthenticated(false);
+    setUserId(null);
+    window.location.href = "/account/login";
+  };
 
 
-    // useEffect(() => {
-    //     const res = ChatApi.getUserInfo(token)
-    //     console.log(res.data)
-    //     setUserId(res.data.id)
-    // },[])
+  // useEffect(() => {
+  //     const res = ChatApi.getUserInfo(token)
+  //     console.log(res.data)
+  //     setUserId(res.data.id)
+  // },[])
 
-    // 유저 프로필 수정 모달창 버튼
-    const ProfileEditOpenBtn = () => {
-        setProfileEditOpen(!ProfileEditOpen);
-    };
+  // 유저 프로필 수정 모달창 버튼
+  const ProfileEditOpenBtn = () => {
+    setProfileEditOpen(!ProfileEditOpen);
+  };
 
   // 유저 프로필 수정 저장 버튼
   const ProfileEditBtn = () => {
     setProfilePic(ProfilePic);
+  };
+
+  const handleClick = () => {
+
+    // markAlarmsAsRead - 사용자의 읽지 않은 알람을 모두 읽음 상태로 변경하는 기능
+    MypageApi.markAlarmsAsRead(userId).then(() => setUnreadCount(0));
+
+    setShowDropdown(!showDropdown);
+    navigate(`/mypage/alarm/list`);
   };
 
   return (
@@ -131,7 +145,7 @@ const SidebarCom = () => {
     <div className={style.sidebarContainer}>
       <div className={`Shadow ${style.userInfo}`}>
         {/* 로그인 상태에 따라 달라지는 사이드바 */}
-        {!!token ?
+        {isAuthenticated && userId ?
           //로그인 상태일 시 보이는 사이드 바
           (<>
             <div>
@@ -140,12 +154,11 @@ const SidebarCom = () => {
                 alt="can't read Img"
                 className={style.userProfilePic}
               />
-
             </div>
             <div className={style.headerNav}>
               <div className={style.userNickContainer}>
                 <span className={style.userNick}> {userNickname} </span>
-                <svg
+                {/* <svg onClick={handleClick}
                   className={style.alramIcon}
                   viewBox="0 0 16 16"
                   fill="none"
@@ -159,11 +172,12 @@ const SidebarCom = () => {
                     d="M7.99999 16C6.69378 16 5.58254 15.1652 5.1707 14H10.8293C10.4175 15.1652 9.30621 16 7.99999 16Z"
                     fill="#000000"
                   />
-                </svg>
+                </svg> */}
 
 
               </div>
-              <div className={style.userLevel}>{userLevel}</div>
+              <div className={style.userLevel}>{getLevelName(level)}</div>
+
               <ul className={style.alarmList}>
                 {/* 임시 주소 */}
                 <li>
@@ -181,12 +195,13 @@ const SidebarCom = () => {
             {/*  팔로잉 / 팔로워 버튼 추가 */}
             <div className={style.userFollowerContainer}>
               <Link to={`/mypage/following/${userId}`} className={`${style.followBtn} link`}>
-                팔로잉{" "}
+                팔로잉{followingCount}
               </Link>
               <Link to={`/mypage/followers/${userId}`} className={`${style.followBtn} link`}>
-                팔로워
+                팔로워{followerCount}
               </Link>
             </div>
+
             {/* 위치상 애매해서 뺐음 다시 넣어도 문제 없음 */}
             {/* <Link to={`/mypage/my_story/${userId}`} className="link">
           내가 쓴 글
@@ -197,6 +212,7 @@ const SidebarCom = () => {
             </button>
 
             {/* 유저 프로필 사진 변경 모달 */}
+
             <Modal
               isOpen={ProfileEditOpen}
               ariaHideApp={true}
@@ -211,7 +227,7 @@ const SidebarCom = () => {
               <input type="file" value={ProfilePic} onChange={(e) => setProfilePic(e.target.value)} />
 
               <div className={style.userId}>{userNickname}</div>
-              <div className={style.userLevel}>{ }</div>
+              <div className={style.userLevel}>{getLevelName(level)}</div>
               <button onClick={ProfileEditBtn}>저장</button>
             </Modal>
           </>) :
@@ -267,8 +283,15 @@ const SidebarCom = () => {
                 </Link>
               </li>
             </ul>
-            {!!token && <hr className={style.contourLine} />}
+            <hr className={style.contourLine} />
 
+          </li>
+          {/* 해시태그 게시판 */}
+          <li>
+            <Link to="/board/hashtags" className={`link ${style.menu}`}>
+              <span className={style.menuTitle}>해시태그</span>
+            </Link>
+            {!!token && <hr />}
           </li>
           {!!token && (<>
             {/* 채팅 목록 */}
@@ -289,6 +312,7 @@ const SidebarCom = () => {
               <hr className={style.contourLine} />
 
             </li>
+
             {/* 마이페이지 */}
             <li className="link">
               <span className={style.menuTitle}>마이페이지</span>
@@ -310,7 +334,7 @@ const SidebarCom = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/mypage/alarm/settings/${userId}`}
+                    to={`/mypage/alarm/settings`}
                     className={`link ${style.menu}`}
                   >
                     알림 설정

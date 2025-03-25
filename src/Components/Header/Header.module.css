@@ -12,9 +12,8 @@ header {
 .logo {
     margin: auto;
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 25px;
     font-family: "ADLaMDisplay-Regular";
-    background-color: antiquewhite;
     height: fit-content;
 }
 
@@ -119,9 +118,22 @@ header {
 }
 
 .userInfo {
-  background-color: darkseagreen;
+  display: flex;
+  flex-direction: column;
   font-size: 12px;
-  * {
+}
+
+.userLevel {
+  text-align: center;
+  font-size: 12px;
+}
+
+.userId {
   font-size: 15px;
 }
+
+.mypage {
+  *{
+    font-size: 12px;
+  }
 }
