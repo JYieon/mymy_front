@@ -31,7 +31,7 @@ const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
   }, [roomNum]);
 
   useEffect(() => {
-    const CreateWebSocket = () => new SockJs("http://localhost:8080/mymy/ws");
+    const CreateWebSocket = () => new SockJs("http://3.39.66.94:8080/mymy/ws");
     const stompClient = Stomp.over(CreateWebSocket);
     stompClient.connect({}, (frame) => {
       console.log(frame);

@@ -102,12 +102,12 @@ const BoardModify = (props) => {
         formData.append("file", file);
 
         try {
-            const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
+            const res = await axios.post("http://3.39.66.94:8080/mymy/board/uploadSummernoteImageFile", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
             if (res.data.fileName) {
-                let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
+                let imageUrl = `http://3.39.66.94:8080/mymy/board/upload/${res.data.fileName}`;
                 $(editorRef.current).summernote("insertImage", imageUrl);
             }
         } catch (err) {
