@@ -1,0 +1,25 @@
+.setting {
+    font-size: 20px;
+}
+.context{
+    font-size: 15px;
+}
+
+.settingContainer {
+    width: fit-content;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    /* background-color: aqua; */
+}
+
+.saveSettingBtn {
+    font-size: 15px;
+    float: right;
+    padding: 5px 20px;
+    margin-right: 50px;
+    background-color: #00284c;
+    color: white;
+    border-radius: 10px;
+  }
+  
