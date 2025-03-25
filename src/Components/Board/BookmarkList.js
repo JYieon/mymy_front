@@ -57,17 +57,10 @@ const BookmarkList = () => {
             <h1>🔖 내 북마크 목록</h1>
             <div className={style.bookmarkContainer}>
             {Array.isArray(bookmarks) && bookmarks.length > 0 ? (
-                <ul style={{ listStyleType: "none", padding: 0 }}>
+                <ul>
                     {bookmarks.map((bookmark) => (
-                        <li className={style.bookmarkItem}
-                            key={bookmark.boardNo} 
-                            style={{ 
-                                padding: "15px", 
-                                borderBottom: "1px solid #ddd",
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center"
-                            }}>
+                        <li className={style.bookmarkIWtem}
+                            key={bookmark.boardNo} >
                             <div>
                                 <h3
                                     className={style.bookmarkPostTitle}
@@ -97,7 +90,7 @@ const BookmarkList = () => {
                     ))}
                 </ul>
             ) : (
-                <p style={{ textAlign: "center", color: "#777" }}>북마크된 게시글이 없습니다.</p>
+                <p className={style.nonData}>북마크된 게시글이 없습니다.</p>
             )}
             </div>
         </div>
