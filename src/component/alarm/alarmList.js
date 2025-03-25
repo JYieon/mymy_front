@@ -87,12 +87,9 @@ const AlarmList = () => {
 
     return (
         <div className="alarm-container">
-            {/* 기존 사이드바 유지 */}
-            <SidebarCom />
-
             {/* 알림 리스트 */}
             <div className="alarm-content">
-                <h2 className="alarm-title">내 알림</h2>
+                <h1 className="alarm-title">내 알림</h1>
                 <table className="alarm-table">
                     <thead>
                         <tr>
