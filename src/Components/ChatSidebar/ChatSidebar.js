@@ -261,7 +261,7 @@ const fetchBankList = async () => {
       const res = await ChatApi.endChat(roomNum, token);
       console.log("delete", res);
       if (res.status === 200) {
-        window.location.href = "/chat/list"; // 채팅방 목록으로 이동
+        window.location.href = "/chat/List"; // 채팅방 목록으로 이동
       } else {
         alert("채팅방 나가기 실패");
       }
