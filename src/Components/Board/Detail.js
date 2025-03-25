@@ -10,7 +10,6 @@ import ReadingOnlyTimeline from "./ReadingOnlyTimeline";
 import TimelineApi from "../../api/TimelineApi";
 import MapApi from "../../api/MapApi";
 import ReadingOnlyKakaoMap from "./ReadingOnlyKakaoMap";
-import { motion } from "framer-motion";
 
 const Detail =()=>{
   const location = useLocation();
@@ -22,7 +21,6 @@ const Detail =()=>{
   const [hashtags, setHashtags] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState("");
   const [timelineId, SetTimelineId] = useState("");
-  const [isOpen,setOpen] = useState(false);
   const token = localStorage.getItem("accessToken");
 
     // 로그인한 사용자 정보 가져오기
@@ -234,7 +232,6 @@ const Detail =()=>{
     <Link to={`../list?category=${data.boardCategory}`} className={`link`}>
       뒤로가기
     </Link>
-    <button onClick={setOpen(!isOpen)}>클릭</button>
     <div className={style.postContainer}>
       <div className={style.postInfoContainer}>
         <h1 className={style.title}>{data.title}</h1>
@@ -272,12 +269,9 @@ const Detail =()=>{
       <div className={style.content}>
         <pre className={style.post} dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\\n', '') }} />
       </div>
-      <motion.div
-      initial={{scaleY:"0"}}
-      animate={{scaleY: isOpen ? "1":"0"}}
-      transition={{}}>
-        안녕하세요
-      </motion.div>
+      <motion>
+        
+      </motion>
         {/* 타임라인 및 지도 (계획 게시글만) */}
         {data.boardCategory === 1 &&
           (<div className={style.category1Option}>
@@ -285,8 +279,7 @@ const Detail =()=>{
             <div><ReadingOnlyTimeline SetTimelineId={SetTimelineId} /></div>
           </div>)
         }
-
-
+        
       {/* 해시태그 (기록 게시글만) */}
       {data.boardCategory === 2 && (
         <div>
@@ -312,9 +305,7 @@ const Detail =()=>{
           )}
         </div>
       )}
-
       <hr />
-
       {/* 기록 게시글(2)만 좋아요 & 북마크 가능 */}
       {data.boardCategory === 2 && (
         <div className={style.userReaction}>
@@ -384,12 +375,7 @@ const Detail =()=>{
         </div>
       )}
       <div className={style.shareContainer}>
-        {/* <input
-        type="url"
-        value={`localhost:3000${location.pathname}`}
-        onClick={urlShare}
-        readOnly
-      /> */}
+
         <button className={style.KakaoShare}>카톡 공유</button>
         <button className={style.pdfShare}>PDF 공유</button>
         <button className="Sharebtn" onClick={urlShare}>
