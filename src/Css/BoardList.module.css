@@ -9,8 +9,12 @@
 
 .categoryBtns {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   margin-bottom: 20px;
+  margin-right: 20px;
+  * {
+    margin: 0px 5px;
+  }
 }
 
 .categoryBtns a {
@@ -159,13 +163,12 @@
   }
 }
 
-hr {
-  width: 100%;
-}
+/* 테이블 */
 
 table {
-  margin: 0 20px;
+  margin: 30px auto;
   border-spacing: 0px 5px;
+  width: 90%;
 }
 th {
   height: 30px;
@@ -181,6 +184,8 @@ td {
   border-bottom: 1px black solid;
   border-collapse: collapse;
   white-space: nowrap;
+  background-color: #0076ff;
+
 }
 
 .bmTitle {
@@ -188,18 +193,93 @@ td {
 }
 
 .boardTableContainer {
-  /* background-color: tomato; */
   min-height: 400px;
   max-height: 730px;
 }
 
-.bookmakrPostTitle {
+/* 북마크 , 팔로워, 팔로잉, 채팅 목록 */
+
+.bookmarkContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  height: 600px;
+  overflow-y: scroll;
+}
+
+.bookmarkItem {
+  margin: 0 auto;
+  margin: 50px;
+  display: flex;
+  padding: 10px 20px;
+  justify-content: space-between;
+  border-radius: 20px;
+  height: fit-content;
+}
+
+.bookmarkPostTitle {
   color: #0076ff;
   cursor: pointer;
+  font-size: 15px;
   text-decoration: underline;
 }
 
 .bookmarkUserId {
   margin: 5px 0;
   color: #555;
+  font-size: 15px;
+}
+
+.viewPostBtn {
+  border: none;
+  background-color: #00284c;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 5px 10px;
+  width: fit-content;
+  margin: 20px;
+  border-radius: 100px;
+}
+
+.removeBmBtn {
+  background: none;
+  color: tomato;
+}
+
+/* 데이터가 없을 시 나올 문구 */
+
+.nonData {
+  text-align: center;
+  color: grey;
+}
+
+.followerPicContainer {
+  background-color: #00284c;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+}
+
+.followerPic {
+  background-color: aquamarine;
+  justify-content: center;
+  border-radius: 100%;
+  align-items: center;
+  overflow: hidden;
+  font-size: 10px;
+
+}
+
+.followItem {
+  padding: 1%;
+  margin: 20px auto;
+  margin-left: 50px;
+  border-radius: 20px;
+  display: flex;
+  * {
+    margin: 5px;
+  }
 }
