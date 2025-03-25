@@ -77,12 +77,7 @@ const Detail = () => {
   // 좋아요 토글
   const toggleLike = async () => {
     if (!data) return;
-  // 좋아요 토글
-  const toggleLike = async () => {
-    if (!data) return;
 
-    const newLiked = !liked;
-    const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
     const newLiked = !liked;
     const newLikes = liked ? data.boardLikes - 1 : data.boardLikes + 1;
 
