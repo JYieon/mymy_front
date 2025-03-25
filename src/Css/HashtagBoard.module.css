@@ -8,7 +8,8 @@
   
   .section {
     margin-bottom: 40px;
-    border: 2px solid #00284c; /* 테두리를 네이비 색상으로! */
+    border: 2px solid #00284c;
+     /* 테두리를 네이비 색상으로! */
     border-radius: 12px;
     padding: 24px;
     background-color: #fff;
