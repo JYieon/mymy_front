@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
 import MapApi from "../../api/MapApi"; 
-import style from "../../Css/Kakao.module.css";
+
 const KakaoMap = ({boardNo}) => {
     // const { boardNo } = useParams();
     const [selectedMarkers, setSelectedMarkers] = useState([]);
@@ -85,7 +85,7 @@ const KakaoMap = ({boardNo}) => {
         const marker = new window.kakao.maps.Marker({ position, map: mapInstance });
 
         const infowindow = new window.kakao.maps.InfoWindow({
-            content: `<div style={{padding:"5px", borderRadius:"10px"}}>입력 후 저장</div>`,
+            content: `<div style="padding:5px;">입력 후 저장</div>`,
             removable: true,
         });
 
@@ -147,19 +147,19 @@ const KakaoMap = ({boardNo}) => {
     };
 
     return (
-        <div className={style.mapContainer}>
-            <div id="map"className={style.map}/>
+        <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <h2>📌 게시판 {boardNo}의 지도</h2>
+            <div id="map" style={{ width: "500px", height: "400px", borderRadius: "10px" }}></div>
             {pendingMarker && (
-                <div className={`${style.infoWindow} Shadow`}>
+                <div style={{ marginTop: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "5px", background: "#fff" }}>
+                    <h3>📝 인포윈도우 입력</h3>
                     <input
                         type="text"
                         value={newContent}
                         onChange={(e) => setNewContent(e.target.value)}
-                        className={style.infoInput}
-                        placeholder="저장할 장소를 입력해주세요!"
+                        style={{ padding: "8px", marginRight: "10px", borderRadius: "5px", border: "1px solid #ddd" }}
                     />
-                    <button onClick={handleSaveMarker}
-                    className={style.saveBtn}>
+                    <button onClick={handleSaveMarker} style={{ padding: "8px 15px", background: "#28a745", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
                         저장
                     </button>
                 </div>
@@ -167,14 +167,14 @@ const KakaoMap = ({boardNo}) => {
 
             {editMode && pendingMarker && (
                 <button onClick={() => handleDeleteMarker(pendingMarker.markerId, pendingMarker.marker)}
+                    style={{ padding: "8px 15px", background: "#dc3545", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", marginTop: "10px" }}
                 >
                     ❌ 삭제
                 </button>
             )}
 
-            <button onClick={handleDeleteAllMarkers}
-            className={style.markerDeleteBtn}
-            >모든 마커 삭제
+            <button onClick={handleDeleteAllMarkers} style={{ marginTop: "20px", padding: "8px 15px", background: "#dc3545", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+                ❌ 모든 마커 삭제
             </button>
         </div>
     );
