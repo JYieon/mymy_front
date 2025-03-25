@@ -108,9 +108,12 @@ const BoardList = () => {
           params: { page, category, searchType, keyword },
         }
       );
+      console.log(response)
+      const filteredBoardList = filterBoardList(response.data.boardList, localStorage.getItem("accessToken"));
+
       const updatedPageState = { ...pageState };
       updatedPageState[category] = {
-        boardList: response.data.boardList.map((post) => ({
+        boardList: filteredBoardList.map((post) => ({
           ...post,
           thumbnail: extractThumbnail(post),
         })),
@@ -221,6 +224,7 @@ const BoardList = () => {
           <option value="title">제목</option>
           <option value="content">내용</option>
           <option value="titleContent">제목+내용</option>
+          {category === 2 && <option value="tag">해시태그</option>}
         </select>
         <input
           type="text"
@@ -229,7 +233,7 @@ const BoardList = () => {
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="검색어를 입력하세요"
         />
-        <button className={style.SearchBtn} onClick={searchBoardList}>
+        <button className={style.SearchBtn} onClick={handleSearch}>
           검색
         </button>
       </div>

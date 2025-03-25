@@ -250,7 +250,7 @@ const Reply = ({ boardNo, category }) => {
             <h3>💬</h3>
         <hr className={style.hr}/>
 
-            {/* {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>} */}
+            {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>}
             
             {/* 새 댓글 작성 */}
             {/* <h3>📝 댓글 작성</h3> */}
@@ -264,7 +264,7 @@ const Reply = ({ boardNo, category }) => {
                     onChange={(e) => setNewReply(e.target.value)}
                     placeholder="댓글을 입력하세요"
                 />
-                <button className={style.newReplyBtn} onClick={() => handleAddReply(0)}>등록</button>
+                <button onClick={() => handleAddReply(0)}>등록</button>
             </div>
         </div>
     );

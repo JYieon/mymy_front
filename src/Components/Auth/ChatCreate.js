@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatApi from "../../api/ChatApi";
 import { useNavigate } from "react-router-dom";
 import style from "../../Css/ChatLayout.module.css";
@@ -6,6 +6,14 @@ import style from "../../Css/ChatLayout.module.css";
 const ChatCreate = () => {
   const [roomName, setRoomName] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/account/login"); // 로그인 페이지로 이동
+    }
+  }, [navigate]);
 
   const createRoom = async () => {
     const token = localStorage.getItem("accessToken");

@@ -96,6 +96,12 @@ const ChatSidebarCom = () => {
     const getChatRoom = async () => {
           try {
             const res = await ChatApi.getChatMessages(roomNum);
+
+            if(res.status === 204){
+              alert("존재하지 않는 채팅방입니다.");
+              navigate("/");
+            }
+
             console.log(res.data);
             setMemberNum(res.data.member.length);
             setChatUserInfo(res.data.member);
@@ -199,10 +205,16 @@ const VerfiyBeforeAction = (action) => {
 
 const fetchBankList = async () => {
   const resBank = await ChatApi.getBankList(roomNum);
-  const resSer = await ChatApi.getBankServiceList(roomNum);
   setBankList(resBank.data)
-  setBankServiceList(resSer.data)
+  if (resBank.data.bankNum) {
+    await fetchBankServiceList(resBank.data.bankNum);
+  }
   console.log(bankServiceList)
+}
+
+const fetchBankServiceList = async (bankNum) => {
+  const resSer = await ChatApi.getBankServiceList(bankNum);
+  setBankServiceList(resSer.data)
 }
 
   // 모임 통장 모달 여는 버튼
