@@ -131,8 +131,8 @@ function App() {
             />
 
             {/*  팔로잉 / 팔로워 목록 페이지 추가 */}
-            <Route path="following" element={<FollowingList />} />
-            <Route path="followers" element={<FollowerList />} />
+            <Route path="following/:id" element={<FollowingList />} />
+            <Route path="followers/:id" element={<FollowerList />} />
           </Route>
           {/* 알림 목록 */}
 
