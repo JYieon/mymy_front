@@ -54,7 +54,7 @@ const AlarmSettings = () => {
     return (
         <div className={style.alarmConatiner}>
             <h1>🔔 알림 설정</h1>
-            <hr className=""/>
+            <hr className="hr"/>
             {/* 게시글 알림 설정 */}
             <div className={style.settingContainer}>
             <div className={style.setting}>
