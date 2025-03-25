@@ -240,12 +240,13 @@ const BoardList = () => {
 
       <div className={style.boardGrid}>
         {boardList.map((post) => {
-          {post.boardOpen === 0 ? (<></>):
-          (<div key={post.boardNo} className={`Shadow ${style.boardItem}`}>
+          console.log(post);
+          return (
+            <div key={post.boardNo} className={`Shadow ${style.boardItem}`}>
               <Link to={`/board/detail/${post.boardNo}`} className="link">
                 <img src={post.thumbnail} alt="썸네일" className="thumbnail" />
                 <h3 className={style.PostTitle}>
-                  {post.title} 
+                  {post.boardOpen === 0 ? "🔒 " : ""}{post.title} 
                 </h3>
                 <div className="PostInfo">
                   <div>조회수<span className="value">{post.boardCnt}</span></div>
@@ -256,14 +257,14 @@ const BoardList = () => {
                 <div className="WriterId">
                   {/* 'anonymous'일 경우 '알 수 없음'으로 표시하고, 그 외의 경우에는 프로필 링크로 */}
                   {post.id === 'anonymous' ? '알 수 없음' :
-                    <Link to={`/profile/${post.id}`} className={`link ${style.writer}`}>
+                    <Link to={`/profile/${post.id}`} className={style.writer}>
                       {post.id}
                     </Link>}
                 </div>
 
               </Link>
             </div>
-          ); }
+          );
         })}
       </div>
       {/* 글쓰기 버튼 추가 */}
