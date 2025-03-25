@@ -49,7 +49,7 @@ const FollowerList = () => {
 
 
 
-    // axios.get(`http://localhost:8080/mymy/follow/followers?token=${token}`)
+    // axios.get(`http://3.39.66.94:8080/mymy/follow/followers?token=${token}`)
     //     .then(response => {
     //         console.log("팔로워 목록 응답:", response.data);
     //         setFollowers(Array.isArray(response.data) ? response.data : []); //  응답이 배열인지 체크

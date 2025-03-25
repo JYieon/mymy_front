@@ -1,7 +1,7 @@
 import axios from "axios";
 import { param } from "jquery";
 
-const domain = "http://localhost:8080/mymy/chat";
+const domain = "http://3.39.66.94:8080/mymy/chat";
 
 const ChatApi =  {
     getChatList : async (token) => {

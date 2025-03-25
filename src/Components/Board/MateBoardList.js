@@ -139,7 +139,7 @@ const MateBoardList = () => {
 
 
 
-      {/* <div className={style.Paginations}>
+      <div className={style.Paginations}>
         <div className={style.Pagination}>
           <button onClick={() => setPage(page - 1)} disabled={page === 1}>
             &lt; 이전
@@ -147,7 +147,7 @@ const MateBoardList = () => {
           <span> {page} </span>
           <button onClick={() => setPage(page + 1)}>다음 &gt;</button>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

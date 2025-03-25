@@ -11,7 +11,7 @@ const HashtagBoard = () => {
   useEffect(() => {
     const fetchSplitHashtags = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/mymy/board/hashtags/split");
+        const response = await axios.get("http://3.39.66.94:8080/mymy/board/hashtags/split");
         setTestTags(response.data.testTags);
         setNormalTags(response.data.normalTags);
       } catch (error) {

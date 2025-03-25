@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://localhost:8080/mymy";
+const domain = "http://3.39.66.94:8080/mymy";
 
 
 const MypageApi = {
@@ -154,7 +154,7 @@ const MypageApi = {
 
         try {
             const response = await axios.post(
-                "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
+                "http://3.39.66.94:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
                 { no },
                 {
                     headers: {

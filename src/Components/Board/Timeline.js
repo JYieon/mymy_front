@@ -135,6 +135,8 @@ const Timeline = ({ boardNo }) => {
   const selectedTasks = todoList[selectedDate] || [];
 
   return (
+    <>
+    {/* 메인 수정 타임라인 */}
     <div className={` ${style.container}`}>
       {/* <h2 className={style.title}>🛫 여행 타임라인 계획</h2> */}
 
@@ -181,7 +183,7 @@ const Timeline = ({ boardNo }) => {
 
       {/* <div className={`Shadow`}></div> */}
       <div className={`Shadow ${style.dateSelection}`}>
-        <label className={style.label}>📅</label>
+        <label className={style.label}>날짜 선택</label>
         <input
           type="date"
           value={selectedDate}
@@ -192,11 +194,11 @@ const Timeline = ({ boardNo }) => {
         />
 
         <div className={`${style.todoSection}`}>
-          <h3>📍 일정 추가 ({selectedDate || "날짜 선택"})</h3>
+          <h3>{selectedDate || "날짜 선택"}</h3>
           <button className={style.addButton} onClick={handleAddTask}>
-            + 일정 추가
+            일정 추가
           </button>
-          <hr />
+          <hr className={``}/>
           <div className={style.TodoList}>
             {/* 서버에서 자동으로 불러와짐 */}
             {selectedTasks.map((todo, index) => (
@@ -251,15 +253,99 @@ const Timeline = ({ boardNo }) => {
               </div>
             ))}
           </div>
-          <button className={style.updateButton} onClick={handleUpdateTasks}>
-            🔄 수정
+          {/* <button className={style.updateButton} onClick={handleUpdateTasks}>
+            수정
           </button>
           <button className={style.saveButton} onClick={handleSaveTasks}>
-            💾 저장
-          </button>
+            저장
+          </button> */}
         </div>
       </div>
     </div>
+    <div className={` ${style.subContainer}`}>
+      {/* <div className={`Shadow`}></div> */}
+      <div className={`Shadow ${style.dateSelection}`}>
+        <label className={style.label}>날짜 선택</label>
+        <input
+          type="date"
+          value={selectedDate}
+          min={startDate}
+          max={endDate}
+          readOnly
+          onChange={(e) => setSelectedDate(e.target.value)} // selectedDate 업데이트
+          className={style.input}
+        />
+
+        <div className={`${style.todoSection}`}>
+          <h3>{selectedDate || "날짜 선택"}</h3>
+          <button className={style.addButton} onClick={handleAddTask}>
+            일정 추가
+          </button>
+          <hr className={``}/>
+          <div className={style.TodoList}>
+            {/* 서버에서 자동으로 불러와짐 */}
+            {selectedTasks.map((todo, index) => (
+              <div key={index} className={`Shadow ${style.todoItem}`}>
+                {/* 일정 시간 묶음 */}
+                <div>
+                  {/* 시작 시각 */}
+                  <input
+                    type="time"
+                    value={todo.startTime}
+                    onChange={(e) =>
+                      handleChange(index, "startTime", e.target.value)
+                    }
+                    className={style.timeInput}
+                  />
+                  <span className={style.timeDash}>~</span>
+                  {/* 종료 시각 */}
+                  <input
+                    type="time"
+                    value={todo.endTime}
+                    onChange={(e) =>
+                      handleChange(index, "endTime", e.target.value)
+                    }
+                    className={style.timeInput}
+                  />
+                </div>
+                {/* 일정 */}
+                <input
+                  type="text"
+                  value={todo.task}
+                  placeholder="일정을 적어보세요!"
+                  onChange={(e) => handleChange(index, "task", e.target.value)}
+                  className={style.taskInput}
+                />
+                <textarea
+                  ref={subTaskRef}
+                  value={todo.subTask}
+                  placeholder="세부 사항"
+                  onChange={(e) =>
+                    handleChange(index, "subTask", e.target.value)
+                  }
+                  onInput={handleResizeHeight}
+                  rows={1}
+                  className={style.subTaskInput}
+                ></textarea>
+                <button
+                  className={style.deleteButton}
+                  onClick={() => handleDeleteTask(index)}
+                >
+                  삭제
+                </button>
+              </div>
+            ))}
+          </div>
+          {/* <button className={style.updateButton} onClick={handleUpdateTasks}>
+            수정
+          </button>
+          <button className={style.saveButton} onClick={handleSaveTasks}>
+            저장
+          </button> */}
+        </div>
+      </div>
+    </div>
+    </>
   );
 };
 
