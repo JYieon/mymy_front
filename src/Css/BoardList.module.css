@@ -207,10 +207,14 @@ td {
 
 .bookmarkItem {
   margin: 0 auto;
-  margin: 20px;
-  margin-left: 50px;
-  /* background-color: aqua; */
+  margin: 50px;
+  display: flex;
+  padding: 10px 20px;
+  justify-content: space-between;
+  border-radius: 20px;
+  height: fit-content;
 }
+
 .bookmarkPostTitle {
   color: #0076ff;
   cursor: pointer;
@@ -249,10 +253,22 @@ td {
   color: grey;
 }
 
-.followerPic {
+.followerPicContainer {
+  background-color: #00284c;
+  border-radius: 100%;
   width: 50px;
   height: 50px;
+  display: flex;
+}
+
+.followerPic {
+  background-color: aquamarine;
+  justify-content: center;
   border-radius: 100%;
+  align-items: center;
+  overflow: hidden;
+  font-size: 10px;
+
 }
 
 .followItem {
