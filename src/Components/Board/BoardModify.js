@@ -9,6 +9,7 @@ import ChatApi from "../../api/ChatApi";
 import TimelineApi from "../../api/TimelineApi";
 import TimelineModify from "./TimelineModify";
 import style from "../../Css/BoardModify.module.css";
+import KakaoMap from "./KakaoMap";
 
 const BoardModify = (props) => {
     const { boardNo } = useParams();
@@ -167,6 +168,9 @@ const BoardModify = (props) => {
 
         try {
             if (boardCategory===1) {
+
+
+
                     try {
                       const response = await TimelineApi.updateTimelineTodo(timelineData);
                     } catch (error) {
@@ -190,17 +194,21 @@ const BoardModify = (props) => {
         }
     };
 
+    const TimelineBtn=()=>{
+
+    };
+
 
     return (
         <div>
-            <h2>📝 게시글 수정</h2>
+            <h1>📝 게시글 수정</h1>
             <div className={style.modifyContainer}>
             <form onSubmit={handleSubmit} id="modify">
-                <div>
-                    <label>제목:</label>
+                <div className={`Shadow ${style.editorContainerItem}`}>
+                    <label  className={style.titleInput}>제목</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className={style.input}
                         placeholder="제목을 입력하세요"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -209,7 +217,6 @@ const BoardModify = (props) => {
                 </div>
 
                 <div>
-
                     {boardCategory === 2 && (
                         <>
                             <label>공개 여부:</label>
@@ -224,12 +231,12 @@ const BoardModify = (props) => {
                 </div>
 
                 <div>
-                    <label>본문:</label>
+                    <label></label>
                     <div ref={editorRef}></div>
 
                 </div>
 
-                {boardCategory !== 1 && (
+                {boardCategory === 2 && (
                     <div>
                         <label>해시태그:</label>
                         <div className="hashtag-input">
@@ -254,10 +261,18 @@ const BoardModify = (props) => {
                         </div>
                     </div>
                 )}
-            </form>
-            {boardCategory === 1 && (
+                <br/>
+                {boardCategory === 1 && (
+                <div className={style.boardCategory1Option}>
+                <KakaoMap boardNo={boardNo} />
+
                 <TimelineModify setTimelineId={setTimelineId} settimelineData={settimelineData} />
+
+                </div>
+
             )}
+            </form>
+
             </div>
             <button type="submit" form="modify" className={`${style.btn} btn-primary mt-3`}>수정 완료</button>
 
