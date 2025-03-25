@@ -125,18 +125,24 @@ hr {
 .shareContainer {
     text-align: center;
     button {
-        
         padding: 5px;
-        margin: 10px;
+        margin: 0px 10px;
         border: none;
         background-color: #00284C;    
     }
 }
 
-.category1Option {
+.planContainer {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: aqua;
 }
 
-.kakaoMap {
-    margin: 0 auto;
-}
+
+.kakaoMap{
+    margin: 20px  auto;
+    width: 500px;
+    height: 400px;
+    border-radius: 10px;
+  }

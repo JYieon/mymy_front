@@ -3,12 +3,11 @@
   flex-direction: column;
   width: auto;
   min-width: 300px;
-  max-width: 400px;
+  max-width: 600px;
   margin: auto;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
-
 }
 
 .subContainer {
@@ -64,12 +63,15 @@
 }
 
 .input {
-  padding: 8px;
+  padding: 5px;
   margin: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid whitesmoke;
   border-radius: 100px;
   width: 60%;
   text-align: center;
+  &:focus {
+    outline: none;
+  }
 }
 
 .Destination {
@@ -97,10 +99,9 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 10px 0px 10px;
+  padding: 10px 0px 0px 0px;
   border-radius: 10px;
   background-color: whitesmoke;
-
   margin: 20px 0;
 }
 .deleteButton {
@@ -114,7 +115,6 @@
 }
 
 .timeInput {
-  margin: 5px;
   padding: 0 5px;
   border: none;
   font-size: 10px;
@@ -124,20 +124,25 @@
   box-shadow: 0 0 20px #ddd;
 }
 
-.timeDash {
+/* .timeDash {
   margin: 0 5px;
   font-size: 18px;
-}
+} */
 
 .taskInput {
-  padding: 5px 20px;
+  padding: 5px 10px;
   margin: 10px 0;
+  width: 80%;
+  
   border-radius: 100px;
   border: none;
   background: none;
   font-size: 12px;
   /* background-color: whitesmoke; */
   box-shadow: 0 0 20px #ddd;
+  &:focus {
+    outline: none;
+  }
 }
 
 .subTaskInput {
@@ -148,10 +153,12 @@
   border: none;
   background: none;
   width: 90%;
-  font-size: 10px;
+  font-size: 12px;
   box-sizing: border-box;
   border-radius: 20px;
   box-shadow: 0 0 20px #ddd;
+    &:focus {
+    outline: none;}
 }
 .addButton {
   float: right;
@@ -189,4 +196,8 @@ background-color: #00284c;
   border-radius: 10px;
   cursor: pointer;
   background: #00284c;
+}
+
+.ContentSection {
+  width: 1200px;
 }

@@ -5,6 +5,8 @@ import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import Reply from "./Reply";
 import style from "../../Css/BoardDetail.module.css";
 
+import { easeIn, motion } from "framer-motion";
+
 import ReadingOnlyTimeline from "./ReadingOnlyTimeline";
 import TimelineApi from "../../api/TimelineApi";
 import MapApi from "../../api/MapApi";
@@ -20,6 +22,7 @@ const Detail = () => {
   const [hashtags, setHashtags] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState("");
   const [timelineId, SetTimelineId] = useState("");
+  const [timelineOpen, setTimelineOpen] = useState("");
   const token = localStorage.getItem("accessToken");
 
 
@@ -138,6 +141,7 @@ const Detail = () => {
       try {
         const isBookmarted = await BoardApi.checkBookmark(boardNo, token);
         // console.log("isbookmarked",isBookmarted.data);
+
         if (isBookmarted.data) {
           try {
             const success = await BoardApi.toggleBookmark(boardNo, token);
@@ -156,7 +160,7 @@ const Detail = () => {
           try {
             const success = await TimelineApi.deleteTimeline(timelineId);
             if (success === 200) {
-            console.log('✅ 타임라인 삭제 완료!')
+              console.log('✅ 타임라인 삭제 완료!')
             }
           } catch (error) {
             console.error("❌ 타임라인 삭제 실패");
@@ -169,19 +173,14 @@ const Detail = () => {
           try {
             const success = await MapApi.deleteAllMarkersByBoard(boardNo);
             if (success === 200) {
-            console.log('✅ 맵 마커 삭제 완료!')
+              console.log('✅ 맵 마커 삭제 완료!')
             }
           } catch (error) {
             console.error("❌ 맵 마커 삭제 실패");
 
           }
         }
-
         const res = await BoardApi.delete(boardNo, token);
-        console.log('게시글 삭제 완료!')
-
-        console.log("boardNo", boardNo, "\n token", token);
-
         if (res.status === 200) {
           console.log('✅ 게시글 삭제 완료!')
           alert("게시글이 삭제되었습니다.");
@@ -223,7 +222,6 @@ const Detail = () => {
   if (!data) {
     return <p>로딩 중...</p>;
   }
-
 
 
   return (
@@ -268,13 +266,7 @@ const Detail = () => {
         <div className={style.content}>
           <pre className={style.post} dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\\n', '') }} />
 
-          {/* 타임라인 및 지도 (계획 게시글만) */}
-          {data.boardCategory === 1 &&
-            (<>
-              <ReadingOnlyKakaoMap boardNo={boardNo} />
-              <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
-            </>)
-          }
+
         </div>
         {/* 해시태그 (기록 게시글만) */}
         {data.boardCategory === 2 && (
@@ -301,9 +293,32 @@ const Detail = () => {
             )}
           </div>
         )}
-
         <hr />
 
+
+        {/* 타임라인 및 지도 (계획 게시글만) */}
+        {data.boardCategory === 1 &&
+          (
+            <>
+            <button onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
+            <motion.div className={style.planContainer}
+            initial={{ scaleY: 0 }}
+            transition={{
+              easeIn: "easeIn",
+              duration: 0.3
+            }}
+            animate={{
+              scaleY: timelineOpen ? 1 : 0,
+              display: timelineOpen ? "block" : "none",
+            }}
+          >
+            <ReadingOnlyKakaoMap boardNo={boardNo} />
+            <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
+            <hr />
+
+          </motion.div>
+            </>
+)}
         {/* 기록 게시글(2)만 좋아요 & 북마크 가능 */}
         {data.boardCategory === 2 && (
           <div className={style.userReaction}>
@@ -373,17 +388,11 @@ const Detail = () => {
           </div>
         )}
         <div className={style.shareContainer}>
-          {/* <input
-          type="url"
-          value={`localhost:3000${location.pathname}`}
-          onClick={urlShare}
-          readOnly
-        /> */}
           <button className={style.KakaoShare}>카톡 공유</button>
           <button className={style.pdfShare}>PDF 공유</button>
           <button className="Sharebtn" onClick={urlShare}>
-          공유하기
-        </button>
+            공유하기
+          </button>
         </div>
 
         {/* 기록 게시글(2)만 댓글 가능 */}

@@ -10,6 +10,7 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
+  const [ timelinePage ,setTimelinePage ]=useState("");
 
   useEffect(() => {
     if (!token) {
@@ -22,17 +23,21 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
   }, []);
 
   // 타임라인 데이터 가져오기
+
+
   const fetchTimeline = async () => {
+    
     try {
-      console.log("타임라인 게시글 번호", boardNo)
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
         SetTimelineId(response.data.timelineId);
         setStartDate(response.data.startDt);
         setSelectedDate(response.data.startDt);
         setEndDate(response.data.endDt);
+        setTimelinePage(endDate-startDate);
         setLocation(response.data.location);
         setTodoList(JSON.parse(response.data.todo) || {});
+        console.log("타임라인 게시글 데이터", response.data)
       }else {
 
       }
@@ -93,7 +98,7 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
         </div>
       </div>
 
-      {/* <div className={`Shadow`}></div> */}
+      
       <div className={`Shadow ${style.dateSelection}`}>
         <label className={style.label}>📅</label>
         <input
@@ -152,6 +157,7 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
             ))}
           </div>
         </div>
+        
       </div>
     </div>
   );
