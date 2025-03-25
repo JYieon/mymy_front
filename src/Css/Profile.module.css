@@ -26,8 +26,6 @@
     background-color: #ddd;
     min-width: 100px;
     min-height: 100px;
-
-
     width: 100px;
     height: 100px;
     margin-bottom: -80px;
@@ -42,10 +40,13 @@
     margin-left: 30px;
     font-size: 25px;
 }
+
 .followBtn {
+    margin: auto;
+    margin-right: 30px;
     float: right;
     padding: 5px 10px;
-    font-size:13px;
+    font-size:16px;
 }
 
 .mypost {

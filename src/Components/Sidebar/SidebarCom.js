@@ -194,10 +194,10 @@ const SidebarCom = () => {
             </div>
             {/*  팔로잉 / 팔로워 버튼 추가 */}
             <div className={style.userFollowerContainer}>
-              <Link to={`/mypage/following`} className={`${style.followBtn} link`}>
+              <Link to={`/mypage/following/${userId}`} className={`${style.followBtn} link`}>
                 팔로잉{followingCount}
               </Link>
-              <Link to={`/mypage/followers`} className={`${style.followBtn} link`}>
+              <Link to={`/mypage/followers/${userId}`} className={`${style.followBtn} link`}>
                 팔로워{followerCount}
               </Link>
             </div>

@@ -12,7 +12,9 @@
   justify-content: flex-end;
   margin-bottom: 20px;
   margin-right: 20px;
-  * {margin: 0px 5px;}
+  * {
+    margin: 0px 5px;
+  }
 }
 
 .categoryBtns a {
@@ -195,18 +197,19 @@ td {
 
 /* 북마크 , 팔로워, 팔로잉, 채팅 목록 */
 
-
 .bookmarkContainer {
   display: flex;
   flex-direction: column;
   margin: 20px auto;
+  height: 600px;
+  overflow-y: scroll;
 }
 
-.bookmarkItem{
+.bookmarkItem {
   margin: 0 auto;
   margin: 20px;
   margin-left: 50px;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
 .bookmarkPostTitle {
   color: #0076ff;
@@ -235,11 +238,11 @@ td {
 }
 
 .removeBmBtn {
-  background:none;
+  background: none;
   color: tomato;
 }
 
-데이터가 없을 시 나올 문구
+/* 데이터가 없을 시 나올 문구 */
 
 .nonData {
   text-align: center;
@@ -250,4 +253,15 @@ td {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+}
+
+.followItem {
+  padding: 1%;
+  margin: 20px auto;
+  margin-left: 50px;
+  border-radius: 20px;
+  display: flex;
+  * {
+    margin: 5px;
+  }
 }
