@@ -44,7 +44,7 @@ const HashtagBoard = () => {
         {testTags.length > 0 ? renderTags(testTags) : <p>등록된 해시태그가 없습니다.</p>}
       </div>
 
-      <h1>📌 일반 해시태그</h1>
+      <h1>일반 해시태그</h1>
       <div className={style.hashtagList}>
         {normalTags.length > 0 ? renderTags(normalTags) : <p>등록된 해시태그가 없습니다.</p>}
       </div>

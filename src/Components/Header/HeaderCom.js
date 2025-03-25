@@ -153,6 +153,9 @@ const HeaderCom = ({ headerDisplay }) => {
                                     </li>
                                 </ul>
                             </li>
+                            <li className={style.headerMenu} id="커뮤니티">
+                                <Link to={`/board/hashtags`} className={`link ${style.boardBtn}`}>해시태그</Link>
+                            </li>
                             {/* 로그인 상태에 따라 달라지는 헤더 */}
                             {isAuthenticated ?
                                 //로그인 상태일 시 보여지는 헤더
