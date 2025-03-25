@@ -7,9 +7,6 @@ const BookmarkList = () => {
     const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
-    const [bookmarks, setBookmarks] = useState([]); // 북마크 목록 상태
-    const navigate = useNavigate();
-    const token = localStorage.getItem("accessToken");
 
     // 북마크 목록 불러오기
     const fetchBookmarks = async () => {
@@ -89,9 +86,7 @@ const BookmarkList = () => {
                                     <Link to={`/profile/${bookmark.id}`} className={`link`}>{bookmark.id}</Link> | {bookmark.date}
                                 </p>
                             </div>
-                            <div className={style.bmController}>
-                                <button
-                                    onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
+                        
                             <div className={style.bmController}>
                                 <button
                                     onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
@@ -99,8 +94,7 @@ const BookmarkList = () => {
                                 >
                                     게시글 보기
                                 </button>
-                                <button
-                                    onClick={() => handleRemoveBookmark(bookmark.boardNo)}
+
                                 <button
                                     onClick={() => handleRemoveBookmark(bookmark.boardNo)}
                                     className={style.removeBmBtn}
