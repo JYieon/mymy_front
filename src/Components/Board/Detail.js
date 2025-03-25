@@ -240,7 +240,7 @@ const Detail = () => {
               <span className={style.writer}>
                 {/* 'anonymous'일 경우 '알 수 없음'으로 표시하고, 그 외의 경우에는 프로필 링크로 */}
                 작성자 | {data.id === 'anonymous' ? '알 수 없음' :
-                  <Link to={`/profile/${data.id}`} className={style.writer}>
+                  <Link to={`/profile/${data.id}`} className={`link`}>
                     {data.id}
                   </Link>}
               </span>

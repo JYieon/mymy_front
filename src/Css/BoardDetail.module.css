@@ -15,20 +15,19 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
 }
 
 .postInfo {
     font-size: 13px;
 }
+
 .title {
     margin:20px;
-    
+  
     
 }
 .writer {
     font-size: 15px;
-    float: left;
     margin: 5px ;
 
 }
@@ -110,11 +109,12 @@ hr {
     display: flex;
     justify-content: space-between;
 }
+
 .editBtnContainer{
     display: flex;
     justify-content: flex-end;
-    margin-top: 10px;
-    margin-bottom: auto;
+    margin-top: 5px;
+    /* margin-bottom: auto; */
     button {
         background: none;
         border: none;
@@ -129,6 +129,14 @@ hr {
         padding: 5px;
         margin: 10px;
         border: none;
-        background-color: aliceblue;    
+        background-color: #00284C;    
     }
+}
+
+.category1Option {
+    display: flex;
+}
+
+.kakaoMap {
+    margin: 0 auto;
 }

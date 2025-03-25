@@ -9,12 +9,11 @@
 .id {
     /* background-color: aqua; */
     margin: 0 20px;
-    font-size: 20px;
+    font-size: 13px;
 }
 
 .content {
     margin: 5px;
-    /* background-color: tomato; */
     padding: 10px
 }
 .date {
@@ -51,6 +50,7 @@
 }
 
 .newReplyBtn{
+    color: black;
     background:none;
     border: none;
     margin: 10px;
