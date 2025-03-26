@@ -55,6 +55,42 @@ hr {
 }
 
 
+.ChatroomContainer {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ChatroomTitle {
+  font-size: 30px;
+}
+
+.lastChatDate {
+  font-size: 15px;
+  margin: auto;
+  margin-bottom: 0px;
+
+}
+
+.createChatRoomBtn {
+  margin: auto;
+  margin-right: 0px;
+  font-size: 20px;
+  padding: 10px 20px;
+}
+
+.ChatroomItem {
+  margin: 0 auto;
+  margin: 50px;
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  border-radius: 20px;
+  height: fit-content;
+}
+
 /* 채팅 */
 .GroupChatContiner {
   display: flex;
