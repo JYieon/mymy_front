@@ -261,7 +261,7 @@ const Detail = () => {
 
         {/* 게시글 본문 렌더링 */}
         <div className={style.content}>
-          <pre className={style.post} dangerouslySetInnerHTML={{ __html: data.content.replaceAll('\\n', '') }} />
+        <div className={style.post} dangerouslySetInnerHTML={{ __html: data.content }} />
 
 
         </div>
