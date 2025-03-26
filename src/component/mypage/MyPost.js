@@ -36,9 +36,9 @@ const MyPost = () => {
                 </thead>
                 <tbody>
                     {posts.map((post) => (
-                        <tr>
+                        <tr >
                             <td>{post.boardNo}</td>
-                            <td><Link to={`../../board/detail/${post.boardNo}`}>{post.title}</Link></td>
+                            <td><Link to={`../../board/detail/${post.boardNo}`}  className={`link`}>{post.title}</Link></td>
                             <td>{post.boardDate ? post.boardDate : "날짜 없음"}</td>
                             <td>{post.boardCnt}</td>
                             <td>{post.boardLikes}</td>
