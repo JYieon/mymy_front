@@ -134,7 +134,7 @@ hr {
 
 .planContainer {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
     /* background-color: aqua; */
 }

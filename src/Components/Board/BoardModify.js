@@ -102,13 +102,12 @@ const BoardModify = (props) => {
         formData.append("file", file);
 
         try {
-            const res = await axios.post("http://3.39.66.94:8080/mymy/board/uploadSummernoteImageFile", formData, {
+            const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            if (res.data.fileName) {
-                let imageUrl = `http://3.39.66.94:8080/mymy/board/upload/${res.data.fileName}`;
-                $(editorRef.current).summernote("insertImage", imageUrl);
+            if (res.data.url) {
+                $(editorRef.current).summernote("insertImage", res.data.url);
             }
         } catch (err) {
             alert("이미지 업로드 실패");
@@ -168,9 +167,6 @@ const BoardModify = (props) => {
 
         try {
             if (boardCategory === 1) {
-
-
-
                 try {
                     const response = await TimelineApi.updateTimelineTodo(timelineData);
                 } catch (error) {
@@ -225,11 +221,8 @@ const BoardModify = (props) => {
                                     <option value={0}>비공개</option>
                                 </select>
                             </>
-
                         )}
-
                     </div>
-
                     <div>
                         <label></label>
                         <div ref={editorRef}></div>
@@ -241,9 +234,8 @@ const BoardModify = (props) => {
                             <label>해시태그:</label>
                             <div className="hashtag-input">
                                 <input
-                                    className={`${style.input} form-control`}
                                     type="text"
-
+                                    className="form-control"
                                     placeholder="해시태그 입력 후 Enter"
                                     value={tagInput}
                                     onChange={(e) => setTagInput(e.target.value)}
@@ -256,7 +248,7 @@ const BoardModify = (props) => {
                                 {hashtags.map((tag, index) => (
                                     <span key={index} className="badge bg-primary me-1">
                                         #{tag}
-                                        <button type="button" className="btn btn-sm btn-danger ms-1" onClick={() => removeHashtag(tag)}>x</button>
+                                        <button type="button" className="btn btn-sm btn-dang er ms-1" onClick={() => removeHashtag(tag)}>x</button>
                                     </span>
                                 ))}
                             </div>
@@ -266,15 +258,14 @@ const BoardModify = (props) => {
                     {boardCategory === 1 && (
                         <div className={style.boardCategory1Option}>
                             <KakaoMap boardNo={boardNo} />
-                            <TimelineModify setTimelineId={setTimelineId} settimelineData={settimelineData} />
-
+                            <TimelineModify />
                         </div>
 
                     )}
                 </form>
 
             </div>
-            <button type="submit" form="modify" className={`${style.SubmitBtn} btn-primary mt-3`}>수정 완료</button>
+            <button type="submit" form="modify" className={`${style.btn} btn-primary mt-3`}>수정 완료</button>
 
         </div>
     );

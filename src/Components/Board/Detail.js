@@ -297,7 +297,7 @@ const Detail = () => {
         {data.boardCategory === 1 &&
           (
             <>
-              <button onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
+              <button type="button" onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
               <motion.div className={style.planContainer}
                 initial={{ scaleY: 0 }}
                 transition={{
