@@ -24,6 +24,10 @@ header {
   justify-content: space-evenly;
   display: flex;
   table-layout: fixed;
+  * {
+  font-weight: 800;
+
+  }
 }
 
 .headerMenu {
@@ -31,10 +35,12 @@ header {
   /* background-color: aqua; */
   width: fit-content;
   height: fit-content;
+  
   .menuList,
   .alarmList {
     /* background-color: aquamarine; */
     text-align: start;
+    
     display: none;
     width: fit-content;
     position: absolute;
@@ -60,8 +66,10 @@ header {
   margin-right: 30px;
   width: 100%;
   padding: 0px 10px;
+  
   background-color: #00284c;
   .menu {
+    
     margin: 10px;
     color: white;
     text-decoration: none;

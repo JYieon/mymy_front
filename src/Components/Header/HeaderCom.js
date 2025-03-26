@@ -212,7 +212,7 @@ const HeaderCom = ({ headerDisplay }) => {
                                         </div>
                                     </div>
                                     <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick}>
-                                        <AlarmIcon hasUnread={hasUnread} />
+                                    <AlarmIcon hasUnread={hasUnread} setHasUnread={setHasUnread} />
                                     </li>
                                 </>) :
                                 //로그아웃 상태일 시 보여지는 헤더
