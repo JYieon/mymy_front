@@ -140,7 +140,7 @@ hr {
 }
 
 
-.kakaoMap{
+:global .kakaoMap{
     margin: 20px  auto;
     width: 500px;
     height: 400px;

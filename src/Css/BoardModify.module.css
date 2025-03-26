@@ -3,17 +3,14 @@
   flex-direction: column;
 }
 
-
 form {
   display: flex;
   flex-direction: column;
   margin: 0px auto;
 }
 
-.writeSavebutton{
-
+.writeSavebutton {
   margin: 20px;
-
 }
 
 button {
@@ -49,7 +46,7 @@ button {
   border: none;
 }
 
-.input{
+.input {
   flex: 1;
   margin: 0px 10px;
   border-radius: 100px;
@@ -81,7 +78,7 @@ select {
 
 .hashtagContainer {
   /* background-color: antiquewhite; */
-  
+
   flex-direction: column;
   & > div {
     margin: auto;
@@ -110,7 +107,7 @@ label {
   display: flex;
 }
 
-.btn {
+.SubmitBtn {
   margin: 20px;
   float: right;
   background-color: #00284c;
@@ -120,11 +117,38 @@ label {
   border: none;
 }
 
-.boardCategory1Option{
+.boardCategory1Option {
   align-items: center;
   display: flex;
   justify-content: center;
-  background-color: aliceblue;
-  
+  /* background-color: aliceblue; */
 }
 
+.createMakerContainer {
+  color: #00284c;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: whitesmoke;
+  h3 {
+    font-weight: 800;
+
+  }
+  input {
+    background-color: whitesmoke;
+
+  }
+  *{
+    margin: 5px auto;
+  }
+}
+
+.createMarkerBtn {
+  width: fit-content;
+}
+
+.deleteMarkerBtn {
+  float: right;
+  color: tomato;
+  background: none;
+}

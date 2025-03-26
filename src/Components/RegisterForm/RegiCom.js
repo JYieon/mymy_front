@@ -234,8 +234,10 @@ const RegiCom=()=>{
             const res = await AuthApi.signup({ id, email, pwd, name, nick, phone });
             console.log("회원가입 res : ", res.status)
             if (res.status === 200) {
-                alert("회원가입 성공!");
-                window.location.href = "/";
+                alert("회원가입 성공하셨습니다!");
+                window.location.href = "/test";
+                alert("계획을 세우기 전, 나의 성향을 알아볼 수 있습니다.");
+
             } else {
                 setError("회원가입에 실패했습니다.");
             }

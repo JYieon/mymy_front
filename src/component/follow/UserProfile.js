@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import FollowButton from "./FollowButton";
 import MyPost from "../mypage/MyPost";
-import userPost from "../mypage/userPost";
+import UserPost from "../mypage/userPost";
 import style from "../../Css/Profile.module.css";
+import ChatApi from "../../api/ChatApi";
 
 //사용자 프로필 
 const UserProfile = ({ loggedInUser }) => {
@@ -18,7 +19,7 @@ const UserProfile = ({ loggedInUser }) => {
     useEffect(() => {
         const fetchMyId = async () => {
             try {
-                const res = await MypageApi.getUserInfo(token); // "/userinfo/me"
+                const res = await ChatApi.getUserInfo(token); // "/userinfo/me"
                 setMyId(res.userId);
             } catch (err) {
                 console.error("내 userId 불러오기 실패", err);
@@ -64,7 +65,8 @@ const UserProfile = ({ loggedInUser }) => {
 
             <div className={style.mypost}>
                 <h2 className={style.category}>📄 작성한 게시글</h2>
-            {myId === userId ? <MyPost /> : <userPost/> }
+                {/* <MyPost userId={userId}/> */}
+            {myId === userId ? <MyPost /> : <UserPost userId={userId}/> }
 
 
             </div>

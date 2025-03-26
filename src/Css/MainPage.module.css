@@ -29,11 +29,15 @@
     width: 200px; height: 100px;
     background-color: gold;
     padding: 50px;
-    border: 3px solid tomato;
-    background-image: url("../Assets/temPic.jpg");
+    /* border: 3px solid tomato; */
+    background-image: url("https://i.pinimg.com/736x/db/ba/dd/dbbadd7934173a89d8f0a43241f4367e.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 20px;
+
+    &:hover{
+        filter: brightness(-05)
+    }
 }
 
 .Lastest{

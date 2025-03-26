@@ -100,11 +100,10 @@ const MateBoardList = () => {
             <th className={style.bmReply}>댓글</th>
             <th className={style.bmView}>조회수</th>
           </thead>
-          <tbody className={style.tbody}>
+          <tbody>
             {boardList.length > 0 ? (
               boardList.map((post, index) => (
                 <tr
-                  className={style.bookmarkItem}
                   key={post.boardNo}
                   onClick={() => {
                     navigate(`/mateboard/detail/${post.boardNo}`);

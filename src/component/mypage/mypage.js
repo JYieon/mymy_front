@@ -18,6 +18,7 @@ const MyPage=({ userData })=> {
   const [deleteError, setDeleteError] = useState("");
 
   //초기 상태 설정 (userData 있으면 사용, 없으면 기본값)
+
   const [formData, setFormData] = useState(userData || {
     id: "",
     testResult: "",
@@ -34,13 +35,16 @@ const MyPage=({ userData })=> {
     const fetchUserInfo = async () => {
       try {
         const res = await ChatApi.getUserInfo(token);//api 요청
-        console.log("userInfo",res.data);
+        console.log("userInfo",formData);
         // 기존 formData의 기본값을 유지하면서 데이터 업데이트
+        // console.log("새로운 정보",formData)
         console.log("유저 정보 확인!!!!!!!!:", res.data);
-        setFormData(prevState => ({
-          ...prevState,
-          ...res.data //기존값 유지하면서 새로운 값 추가
-        }));
+        setFormData(res.data);
+        // setFormData(prev => (
+        //   {
+        //   ...prev,
+        //   ... //기존값 유지하면서 새로운 값 추가
+        // }));
       } catch (error) {
         console.error("로그인 정보 가져오기 실패:", error);
       }
@@ -48,16 +52,6 @@ const MyPage=({ userData })=> {
 
     fetchUserInfo();
   }, [token]);
-
-
-  // axios.get("http://localhost:8080/mymy/userinfo/me", { })
-  //   .then(response => {
-  //     console.log("로그인된 사용자:", response.data);
-  //     setFormData(response.data); //로그인된 사용자 정보로 상태 업데이트
-  //   })
-  //   .catch(error => {
-  //     console.error("로그인 정보 가져오기 실패:", error);
-  //   });
 
   // axios.get("http://localhost:8080/mymy/userinfo/me", { })
   //   .then(response => {
@@ -77,6 +71,8 @@ const MyPage=({ userData })=> {
       [name]: value,
     });
 
+    console.log("바뀐 값",formData);
+
     //비밀번호 & 비밀번호 확인 입력값이 다르면 오류 메시지 표시
     if (name === "pwd" || name === "pwdCheck") {
       if (name === "pwd" && value !== formData.pwdCheck) {
@@ -92,7 +88,7 @@ const MyPage=({ userData })=> {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    
     // 필수 입력 필드 검사
     if (!formData.nick || !formData.pwd || !formData.pwdCheck || !formData.email || !formData.phone) {
       setError("모든 필드를 입력해야 합니다.");
@@ -100,7 +96,8 @@ const MyPage=({ userData })=> {
     }
 
     try {
-      const res = await MypageApi.modify(formData);//api 요청청
+      console.log("수정 API 연결 직전 데이터",formData);
+      const res = await MypageApi.modify(formData);//api 요청
       if (res.status === 200) {
         alert("수정이 완료되었습니다!");
       }
@@ -118,6 +115,7 @@ const MyPage=({ userData })=> {
 
     try {
       const updateData = { id: formData.id, [field]: formData[field] }; // 수정할 데이터 구성성
+      console.log("일부 수정 값ㄴ",updateData)
       const res = await MypageApi.modify(updateData);//api 요청청
 
       if (res.status === 200) {
@@ -205,9 +203,12 @@ const MyPage=({ userData })=> {
           <button type="button" className={style.modifybutton} ><Link to="/test" className={`link`}>변경</Link></button>
         </div>
       )}
+    <button className={style.submitBtn} >저장</button>
+
       </form>
     <div className={style.btnContainer}>
-    <button className={style.submitBtn} type="submit" form='userInfoModifyForm'>저장</button>
+
+    
       <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
       회원 탈퇴</button>
     </div>

@@ -71,7 +71,6 @@ const BookmarkList = () => {
             <div className={style.bookmarkContainer}>
                 {Array.isArray(bookmarks) && bookmarks.length > 0 ? (
                     <ul>
-
                         {bookmarks.map((bookmark) =>
                         (<li className={`Shadow ${style.bookmarkItem}`}
                             key={bookmark.boardNo} >

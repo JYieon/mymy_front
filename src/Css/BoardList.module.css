@@ -184,8 +184,6 @@ td {
   border-bottom: 1px black solid;
   border-collapse: collapse;
   white-space: nowrap;
-  background-color: #0076ff;
-
 }
 
 .bmTitle {
@@ -218,7 +216,7 @@ td {
 }
 
 .bookmarkPostTitle {
-  color: #0076ff;
+  /* color: #0076ff; */
   cursor: pointer;
   font-size: 15px;
   text-decoration: underline;
@@ -256,29 +254,32 @@ td {
 }
 
 .followerPicContainer {
-  background-color: #00284c;
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
+  /* background-color: #00284c; */
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
 }
 
 .followerPic {
-  background-color: aquamarine;
   justify-content: center;
   border-radius: 100%;
   align-items: center;
   overflow: hidden;
   font-size: 10px;
+  width: 50px;
+  height: 50px;
+
 
 }
 
 .followItem {
   padding: 1%;
-  margin: 20px auto;
-  margin-left: 50px;
+  margin: 20px 100px;
   border-radius: 20px;
   display: flex;
+  height: fit-content;
+  justify-content: space-between;
   * {
     margin: 5px;
   }
