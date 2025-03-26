@@ -20,19 +20,19 @@ const AlarmIcon = ({ hasUnread }) => {
         // connect();
         // if (!userId) return;
 
-        MypageApi.getAlarms(token)
-            .then(validAlarms => {
-                console.log("🔹 API 응답 데이터:", validAlarms);
+        // MypageApi.getAlarms(token)
+        //     .then(validAlarms => {
+        //         console.log("🔹 API 응답 데이터:", validAlarms);
 
-                const alarmsArray = Array.isArray(validAlarms) ? validAlarms : [];
+        //         const alarmsArray = Array.isArray(validAlarms) ? validAlarms : [];
 
-                setNotifications(alarmsArray);
-                setUnreadCount(alarmsArray.filter(alarm => !alarm.read).length);
-            })
-            .catch(error => {
-                console.error("🚨 알림 불러오기 실패:", error);
-                setNotifications([]); // ✅ 오류 발생 시 빈 배열 설정
-            });
+        //         setNotifications(alarmsArray);
+        //         setUnreadCount(alarmsArray.filter(alarm => !alarm.read).length);
+        //     })
+        //     .catch(error => {
+        //         console.error("🚨 알림 불러오기 실패:", error);
+        //         setNotifications([]); // ✅ 오류 발생 시 빈 배열 설정
+        //     });
     }, []);
 
     //알림 아이콘 클릭 핸들러
