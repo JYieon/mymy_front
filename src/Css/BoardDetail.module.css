@@ -136,11 +136,11 @@ hr {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 
 
-.kakaoMap{
+:global .kakaoMap{
     margin: 20px  auto;
     width: 500px;
     height: 400px;
