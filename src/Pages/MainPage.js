@@ -16,10 +16,8 @@ const MainPage = () => {
                 </div>
             </div>
             <div className={`${style.Bottom} ${style.Section}`}>
-                    <Link to="/test" className={style.TestLink}>여행자 테스트</Link>
-                <Link className={style.Lastest} to="/">
-                    <img src={`https://picsum.photos/300/200`} alt="can't load img" className={style.LastestPic} />
-                </Link>
+                    <Link to="/test" className={style.TestLink}/>
+                <Link className={style.Lastest} to="/" />
             </div>
 
         </div>
