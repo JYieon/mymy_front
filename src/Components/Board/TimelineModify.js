@@ -12,8 +12,8 @@ const TimelineModify = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
-  const [ timelineData, settimelineData ] =useState();
-  const [ timelineId, setTimelineId] =useState();
+  const [timelineData, settimelineData] = useState();
+  const [timelineId, setTimelineId] = useState();
 
   useEffect(() => {
     if (!token) {
@@ -98,10 +98,12 @@ const TimelineModify = () => {
     }));
   };
 
-  // 일정 전체 수정 (todo만 덮어쓰기)
   const handleUpdateTasks = async () => {
     const data = {
       boardNo: boardNo,
+      location: location,
+      startDt: startDate,
+      endDt: endDate,
       todo: JSON.stringify(todoList),
     };
     try {
@@ -115,6 +117,7 @@ const TimelineModify = () => {
       );
     }
   };
+
 
   // 선택한 날짜의 일정 가져오기
   const selectedTasks = todoList[selectedDate] || [];
@@ -194,7 +197,7 @@ const TimelineModify = () => {
                   value={todo.task}
                   placeholder="일정을 적어보세요!"
                   onChange={(e) => handleChange(index, "task", e.target.value)}
-                  className={style.taskInput}
+                  classsName={style.taskInput}
                 />
                 <textarea
                   ref={subTaskRef}

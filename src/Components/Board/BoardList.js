@@ -15,7 +15,8 @@ const BoardList = () => {
     : 1;
   const searchTypeParam = searchParams.get("searchType");
   const keywordParam = searchParams.get("keyword");
-  const token = 0;
+  const token = localStorage.getItem("accessToken") || "none";
+
 
   const [pageState, setPageState] = useState({
     1: { boardList: [], currentPage: 1, totalPages: 1 },
@@ -31,7 +32,7 @@ const BoardList = () => {
   const extractThumbnail = (post) => {
     if (post.thumbnail) return post.thumbnail;
     if (!post.content)
-      return "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
+      return "../../Assets/default-thumbnail.jpg";
 
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = post.content;
@@ -39,33 +40,29 @@ const BoardList = () => {
 
     return imgTag
       ? imgTag.src
-      : "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
+      : "../../Assets/default-thumbnail.jpg";
   };
 
   const filterBoardList = (boardList, token) => {
     let loggedInUserId = null;
-
-    if (token) {
+  
+    if (token && token !== "none") {
       try {
-        //console.log("저장된 토큰:", token);
-        const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
-        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
-        // console.log("로그인한 사용자 ID:", loggedInUserId);
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        loggedInUserId = decodedToken.sub;
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
       }
     }
-
-    console.log("📝 필터링 전 게시글 목록:", boardList);
-
-    const filteredList = boardList.filter(
-      (post) => post.boardOpen === 1 || (loggedInUserId && post.id === loggedInUserId)
-    );
-
-    // console.log("필터링 후 게시글 목록:", filteredList);
-
-    return filteredList;
+  
+    return boardList.filter((post) => {
+      // 공개 글이거나, 내가 작성한 비공개 글
+      if (post.boardOpen === 1) return true;
+      if (loggedInUserId && post.id === loggedInUserId) return true;
+      return false;
+    });
   };
+  
 
 
 
@@ -77,7 +74,13 @@ const BoardList = () => {
       }
       const response = await axios.get(
         `http://localhost:8080/mymy/board/list`,
-        { params }
+        {
+          params: {
+            page,
+            category,
+            token, // ✅ 항상 token 포함!
+          },
+        }
       );
 
       // 비공개 글 필터링 추가
@@ -126,17 +129,13 @@ const BoardList = () => {
     }
   };
 
-  useEffect(
-    () => {
-      if (isSearching) {
-        searchBoardList(pageState[category].currentPage);
-      } else {
-        fetchBoardList(pageState[category].currentPage, category, token);
-      }
-    },
-    [category, pageState[category].currentPage],
-    token
-  );
+  useEffect(() => {
+    if (isSearching) {
+      searchBoardList(pageState[category].currentPage);
+    } else {
+      fetchBoardList(pageState[category].currentPage, category, token);
+    }
+  }, [category, pageState[category].currentPage, token]); 
 
   const handleSearch = () => {
     if (keyword.trim() === "") {
@@ -189,7 +188,7 @@ const BoardList = () => {
   };
 
   const { boardList, currentPage, totalPages } = pageState[category];
-
+  
   return (
     <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>

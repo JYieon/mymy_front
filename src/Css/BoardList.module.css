@@ -153,15 +153,34 @@
 /* 페이지 넘기는 바 */
 
 .Pagination {
-  justify-items: flex-end;
-  float: right;
-  margin: 20px;
-  button {
-    background-color: white;
-    margin: 10px;
-    border-style: none;
-  }
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
 }
+
+.Pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  color: #00284c;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.Pagination button:hover {
+  background-color: #e0e0e0;
+}
+
+.currentPage {
+  background-color: #00284c;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #00284c;
+}
+
 
 /* 테이블 */
 
@@ -184,8 +203,6 @@ td {
   border-bottom: 1px black solid;
   border-collapse: collapse;
   white-space: nowrap;
-  background-color: #0076ff;
-
 }
 
 .bmTitle {
@@ -218,7 +235,7 @@ td {
 }
 
 .bookmarkPostTitle {
-  color: #0076ff;
+  /* color: #0076ff; */
   cursor: pointer;
   font-size: 15px;
   text-decoration: underline;
@@ -256,30 +273,41 @@ td {
 }
 
 .followerPicContainer {
-  background-color: #00284c;
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
+  /* background-color: #00284c; */
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
 }
 
 .followerPic {
-  background-color: aquamarine;
   justify-content: center;
   border-radius: 100%;
   align-items: center;
   overflow: hidden;
   font-size: 10px;
+  width: 50px;
+  height: 50px;
+
 
 }
 
 .followItem {
   padding: 1%;
-  margin: 20px auto;
-  margin-left: 50px;
+  margin: 20px 100px;
   border-radius: 20px;
   display: flex;
+  height: fit-content;
+  justify-content: space-between;
   * {
     margin: 5px;
   }
 }
+
+.currentPage {
+  background-color: #00284c;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+}
+

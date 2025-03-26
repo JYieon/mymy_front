@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import FollowButton from "./FollowButton";
 import MyPost from "../mypage/MyPost";
-import userPost from "../mypage/userPost";
+import UserPost from "../mypage/userPost";
 import style from "../../Css/Profile.module.css";
 import ChatApi from "../../api/ChatApi";
 
@@ -88,7 +88,11 @@ const UserProfile = ({ }) => {
 
             <div className={style.mypost}>
                 <h2 className={style.category}>📄 작성한 게시글</h2>
-                {myId === userId ? <MyPost /> : <userPost />}
+
+                {/* {myId === userId ? <MyPost /> : <userPost />} */}
+
+                {/* <MyPost userId={userId}/> */}
+                {myId === userId ? <MyPost /> : <UserPost userId={userId}/> }
 
 
             </div>

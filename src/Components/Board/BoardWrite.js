@@ -102,9 +102,8 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      if (res.data.fileName) {
-        let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
-        $(editorRef.current).summernote("insertImage", imageUrl);
+      if (res.data.url) {
+        $(editorRef.current).summernote("insertImage", res.data.url);
       }
     } catch (err) {
       alert("이미지 업로드 실패");
@@ -181,12 +180,17 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
           setTimelineOpen(true);
           setTimeline(
             <Timeline boardNo={res.data.boardNo} />);
-          <KakaoMap boardNo={res.data.boardNo} />
+            <KakaoMap boardNo={res.data.boardNo} />
 
         } else if (category === 2) {
           alert("게시글이 등록되었습니다!");
           navigate(`/board/list?category=${category}`);
         }
+        else {
+          navigate(`/mateBoard/list?category=${category}`);
+
+        }
+
       }
     } catch (error) {
       alert("게시글 등록 실패");

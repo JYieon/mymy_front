@@ -5,21 +5,28 @@
     margin: 20px auto;
     display: flex;
     flex-direction: column;
-    background-color: #00284C;
+    align-items: center;
+
+    background: linear-gradient(to bottom,#00284C 50%,white);
+
     color: white;
-    justify-self: center;
 }
 
 .TestStartBtn {
+    font-size: 20px;
+    font-weight: 900;
     justify-self: center;
     text-decoration: none;
     margin: 50px auto;
     background-color: white;
+    color: #00284C;
     padding: 10px 50px;
     border-radius: 10px;
 }
 
 .mainPic {
+    width: auto;
+    height: 500px;
     justify-self: center;
     border-radius: 10px;
 }
@@ -27,14 +34,15 @@
 .title {
     text-align: center;
     color: white;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 900;
-    margin: 20px auto 10px auto;
+    margin: 30px auto;
 }
 
 .subtitle {
     text-align: center;
     color: white;
+    font-weight: 800;
 }
 
 .StartPage {
@@ -47,30 +55,36 @@
     display: none;
 }
 
+
 .questionWrap{
-    justify-items: center;
-    background-color: aqua;
-    width: max-content;
+    width: 500px;
+    /* width: max-content; */
+    /* background-color: aqua; */
 }
 
 .testPic {
+    width: 500px;
     border-radius: 20px;
 }
 
 
 .answerWrap {
     display: flex;
+    /* background-color: aqua; */
     flex-direction: column;
+    margin: 20px;
 }
 
 .answer {
-    width: 500px;
-    padding: 40px 100px;
+    text-align: center;
+    padding: 40px;
     border: none;
     margin: 10px;
     border-radius: 30px 30px 30px 10px;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
+    transition: all 0.2s ease-in-out;
+
     &:hover {
         background-color: gray;
     }
@@ -80,9 +94,54 @@
 /* 테스트 결과 */
 .ResultPage {
     display: none;
+    *{
+        margin: 0 auto;
+    }
 }
 
-.testAgiain {
+.resultPage {
+    background: linear-gradient(to bottom,#00284C 50%,white);
+    margin-bottom: 0px;
+    border-radius: 10px;
+    /* background-color: white; */
+    
+}
+
+.resultTitle {
+    text-align: center;
+    font-weight: 700;
+}
+
+.highlight {
+    font-weight: 900;
+    font-size: 50px
+    
+
+}
+
+.testAgain {
+        font-size: 20px;
+        font-weight: 900;
+        justify-self: center;
+        text-decoration: none;
+        margin: 40px auto;
+        background-color: white;
+        color: #00284C;
+        padding: 10px 50px;
+        border-radius: 10px;
+
+
+}
+
+.resultShareBtn 
+{
+    font-size: 20px;
+    font-weight: 900;
+    justify-self: center;
+    text-decoration: none;
+    margin: 0px auto;
     background-color: white;
+    color: #00284C;
+    padding: 10px 50px;
+    border-radius: 10px;
 }
-

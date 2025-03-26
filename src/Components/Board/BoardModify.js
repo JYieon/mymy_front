@@ -106,9 +106,8 @@ const BoardModify = (props) => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            if (res.data.fileName) {
-                let imageUrl = `http://localhost:8080/mymy/board/upload/${res.data.fileName}`;
-                $(editorRef.current).summernote("insertImage", imageUrl);
+            if (res.data.url) {
+                $(editorRef.current).summernote("insertImage", res.data.url);
             }
         } catch (err) {
             alert("이미지 업로드 실패");
@@ -168,6 +167,9 @@ const BoardModify = (props) => {
 
         try {
             if (boardCategory === 1) {
+
+
+
                 try {
                     const response = await TimelineApi.updateTimelineTodo(timelineData);
                 } catch (error) {
@@ -222,8 +224,11 @@ const BoardModify = (props) => {
                                     <option value={0}>비공개</option>
                                 </select>
                             </>
+
                         )}
+
                     </div>
+
                     <div>
                         <label></label>
                         <div ref={editorRef}></div>
@@ -235,8 +240,9 @@ const BoardModify = (props) => {
                             <label>해시태그:</label>
                             <div className="hashtag-input">
                                 <input
+                                    className={`${style.input} form-control`}
                                     type="text"
-                                    className="form-control"
+
                                     placeholder="해시태그 입력 후 Enter"
                                     value={tagInput}
                                     onChange={(e) => setTagInput(e.target.value)}
@@ -259,14 +265,15 @@ const BoardModify = (props) => {
                     {boardCategory === 1 && (
                         <div className={style.boardCategory1Option}>
                             <KakaoMap boardNo={boardNo} />
-                            <TimelineModify />
+                            <TimelineModify setTimelineId={setTimelineId} settimelineData={settimelineData} />
+
                         </div>
 
                     )}
                 </form>
 
             </div>
-            <button type="submit" form="modify" className={`${style.btn} btn-primary mt-3`}>수정 완료</button>
+            <button type="submit" form="modify" className={`${style.SubmitBtn} btn-primary mt-3`}>수정 완료</button>
 
         </div>
     );

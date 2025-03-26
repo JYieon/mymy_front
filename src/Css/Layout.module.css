@@ -1,5 +1,6 @@
 body {
   margin: 0px;
+  margin-right: auto;
 }
 
 .LayoutWrap {
@@ -46,4 +47,25 @@ body {
 
 h1 {
   margin: 70px 50px 50px 50px;
+}
+
+
+.alarmIconContainer {
+  /* display: flex;
+  flex-direction: column; */
+  position: relative;
+  bottom: 20px;
+  left: 5px;
+  
+}
+
+.alarmDot {
+  position: absolute;
+  color: tomato;
+  z-index: 100;
+}
+
+.alarm {
+  position: absolute;
+  top: 20px;
 }

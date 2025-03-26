@@ -34,8 +34,8 @@ const HeaderCom = ({ headerDisplay }) => {
                 return "활동적인 냥이";
             case 4:
                 return "전설적인 냥이";
-            default: 
-                return "생각하는 냥이"; 
+            default:
+                return "생각하는 냥이";
         }
     };
 
@@ -43,7 +43,7 @@ const HeaderCom = ({ headerDisplay }) => {
         const getUserInfo = async (token) => {
             try {
                 const res = await ChatApi.getUserInfo(token);
-                console.log("ddd",res.data);
+                console.log("ddd", res.data);
                 setUserId(res.data.id);
                 setUserNick(res.data.nick);
                 setUserLevel(getLevelName(res.data.level))
@@ -52,26 +52,26 @@ const HeaderCom = ({ headerDisplay }) => {
                   console.log("🔹 받아온 알람 데이터:", resAlram.data);
                   setNotifications(resAlram.data);
 
-              notifications.map((noti) => {
-                if(noti.isRead === 0){
-                    setHasUnread(true);
-                    console.log("!!!!!", hasUnread)
-                    return;
-                }
-              })
-    
-             
-                        // .then(response => {
-                        //     console.log("🔹 받아온 알람 데이터:", response.data);
-        
-                        //     // ✅ null 값 제거 및 기본값 설정
-                        //     const validNotifications = (response.data || []).filter(alarm => alarm !== null);
-        
-                        //     setNotifications(validNotifications);
-        
-                        //     // ✅ 오류 방지를 위해 every() 또는 some() 사용 시 기본값 처리
-                        //     setHasUnread(validNotifications.length > 0 && validNotifications.some(alarm => alarm?.read === false));
-                        // })
+                notifications.map((noti) => {
+                    if (noti.isRead === 0) {
+                        setHasUnread(true);
+                        console.log("!!!!!", hasUnread)
+                        return;
+                    }
+                })
+
+
+                // .then(response => {
+                //     console.log("🔹 받아온 알람 데이터:", response.data);
+
+                //     // ✅ null 값 제거 및 기본값 설정
+                //     const validNotifications = (response.data || []).filter(alarm => alarm !== null);
+
+                //     setNotifications(validNotifications);
+
+                //     // ✅ 오류 방지를 위해 every() 또는 some() 사용 시 기본값 처리
+                //     setHasUnread(validNotifications.length > 0 && validNotifications.some(alarm => alarm?.read === false));
+                // })
                 //         .catch(error => console.error("🚨 알림 가져오기 실패:", error));
                 // }
             } catch (error) {
@@ -129,7 +129,7 @@ const HeaderCom = ({ headerDisplay }) => {
         <>
             <header>
                 {/* 웹사이트 로고 (클릭 시 메인) */}
-                <Link to="/" className={`link ${style.logo}`}>MY<br/>MY</Link>
+                <Link to="/" className={`link ${style.logo}`}>MY<br />MY</Link>
                 <nav>
                     {headerDisplay && (
                         <ul className={style.headerNav}>
@@ -161,7 +161,9 @@ const HeaderCom = ({ headerDisplay }) => {
                             {isAuthenticated ?
                                 //로그인 상태일 시 보여지는 헤더
                                 (<>
-                                    <li className={style.headerMenu} id="채팅">채팅
+                                    <li className={style.headerMenu} id="채팅">
+                                    <Link to={`/chat/list`} className={`link ${style.boardBtn}`}>채팅</Link>
+
                                         <ul className={style.menuList}>
                                             <li>
                                                 <Link to="/chat/list" className={style.menu}>채팅 목록</Link>
@@ -174,44 +176,46 @@ const HeaderCom = ({ headerDisplay }) => {
                                     {/* 사용자 정보 */}
                                     <div className={style.userInfo}>
                                         <span className={style.userId}>{userNick}님 안녕하세요!</span>
-                                        <span className={style.userLevel}>{userLevel}</span>
-                                        <div>
-                                        <li className={`${style.mypage} ${style.headerMenu}`} id="마이페이지">
-                                            <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>마이페이지</Link>
-                                            <ul className={style.menuList}>
-                                                <li>
-                                                    <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
-                                                        내가 쓴 글
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={`/mypage/my_reply`} className={`link ${style.menu}`}>
-                                                        내가 쓴 댓글
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={`/mypage/modify`} className={`link ${style.menu}`}>
-                                                        회원정보 수정
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link
-                                                        to={`/mypage/alarm/settings`}
-                                                        className={`link ${style.menu}`}
-                                                    >
-                                                        알림 설정
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li className={`${style.mypage} ${style.headerMenu}`} id="로그아웃 버튼">
-                                            <button className={style.logoutBtn} onClick={onClickLogout}>로그아웃</button>
-                                        </li>
+                                        <div className={`${style.userInfoWrap}`}>
+                                            <li className={`${style.mypage} ${style.headerMenu}`} id="마이페이지">
+                                                <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>{userLevel}</Link>
+                                                <ul className={style.menuList}>
+                                                    <li>
+                                                        <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
+                                                            내가 쓴 글
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to={`/mypage/my_reply`} className={`link ${style.menu}`}>
+                                                            내가 쓴 댓글
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to={`/mypage/modify`} className={`link ${style.menu}`}>
+                                                            회원정보 수정
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link
+                                                            to={`/mypage/alarm/settings`}
+                                                            className={`link ${style.menu}`}
+                                                        >
+                                                            알림 설정
+                                                        </Link>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li className={`${style.mypage} ${style.headerMenu}`} id="로그아웃 버튼">
+                                                <button className={style.logoutBtn} onClick={onClickLogout}>로그아웃</button>
+                                            </li>
                                         </div>
                                     </div>
                                     <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick}>
+
                                             <AlarmIcon hasUnread={hasUnread} style={style}/>
                                         </li>
+
+                                       
                                 </>) :
                                 //로그아웃 상태일 시 보여지는 헤더
                                 (<div className={style.userInfo}>

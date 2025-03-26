@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
+import style from "../../Css/BoardList.module.css";
 
 //내가 쓴 댓글 목록
 const MyComment = () => {
@@ -24,38 +25,33 @@ const MyComment = () => {
         fetchComments();
     }, [token]);
 
-    
+
     return (
-        
+
         <div className="mycomment-container">
             <h2>📄내가 쓴 댓글</h2>
             <table className="mycomment-table">
                 <thead>
                     <tr>
-                        <th>번호</th>
+                        <th className={style.bmNo}>번호</th>
                         <th>게시글 제목</th>
                         <th>댓글 내용</th>
                     </tr>
                 </thead>
-            </table>
-            {comments.length === 0 ? (
-                <p className="noDataContext">작성한 댓글이 없습니다.</p>
-            ) : (
-                <ul className="mycomment-list">
+                <tbody>
                     {comments.map((comment) => (
-                        
-                        <li key={comment.boardNo} className="mycomment-item">
-                            <span>{comment.boardNo}</span>
-                            <span>{comment.title}</span>
-                            <Link to={`/board/detail/${comment.boardNo}`}>
-                                {comment.originalPost}
-                            </Link>
+                        <tr>
+                            <td>{comment.boardNo}</td>
+                            <td>{comment.title}</td>
+                            <td>{comment.originalPost}</td>
+                            <td>{comment.content}</td>
+                        </tr>
 
-                            <span className="comment-content">{comment.content}</span>
-                        </li>
                     ))}
-                </ul>
-            )}
+
+                </tbody>
+            </table>
+
         </div>
     );
 };

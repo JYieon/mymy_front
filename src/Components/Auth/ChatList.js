@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ChatApi from "../../api/ChatApi";
 import { useNavigate } from "react-router-dom";
-import style from "../../Css/ChatLayout.module.css";
+import chatStyle from "../../Css/ChatLayout.module.css";
+import style from "../../Css/BoardList.module.css";
 function ChatList() {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
@@ -39,13 +40,14 @@ function ChatList() {
   };
 
   return (
-    <div className={style.ChatLayoutWrap}>
-      <h1 className="Category-Title">채팅방 목록</h1>
+    <div>
+      <h1 >💬 채팅방 목록</h1>
+      <div className={style.bookmarkContainer}>
+      </div>
       <ul>
         {chatRooms.map((room) => (
-          <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)}>
-            <p>{room.roomName}</p>
-            {/* <p>room.regDate</p> */}
+          <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)} className={`Shadow ${style.bookmarkItem}`}>
+            <h3 className={style.bookmarkPostTitle}>{room.roomName}</h3>
           </li>
         ))}
       </ul>

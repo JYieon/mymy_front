@@ -11,6 +11,7 @@ import AlarmIcon from "../../component/alarm/alarmIcon";
 import { useWebSocketContext } from "../../component/alarm/alramWebSocketProvider"
 
 
+
 const SidebarCom = () => {
   const token = localStorage.getItem("accessToken");
   const [userId, setUserId] = useState("");
@@ -28,6 +29,7 @@ const SidebarCom = () => {
   const { hasUnread, setHasUnread } = useWebSocketContext();
   const [profileImage, setProfileImage] = useState(""); //프로필 이미지
   const [previewImage, setPreviewImage] = useState(null);
+
 
   // 숫자 레벨을 글자로 바꿔주는 함수
   const getLevelName = (level) => {
@@ -203,7 +205,9 @@ const SidebarCom = () => {
             <div className={style.headerNav}>
               <div className={style.userNickContainer}>
                 <span className={style.userNick}> {userNickname} </span>
+
                 <AlarmIcon onClick={handleClick} hasUnread={hasUnread} setHasUnread={setHasUnread} />
+
 
 
                 {/* <svg onClick={handleClick}
@@ -225,9 +229,7 @@ const SidebarCom = () => {
 
               </div>
               <div className={style.userLevel}>{getLevelName(level)}</div>
-
-              <ul className={style.alarmList}>
-                {/* 임시 주소 */}
+              {/* <ul className={style.alarmList}>
                 <li>
                   <Link to="/게시글" className={`link ${style.menu}`}>
                     내가 쓴 댓글에 답글이 달렸습니다.
@@ -238,8 +240,9 @@ const SidebarCom = () => {
                     내가 쓴 댓글에 답글이 달렸습니다.
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </div>
+
             {/*  팔로잉 / 팔로워 버튼 추가 */}
             <div className={style.userFollowerContainer}>
               <Link to={`/mypage/following`} className={`${style.followBtn} link`}>

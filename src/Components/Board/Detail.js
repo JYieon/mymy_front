@@ -154,7 +154,7 @@ const Detail = () => {
           }
         }
         const isTimeline = await TimelineApi.getTimeline(boardNo)
-        // console.log("isTimeline",isTimeline.data.timelineId);
+        console.log("isTimeline", isTimeline.data.timelineId);
 
         if (isTimeline.data.timelineId !== undefined) {
           try {
@@ -168,7 +168,7 @@ const Detail = () => {
           }
         }
         const isMapMaker = await MapApi.fetchMarkers(boardNo);
-        // console.log("isMapMaker",isMapMaker.data.length);
+        console.log("isMapMaker", isMapMaker.data.length);
         if (isMapMaker.data) {
           try {
             const success = await MapApi.deleteAllMarkersByBoard(boardNo);
@@ -245,19 +245,16 @@ const Detail = () => {
               <span className={style.date}>{data.date} 작성</span>
             </div>
             <hr />
-            <div className={style.postStatus}>
-              <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
-              <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
+              {data.boardCategory !== 1 && (
+                <div className={style.postStatus}><span className={style.boardCnt}>조회수 {data.boardCnt}</span>
+                <span className={style.boardLike}>좋아요 {data.boardLikes}</span></div>)}
               <div className={style.editBtnContainer}>
-                {/* 계획 & 기록 게시글 모두 수정 & 삭제 가능 */}
-
                 <button onClick={handleModify} className={style.editBtn}>
                   수정
                 </button>
                 <button onClick={deletePost} className={style.deleteBtn}>
                   삭제
                 </button>
-              </div>
             </div>
           </div>
         </div>
@@ -300,25 +297,25 @@ const Detail = () => {
         {data.boardCategory === 1 &&
           (
             <>
-            <button onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
-            <motion.div className={style.planContainer}
-            initial={{ scaleY: 0 }}
-            transition={{
-              easeIn: "easeIn",
-              duration: 0.3
-            }}
-            animate={{
-              scaleY: timelineOpen ? 1 : 0,
-              display: timelineOpen ? "block" : "none",
-            }}
-          >
-            <ReadingOnlyKakaoMap boardNo={boardNo} />
-            <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
-            <hr />
+              <button onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
+              <motion.div className={style.planContainer}
+                initial={{ scaleY: 0 }}
+                transition={{
+                  easeIn: "easeIn",
+                  duration: 0.3
+                }}
+                animate={{
+                  scaleY: timelineOpen ? 1 : 0,
+                  display: timelineOpen ? "block" : "none",
+                }}
+              >
+                <ReadingOnlyKakaoMap boardNo={boardNo} />
+                <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
+                <hr />
 
-          </motion.div>
+              </motion.div>
             </>
-)}
+          )}
         {/* 기록 게시글(2)만 좋아요 & 북마크 가능 */}
         {data.boardCategory === 2 && (
           <div className={style.userReaction}>

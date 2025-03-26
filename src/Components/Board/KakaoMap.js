@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
-import MapApi from "../../api/MapApi"; 
+import MapApi from "../../api/MapApi";
+import style from "../../Css/BoardModify.module.css";
 
-const KakaoMap = ({boardNo}) => {
+const KakaoMap = ({ boardNo }) => {
     // const { boardNo } = useParams();
     const [selectedMarkers, setSelectedMarkers] = useState([]);
     const [map, setMap] = useState(null);
@@ -13,7 +14,7 @@ const KakaoMap = ({boardNo}) => {
     const [pendingMarker, setPendingMarker] = useState(null);
 
     useEffect(() => {
-        console.log("📡 현재 boardNo 값:", boardNo);
+        console.log("현재 boardNo 값:", boardNo);
         if (window.kakao && window.kakao.maps) {
             initMap();
         } else {
@@ -31,8 +32,8 @@ const KakaoMap = ({boardNo}) => {
     }, []);
 
     const initMap = async () => {
-        console.log("✅ initMap 실행됨!");
-        console.log("✅",boardNo);
+        console.log("initMap 실행됨!");
+        console.log(boardNo);
         const container = document.getElementById("map");
         if (!container) return;
 
@@ -78,7 +79,7 @@ const KakaoMap = ({boardNo}) => {
         setMarkers((prev) => [...prev, marker]);
     };
 
-    // ✅ 새로운 마커 추가 (DB 저장 X)
+    // 새로운 마커 추가 (DB 저장 X)
     const addMarker = (position, mapInstance) => {
         console.log("🖱️ 지도 클릭! 마커 추가 중...");
 
@@ -91,8 +92,8 @@ const KakaoMap = ({boardNo}) => {
 
         window.kakao.maps.event.addListener(marker, "click", function () {
             infowindow.open(mapInstance, marker);
-            setNewContent(""); 
-            setEditMode(null); 
+            setNewContent("");
+            setEditMode(null);
             setPendingMarker({ marker, position });
         });
 
@@ -103,7 +104,7 @@ const KakaoMap = ({boardNo}) => {
     // ✅ 입력 후 마커 저장 (DB 저장 O)
     const handleSaveMarker = async () => {
         if (!pendingMarker || newContent.trim() === "") return;
-        
+
         const markerData = {
             boardNo: boardNo,
             latitude: pendingMarker.position.getLat(),
@@ -114,7 +115,7 @@ const KakaoMap = ({boardNo}) => {
         try {
             await MapApi.addMarker(markerData);
             console.log("✅ 마커 저장 성공!", markerData);
-            setPendingMarker(null); 
+            setPendingMarker(null);
         } catch (error) {
             console.error("🚨 마커 저장 실패:", error);
         }
@@ -148,29 +149,29 @@ const KakaoMap = ({boardNo}) => {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div id="map" style={{ minWidth:"300px", width:"500px", height:"400px", minHeight:"200px", maxWidth: "700px", maxHeight: "500px",borderRadius: "10px" }}/>
+            <div id="map" className={`kakaoMap `} />
             {pendingMarker && (
-                <div style={{ marginTop: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "5px", background: "#fff" }}>
-                    <h3>📝 인포윈도우 입력</h3>
+                <div className={`${style.createMakerContainer} Shadow`}>
+                    <h3>나만의 장소 지정하기</h3>
                     <input
                         type="text"
                         value={newContent}
                         onChange={(e) => setNewContent(e.target.value)}
-                        style={{ padding: "8px", marginRight: "10px", borderRadius: "5px", border: "1px solid #ddd" }}
+                        className={`${style.input}`}
+                        placeholder="여기는 어디인가요?"
                     />
-                    <button onClick={handleSaveMarker} style={{ padding: "8px 15px", background: "#28a745", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+                    <button onClick={handleSaveMarker} type="button" className={`${style.createMarkerBtn}`}>
                         저장
                     </button>
+                    {editMode && pendingMarker && (
+                        <button onClick={() => handleDeleteMarker(pendingMarker.markerId, pendingMarker.marker)}
+                            className={`${style.deleteMarkerBtn}`}>삭제
+                        </button>
+                    )}
                 </div>
             )}
 
-            {editMode && pendingMarker && (
-                <button onClick={() => handleDeleteMarker(pendingMarker.markerId, pendingMarker.marker)}
-                    style={{ padding: "8px 15px", background: "#dc3545", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", marginTop: "10px" }}
-                >
-                    ❌ 삭제
-                </button>
-            )}
+
 
             <button onClick={handleDeleteAllMarkers} style={{ marginTop: "20px", padding: "8px 15px", background: "#dc3545", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
                 ❌ 모든 마커 삭제
