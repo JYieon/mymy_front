@@ -2,7 +2,6 @@
 .boardContainer {
   /* background-color: tomato; */
   height: 100%;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
@@ -44,7 +43,7 @@
 /* 게시글 */
 .boardItem {
   background-color: white;
-  height: 350px;
+  height: 320px;
   min-width: 30%;
   border-radius: 10px;
   text-align: center;
