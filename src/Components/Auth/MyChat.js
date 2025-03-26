@@ -10,6 +10,7 @@ const ChatContainer = styled.li`
 `;
 
 const ChatBubble = styled.div`
+  margin-top: 0px;
   display: inline-block; /* ✅ 내용에 맞게 크기 조절 */
   padding: 10px;
   border-radius: 10px;
@@ -21,7 +22,7 @@ const ChatBubble = styled.div`
   &::after {
     content: "";
     position: absolute;
-    bottom: -10px;
+    bottom: -8px;
     right: 10px;
     border-width: 10px;
     border-style: solid;

@@ -185,6 +185,10 @@ const ChatSidebarCom = () => {
     setVerfiyOpen(!VerfiyOpen);
   };
 
+  const VerfiyInputOpenBtn = () => {
+    setVerfiyInputOpen(!VerfiyInputOpen)
+  }
+
   // 본인 확인 여부 체크 후 실행할 함수
   const VerfiyBeforeAction = (action) => {
     if (bankStatus) {
@@ -279,13 +283,9 @@ const ChatSidebarCom = () => {
 
       {/* 콘텐츠 영역 */}
       <div className="ContentSection Shadow">
-        <button onClick={BeforeBtn} className={style.BeforeBtn}>
-          <img
-            src={SidebarIcon}
-            alt="can't load image"
-            className={style.SidebarIcon}
-          />
-        </button>
+        <Link to={`../chatlist`} className={style.Back}>
+          <span>뒤로가기</span>
+        </Link>
         {/* 사이드메뉴 오픈 */}
         <button onClick={sideOpenBtn} className={style.ChatSidebarBtn}>
           <img
@@ -296,7 +296,7 @@ const ChatSidebarCom = () => {
         </button>
 
         {/* 채팅방 영역 */}
-        <ChttingRoom chatInfo={chatInfo} messages={messages} chatUser={chatOtherInfo} memberNum={memberNum} />
+        <ChttingRoom chatInfo={chatInfo} roomNum={roomNum} chatUser={chatOtherInfo} memberNum={memberNum} messages={messages}/>
 
       </div>
       {/* 사이드 바 */}
@@ -354,6 +354,7 @@ const ChatSidebarCom = () => {
         {/* 본인 확인 입력 모달 */}
         <Modal
           isOpen={VerfiyInputOpen}
+          onRequestClose={VerfiyInputOpenBtn}
           ariaHideApp={true}
           className={`Shadow modal ${style.JointAccountModal}`}
         >
@@ -420,30 +421,33 @@ const ChatSidebarCom = () => {
         <ul className={style.GrounpMemList}>
           <li className={style.GrounpMem} key={filteredUser?.id}>
             <img
-              src={`/images/${filteredUser?.profile}.jpg`}
+              src={filteredUser?.profile}
               style={{
-                width: "30px",
+                marginRight: "10px",
+                width: "50px",
                 borderRadius: "50%",
                 border: filteredUser?.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
               }}
               alt={filteredUser?.nick}
             />
-            <span className={style.GrounpMemNick}>{filteredUser?.nick}</span>
+            <span className={style.GroupMemNick}>{filteredUser?.nick}</span>
           </li>
           <hr />
           {filteredOther.map((user) => (
-            <div  className={style.GrounpMem}>
-            <li key={user.id}>
+            <div >
+            <li key={user.id} className={style.GrounpMem}>
               <img
-                src={`/images/${user.profile}.jpg`}
+                src={user.profile}
                 style={{
-                  width: "30px",
+                  paddingTop: "10px",
+                  marginRight: "10px",
+                  width: "50px",
                   borderRadius: "50%",
                   border: user.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
                 }}
                 alt={user.nick}
               />
-              <span className={style.GrounpMemNick}>{user.nick}</span>
+              <span className={style.GroupMemNick}>{user.nick}</span>
             </li>
             <div className={`${style.GroupMemMan} Shadow`}></div>
 
@@ -454,7 +458,7 @@ const ChatSidebarCom = () => {
 
 
 
-        <button onClick={endChat}>채팅방 나가기</button>
+        <button  onClick={endChat}>채팅방 나가기</button>
       </motion.div>
     </>
   );

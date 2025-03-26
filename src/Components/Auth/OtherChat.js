@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const ChatContainer = styled.li`
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -10,6 +10,9 @@ const ChatContainer = styled.li`
 `;
 
 const ChatBubble = styled.div`
+  margin-top: 0px;
+  margin-bottom: 25px;
+  margin-left: 25px;
   display: inline-block;
   padding: 10px;
   border-radius: 10px;
@@ -17,16 +20,7 @@ const ChatBubble = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   word-wrap: break-word;
   max-width: 100%;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 10px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: rgb(255, 255, 255) transparent transparent transparent;
-  }
+  
 `;
 
 const ChatMessage = styled.p`
@@ -53,6 +47,15 @@ const UserProfile = styled.div`
   margin-bottom: 5px;
 `;
 
+const ProfileImage = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  left: 10px; /* 왼쪽으로 살짝 밀어서 말풍선과 겹치게 */
+  bottom: -5px; /* 말풍선 하단과 겹치도록 위치 조정 */
+`;
+
 const NickName = styled.span`
   font-size: 14px;
   font-weight: bold;
@@ -68,8 +71,8 @@ export default function OtherChat({ chatMessage }) {
   return (
     <ChatContainer key={chatMessage.id}>
       <UserProfile>
-        <img src={`/images/${chatMessage.profile}.jpg`} style={{ width: "30px", borderRadius: "50px" }} />
-        <NickName>{chatMessage.nick}</NickName>
+      <ProfileImage src={chatMessage.profile} />
+        {/* <NickName>{chatMessage.nick}</NickName> */}
       </UserProfile>
       <ChatBubble>
         <ChatMessage>{chatMessage.msg}</ChatMessage>

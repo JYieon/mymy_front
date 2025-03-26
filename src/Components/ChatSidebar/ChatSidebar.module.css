@@ -262,8 +262,9 @@
 
 .GrounpMem {
   display: flex;
+  justify-content: center;
   align-items: end;
-  margin: 10px;
+  margin-bottom: 20px;
   position: relative;
   &:hover {
     .GroupMemMan {
@@ -275,6 +276,11 @@
   }
 }
 
+.GroupMemNick{
+  font-size: 35px;
+  margin-bottom: 5px;
+}
+
 .GroupMemMan {
   position: absolute;
   display: none;
@@ -283,4 +289,12 @@
   border-radius: 20px 20px 20px 0px;
   background-color: white;
   padding: 5px;
+}
+
+.Back{
+  margin: 20px;
+  float: left;
+  text-decoration: none;
+  color: #00284c;
+  padding-left: 20px;
 }

@@ -7,13 +7,13 @@ import { Stomp } from "@stomp/stompjs";
 import style from "../../Css/ChatLayout.module.css";
 import SendIcon from "../../Assets/send.svg";
 
-const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
-  const { roomNum } = useParams();
+const ChttingRoom = ({chatInfo, roomNum, chatUser, memberNum}) => {
+  // const { roomNum } = useParams();
   const [chatUserInfo, setChatUserInfo] = useState([chatUser]);
   const [message, setMessage] = useState("");
   // const [messages, setMessages] = useState([]);
   // const [chatInfo, setChatInfo] = useState([]);
-  const [chatMessages, setChatMessages] = useState([messages]);
+  const [chatMessages, setChatMessages] = useState([]);
   const [webSocket, setWebSocket] = useState(null);
   const [userId, setUserId] = useState("");
   const [invite, setInvite] = useState("");
@@ -34,6 +34,37 @@ const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
       navigate("/account/login");
       return;
     }
+
+    const getChatRoom = async () => {
+          try {
+            const res = await ChatApi.getChatMessages(roomNum);
+            console.log(res.data);
+            // console.log("msg", res.data.member);
+    
+            if (res.data.messages.length > 0) {
+              const newMessages = res.data.messages.map((element) => ({
+                id: element.member,
+                msg: element.msg,
+                type: element.type,
+                nick: element.nick,
+                profile: element.profile
+              }));
+              if (JSON.stringify(chatMessages) !== JSON.stringify(newMessages)) {
+                setChatMessages(newMessages);
+              }
+            } else if (chatMessages.length > 0) {
+              setChatMessages([]);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+    
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
+        };
+        getChatRoom();
+
   }, [roomNum]);
 
   useEffect(() => {
@@ -69,7 +100,9 @@ const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
     return () => {
       stompClient.disconnect();
     };
-  }, [roomNum]);
+
+    scrollToBottom();
+  }, [roomNum, chatMessages]);
 
   const sendMessage = () => {
     const chatMessage = {
@@ -79,7 +112,7 @@ const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
     };
 
     if (!message) {
-      alert("전송이 불가한 메세지.");
+      // alert("전송이 불가한 메세지.");
       return;
     }
     if (!webSocket) {
@@ -192,7 +225,7 @@ const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
 
         {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
         <ul className={style.MessageList}>
-          <Message chatMessages={messages} />
+          <Message chatMessages={chatMessages} />
           <li ref={bottomRef} />
         </ul>
         <div className={style.Mymessages}>
