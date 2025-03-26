@@ -134,16 +134,17 @@ header {
   display: flex;
  *{
   font-size: 12px;
-
  }
 }
 
 .userLevel {
   font-size: 12px;
+  font-weight: 700;
 
 
 }
 
 .userId {
   font-size: 17px;
+  font-weight: 700;
 }
