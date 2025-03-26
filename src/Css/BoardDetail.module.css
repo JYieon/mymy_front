@@ -134,7 +134,7 @@ hr {
 
 .planContainer {
     display: flex;
-    /* flex-direction: column; */
+    flex-direction: column;
     justify-content: center;
     /* background-color: aqua; */
 }
@@ -146,3 +146,10 @@ hr {
     height: 400px;
     border-radius: 10px;
   }
+
+.timelineOpenBtn {
+    /* margin: 0 auto; */
+    background-color: whitesmoke;
+    border: 1px solid #ddd;
+    color: #00284C;
+ }

@@ -245,16 +245,19 @@ const Detail = () => {
               <span className={style.date}>{data.date} 작성</span>
             </div>
             <hr />
-              {data.boardCategory !== 1 && (
-                <div className={style.postStatus}><span className={style.boardCnt}>조회수 {data.boardCnt}</span>
-                <span className={style.boardLike}>좋아요 {data.boardLikes}</span></div>)}
-              <div className={style.editBtnContainer}>
-                <button onClick={handleModify} className={style.editBtn}>
-                  수정
-                </button>
-                <button onClick={deletePost} className={style.deleteBtn}>
-                  삭제
-                </button>
+            {data.boardCategory !== 1 && (
+              <div className={style.postStatus}>
+              <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
+                <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
+                </div>)
+                }
+            <div className={style.editBtnContainer}>
+              <button onClick={handleModify} className={style.editBtn}>
+                수정
+              </button>
+              <button onClick={deletePost} className={style.deleteBtn}>
+                삭제
+              </button>
             </div>
           </div>
         </div>
@@ -290,14 +293,13 @@ const Detail = () => {
             )}
           </div>
         )}
-        <hr />
 
 
         {/* 타임라인 및 지도 (계획 게시글만) */}
         {data.boardCategory === 1 &&
           (
             <>
-              <button type="button" onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
+              <button type="button" className={`${style.timelineOpenBtn}`} onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
               <motion.div className={style.planContainer}
                 initial={{ scaleY: 0 }}
                 transition={{
@@ -311,11 +313,12 @@ const Detail = () => {
               >
                 <ReadingOnlyKakaoMap boardNo={boardNo} />
                 <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
-                <hr />
 
               </motion.div>
             </>
           )}
+        <hr />
+
         {/* 기록 게시글(2)만 좋아요 & 북마크 가능 */}
         {data.boardCategory === 2 && (
           <div className={style.userReaction}>
