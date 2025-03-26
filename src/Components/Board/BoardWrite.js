@@ -83,14 +83,14 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     }
   }, []);
 
-  // 기록 게시글 작성 시, 기존 계획 게시글 목록 불러오기
   useEffect(() => {
     if (category === 2) {
-      BoardApi.getBoardList(1, 1, token).then((res) => {
-        setPlans(res.data.boardList);
+      BoardApi.getAllPlans(token).then((res) => {
+        setPlans(res.data); // 👈 새로운 API는 전체 목록을 바로 리스트로 반환함
       });
     }
   }, [category]);
+  
   
   // 이미지 업로드 함수 (오류 해결)
   const uploadImage = async (file) => {

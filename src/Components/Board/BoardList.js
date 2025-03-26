@@ -234,6 +234,7 @@ const BoardList = () => {
           <option value="content">내용</option>
           <option value="titleContent">제목+내용</option>
           {category === 2 && <option value="tag">해시태그</option>}
+          {category === 2 && <option value="user">아이디+닉네임</option>}
         </select>
         <input
           type="text"
