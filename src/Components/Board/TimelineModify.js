@@ -168,7 +168,6 @@ const TimelineModify = () => {
 
       {/* <div className={`Shadow`}></div> */}
       <div className={`Shadow ${style.dateSelection}`}>
-        <label className={style.label}>📅</label>
 
         <input
           type="date"
@@ -181,7 +180,7 @@ const TimelineModify = () => {
 
         <div className={`${style.todoSection}`}>
           <h3>{selectedDate || "날짜 선택"}</h3>
-          <button className={style.addButton} onClick={handleAddTask}>
+          <button className={style.addButton} onClick={handleAddTask} type="button">
             일정 추가
           </button>
           <hr />
@@ -197,7 +196,7 @@ const TimelineModify = () => {
                   value={todo.task}
                   placeholder="일정을 적어보세요!"
                   onChange={(e) => handleChange(index, "task", e.target.value)}
-                  classsName={style.taskInput}
+                  classsName={`${style.taskInput}`}
                 />
                 <textarea
                   ref={subTaskRef}
@@ -242,8 +241,8 @@ const TimelineModify = () => {
 
             ))}
           </div>
-          <button className={style.updateButton} onClick={handleUpdateTasks}>
-            🔄 수정
+          <button className={style.updateButton} onClick={handleUpdateTasks} type="button">
+            수정
           </button>
 
         </div>

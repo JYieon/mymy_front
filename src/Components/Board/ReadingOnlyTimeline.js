@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import TimelineApi from "../../api/TimelineApi"; // API 호출
 import style from "../../Css/Timeline.module.css";
-const ReadingOnlyTimeline = ({SetTimelineId}) => {
+const ReadingOnlyTimeline = ({ SetTimelineId }) => {
   const { boardNo } = useParams();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -10,7 +10,7 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
-  const [ timelinePage ,setTimelinePage ]=useState("");
+  const [timelinePage, setTimelinePage] = useState("");
 
   useEffect(() => {
     if (!token) {
@@ -26,7 +26,7 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
 
 
   const fetchTimeline = async () => {
-    
+
     try {
       const response = await TimelineApi.getTimeline(boardNo);
       if (response.data) {
@@ -34,11 +34,11 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
         setStartDate(response.data.startDt);
         setSelectedDate(response.data.startDt);
         setEndDate(response.data.endDt);
-        setTimelinePage(endDate-startDate);
+        setTimelinePage(endDate - startDate);
         setLocation(response.data.location);
         setTodoList(JSON.parse(response.data.todo) || {});
         console.log("타임라인 게시글 데이터", response.data)
-      }else {
+      } else {
 
       }
     } catch (error) {
@@ -98,42 +98,24 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
         </div>
       </div>
 
-      
+
       <div className={`Shadow ${style.dateSelection}`}>
-        <label className={style.label}>📅</label>
         <input
           type="date"
           value={selectedDate}
           min={startDate}
           max={endDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className={style.input}
+            className={`${style.input} ${style.selectedDate}`}
         />
-
         <div className={`${style.todoSection}`}>
-          <h3>📍 {selectedDate || "날짜 선택"}</h3>
+        <h3>{selectedDate.replaceAll('-', "")-startDate.replaceAll('-', '') +1}일차</h3>
           <hr />
           <div className={style.TodoList}>
             {/* 서버에서 자동으로 불러와짐 */}
             {selectedTasks.map((todo, index) => (
               <div key={index} className={`Shadow ${style.todoItem}`}>
                 {/* 일정 시간 묶음 */}
-                <div>
-                  {/* 시작 시각 */}
-                  <input readOnly
-                    type="time"
-                    value={todo.startTime}
-
-                    className={style.timeInput}
-                  />
-                  <span className={style.timeDash}>~</span>
-                  {/* 종료 시각 */}
-                  <input readOnly
-                    type="time"
-                    value={todo.endTime}
-                    className={style.timeInput}
-                  />
-                </div>
                 {/* 일정 */}
                 <input readOnly
                   type="text"
@@ -152,12 +134,28 @@ const ReadingOnlyTimeline = ({SetTimelineId}) => {
                   onInput={handleResizeHeight}
                   rows={1}
                   className={style.subTaskInput}
-                ></textarea>
+                />
+                <div>
+                  {/* 시작 시각 */}
+                  <input readOnly
+                    type="time"
+                    value={todo.startTime}
+
+                    className={style.timeInput}
+                  />
+                  <span className={style.timeDash}>~</span>
+                  {/* 종료 시각 */}
+                  <input readOnly
+                    type="time"
+                    value={todo.endTime}
+                    className={style.timeInput}
+                  />
+                </div>
               </div>
             ))}
           </div>
         </div>
-        
+
       </div>
     </div>
   );

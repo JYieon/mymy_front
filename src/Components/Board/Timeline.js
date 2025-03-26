@@ -184,12 +184,13 @@ const Timeline = ({ boardNo }) => {
 
         {/* <div className={`Shadow`}></div> */}
         <div className={`Shadow ${style.dateSelection}`}>
-          <label className={style.label}>날짜 선택</label>
+        <h3>{selectedDate || "날짜 선택"}</h3>
+
           <input
             type="date"
             value={selectedDate}
             min={startDate}
-            max={endDate}
+            max={endDate}s
             onChange={(e) => setSelectedDate(e.target.value)} // selectedDate 업데이트
             className={style.input}
           />
@@ -247,6 +248,7 @@ const Timeline = ({ boardNo }) => {
                     />
                   </div>
                   <button
+                    type="button"
                     className={style.deleteButton}
                     onClick={() => handleDeleteTask(index)}
                   >
@@ -255,12 +257,12 @@ const Timeline = ({ boardNo }) => {
                 </div>
               ))}
             </div>
-            <button className={style.updateButton} onClick={handleUpdateTasks}>
-            수정
-          </button>
-          <button className={style.saveButton} onClick={handleSaveTasks}>
-            저장
-          </button>
+            <button className={style.updateButton} onClick={handleUpdateTasks} type="button">
+              수정
+            </button>
+            <button className={style.saveButton} onClick={handleSaveTasks} type="button">
+              저장
+            </button>
           </div>
         </div>
       </div>

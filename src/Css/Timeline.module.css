@@ -3,14 +3,14 @@
   flex-direction: column;
   width: auto;
   min-width: 300px;
-  max-width: 600px;
-  margin: auto;
+  max-width: 400px;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
 }
 
 .subContainer {
+
   display: flex;
   flex-direction: column;
   width: auto;
@@ -21,6 +21,7 @@
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+
 }
 
 .TripDate {
@@ -28,10 +29,6 @@
   align-items: center;
 }
 
-.title {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
 
 /* 여행 일정 */
 .Itinerary {
@@ -40,7 +37,7 @@
   margin-bottom: 20px;
   background-color: white;
   border-radius: 100px;
-  padding: 5px;
+  padding: 1px;
   
 }
 
@@ -50,6 +47,7 @@
   align-items: center;
   margin-bottom: 20px;
   background: #fff;
+
   padding: 15px;
   border-radius: 20px;
   overflow-y: auto;
@@ -60,9 +58,11 @@
 .label {
   font-size: 16px;
   margin-bottom: 5px;
+  
 }
 
 .input {
+    /* background-color: aqua; */
   padding: 5px;
   margin: 5px;
   border: 1px solid whitesmoke;
@@ -76,6 +76,10 @@
 
 .Destination {
   border: none;
+}
+
+.selectedDate {
+  font-size: 17px;
 }
 
 .todoSection {
@@ -133,11 +137,11 @@
   padding: 5px 10px;
   margin: 10px 0;
   width: 80%;
-  
   border-radius: 100px;
   border: none;
   background: none;
   font-size: 12px;
+
   /* background-color: whitesmoke; */
   box-shadow: 0 0 20px #ddd;
   &:focus {
