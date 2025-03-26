@@ -2,8 +2,8 @@ import { Outlet, useOutletContext } from "react-router-dom";
 import SidebarCom from "../Components/Sidebar/SidebarCom";
 
 const SidebarPage=()=>{
-    const headerDisplay=useOutletContext();
-    headerDisplay(false);
+    // const headerDisplay=useOutletContext();
+    // headerDisplay(false);
     return(
         <>
         <SidebarCom/>
