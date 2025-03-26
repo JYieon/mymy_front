@@ -246,11 +246,16 @@ const Detail = () => {
             </div>
             <hr />
             {data.boardCategory !== 1 && (
-              <div className={style.postStatus}>
-              <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
-                <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
-                </div>)
-                }
+              <>
+                <div className={style.postStatus}>
+                  <span className={style.boardCnt}>조회수 {data.boardCnt}</span>
+                  <span className={style.boardLike}>좋아요 {data.boardLikes}</span>
+                </div>
+                <br />
+              </>
+            )
+            }
+
             <div className={style.editBtnContainer}>
               <button onClick={handleModify} className={style.editBtn}>
                 수정
@@ -270,7 +275,7 @@ const Detail = () => {
         </div>
         {/* 해시태그 (기록 게시글만) */}
         {data.boardCategory === 2 && (
-          <div>
+          <div className={style.hashtags}>
             {/* <h5>📌 해시태그:</h5> */}
             {hashtags.length > 0 ? (
               hashtags.map((tag, index) => (
@@ -388,8 +393,8 @@ const Detail = () => {
           </div>
         )}
         <div className={style.shareContainer}>
-          <button className={style.KakaoShare}>카톡 공유</button>
-          <button className={style.pdfShare}>PDF 공유</button>
+          {/* <button className={style.KakaoShare}>카톡 공유</button>
+          <button className={style.pdfShare}>PDF 공유</button> */}
           <button className="Sharebtn" onClick={urlShare}>
             공유하기
           </button>
