@@ -241,7 +241,7 @@ const TimelineModify = () => {
 
             ))}
           </div>
-          <button className={style.updateButton} onClick={handleUpdateTasks} type="button">
+          <button className={style.updateButton} onClick={handleUpdateTasks} >
             수정
           </button>
 
