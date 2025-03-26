@@ -18,12 +18,12 @@ const MypageApi = {
     getUserInfo: async () => {
         const token = localStorage.getItem('token');
         return await axios.get(`${domain}/userinfo/me`, {
-          headers: {
-            Authorization: token
-          },
-          withCredentials: true
+            headers: {
+                Authorization: token
+            },
+            withCredentials: true
         });
-      },
+    },
 
     // 회원 탈퇴
     deleteAccount: async (keepPosts) => {
@@ -166,8 +166,8 @@ const MypageApi = {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
-                    params: {no: no},
-                    withCredentials: true 
+                    params: { no: no },
+                    withCredentials: true
                 }
             );
             console.log("✅ 알림 읽음 처리 성공:", response.data);
@@ -307,16 +307,16 @@ const MypageApi = {
         }
     },
 
-    //팔로우 이미지 파일에 대한(임시)
-    getProfileImage: async (userId) => {
-        try {
-            const response = await axios.get(`${domain}/user/profile/${userId}`);
-            return response.data;
-        } catch (error) {
-            console.error("프로필 이미지 가져오기 실패:", error);
-            return { profileImage: "/default-profile.jpg" }; // 기본 이미지 제공
-        }
-    },
+    // //팔로우 이미지 파일에 대한(임시)
+    // getProfileImage: async (userId) => {
+    //     try {
+    //         const response = await axios.get(`${domain}/user/profile/${userId}`);
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error("프로필 이미지 가져오기 실패:", error);
+    //         return { profileImage: "/default-profile.jpg" }; // 기본 이미지 제공
+    //     }
+    // },
 
     // 여행자 테스트 결과 저장
     saveTestResult: async (testResult, token) => {
@@ -325,18 +325,63 @@ const MypageApi = {
         });
     },
 
-   // 여행자 테스트 결과 조회 (수정)
+    // 여행자 테스트 결과 조회 (수정)
     getTestResult: async (token) => {
-    try {
-        const res = await axios.get(`${domain}/userinfo/testResult`, {
-            headers: { Authorization: `Bearer ${token}` },
+        try {
+            const res = await axios.get(`${domain}/userinfo/testResult`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return res.data; // ✅ 응답 데이터 반환!
+        } catch (error) {
+            console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
+            return ""; // 🚨 오류 발생 시 빈 값 반환
+        }
+    },
+    //프로필
+    getProfile: async () => {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            console.error("❌ 토큰이 없습니다. 프로필 요청 중단");
+            return null;
+        }
+
+        try {
+            const res = await axios.get(`${domain}/profile/me`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            });
+            return res.data;
+        } catch (error) {
+            console.error("❌ 프로필 가져오기 실패:", error);
+            return null;
+        }
+    },
+
+    uploadProfile: async (formData) => {
+        const token = localStorage.getItem("accessToken");
+
+        return await axios.post(`${domain}/profile/upload`, formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true
         });
-        return res.data; // ✅ 응답 데이터 반환!
-    } catch (error) {
-        console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
-        return ""; // 🚨 오류 발생 시 빈 값 반환
-    }
-},
+    },
+
+    getUserInfoById: async (userId) => {
+        try {
+            const res = await axios.get(`${domain}/profile/${userId}`);
+            return res.data;
+        } catch (error) {
+            console.error("getUserInfoById 에러: ", error);
+            throw error;
+        }
+    },
+    
 
 
 

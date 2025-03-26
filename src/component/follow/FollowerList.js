@@ -10,7 +10,7 @@ const FollowerList = () => {
     const { userId } = useParams();
     const [followers, setFollowers] = useState([]);
     const [error, setError] = useState(null);
-
+    const [profiles, setProfiles] = useState({});
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");//사용자 토큰 확인인
@@ -36,6 +36,25 @@ const FollowerList = () => {
                 console.log("팔로워 목록:", res);
                 //서버에서 받은 데이터가 배열인지 확인 후 저장
                 setFollowers(Array.isArray(res) ? res : []);
+
+
+                 // 프로필 이미지 동시 요청
+                 const profilePromises = res.map(async (user) => {
+                    try {
+                        const profileData = await MypageApi.getUserInfoById(user.followerId);
+                        return { userId: user.followerId, profileImg: profileData.member_profile };
+                    } catch {
+                        return { userId: user.followerId, profileImg: null };
+                    }
+                });
+
+                const resolvedProfiles = await Promise.all(profilePromises);
+                const profileMap = {};
+                resolvedProfiles.forEach((p) => {
+                    profileMap[p.userId] = p.profileImg;
+                });
+
+                setProfiles(profileMap);
 
 
             } catch (error) {
@@ -75,7 +94,15 @@ const FollowerList = () => {
                         {followers.map(user => (
                             <li className={`Shadow ${style.bookmarkItem}`} key={user?.followerId || Math.random()}>
                             <div className={style.followerPicContainer}>
-                                    <img src="../../Assets/temPic.jpg" alt="프로필 이미지" className={style.followerPic} />
+                            <img
+                                        src={profiles[user.followerId]}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = "/images/defaultProfile.png";
+                                        }}
+                                        alt="프로필 이미지"
+                                        className={style.followerPic}
+                                    />
                                     </div>
                                 <div>
                                     <Link to={`/profile/${user?.followerId}`}
