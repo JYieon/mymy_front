@@ -41,6 +41,7 @@ ul {
   padding-inline-start: 5%;
   width: 90%;
   .menuTitle {
+    margin: 10px;
     margin-left: 20px;
     font-size: 25px;
     font-weight: 800;

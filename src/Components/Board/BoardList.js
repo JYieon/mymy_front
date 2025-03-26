@@ -18,10 +18,13 @@ const BoardList = () => {
   const token = localStorage.getItem("accessToken") || "none";
 
 
+
   const [pageState, setPageState] = useState({
     1: { boardList: [], currentPage: 1, totalPages: 1 },
     2: { boardList: [], currentPage: 1, totalPages: 1 },
   });
+
+
 
   const [searchType, setSearchType] = useState(searchTypeParam || "title");
   const [keyword, setKeyword] = useState(keywordParam || "");
@@ -73,7 +76,7 @@ const BoardList = () => {
         params.token = localStorage.getItem("accessToken");
       }
       const response = await axios.get(
-        `http://localhost:8080/mymy/board/list`,
+        `http://3.39.66.94:8080/mymy/board/list`,
         {
           params: {
             page,
@@ -92,9 +95,11 @@ const BoardList = () => {
           ...post,
           thumbnail: extractThumbnail(post),
         })),
+        pageLimitCount:6,
         currentPage: response.data.currentPage,
         totalPages: response.data.totalPages,
       };
+      
       setPageState(updatedPageState);
       setIsSearching(false);
     } catch (error) {
@@ -106,7 +111,7 @@ const BoardList = () => {
     if (keyword.trim() === "") return;
     try {
       const response = await axios.get(
-        `http://localhost:8080/mymy/board/search`,
+        `http://3.39.66.94:8080/mymy/board/search`,
         {
           params: { page, category, searchType, keyword },
         }
@@ -172,6 +177,7 @@ const BoardList = () => {
     navigate(`/board/list?category=${newCategory}`);
   };
 
+
   // 글쓰기 버튼 클릭 시, 카테고리별로 다른 페이지로 이동하도록 설정
   const handleWritePost = () => {
     if (category === 3) {
@@ -183,12 +189,17 @@ const BoardList = () => {
 
   const handlePageChange = (page) => {
     const updatedPageState = { ...pageState };
+    // console.log("aldjfbeg",pageState[category].currentPage)
     updatedPageState[category].currentPage = page;
+    const test =updatedPageState[category];
+    console.log('zjfjsxm',test.boardList.slice(0,6))
+    console.log("aldjfbeg",test.boardList.slice((test.currentPage-1)*6,test.currentPage*2))
+    // console.log("aldjfbeg",)
+
     setPageState(updatedPageState);
   };
 
   const { boardList, currentPage, totalPages } = pageState[category];
-  
   return (
     <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>
@@ -238,8 +249,7 @@ const BoardList = () => {
       </div>
 
       <div className={style.boardGrid}>
-        {boardList.map((post) => {
-          console.log(post);
+      {boardList.map((post) => {
           return (
             <div key={post.boardNo} className={`Shadow ${style.boardItem}`}>
               <Link to={`/board/detail/${post.boardNo}`} className="link">
@@ -254,7 +264,6 @@ const BoardList = () => {
                   <span>댓글 수 {post.repCnt}</span>
                 </div>
                 <div className="WriterId">
-                  {/* 'anonymous'일 경우 '알 수 없음'으로 표시하고, 그 외의 경우에는 프로필 링크로 */}
                   {post.id === 'anonymous' ? '알 수 없음' :
                     <Link to={`/profile/${post.id}`} className={style.writer}>
                       {post.id}
@@ -271,9 +280,7 @@ const BoardList = () => {
         게시글 작성
       </button>
 
-      
 
-      <div className={style.Paginations}>
         {totalPages > 1 && (
           <div className={style.Pagination}>
             {currentPage > 1 && (
@@ -281,7 +288,9 @@ const BoardList = () => {
                 이전
               </button>
             )}
-            {[...Array(totalPages).keys()].map((page) => (
+            {
+              [...Array(totalPages).keys()].map((page) => 
+              (
               <button
                 key={page + 1}
                 onClick={() => handlePageChange(page + 1)}
@@ -297,7 +306,7 @@ const BoardList = () => {
             )}
           </div>
         )}
-      </div>
+
     </div>
   );
 };

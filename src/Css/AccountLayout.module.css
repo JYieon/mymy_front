@@ -152,4 +152,41 @@
      }
 }
 
+
+.wait {
+    font-weight: 900;
+    font-size: 50px;
+    color: #00284C;
+}
+
+.testContext {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.testBtn {
+    font-size:30px;
+    font-weight: 800;
+    border: none;
+    background: none;
+    margin: 10px auto 0px auto;
+    color: #00284C;
+    &:hover {
+        color: gray;
+    }
+}
+
+.testNo {
+    font-weight: 600;
+    font-size: 15px;
+    padding: 0;
+}
+
+.testAnswer {
+    display: flex;
+    flex-direction: column;
+}
+
+
 /* 계정 찾기 */

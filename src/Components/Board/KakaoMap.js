@@ -32,8 +32,8 @@ const KakaoMap = ({ boardNo }) => {
     }, []);
 
     const initMap = async () => {
-        console.log("initMap 실행됨!");
-        console.log(boardNo);
+        console.log("✅ initMap 실행됨!");
+        console.log("✅", boardNo);
         const container = document.getElementById("map");
         if (!container) return;
 
@@ -47,7 +47,7 @@ const KakaoMap = ({ boardNo }) => {
 
         try {
             const response = await MapApi.fetchMarkers(boardNo);
-            console.log("📍 DB에서 불러온 마커 데이터:", response.data);
+            console.log("마커 데이터:", response.data);
             response.data.forEach((markerData) => {
                 loadMarker(markerData, mapInstance);
             });
@@ -86,7 +86,7 @@ const KakaoMap = ({ boardNo }) => {
         const marker = new window.kakao.maps.Marker({ position, map: mapInstance });
 
         const infowindow = new window.kakao.maps.InfoWindow({
-            content: `<div style="padding:5px;">입력 후 저장</div>`,
+            content: `<div className={style.MarkerPopUp}">입력 후 저장</div>`,
             removable: true,
         });
 
@@ -114,10 +114,10 @@ const KakaoMap = ({ boardNo }) => {
         console.log(markerData)
         try {
             await MapApi.addMarker(markerData);
-            console.log("✅ 마커 저장 성공!", markerData);
+            console.log("마커 저장 성공!", markerData);
             setPendingMarker(null);
         } catch (error) {
-            console.error("🚨 마커 저장 실패:", error);
+            console.error("마커 저장 실패:", error);
         }
     };
 

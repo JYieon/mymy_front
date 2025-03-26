@@ -40,18 +40,20 @@ function ChatList() {
   };
 
   return (
-    <div>
+    <div className={chatStyle.ChatLayoutWrap} >
       <h1 >💬 채팅방 목록</h1>
-      <div className={style.bookmarkContainer}>
-      </div>
+      <div className={chatStyle.ChatroomContainer}>
+      
       <ul>
         {chatRooms.map((room) => (
-          <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)} className={`Shadow ${style.bookmarkItem}`}>
-            <h3 className={style.bookmarkPostTitle}>{room.roomName}</h3>
+          <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)} className={`Shadow ${chatStyle.ChatroomItem}`}>
+            <span className={chatStyle.ChatroomTitle}>{room.roomName}</span>
+            <span className={chatStyle.lastChatDate}>마지막 채팅 | {room.lastChat}</span>
           </li>
         ))}
       </ul>
-      <button onClick={createChatRoom}>생성</button>
+      <button className={chatStyle.createChatRoomBtn} onClick={createChatRoom}>생성</button>
+    </div>
     </div>
   );
 }

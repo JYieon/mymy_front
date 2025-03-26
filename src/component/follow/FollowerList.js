@@ -81,15 +81,14 @@ const FollowerList = () => {
                                         alt="프로필 이미지"
                                         className={style.followerPic}
                                     />
-                                </div>
-                                <div>
-                                    <Link
+                                     <Link
                                         to={`/profile/${user.followerId}`}
                                         className={`link ${style.bookmarkUserId}`}
                                     >
                                         {user.followerId}
                                     </Link>
                                 </div>
+
                                 <div className={style.bmController}>
                                     <FollowButton profileUser={user.followerId} />
                                 </div>

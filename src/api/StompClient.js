@@ -6,7 +6,7 @@ let client;
 const connectWebSocket = (roomId, onMessageReceived, onConnect, onError) => {
   const accessToken = localStorage.getItem("accessToken"); // JWT 토큰을 가져옵니다
   client = new Client({
-    webSocketFactory: () => new SockJS('http://localhost:8080/mymy/chat'), // WebSocket 서버 URL
+    webSocketFactory: () => new SockJS('http://3.39.66.94:8080/mymy/chat'), // WebSocket 서버 URL
     connectHeaders: {
       Authorization: `Bearer ${accessToken}`
     },

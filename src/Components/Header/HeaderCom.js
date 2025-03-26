@@ -47,10 +47,10 @@ const HeaderCom = ({ headerDisplay }) => {
                 setUserId(res.data.id);
                 setUserNick(res.data.nick);
                 setUserLevel(getLevelName(res.data.level))
-                
-                  const resAlram = await MypageApi.getAlarms(token);
-                  console.log("🔹 받아온 알람 데이터:", resAlram.data);
-                  setNotifications(resAlram.data);
+
+                const resAlram = await MypageApi.getAlarms(token);
+                console.log("🔹 받아온 알람 데이터:", resAlram.data);
+                setNotifications(resAlram.data);
 
                 notifications.map((noti) => {
                     if (noti.isRead === 0) {
@@ -138,9 +138,7 @@ const HeaderCom = ({ headerDisplay }) => {
                                 <ul className={style.menuList}>
                                     {/* 로그인 상태일때만 보여지는 커뮤니티 카테고리 */}
                                     {isAuthenticated && (<>
-                                        <li>
-                                            <Link to="/board/bookmarkList" className={style.menu}>북마크</Link>
-                                        </li>
+
                                         <li>
                                             <Link to="/board/list?category=1" className={style.menu}>여행 계획</Link>
                                         </li>
@@ -162,7 +160,7 @@ const HeaderCom = ({ headerDisplay }) => {
                                 //로그인 상태일 시 보여지는 헤더
                                 (<>
                                     <li className={style.headerMenu} id="채팅">
-                                    <Link to={`/chat/list`} className={`link ${style.boardBtn}`}>채팅</Link>
+                                        <Link to={`/chat/list`} className={`link ${style.boardBtn}`}>채팅</Link>
 
                                         <ul className={style.menuList}>
                                             <li>
@@ -177,9 +175,13 @@ const HeaderCom = ({ headerDisplay }) => {
                                     <div className={style.userInfo}>
                                         <span className={style.userId}>{userNick}님 안녕하세요!</span>
                                         <div className={`${style.userInfoWrap}`}>
+
                                             <li className={`${style.mypage} ${style.headerMenu}`} id="마이페이지">
                                                 <Link to={`/mypage/modify`} className={`link ${style.mypageBtn}`}>{userLevel}</Link>
                                                 <ul className={style.menuList}>
+                                                    <li>
+                                                        <Link to="/mypage/bookmarkList" className={style.menu}>북마크</Link>
+                                                    </li>
                                                     <li>
                                                         <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
                                                             내가 쓴 글
@@ -211,17 +213,17 @@ const HeaderCom = ({ headerDisplay }) => {
                                         </div>
                                     </div>
                                     <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick}>
+                                        {/* <AlarmIcon hasUnread={hasUnread} setHasUnread={setHasUnread} />
+                                    </li> */}
+                                        <AlarmIcon hasUnread={hasUnread} style={style} />
+                                    </li>
 
-                                            <AlarmIcon hasUnread={hasUnread} style={style}/>
-                                        </li>
 
-                                       
                                 </>) :
                                 //로그아웃 상태일 시 보여지는 헤더
-                                (<div className={style.userInfo}>
-                                    비회원 상태입니다.
+                                (<div>
                                     <li className={style.headerMenu} id="로그인">
-                                        <Link to={`/account/login`} className={`link ${style.loginBtn}`}>로그인</Link>
+                                        <Link to={`/account/login`} className={`link ${style.loginBtn}`}>로그인/</Link>
                                     </li>
                                     <li className={style.headerMenu} id="회원가입">
                                         <Link to={`/account/register`} className={`link ${style.registerBtn}`}>회원가입</Link>

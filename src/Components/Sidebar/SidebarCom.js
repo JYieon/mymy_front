@@ -321,11 +321,6 @@ const SidebarCom = () => {
             <ul className={style.menuList}>
               {!!token && (<>
                 <li>
-                  <Link to="/board/bookmarkList" className={`link ${style.menu}`}>
-                    북마크
-                  </Link>
-                </li>
-                <li>
                   <Link to="/board/list?category=1" className={`link ${style.menu}`}>
                     여행 계획
                   </Link>
@@ -377,6 +372,11 @@ const SidebarCom = () => {
             <li className="link">
               <span className={style.menuTitle}>마이페이지</span>
               <ul className={style.menuList}>
+              <li>
+                  <Link to="/mypage/bookmarkList" className={`link ${style.menu}`}>
+                    북마크
+                  </Link>
+                </li>
                 <li>
                   <Link to={`/mypage/my_story`} className={`link ${style.menu}`}>
                     내가 쓴 글

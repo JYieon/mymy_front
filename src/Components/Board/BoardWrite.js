@@ -98,7 +98,7 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
     formData.append("file", file);
 
     try {
-      const res = await axios.post("http://localhost:8080/mymy/board/uploadSummernoteImageFile", formData, {
+      const res = await axios.post("http://3.39.66.94:8080/mymy/board/uploadSummernoteImageFile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -180,17 +180,12 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
           setTimelineOpen(true);
           setTimeline(
             <Timeline boardNo={res.data.boardNo} />);
-            <KakaoMap boardNo={res.data.boardNo} />
+          <KakaoMap boardNo={res.data.boardNo} />
 
         } else if (category === 2) {
           alert("게시글이 등록되었습니다!");
           navigate(`/board/list?category=${category}`);
         }
-        else {
-          navigate(`/mateBoard/list?category=${category}`);
-
-        }
-
       }
     } catch (error) {
       alert("게시글 등록 실패");
