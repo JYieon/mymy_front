@@ -1,6 +1,7 @@
 
 import { Outlet } from "react-router-dom";
 import style from "../../Css/Layout.module.css"
+import "../../Assets/pretendard.css";
 import HeaderCom from "../..//Components/Header/HeaderCom";
 import { useState } from "react";
 

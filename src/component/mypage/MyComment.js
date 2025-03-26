@@ -24,12 +24,6 @@ const MyComment = () => {
         fetchComments();
     }, [token]);
 
-       // 댓글이 속한 게시글의 제목을 찾는 함수
-       const getPostTitle = (boardNo,title) => {
-        const post = posts.find(p => p.boardNo === boardNo);
-        return post ? post.title : "탈퇴한 회원 게시물";
-    };
-
     
     return (
         
@@ -54,8 +48,9 @@ const MyComment = () => {
                             <span>{comment.boardNo}</span>
                             <span>{comment.title}</span>
                             <Link to={`/board/detail/${comment.boardNo}`}>
-                            {getPostTitle(comment.boardNo)}
+                                {comment.originalPost}
                             </Link>
+
                             <span className="comment-content">{comment.content}</span>
                         </li>
                     ))}

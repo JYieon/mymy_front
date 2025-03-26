@@ -85,6 +85,11 @@ const MypageApi = {
             return [];
         }
     },
+    //유저의 글
+    getUserPosts: async (userId) => {
+        const res = await axios.get(`${domain}/myboard/${userId}`);
+        return res.data;
+    },
 
     //레벨 등업, 다운에 대한 api
     updateLevel: async (token) => {
@@ -154,7 +159,7 @@ const MypageApi = {
         console.log("mark")
         try {
             const response = await axios.post(
-                "http://localhost:8080/mymy/alarm/mark/read",  // ✅ API 경로 확인
+                "http://localhost:8080/mymy/alarm/mark/read",
                 null,
                 {
                     headers: {
@@ -162,7 +167,7 @@ const MypageApi = {
                         "Content-Type": "application/json"
                     },
                     params: {no: no},
-                    withCredentials: true // ✅ 백엔드에서 CORS 설정이 필요
+                    withCredentials: true 
                 }
             );
             console.log("✅ 알림 읽음 처리 성공:", response.data);

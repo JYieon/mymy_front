@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import ChatApi from "../../api/ChatApi";
+import style from "../../Css/BoardList.module.css";
+import FollowButton from "./FollowButton";
 
 //팔로잉 목록
 const FollowingList = () => {
@@ -35,6 +37,7 @@ const FollowingList = () => {
                 //서버에서 받은 데이터가 배열인지 확인 후 저장 
                 setFollowing(Array.isArray(res) ? res : []);
             } catch (error) {
+
                 console.error(" 팔로잉 목록 불러오기 실패:", error);
                 setError(" 팔로잉 목록을 불러오는 중 오류가 발생했습니다.");
             }
@@ -44,20 +47,22 @@ const FollowingList = () => {
     }, []);
     return (
         <div className="following-list">
-            <h2>{userId}의 팔로잉 목록 (내가 팔로우한 사람)</h2>
+            <h1>{userId}님의 팔로잉</h1>
 
-            <div className="user-grid">
+            <div className={style.bookmarkContainer}>
+
                 {following.length === 0 ? (
-                    <p>팔로우한 사용자가 없습니다.</p>
+                    <p className={style.nonData}>팔로우한 사용자가 없습니다.</p>
                 ) : (
                     <ul>
                         {following.map(user => (
-                            <div className="user-card" key={user?.followingId || Math.random()}>
-                                <Link to={`/profile/${user?.followingId}`}>
+                            <li className={`Shadow ${style.followItem}`} key={user?.followingId || Math.random()}>
+                                <Link to={`/profile/${user?.followingId}`} className={`link`}>
                                     <img src="profile.jpg" alt="프로필 이미지" />
                                     <p>{user?.followingId}</p>
                                 </Link>
-                            </div>
+                                <FollowButton profileUser={user?.followingId}/>
+                            </li>
                         ))}
                     </ul>
                 )}

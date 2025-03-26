@@ -2,17 +2,33 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import FollowButton from "./FollowButton";
-import MyPost from "../mypage/MyPost"; 
-
+import MyPost from "../mypage/MyPost";
+import userPost from "../mypage/userPost";
+import style from "../../Css/Profile.module.css";
 
 //사용자 프로필 
 const UserProfile = ({ loggedInUser }) => {
-    const { userId } = useParams();//사용자 id가져오기기
+    const { userId } = useParams(); // URL에서 대상 유저 아이디
+    const [myId, setMyId] = useState(""); // 로그인 유저 아이디
     const [followerCount, setFollowerCount] = useState(0);//팔로워 수 저장 
     const [followingCount, setFollowingCount] = useState(0);//팔로잉 수 저장 
-    const token = localStorage.getItem("accessToken"); 
-  
-    
+    const token = localStorage.getItem("accessToken");
+
+    // 로그인한 내 userId 가져오기
+    useEffect(() => {
+        const fetchMyId = async () => {
+            try {
+                const res = await MypageApi.getUserInfo(token); // "/userinfo/me"
+                setMyId(res.userId);
+            } catch (err) {
+                console.error("내 userId 불러오기 실패", err);
+            }
+        };
+        fetchMyId();
+    }, [token]);
+
+    console.log('loggedInUser',loggedInUser)
+
     // 팔로워 & 팔로잉 숫자 불러오기
     useEffect(() => {
         if (!userId) return;
@@ -34,12 +50,24 @@ const UserProfile = ({ loggedInUser }) => {
 
     return (
         <div className="user-profile">
-            <h2>{userId}</h2>
-            <p>팔로잉: {followingCount} | 팔로워: {followerCount}</p>
-            <FollowButton profileUser={userId} />
-
+            <div className={style.header}>
+                <img src="" alt="profilePic" className={style.profilePic} />
+                {/* <h1 className={style.userId}>{userId}</h1> */}
+                <h1 className={style.userId}>{userId}</h1>
+                <div className={style.followContainer}>
+                    <span>팔로잉 {followingCount} 팔로워 {followerCount}</span>
+                    <FollowButton profileUser={userId} />
+                </div>
+            </div>
+            <hr className={`hr`} />
             {/*  해당 회원이 작성한 게시글 불러오기 */}
-            <MyPost />
+
+            <div className={style.mypost}>
+                <h2 className={style.category}>📄 작성한 게시글</h2>
+            {myId === userId ? <MyPost /> : <userPost/> }
+
+
+            </div>
         </div>
     );
 };

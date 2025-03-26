@@ -1,0 +1,60 @@
+.header {
+    min-width: 500px;
+
+    margin: 20px;
+    margin-bottom: -20px;
+    /* background-color: aqua; */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    white-space: nowrap;
+    white-space: nowrap;
+}
+
+.followContainer{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: -40px;
+    margin-left: 0px;
+    /* background-color: tomato; */
+    span {
+        margin:auto 30px;
+    }
+}
+
+.profilePic {
+    background-color: #ddd;
+    min-width: 100px;
+    min-height: 100px;
+
+
+    width: 100px;
+    height: 100px;
+    margin-bottom: -80px;
+    border-radius: 100%;
+    text-align: center;
+    border: 3px solid #ddd;
+}
+
+
+.userId{
+    margin-bottom: 30px;
+    margin-left: 30px;
+    font-size: 25px;
+}
+.followBtn {
+    float: right;
+    padding: 5px 10px;
+    font-size:13px;
+}
+
+.mypost {
+    margin-top: 100px;
+    h1 {
+        display: none;
+    }
+}
+
+.category {
+    margin-left: 50px;    
+}

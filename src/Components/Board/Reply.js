@@ -105,7 +105,6 @@ const Reply = ({ boardNo, category }) => {
     // ✅ 댓글 작성 (기록 게시판 & 메이트 게시판 대응)
     const handleAddReply = async (parentNo = 0) => {
         const content = replyContent[parentNo] || newReply;
-
         if (!content.trim()) {
             alert("🚨 댓글 내용을 입력하세요.");
             return;
@@ -125,6 +124,7 @@ const Reply = ({ boardNo, category }) => {
         };
 
         try {
+            console.log(replyData)
             const res = await api.addReply(replyData, token);
             if (res.status === 200) {
                 alert("✅ 댓글이 작성되었습니다.");
@@ -211,7 +211,7 @@ const Reply = ({ boardNo, category }) => {
                     {reply.id === 'anonymous' ? (
                         <span className={style.id}>알 수 없음</span>
                     ) : (
-                        <Link to={`/profile/${reply.id}`} className={style.id}>
+                        <Link to={`/profile/${reply.id}`} className={`link ${style.id}`}>
                             {reply.id}
                         </Link>
                     )}
@@ -251,7 +251,6 @@ const Reply = ({ boardNo, category }) => {
         <hr className={style.hr}/>
 
             {replies.length > 0 ? renderReplies(replies) : <h5>댓글이 없습니다.</h5>}
-            
             {/* 새 댓글 작성 */}
             {/* <h3>📝 댓글 작성</h3> */}
             <div className={`Shadow ${style.newReplyContainer}`}>

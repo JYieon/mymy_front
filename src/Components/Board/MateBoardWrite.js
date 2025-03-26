@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MateBoardApi from "../../api/MateBoardApi";
+import style from "../../Css/BoardModify.module.css";
 
 const MateBoardWrite = () => {
     const navigate = useNavigate();
@@ -41,20 +42,27 @@ const MateBoardWrite = () => {
     };
 
     return (
-        <div>
-            <h2>📝 여행 메이트 게시글 작성</h2>
-            <form onSubmit={handleSubmit}>
-                <label>제목:</label>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <br />
+        <div className={style.editorContainer}>
+            <Link to={`../list`} className={`link`}>
+                뒤로가기
+            </Link>
+            <h1>📝 여행 메이트 게시글 작성</h1>
 
-                <label>내용:</label>
+            <form onSubmit={handleSubmit}>
+                <div className={`Shadow ${style.editorContainerItem}`}>
+                    <label className={style.titleInput}>제목</label>
+                    <input
+                        type="text"
+                        value={title}
+                        className={style.input}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="제목을 입력해주세요."
+                        required
+                    />
+                </div>
+                <br />
                 <textarea
+                    className={style.textarea}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
