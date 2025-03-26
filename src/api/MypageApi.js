@@ -18,12 +18,12 @@ const MypageApi = {
     getUserInfo: async () => {
         const token = localStorage.getItem('token');
         return await axios.get(`${domain}/userinfo/me`, {
-          headers: {
-            Authorization: token
-          },
-          withCredentials: true
+            headers: {
+                Authorization: token
+            },
+            withCredentials: true
         });
-      },
+    },
 
     // 회원 탈퇴
     deleteAccount: async (keepPosts) => {
@@ -87,8 +87,12 @@ const MypageApi = {
     },
     //유저의 글
     getUserPosts: async (userId) => {
-        const res = await axios.get(`${domain}/myboard/${userId}`);
-        return res.data;
+        const res = await axios.get(`${domain}/myboard/userposts`, {
+            params: {
+                userId: userId
+            }
+        });
+        return res.data
     },
 
     //레벨 등업, 다운에 대한 api
@@ -324,18 +328,18 @@ const MypageApi = {
         });
     },
 
-   // 여행자 테스트 결과 조회 (수정)
+    // 여행자 테스트 결과 조회 (수정)
     getTestResult: async (token) => {
-    try {
-        const res = await axios.get(`${domain}/userinfo/testResult`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        return res.data; // ✅ 응답 데이터 반환!
-    } catch (error) {
-        console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
-        return ""; // 🚨 오류 발생 시 빈 값 반환
-    }
-},
+        try {
+            const res = await axios.get(`${domain}/userinfo/testResult`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return res.data; // ✅ 응답 데이터 반환!
+        } catch (error) {
+            console.error("❌ 여행자 테스트 결과 가져오기 실패:", error);
+            return ""; // 🚨 오류 발생 시 빈 값 반환
+        }
+    },
 
 
 
