@@ -102,9 +102,8 @@ const BoardWrite = ({ setBoardNo, setTimelineOpen, setTimeline }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      if (res.data.fileName) {
-        let imageUrl = `http://localhost:8080/mymy/upload/${res.data.fileName}`;
-        $(editorRef.current).summernote("insertImage", imageUrl);
+      if (res.data.url) {
+        $(editorRef.current).summernote("insertImage", res.data.url);
       }
     } catch (err) {
       alert("이미지 업로드 실패");

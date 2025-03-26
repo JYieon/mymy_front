@@ -62,17 +62,15 @@ const ResultPage = () => {
 
   return (
     <div className={`${style.TestLayout} Shadow`}>
-      <h1>당신은 {userResult} 입니다.</h1>
+      <h1 className={`${style.resultTitle}`}>당신은  <span className={style.highlight}>{userResult}</span>  입니다.</h1>
+      <div className={`${style.TestLayout} ${style.resultPage}`}>
+      <img className={style.testPic} src="https://picsum.photos/800/700" alt="can't load img"/>
       <Link className={`link ${style.testAgain}`} to="/test">
+      다시하기
       </Link>
-
-      <div className={`${style.TestLayout} Shadow`}>
-        <h2>당신은 {location.state.result} 입니다.</h2>
-        <h2>여행자 유형: {userResult}</h2>  {/* 변환된 유형 표시 */}
-
-
-        <button className="ResultSave">저장하기</button>
-        <button className="ResultShare">공유하기</button>
+      <Link className={`link Shadow ${style.resultShareBtn}`} to="/test">
+      결과 공유하기
+      </Link>
       </div>
     </div>
   );

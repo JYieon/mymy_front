@@ -12,8 +12,8 @@ const TimelineModify = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [todoList, setTodoList] = useState({});
   const token = localStorage.getItem("accessToken");
-  const [ timelineData, settimelineData ] =useState();
-  const [ timelineId, setTimelineId] =useState();
+  const [timelineData, settimelineData] = useState();
+  const [timelineId, setTimelineId] = useState();
 
   useEffect(() => {
     if (!token) {
@@ -102,6 +102,9 @@ const TimelineModify = () => {
   const handleUpdateTasks = async () => {
     const data = {
       boardNo: boardNo,
+      location: location,
+      startDt: startDate,
+      endDt: endDate,
       todo: JSON.stringify(todoList),
     };
     try {

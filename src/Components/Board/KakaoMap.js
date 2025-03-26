@@ -13,7 +13,7 @@ const KakaoMap = ({boardNo}) => {
     const [pendingMarker, setPendingMarker] = useState(null);
 
     useEffect(() => {
-        console.log("📡 현재 boardNo 값:", boardNo);
+        console.log("현재 boardNo 값:", boardNo);
         if (window.kakao && window.kakao.maps) {
             initMap();
         } else {
@@ -31,8 +31,8 @@ const KakaoMap = ({boardNo}) => {
     }, []);
 
     const initMap = async () => {
-        console.log("✅ initMap 실행됨!");
-        console.log("✅",boardNo);
+        console.log("initMap 실행됨!");
+        console.log(boardNo);
         const container = document.getElementById("map");
         if (!container) return;
 
@@ -78,7 +78,7 @@ const KakaoMap = ({boardNo}) => {
         setMarkers((prev) => [...prev, marker]);
     };
 
-    // ✅ 새로운 마커 추가 (DB 저장 X)
+    // 새로운 마커 추가 (DB 저장 X)
     const addMarker = (position, mapInstance) => {
         console.log("🖱️ 지도 클릭! 마커 추가 중...");
 
