@@ -31,7 +31,7 @@ const BoardList = () => {
   const extractThumbnail = (post) => {
     if (post.thumbnail) return post.thumbnail;
     if (!post.content)
-      return "http://3.39.66.94:8080/mymy/resources/images/default-thumbnail.jpg";
+      return "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
 
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = post.content;
@@ -39,7 +39,7 @@ const BoardList = () => {
 
     return imgTag
       ? imgTag.src
-      : "http://3.39.66.94:8080/mymy/resources/images/default-thumbnail.jpg";
+      : "http://localhost:8080/mymy/resources/images/default-thumbnail.jpg";
   };
 
   const filterBoardList = (boardList, token) => {
@@ -76,7 +76,7 @@ const BoardList = () => {
         params.token = localStorage.getItem("accessToken");
       }
       const response = await axios.get(
-        `http://3.39.66.94:8080/mymy/board/list`,
+        `http://localhost:8080/mymy/board/list`,
         { params }
       );
 

@@ -8,7 +8,7 @@ const useAlramWebSocket = (callback) => {
     const [hasUnread, setHasUnread] = useState(false);
 
     const connect = (userId) => {
-        const socket = new SockJS('http://3.39.66.94:8080/mymy/alarm-ws'); // WebSocket 서버 주소
+        const socket = new SockJS('http://localhost:8080/mymy/alarm-ws'); // WebSocket 서버 주소
          const stompClient = Stomp.over(socket);
             stompClient.connect({}, (frame) => {
               console.log(frame);
