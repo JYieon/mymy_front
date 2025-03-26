@@ -159,10 +159,10 @@
 
 .Pagination button {
   margin: 0 5px;
-  padding: 5px 10px;
-  background-color: #f0f0f0;
+  /* padding: 10px; */
+  background: none;
   color: #00284c;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.2s;

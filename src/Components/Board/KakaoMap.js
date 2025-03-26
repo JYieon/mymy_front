@@ -173,8 +173,8 @@ const KakaoMap = ({ boardNo }) => {
 
 
 
-            <button onClick={handleDeleteAllMarkers} style={{ marginTop: "20px", padding: "8px 15px", background: "#dc3545", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-                ❌ 모든 마커 삭제
+            <button onClick={handleDeleteAllMarkers} className={style.Allmarkerdelete}>
+                모든 마커 삭제
             </button>
         </div>
     );

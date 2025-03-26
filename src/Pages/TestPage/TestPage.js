@@ -39,10 +39,9 @@ const TestPage = () => {
           animate={{ opacity: startAnimate ? 100 : 0 }}
         >
           <h1 className={styles.title}>여행 단짝 고양이 테스트</h1>
-          <h2 className={styles.subtitle}> 나와 여행을 떠날 고양이는 어떤 고양이일까?</h2>
           <img
             className={styles.mainPic}
-            src={`https://i.pinimg.com/736x/0f/86/ac/0f86ac5aa20a10565e0127c37afddd34.jpg`}
+            src={`https://i.ibb.co/tTSbzSxH/image.jpg`}
             alt="can't load img"
           />
           <button className={styles.TestStartBtn} onClick={TestStart}>

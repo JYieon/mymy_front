@@ -239,7 +239,6 @@ const RegiCom = () => {
             if (res.status === 200) {
                 alert("회원가입 성공하셨습니다!");
                 TestOpenBtn();
-
             } else {
                 setError("회원가입에 실패했습니다.");
             }
@@ -255,7 +254,6 @@ const RegiCom = () => {
 
     return (
         <>
-            <button onClick={() => setTestOpen(true)}>ddd</button>
             <Modal
                 isOpen={testOpen}
                 ariaHideApp={true}

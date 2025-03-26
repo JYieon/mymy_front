@@ -9,7 +9,8 @@
 }
 .Bottom {
     display: flex; 
-    justify-content: space-evenly;
+    justify-content: space-between;
+    margin: 50px;
 }
 
 .Catchphrase {
@@ -26,23 +27,33 @@
 }
 
 .TestLink {
-    width: 200px; height: 100px;
+    width: 350px; height: 150px;
     background-color: gold;
     padding: 50px;
     /* border: 3px solid tomato; */
-    background-image: url("https://i.pinimg.com/736x/db/ba/dd/dbbadd7934173a89d8f0a43241f4367e.jpg");
+    background-image: url("https://i.ibb.co/tTSbzSxH/image.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 20px;
+    margin: 20px;
+    transition: all 0.3s ease-in-out;
 
     &:hover{
-        filter: brightness(-05)
+        scale: 1.1;
     }
 }
 
 .Lastest{
-    width: 200px; height: 100px;
-    position: relative;
+    width: 350px; height: 150px;
+    /* position: relative; */
+    padding: 50px;
+
+    background-image: url("https://i.pinimg.com/736x/7d/4d/b5/7d4db561ff53e4cea1086a898d4f2168.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 20px;
+    margin: 20px;
+    transition: all 0.3s ease-in-out;
     &:hover .TestLink{
         opacity: 100;
     }
