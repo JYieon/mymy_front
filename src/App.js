@@ -71,8 +71,7 @@ function App() {
             <Route path="/board/detail/:boardNo" element={<Detail />} />
             {/* 수정 폼 라우트 */}
             <Route path="/board/modifyForm/:boardNo" element={<BoardModify />} />
-            {/* 북마크 리스트 */}
-            <Route path="/board/bookmarkList" element={<BookmarkList />} />
+
 
             <Route path="/board/hashtags" element={<HashtagBoard />} />
 
@@ -120,6 +119,8 @@ function App() {
             <Route path="/mypage/my_reply" element={<MyComment />} />
             <Route path="/mypage/modify" element={<MyPage />} />
             <Route path="/mypage/alarm/list" element={<AlarmList />} />
+            {/* 북마크 리스트 */}
+            <Route path="/mypage/bookmarkList" element={<BookmarkList />} />
 
             {/* 알림 설정 테스트 페이지? */}
 
