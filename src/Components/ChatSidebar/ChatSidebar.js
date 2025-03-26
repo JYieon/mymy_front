@@ -11,6 +11,8 @@ import "../../Css/Modal.css";
 import AdjustmentListModal from "./AdjustmentListModal"
 import SidebarCom from "../Sidebar/SidebarCom";
 import BankModal from "./BankModal";
+
+
 const ChatSidebarCom = () => {
   const { roomNum } = useParams();
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const ChatSidebarCom = () => {
   const [adList, setAdList] = useState([]);
   const [bankList, setBankList] = useState([]);
   const [bankServiceList, setBankServiceList] = useState([]);
-  
+
   const token = localStorage.getItem("accessToken");
   const bankCodeList = [
     { code: "004", name: "KB국민은행" },
@@ -65,81 +67,81 @@ const ChatSidebarCom = () => {
 
   // 정산 추가 함수 (useCallback 적용)
   const addAdjustment = useCallback(async (amount, toMember) => {
-      const res = await ChatApi.addAdjustment(amount, toMember, chatInfo.roomNum, memberNum);
-      if (res.data === 1) {
-        console.log("정산 추가 성공");
-      } else {
-        alert("채팅방 멤버가 아닙니다.");
+    const res = await ChatApi.addAdjustment(amount, toMember, chatInfo.roomNum, memberNum);
+    if (res.data === 1) {
+      console.log("정산 추가 성공");
+    } else {
+      alert("채팅방 멤버가 아닙니다.");
     }
   }, [chatInfo.roomNum, memberNum]); // 의존성 관리
 
   const sendAdjustment = async (adNum, adNumMember) => {
     const res = await ChatApi.sendAdjustment(token, adNum, adNumMember)
   }
-  
+
 
   const filteredOther = useMemo(() => {
-      return chatUserInfo.filter(user => user.member !== userId);
+    return chatUserInfo.filter(user => user.member !== userId);
   }, [chatUserInfo, userId]);
 
   const filteredUser = useMemo(() => {
-      return chatUserInfo.find(user => user.member === userId);
+    return chatUserInfo.find(user => user.member === userId);
   }, [chatUserInfo, userId]);
 
   useEffect(() => {
-      if (filteredUser?.role === "방장") {
-          setIsHost(true);
-      }
+    if (filteredUser?.role === "방장") {
+      setIsHost(true);
+    }
   }, [filteredUser]);
 
   useEffect(() => {
     const getChatRoom = async () => {
-          try {
-            const res = await ChatApi.getChatMessages(roomNum);
-            console.log(res.data);
-            setMemberNum(res.data.member.length);
-            setChatUserInfo(res.data.member);
-            // console.log("msg", res.data.member);
-            
-            if (res.data.messages.length > 0) {
-              const newMessages = res.data.messages.map((element) => ({
-                id: element.member, 
-                msg: element.msg,
-                type: element.type,
-                nick: element.nick,
-                profile: element.profile
-              }));
-              if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
-                setMessages(newMessages);
-            }
-            } else if (messages.length > 0) {
-              setMessages([]);
-            }
-            setChatInfo(res.data.chat);
-          } catch (error) {
-            console.log(error);
-          }
-    
-          // setTimeout(() => {
-          //   scrollToBottom();
-          // }, 100);
-        };
-        getChatRoom();
+      try {
+        const res = await ChatApi.getChatMessages(roomNum);
+        console.log(res.data);
+        setMemberNum(res.data.member.length);
+        setChatUserInfo(res.data.member);
+        // console.log("msg", res.data.member);
 
-    
+        if (res.data.messages.length > 0) {
+          const newMessages = res.data.messages.map((element) => ({
+            id: element.member,
+            msg: element.msg,
+            type: element.type,
+            nick: element.nick,
+            profile: element.profile
+          }));
+          if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
+            setMessages(newMessages);
+          }
+        } else if (messages.length > 0) {
+          setMessages([]);
+        }
+        setChatInfo(res.data.chat);
+      } catch (error) {
+        console.log(error);
+      }
+
+      // setTimeout(() => {
+      //   scrollToBottom();
+      // }, 100);
+    };
+    getChatRoom();
+
+
   }, [roomNum]);
 
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        
+
         const res = await ChatApi.getUserInfo(token);
         setUserId(res.data.id);
-        if(res.data.bank.length > 0){
+        if (res.data.bank.length > 0) {
           setBankStatus(true) //통장 본인확인 완료
           console.log("통장본인확인 완료")
         }
-        
+
         // const chatRes = await ChatApi.getChatMessages(roomNum);
         // setChatUserInfo(chatRes.data.member.filter(user => user.member !== res.data.id));
       } catch (error) {
@@ -156,13 +158,13 @@ const ChatSidebarCom = () => {
 
   const fetchAdjustmentList = async () => {
     try {
-        const res = await ChatApi.getAdjustmentList(roomNum);
-        console.log("정산패치", res.data)
-        if (res.data !== null) {
-            setAdList(res.data);
-        }
+      const res = await ChatApi.getAdjustmentList(roomNum);
+      console.log("정산패치", res.data)
+      if (res.data !== null) {
+        setAdList(res.data);
+      }
     } catch (err) {
-        console.log(err);
+      console.log(err);
     }
   };
 
@@ -184,26 +186,26 @@ const ChatSidebarCom = () => {
   };
 
   // 본인 확인 여부 체크 후 실행할 함수
-const VerfiyBeforeAction = (action) => {
-  if (bankStatus) {
-    if(action === "JointAccount"){
-      JointAccountOpenBtn();
-    }else if(action === "Adjustment"){
-      AdjustmentOpenBtn();
+  const VerfiyBeforeAction = (action) => {
+    if (bankStatus) {
+      if (action === "JointAccount") {
+        JointAccountOpenBtn();
+      } else if (action === "Adjustment") {
+        AdjustmentOpenBtn();
+      }
+    } else {
+      VerfiyOpenBtn(); // 본인 확인 모달 열기
     }
-  } else {
-    VerfiyOpenBtn(); // 본인 확인 모달 열기
+  };
+
+
+  const fetchBankList = async () => {
+    const resBank = await ChatApi.getBankList(roomNum);
+    const resSer = await ChatApi.getBankServiceList(roomNum);
+    setBankList(resBank.data)
+    setBankServiceList(resSer.data)
+    console.log(bankServiceList)
   }
-};
-
-
-const fetchBankList = async () => {
-  const resBank = await ChatApi.getBankList(roomNum);
-  const resSer = await ChatApi.getBankServiceList(roomNum);
-  setBankList(resBank.data)
-  setBankServiceList(resSer.data)
-  console.log(bankServiceList)
-}
 
   // 모임 통장 모달 여는 버튼
   const JointAccountOpenBtn = () => {
@@ -251,12 +253,12 @@ const fetchBankList = async () => {
     navigate("../chat/list");
   };
 
-  
+
 
   const endChat = async () => {
     const isConfirmed = window.confirm("채팅방을 정말 나가시겠습니까?");
     if (!isConfirmed) return; // 사용자가 취소하면 종료
-  
+
     try {
       const res = await ChatApi.endChat(roomNum, token);
       console.log("delete", res);
@@ -273,8 +275,8 @@ const fetchBankList = async () => {
 
   return (
     <>
-      <SidebarCom/>
-   
+      <SidebarCom />
+
       {/* 콘텐츠 영역 */}
       <div className="ContentSection Shadow">
         <button onClick={BeforeBtn} className={style.BeforeBtn}>
@@ -294,8 +296,8 @@ const fetchBankList = async () => {
         </button>
 
         {/* 채팅방 영역 */}
-        <ChttingRoom chatInfo={chatInfo} messages={messages} chatUser={chatOtherInfo} memberNum={memberNum}/>
-        
+        <ChttingRoom chatInfo={chatInfo} messages={messages} chatUser={chatOtherInfo} memberNum={memberNum} />
+
       </div>
       {/* 사이드 바 */}
       <motion.div
@@ -305,7 +307,7 @@ const fetchBankList = async () => {
         }}
         animate={{
           height: sideOpen ? 700 : 0,
-          opacity: sideOpen ? "100%": 0,
+          opacity: sideOpen ? "100%" : 0,
           display: sideOpen ? "flex" : "none",
         }}
       >
@@ -391,7 +393,7 @@ const fetchBankList = async () => {
           memberNum={memberNum}
         >
 
-        </BankModal>        
+        </BankModal>
         {isHost && (
           <button onClick={inviteOpenBtn} className={style.ModalBtn}>
             초대하기
@@ -417,20 +419,21 @@ const fetchBankList = async () => {
         <hr />
         <ul className={style.GrounpMemList}>
           <li className={style.GrounpMem} key={filteredUser?.id}>
-          <img
-            src={`/images/${filteredUser?.profile}.jpg`}
-            style={{
-              width: "30px",
-              borderRadius: "50%",
-              border: filteredUser?.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
-            }}
-            alt={filteredUser?.nick}
-          />
-          {filteredUser?.nick}
-        </li>
+            <img
+              src={`/images/${filteredUser?.profile}.jpg`}
+              style={{
+                width: "30px",
+                borderRadius: "50%",
+                border: filteredUser?.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
+              }}
+              alt={filteredUser?.nick}
+            />
+            <span className={style.GrounpMemNick}>{filteredUser?.nick}</span>
+          </li>
           <hr />
           {filteredOther.map((user) => (
-            <li className={style.GrounpMem} key={user.id}>
+            <div  className={style.GrounpMem}>
+            <li key={user.id}>
               <img
                 src={`/images/${user.profile}.jpg`}
                 style={{
@@ -440,10 +443,17 @@ const fetchBankList = async () => {
                 }}
                 alt={user.nick}
               />
-              {user.nick}
+              <span className={style.GrounpMemNick}>{user.nick}</span>
             </li>
+            <div className={`${style.GroupMemMan} Shadow`}></div>
+
+            </div>
+
           ))}
         </ul>
+
+
+
         <button onClick={endChat}>채팅방 나가기</button>
       </motion.div>
     </>
