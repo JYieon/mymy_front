@@ -305,7 +305,7 @@ const Detail = () => {
           (
             <>
               <button type="button" className={`${style.timelineOpenBtn}`} onClick={() => { setTimelineOpen(!timelineOpen) }}>{timelineOpen ? "접기" : "펼치기"}</button>
-              <motion.div className={style.planContainer}
+              <motion.div
                 initial={{ scaleY: 0 }}
                 transition={{
                   easeIn: "easeIn",
@@ -316,9 +316,11 @@ const Detail = () => {
                   display: timelineOpen ? "block" : "none",
                 }}
               >
-                <ReadingOnlyKakaoMap boardNo={boardNo} />
-                <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
 
+                <div  className={style.planContainer}>
+                  <ReadingOnlyKakaoMap boardNo={boardNo} />
+                  <ReadingOnlyTimeline SetTimelineId={SetTimelineId} />
+                </div>
               </motion.div>
             </>
           )}

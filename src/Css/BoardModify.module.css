@@ -152,3 +152,10 @@ label {
   color: tomato;
   background: none;
 }
+
+.Allmarkerdelete {
+  color: tomato;
+  background:none;
+  cursor: pointer;
+  margin: 20px;
+}

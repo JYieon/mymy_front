@@ -196,7 +196,8 @@ const TimelineModify = () => {
                   value={todo.task}
                   placeholder="일정을 적어보세요!"
                   onChange={(e) => handleChange(index, "task", e.target.value)}
-                  classsName={`${style.taskInput}`}
+                  className={`${style.taskInput} ${style.input}`}
+
                 />
                 <textarea
                   ref={subTaskRef}
@@ -207,7 +208,7 @@ const TimelineModify = () => {
                   }
                   onInput={handleResizeHeight}
                   rows={1}
-                  className={style.subTaskInput}
+                  className={`${style.subTaskInput} ${style.input}`}
                 ></textarea>
                 {/* 일정 시간 묶음 */}
                 <div>
