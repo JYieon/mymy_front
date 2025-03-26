@@ -2,7 +2,7 @@
 .boardContainer {
   /* background-color: tomato; */
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
 }
@@ -155,11 +155,17 @@
 .Pagination {
   justify-items: flex-end;
   float: right;
+  /* 임시 */
+  position: fixed;
+
   margin: 20px;
+  background-color: antiquewhite;
   button {
     background-color: white;
     margin: 10px;
     border-style: none;
+    color: #00284c;
+    font-weight: 800;
   }
 }
 
