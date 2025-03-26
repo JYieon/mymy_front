@@ -32,18 +32,18 @@ const BoardApi = {
     detail: async (boardNo) => {
         const token = localStorage.getItem("accessToken");
         const config = {
-          params: { boardNo },
+            params: { boardNo },
         };
-      
+
         if (token) {
-          config.headers = {
-            Authorization: `Bearer ${token}`,
-          };
+            config.headers = {
+                Authorization: `Bearer ${token}`,
+            };
         }
-      
+
         return await axios.get(`${domain}/detail`, config);
-      },
-      
+    },
+
 
     // 게시글 저장 (글쓰기)
     writeSave: async (postData, token) => {
@@ -202,6 +202,20 @@ const BoardApi = {
             return [];
         }
     },
+
+    // 내 모든 계획 게시글 불러오기
+    getAllPlans: async (token) => {
+        try {
+            const res = await axios.get(`${domain}/plans/all`, {
+                params: { token: token },
+            });
+            return res;
+        } catch (error) {
+            console.error("❌ BoardApi getAllPlans 에러:", error);
+            throw error;
+        }
+    },
+
 
 };
 
