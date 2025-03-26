@@ -230,12 +230,12 @@ const BoardModify = (props) => {
                     </div>
 
                     {boardCategory === 2 && (
-                        <div>
-                            <label>해시태그:</label>
-                            <div className="hashtag-input">
+                        <div className={`${style.editorContainerItem} ${style.hashtagContainer}`}>
+                            <div>
+                                <label>해시태그:</label>
                                 <input
                                     type="text"
-                                    className="form-control"
+                                    className={`${style.hashtagInput} ${style.input}`}
                                     placeholder="해시태그 입력 후 Enter"
                                     value={tagInput}
                                     onChange={(e) => setTagInput(e.target.value)}
@@ -244,11 +244,10 @@ const BoardModify = (props) => {
                                 <button onClick={addHashtag} className="btn btn-secondary mt-1">추가</button>
                             </div>
 
-                            <div className="hashtag-list mt-2">
+                            <div >
                                 {hashtags.map((tag, index) => (
-                                    <span key={index} className="badge bg-primary me-1">
+                                    <span key={index} className={style.hashtag} onClick={() => removeHashtag(tag)}>
                                         #{tag}
-                                        <button type="button" className="btn btn-sm btn-dang er ms-1" onClick={() => removeHashtag(tag)}>x</button>
                                     </span>
                                 ))}
                             </div>

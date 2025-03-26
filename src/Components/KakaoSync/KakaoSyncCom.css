@@ -1,7 +1,7 @@
 .KakaoLogo {
-    width: 20px; height: 20px;
+    scale: 0.5;
     color: #191919;
     background-color: #FEE500;
-    border-radius: 100%;
+    border-radius: 100px;
     padding: 10px;
 }
