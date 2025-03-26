@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../../Css/AccountLayout.module.css"
 import { useNavigate } from "react-router-dom";
 import AuthApi from "../../api/AuthApi";
+import Modal from "react-modal";
 
-const RegiCom=()=>{
+const RegiCom = () => {
     const [id, setId] = useState("");           // 아이디
     const [email, setEmail] = useState("");     // 이메일
     const [authNum, setAuthNum] = useState(""); // 인증번호
@@ -25,6 +26,8 @@ const RegiCom=()=>{
     const [authTime, setAuthTime] = useState(300); // 5분 (300초)
     const [isAuthTimeOver, setIsAuthTimeOver] = useState(false); // 시간 만료 여부
     const [showResendButton, setShowResendButton] = useState(false); // 재전송 버튼 표시 여부
+
+    const [testOpen, setTestOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -84,7 +87,7 @@ const RegiCom=()=>{
 
     useEffect(() => {
         setPhone(autoHypenTel(phone));
-        
+
         if (phone.length === 0) {
             setPhoneError("");
             return;
@@ -133,7 +136,7 @@ const RegiCom=()=>{
             const res = await AuthApi.checkId(id);
             console.log("checkID: ", res)
             if (res.status === 200) {
-                setError("");  
+                setError("");
             }
         } catch (err) {
             setError("이미 사용 중인 아이디입니다.");
@@ -153,8 +156,8 @@ const RegiCom=()=>{
             setIsAuthTimeOver(false);
             alert("인증번호 발송에 시간이 걸릴 수 있습니다. 인증번호가 발송되면 입력할 수 있습니다.");
 
-            if(buttonStatus === "재전송"){
-                setShowResendButton(false); 
+            if (buttonStatus === "재전송") {
+                setShowResendButton(false);
             }
 
             try {
@@ -163,11 +166,11 @@ const RegiCom=()=>{
                     alert("이미 존재하는 이메일입니다. 다시 입력해주세요.");
                     setEmail("");
                 } else {
-                    if(buttonStatus === "발송"){
+                    if (buttonStatus === "발송") {
                         setShowResendButton(true);
                         setButtonText("인증");
                     }
-                    
+
                     setAuthError("");
                 }
             } catch (err) {
@@ -180,9 +183,9 @@ const RegiCom=()=>{
                 if (res.status === 200) {
                     setIsVerified(true);
                     setAuthError("");
-                    setIsAuthTimeOver(false); 
+                    setIsAuthTimeOver(false);
                     setAuthTime(0);
-                } 
+                }
             } catch (err) {
                 console.error("인증 오류:", err);
                 setAuthError("인증에 실패했습니다.");
@@ -191,15 +194,15 @@ const RegiCom=()=>{
     };
 
     //div 화면 넘어가는 기능
-    const FirstForm=useRef(null);
-    const SecondForm=useRef(null);
-    
+    const FirstForm = useRef(null);
+    const SecondForm = useRef(null);
+
     const onClick = async () => {
         //닉네임 유효성 검사
         try {
             const res = await AuthApi.checkNick(nick);
             console.log(res);
-    
+
             if (res.status === 200) {
                 if (SecondForm.current.style.display === "none") {
                     SecondForm.current.style.display = "block";
@@ -218,7 +221,7 @@ const RegiCom=()=>{
             } else {
                 setNickError("서버 오류가 발생했습니다.");
             }
-        }    
+        }
     }
 
     // 회원가입 폼 제출
@@ -235,8 +238,7 @@ const RegiCom=()=>{
             console.log("회원가입 res : ", res.status)
             if (res.status === 200) {
                 alert("회원가입 성공하셨습니다!");
-                window.location.href = "/test";
-                alert("계획을 세우기 전, 나의 성향을 알아볼 수 있습니다.");
+                TestOpenBtn();
 
             } else {
                 setError("회원가입에 실패했습니다.");
@@ -247,26 +249,47 @@ const RegiCom=()=>{
         }
     };
 
+    const TestOpenBtn = () => {
+        setTestOpen(false);
+    };
+
     return (
         <>
+            <button onClick={() => setTestOpen(true)}>ddd</button>
+            <Modal
+                isOpen={testOpen}
+                ariaHideApp={true}
+                onRequestClose={TestOpenBtn}
+                className={`Shadow modal`}
+            >
+                <span className={`${styles.wait}`}>잠깐!</span>
+                <span className={`${styles.testContext}`}>계획을 세우러 가기 전에,<br />나와 함께 여행할 고양이가 궁금하지 않으세요? </span>
+                <div className={`${styles.testAnswer}`}>
+                    <button className={`${styles.testBtn} ${styles.wait}`} onClick={() => {
+                        window.location.href = "/test";
+                    }}>궁금해요!</button>
+                    <button className={`${styles.testBtn} ${styles.testNo}`} onClick={TestOpenBtn}>나중에 만날래요.</button>
+                </div>
+            </Modal>
+
             <form className={styles.form} onSubmit={handleSignup} >
                 <div className={styles.FirstForm} ref={FirstForm}>
-                    <input type="text" name="Name" placeholder="이름" onChange={(e) => setName(e.target.value)}/>
-                    <input type="text" name="nickName" placeholder="닉네임" onChange={(e) => setNick(e.target.value)}/>
-                    {nickError && <div style={{ color: "red", marginTop: "5px", fontSize:"12px", marginLeft:"5px", marginBottom:"10px", marginTop:"0px" }}>{nickError}</div>}
-                    <input 
-                        type="tel" name="Tel" 
-                        placeholder="010-0000-0000" 
+                    <input type="text" name="Name" placeholder="이름" onChange={(e) => setName(e.target.value)} />
+                    <input type="text" name="nickName" placeholder="닉네임" onChange={(e) => setNick(e.target.value)} />
+                    {nickError && <div style={{ color: "red", marginTop: "5px", fontSize: "12px", marginLeft: "5px", marginBottom: "10px", marginTop: "0px" }}>{nickError}</div>}
+                    <input
+                        type="tel" name="Tel"
+                        placeholder="010-0000-0000"
                         maxLength="13"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        />
-                    {phoneError && <div style={{ color: "red", marginTop: "5px", fontSize:"12px", marginLeft:"5px", marginBottom:"10px", marginTop:"0px" }}>{phoneError}</div>}
-                    <input type="email" name="Email" placeholder="example@mail.com" onChange={(e) => setEmail(e.target.value)}/>
-                    {emailError && <div style={{ color: "red", fontSize: "12px", marginLeft: "5px", marginBottom:"10px" }}>{emailError}</div>}
-                    
+                    />
+                    {phoneError && <div style={{ color: "red", marginTop: "5px", fontSize: "12px", marginLeft: "5px", marginBottom: "10px", marginTop: "0px" }}>{phoneError}</div>}
+                    <input type="email" name="Email" placeholder="example@mail.com" onChange={(e) => setEmail(e.target.value)} />
+                    {emailError && <div style={{ color: "red", fontSize: "12px", marginLeft: "5px", marginBottom: "10px" }}>{emailError}</div>}
+
                     <div className={styles.Verfiy} >
-                        <input 
+                        <input
                             type="text" placeholder="인증번호"
                             onChange={(e) => setAuthNum(e.target.value)}
                             disabled={isAuthTimeOver || buttonText === "발송"}
@@ -275,43 +298,43 @@ const RegiCom=()=>{
                             {buttonText}
                         </button>
                     </div>
-                    
-                    
+
+
                     {/* 타이머 */}
                     {buttonText === "인증" && !isVerified && (
                         <div className={styles.Timer}>
                             <span>남은 시간 {Math.floor(authTime / 60)}:{authTime % 60}</span>
                             {/* 재전송 버튼 */}
                             {showResendButton && buttonText === "인증" && (
-                                    <button type="button" onClick={() => handleSendAuthCode("재전송")}>
-                                        재전송
-                                    </button>
+                                <button type="button" onClick={() => handleSendAuthCode("재전송")}>
+                                    재전송
+                                </button>
                             )}
                         </div>
                     )}
-                    
-                    {authError && <div style={{color:"red", marginLeft:"15px", fontSize:"12px"}}>{authError}</div>}
-                    {isVerified && <div style={{color:"white", marginLeft:"15px"}}>인증되었습니다.</div>}
+
+                    {authError && <div style={{ color: "red", marginLeft: "15px", fontSize: "12px" }}>{authError}</div>}
+                    {isVerified && <div style={{ color: "white", marginLeft: "15px" }}>인증되었습니다.</div>}
                     {isVerified && (
                         <input type="button" value="다음" onClick={onClick} />
                     )}
 
                 </div>
                 <div className={styles.SecondForm} ref={SecondForm}>
-                    <input type="button"value="이전" onClick={onClick}/>
+                    <input type="button" value="이전" onClick={onClick} />
                     <div className={styles.Id}>
-                        <input type="text" name="Id" placeholder="아이디" onChange={(e) => setId(e.target.value)}/>
+                        <input type="text" name="Id" placeholder="아이디" onChange={(e) => setId(e.target.value)} />
                         <button type="button" onClick={handleCheckId}>
                             중복 확인
                         </button>
                     </div>
-                    {error && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"12px"}}>{error}</div>}
-                    <input type="password" name="Pwd" placeholder="비밀번호 (8자 이상, 숫자 포함)" onChange={(e) => setPwd(e.target.value)}/>
-                    {pwdError && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"12px"}}>{pwdError}</div>}
+                    {error && <div style={{ color: "red", marginLeft: "5px", marginBottom: "10px", fontSize: "12px" }}>{error}</div>}
+                    <input type="password" name="Pwd" placeholder="비밀번호 (8자 이상, 숫자 포함)" onChange={(e) => setPwd(e.target.value)} />
+                    {pwdError && <div style={{ color: "red", marginLeft: "5px", marginBottom: "10px", fontSize: "12px" }}>{pwdError}</div>}
                     <input type="password" name="PwdCheck" placeholder="비밀번호 확인" onChange={(e) => setPwd2(e.target.value)} />
-                    {pwdMatchError && <div style={{color:"red", marginLeft:"5px", marginBottom:"10px", fontSize:"12px"}}>{pwdMatchError}</div>}
-                    <input type="submit" value="완료"/>
-                    {mainError && <div style={{color:"red", marginLeft:"38px", marginBottom:"10px", fontSize:"15px"}}>{mainError}</div>}
+                    {pwdMatchError && <div style={{ color: "red", marginLeft: "5px", marginBottom: "10px", fontSize: "12px" }}>{pwdMatchError}</div>}
+                    <input type="submit" value="완료" />
+                    {mainError && <div style={{ color: "red", marginLeft: "38px", marginBottom: "10px", fontSize: "15px" }}>{mainError}</div>}
                 </div>
             </form>
         </>

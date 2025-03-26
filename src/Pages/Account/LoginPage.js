@@ -6,6 +6,7 @@ import AuthApi from "../../api/AuthApi";
 import ChatApi from "../../api/ChatApi";
 import KoKaoLogin from "../../Assets/KakaoTalk_20250220_134840509_01.png"
 import styles from "../../Css/AccountLayout.module.css"
+import Modal from "react-modal";
 
 
 const LoginPage=()=>{
@@ -13,6 +14,8 @@ const LoginPage=()=>{
     const [pwd, setPwd] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [testOpen, setTestOpen] = useState(false);
+
 
     //로그인 요청 처리
     const handleLogin = async (e) => {
@@ -29,7 +32,15 @@ const LoginPage=()=>{
                 // 로그인 성공 후, 토큰 저장
                 console.log("로그인 성공");
                 localStorage.setItem("accessToken", res.data.accessToken);
+                const user=await ChatApi.getUserInfo(res.data.accessToken);
+                if (user.data.testResult === "미설정"){
+                    setTestOpen(true);
+                }
+                else {
                 window.location.href = "/";
+
+                }
+
             }else{
                 console.log("**", res.data)
             }
@@ -39,8 +50,30 @@ const LoginPage=()=>{
         }
     }
 
+    const TestOpenBtn = () => {
+        setTestOpen(false);
+    };
+
+
 
     return(<>
+                <Modal
+                isOpen={testOpen}
+                ariaHideApp={true}
+                onRequestClose={TestOpenBtn}
+                className={`Shadow modal`}
+            >
+                <span className={`${styles.wait}`}>잠깐!</span>
+                <span className={`${styles.testContext}`}>계획을 세우러 가기 전에,<br />나와 함께 여행할 고양이가 궁금하지 않으세요? </span>
+                <div className={`${styles.testAnswer}`}>
+                    <button className={`${styles.testBtn} ${styles.wait}`} onClick={() => {
+                        window.location.href = "/test";
+                    }}>궁금해요!</button>
+                    <button className={`${styles.testBtn} ${styles.testNo}`} onClick={()=>{
+                window.location.href = "/";
+                    }}>나중에 만날래요.</button>
+                </div>
+            </Modal>
         <div className={styles.Catchphrase}>
             로그인하고<br/>
             내가 쓴 계획들을<br/>
