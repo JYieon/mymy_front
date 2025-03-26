@@ -38,7 +38,8 @@ body {
   margin: 20px;
   min-height: 700px;
   min-width: 600px;
-  width: 1000px; 
+  width: 1000px;
+  max-width: auto;
   background-color: white;
 }
 

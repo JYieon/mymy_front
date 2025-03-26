@@ -17,7 +17,21 @@ const BookmarkList = () => {
             }
 
             const response = await BoardApi.getBookmarkList(token);
+    // 북마크 목록 불러오기
+    const fetchBookmarks = async () => {
+        try {
+            if (!token) {
+                alert("로그인이 필요합니다.");
+                return;
+            }
 
+            const response = await BoardApi.getBookmarkList(token);
+
+            setBookmarks(response.data.data || response.data);
+        } catch (error) {
+            console.error("북마크 목록 불러오기 실패:", error);
+        }
+    };
             setBookmarks(response.data.data || response.data);
         } catch (error) {
             console.error("북마크 목록 불러오기 실패:", error);
@@ -72,6 +86,7 @@ const BookmarkList = () => {
                                     <Link to={`/profile/${bookmark.id}`} className={`link`}>{bookmark.id}</Link> | {bookmark.date}
                                 </p>
                             </div>
+                        
                             <div className={style.bmController}>
                                 <button
                                     onClick={() => navigate(`/board/detail/${bookmark.boardNo}`)}
@@ -79,6 +94,7 @@ const BookmarkList = () => {
                                 >
                                     게시글 보기
                                 </button>
+
                                 <button
                                     onClick={() => handleRemoveBookmark(bookmark.boardNo)}
                                     className={style.removeBmBtn}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://3.39.66.94:8080/mymy";
+const domain = "http://localhost:8080/mymy";
 
 
 const MypageApi = {
@@ -156,17 +156,18 @@ const MypageApi = {
         }
     },
     markAlarmsAsRead: async (token, no) => {
-
+        console.log("mark")
         try {
             const response = await axios.post(
-                "http://localhost:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
-                { no },
+                "http://localhost:8080/mymy/alarm/mark/read",
+                null,
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
-                    withCredentials: true // ✅ 백엔드에서 CORS 설정이 필요
+                    params: {no: no},
+                    withCredentials: true 
                 }
             );
             console.log("✅ 알림 읽음 처리 성공:", response.data);

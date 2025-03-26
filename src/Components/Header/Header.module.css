@@ -107,7 +107,7 @@ header {
 }
 
 /* 알람 점(불빛) */
-.alarm-dot {
+.alarmDot {
   position: absolute;
   top: -5px;
   right: -5px;

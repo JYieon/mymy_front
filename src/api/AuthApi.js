@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://3.39.66.94:8080/mymy/auth";
+const domain = "http://localhost:8080/mymy/auth";
 
 const AuthApi = {
     login: async (id, pwd) => {

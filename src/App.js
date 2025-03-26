@@ -143,7 +143,7 @@ function App() {
           </Route>
 
           {/* 타임라인 경로 */}
-          <Route path="/timeline/:boardNo" element={<TimelineModify />} />
+          <Route path="/timeline/:boardNo" element={<Timeline />} />
           {/* <Route path="/timeline/:boardNo" element={<Timeline/>} /> */}
           <Route path="/timeline" element={<Timeline />} />
 

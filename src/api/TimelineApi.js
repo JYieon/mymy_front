@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://3.39.66.94:8080/mymy/timeline";
+const domain = "http://localhost:8080/mymy/timeline";
 
 const TimelineApi = {
     // 타임라인 추가

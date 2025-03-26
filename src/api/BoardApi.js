@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://3.39.66.94:8080/mymy/board";
+const domain = "http://localhost4:8080/mymy/board";
 
 const BoardApi = {
 

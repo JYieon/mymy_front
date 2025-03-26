@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
 import MapApi from "../../api/MapApi"; 
+import style from "../../Css/BoardDetail.module.css";
+
 
 const ReadingOnlyKakaoMap = ({boardNo}) => {
     // const { boardNo } = useParams();
@@ -68,12 +70,9 @@ const ReadingOnlyKakaoMap = ({boardNo}) => {
     };
 
     
-
+    // style={{ minWidth:"300px", width:"500px", height:"400px", minHeight:"200px", maxWidth: "700px", maxHeight: "500px", resize : "both", borderRadius: "10px" }}
     return (
-        <div>
-            <h2>📌 게시판 {boardNo}의 지도</h2>
-            <div id="map" style={{ width: "500px", height: "400px", borderRadius: "10px" }}></div>
-        </div>
+        <div id="map" className={style.kakaoMap} />
     );
 };
 
