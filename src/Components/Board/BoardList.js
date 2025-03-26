@@ -76,7 +76,7 @@ const BoardList = () => {
         params.token = localStorage.getItem("accessToken");
       }
       const response = await axios.get(
-        `http://localhost:8080/mymy/board/list`,
+        `http://3.39.66.94:8080/mymy/board/list`,
         {
           params: {
             page,
@@ -111,7 +111,7 @@ const BoardList = () => {
     if (keyword.trim() === "") return;
     try {
       const response = await axios.get(
-        `http://localhost:8080/mymy/board/search`,
+        `http://3.39.66.94:8080/mymy/board/search`,
         {
           params: { page, category, searchType, keyword },
         }
