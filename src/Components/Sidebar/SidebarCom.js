@@ -7,6 +7,8 @@ import Modal from "react-modal";
 import MypageApi from "../../api/MypageApi";
 import { useNavigate } from "react-router-dom";
 import AuthApi from "../../api/AuthApi";
+import AlarmIcon from "../../component/alarm/alarmIcon";
+import { useWebSocketContext } from "../../component/alarm/alramWebSocketProvider";
 
 
 const SidebarCom = () => {
@@ -23,6 +25,7 @@ const SidebarCom = () => {
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [level, setLevel] = useState(1); // 기본 레벨은 1로 설정
+  const { hasUnread, setHasUnread } = useWebSocketContext();
 
   // 숫자 레벨을 글자로 바꿔주는 함수
   const getLevelName = (level) => {
@@ -40,8 +43,8 @@ const SidebarCom = () => {
     }
   };
 
-    useEffect(() => {
-        const userInfo = async () => {
+  useEffect(() => {
+    const userInfo = async () => {
 
       if (!token) {
         console.log("토큰이 없습니다! 로그아웃 상태입니다.");
@@ -66,9 +69,9 @@ const SidebarCom = () => {
           setLevel(res.data.level);
 
 
-                    // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
-                    const followerRes = await MypageApi.getFollowerList();
-                    console.log(" 팔로워 리스트 응답:", followerRes);
+          // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
+          const followerRes = await MypageApi.getFollowerList();
+          console.log(" 팔로워 리스트 응답:", followerRes);
 
           //  followerId가 현재 로그인한 userId인 경우만 필터링
           const filteredFollowers = followerRes.filter(user => user.followerId === userId);
@@ -158,6 +161,9 @@ const SidebarCom = () => {
             <div className={style.headerNav}>
               <div className={style.userNickContainer}>
                 <span className={style.userNick}> {userNickname} </span>
+                  <AlarmIcon  onClick={handleClick} hasUnread={hasUnread} setHasUnread={setHasUnread} />
+
+
                 {/* <svg onClick={handleClick}
                   className={style.alramIcon}
                   viewBox="0 0 16 16"
@@ -177,9 +183,7 @@ const SidebarCom = () => {
 
               </div>
               <div className={style.userLevel}>{getLevelName(level)}</div>
-
-              <ul className={style.alarmList}>
-                {/* 임시 주소 */}
+              {/* <ul className={style.alarmList}>
                 <li>
                   <Link to="/게시글" className={`link ${style.menu}`}>
                     내가 쓴 댓글에 답글이 달렸습니다.
@@ -190,8 +194,9 @@ const SidebarCom = () => {
                     내가 쓴 댓글에 답글이 달렸습니다.
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </div>
+
             {/*  팔로잉 / 팔로워 버튼 추가 */}
             <div className={style.userFollowerContainer}>
               <Link to={`/mypage/following/${userId}`} className={`${style.followBtn} link`}>

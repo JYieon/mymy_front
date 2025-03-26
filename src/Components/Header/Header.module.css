@@ -51,8 +51,9 @@ header {
   background: none;
   color: #00284c;
   border: none;
-  font-size: 25px;
+  font-size: 12px;
   font-weight: 600;
+  margin: 0px;
 }
 
 .menuList {
@@ -121,19 +122,28 @@ header {
   display: flex;
   flex-direction: column;
   font-size: 12px;
+  margin: 10px 20px;
+  /* background-color: red; */
+  * {
+    margin: 0 auto;
+  }
+
+}
+
+.userInfoWrap {
+  display: flex;
+ *{
+  font-size: 12px;
+
+ }
 }
 
 .userLevel {
-  text-align: center;
   font-size: 12px;
+
+
 }
 
 .userId {
-  font-size: 15px;
-}
-
-.mypage {
-  *{
-    font-size: 12px;
-  }
+  font-size: 17px;
 }
