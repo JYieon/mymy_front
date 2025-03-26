@@ -60,7 +60,7 @@ const MypageApi = {
             const res = await axios.get(`${domain}/myboard/my-posts`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}}`//인증 토큰
+                    "Authorization": `Bearer ${token}`//인증 토큰
                 }
             });
             return res.data;
@@ -76,7 +76,7 @@ const MypageApi = {
             const res = await axios.get(`${domain}/myboard/my-comments`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}}`//인증 토큰
+                    "Authorization": `Bearer ${token}`//인증 토큰
                 }
             });
             return res.data;
@@ -149,7 +149,7 @@ const MypageApi = {
             const response = await axios.get(`${domain}/alarm/list`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "Access-Control-Allow-Origin": "*"  // ✅ CORS 해결을 위한 헤더 추가 }, // ✅ userId를 헤더로 전달
+    
                 },
                 withCredentials: true
             });

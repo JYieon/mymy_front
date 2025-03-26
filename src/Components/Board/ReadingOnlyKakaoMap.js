@@ -72,7 +72,7 @@ const ReadingOnlyKakaoMap = ({boardNo}) => {
     
     // style={{ minWidth:"300px", width:"500px", height:"400px", minHeight:"200px", maxWidth: "700px", maxHeight: "500px", resize : "both", borderRadius: "10px" }}
     return (
-        <div id="map" className={style.kakaoMap} />
+        <div id="map" className={`kakaoMap`} />
     );
 };
 

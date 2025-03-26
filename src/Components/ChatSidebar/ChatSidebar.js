@@ -96,43 +96,6 @@ const ChatSidebarCom = () => {
 
   useEffect(() => {
     const getChatRoom = async () => {
-          try {
-            const res = await ChatApi.getChatMessages(roomNum);
-
-            if(res.status === 204){
-              alert("존재하지 않는 채팅방입니다.");
-              navigate("/");
-            }
-
-            console.log(res.data);
-            setMemberNum(res.data.member.length);
-            setChatUserInfo(res.data.member);
-            // console.log("msg", res.data.member);
-            
-            if (res.data.messages.length > 0) {
-              const newMessages = res.data.messages.map((element) => ({
-                id: element.member, 
-                msg: element.msg,
-                type: element.type,
-                nick: element.nick,
-                profile: element.profile
-              }));
-              if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
-                setMessages(newMessages);
-            }
-            } else if (messages.length > 0) {
-              setMessages([]);
-            }
-            setChatInfo(res.data.chat);
-          } catch (error) {
-            console.log(error);
-          }
-    
-          // setTimeout(() => {
-          //   scrollToBottom();
-          // }, 100);
-        };
-        getChatRoom();
       try {
         const res = await ChatApi.getChatMessages(roomNum);
         console.log(res.data);
@@ -236,19 +199,13 @@ const ChatSidebarCom = () => {
   };
 
 
-const fetchBankList = async () => {
-  const resBank = await ChatApi.getBankList(roomNum);
-  setBankList(resBank.data)
-  if (resBank.data.bankNum) {
-    await fetchBankServiceList(resBank.data.bankNum);
+  const fetchBankList = async () => {
+    const resBank = await ChatApi.getBankList(roomNum);
+    const resSer = await ChatApi.getBankServiceList(roomNum);
+    setBankList(resBank.data)
+    setBankServiceList(resSer.data)
+    console.log(bankServiceList)
   }
-  console.log(bankServiceList)
-}
-
-const fetchBankServiceList = async (bankNum) => {
-  const resSer = await ChatApi.getBankServiceList(bankNum);
-  setBankServiceList(resSer.data)
-}
 
   // 모임 통장 모달 여는 버튼
   const JointAccountOpenBtn = () => {
