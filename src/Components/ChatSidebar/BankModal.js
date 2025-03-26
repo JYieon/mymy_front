@@ -55,7 +55,7 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
             alert("현재 잔액보다 출금 금액이 큽니다.");
             return;
         } 
-        const res = await ChatApi.updateBank(localStorage.getItem("accessToken"), roomNum, sendType, sendMoney)
+        const res = await ChatApi.updateBank(localStorage.getItem("accessToken"), bankList.bankNum, roomNum, sendType, sendMoney)
         if(res.data === 2){
             await fetchBankList();
             setSendModalOpen(false);

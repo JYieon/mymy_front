@@ -15,7 +15,8 @@ const BoardList = () => {
     : 1;
   const searchTypeParam = searchParams.get("searchType");
   const keywordParam = searchParams.get("keyword");
-  const token = 0;
+  const token = localStorage.getItem("accessToken") || "none";
+
 
 
   const [pageState, setPageState] = useState({
@@ -47,28 +48,24 @@ const BoardList = () => {
 
   const filterBoardList = (boardList, token) => {
     let loggedInUserId = null;
-
-    if (token) {
+  
+    if (token && token !== "none") {
       try {
-        //console.log("저장된 토큰:", token);
-        const decodedToken = JSON.parse(atob(token.split(".")[1])); // JWT 디코딩
-        loggedInUserId = decodedToken.sub; // `sub`에 사용자 ID 저장됨
-        // console.log("로그인한 사용자 ID:", loggedInUserId);
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        loggedInUserId = decodedToken.sub;
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
       }
     }
-
-    console.log("📝 필터링 전 게시글 목록:", boardList);
-
-    const filteredList = boardList.filter(
-      (post) => post.boardOpen === 1 || (loggedInUserId && post.id === loggedInUserId)
-    );
-
-    // console.log("필터링 후 게시글 목록:", filteredList);
-
-    return filteredList;
+  
+    return boardList.filter((post) => {
+      // 공개 글이거나, 내가 작성한 비공개 글
+      if (post.boardOpen === 1) return true;
+      if (loggedInUserId && post.id === loggedInUserId) return true;
+      return false;
+    });
   };
+  
 
 
 
@@ -79,8 +76,14 @@ const BoardList = () => {
         params.token = localStorage.getItem("accessToken");
       }
       const response = await axios.get(
-        `http://3.39.66.94:8080/mymy/board/list`,
-        { params }
+        `http://localhost:8080/mymy/board/list`,
+        {
+          params: {
+            page,
+            category,
+            token, // ✅ 항상 token 포함!
+          },
+        }
       );
 
       // 비공개 글 필터링 추가
@@ -108,12 +111,11 @@ const BoardList = () => {
     if (keyword.trim() === "") return;
     try {
       const response = await axios.get(
-        `http://3.39.66.94:8080/mymy/board/search`,
+        `http://localhost:8080/mymy/board/search`,
         {
           params: { page, category, searchType, keyword },
         }
       );
-
       const filteredBoardList = filterBoardList(response.data.boardList, localStorage.getItem("accessToken"));
 
       const updatedPageState = { ...pageState };
@@ -132,18 +134,13 @@ const BoardList = () => {
     }
   };
 
-  useEffect(
-    () => {
-      if (isSearching) {
-        searchBoardList(pageState[category].currentPage);
-      } else {
-        fetchBoardList(pageState[category].currentPage, category, token);
-      }
-    },
-    [category, pageState[category].currentPage],
-    token
-  );
-  // console.log("총 페이지 수",totalPages,"pageState",pageState[category].currentPage);
+  useEffect(() => {
+    if (isSearching) {
+      searchBoardList(pageState[category].currentPage);
+    } else {
+      fetchBoardList(pageState[category].currentPage, category, token);
+    }
+  }, [category, pageState[category].currentPage, token]); 
 
   const handleSearch = () => {
     if (keyword.trim() === "") {
@@ -203,11 +200,6 @@ const BoardList = () => {
   };
 
   const { boardList, currentPage, totalPages } = pageState[category];
-
-  // console.log("페이시 스테이트",pageState)
-  // console.log("페이시 스테이트",boardList.slice(0,6))
-  // console.log("페이시 스테이트",boardList.slice(6,boardList.length))
-
   return (
     <div className={style.boardContainer}>
       <h1>📄 {category === 1 ? "계획 게시판" : "기록 게시판"}</h1>

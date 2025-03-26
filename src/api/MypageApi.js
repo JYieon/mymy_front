@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://3.39.66.94:8080/mymy";
+const domain = "http://localhost:8080/mymy";
 
 
 const MypageApi = {
@@ -60,7 +60,7 @@ const MypageApi = {
             const res = await axios.get(`${domain}/myboard/my-posts`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}}`//인증 토큰
+                    "Authorization": `Bearer ${token}`//인증 토큰
                 }
             });
             return res.data;
@@ -76,7 +76,7 @@ const MypageApi = {
             const res = await axios.get(`${domain}/myboard/my-comments`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}}`//인증 토큰
+                    "Authorization": `Bearer ${token}`//인증 토큰
                 }
             });
             return res.data;
@@ -149,7 +149,7 @@ const MypageApi = {
             const response = await axios.get(`${domain}/alarm/list`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "Access-Control-Allow-Origin": "*"  // ✅ CORS 해결을 위한 헤더 추가 }, // ✅ userId를 헤더로 전달
+    
                 },
                 withCredentials: true
             });
@@ -160,17 +160,18 @@ const MypageApi = {
         }
     },
     markAlarmsAsRead: async (token, no) => {
-
+        console.log("mark")
         try {
             const response = await axios.post(
-                "http://3.39.66.94:8080/mymy/alarm/mark-read",  // ✅ API 경로 확인
-                { no },
+                "http://localhost:8080/mymy/alarm/mark/read",
+                null,
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
-                    withCredentials: true // ✅ 백엔드에서 CORS 설정이 필요
+                    params: { no: no },
+                    withCredentials: true
                 }
             );
             console.log("✅ 알림 읽음 처리 성공:", response.data);
@@ -310,16 +311,16 @@ const MypageApi = {
         }
     },
 
-    //팔로우 이미지 파일에 대한(임시)
-    getProfileImage: async (userId) => {
-        try {
-            const response = await axios.get(`${domain}/user/profile/${userId}`);
-            return response.data;
-        } catch (error) {
-            console.error("프로필 이미지 가져오기 실패:", error);
-            return { profileImage: "/default-profile.jpg" }; // 기본 이미지 제공
-        }
-    },
+    // //팔로우 이미지 파일에 대한(임시)
+    // getProfileImage: async (userId) => {
+    //     try {
+    //         const response = await axios.get(`${domain}/user/profile/${userId}`);
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error("프로필 이미지 가져오기 실패:", error);
+    //         return { profileImage: "/default-profile.jpg" }; // 기본 이미지 제공
+    //     }
+    // },
 
     // 여행자 테스트 결과 저장
     saveTestResult: async (testResult, token) => {
@@ -340,6 +341,51 @@ const MypageApi = {
             return ""; // 🚨 오류 발생 시 빈 값 반환
         }
     },
+    //프로필
+    getProfile: async () => {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            console.error("❌ 토큰이 없습니다. 프로필 요청 중단");
+            return null;
+        }
+
+        try {
+            const res = await axios.get(`${domain}/profile/me`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            });
+            return res.data;
+        } catch (error) {
+            console.error("❌ 프로필 가져오기 실패:", error);
+            return null;
+        }
+    },
+
+    uploadProfile: async (formData) => {
+        const token = localStorage.getItem("accessToken");
+
+        return await axios.post(`${domain}/profile/upload`, formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true
+        });
+    },
+
+    getUserInfoById: async (userId) => {
+        try {
+            const res = await axios.get(`${domain}/profile/${userId}`);
+            return res.data;
+        } catch (error) {
+            console.error("getUserInfoById 에러: ", error);
+            throw error;
+        }
+    },
+    
 
 
 

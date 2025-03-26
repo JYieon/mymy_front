@@ -8,12 +8,14 @@ import style from "../../Css/Profile.module.css";
 import ChatApi from "../../api/ChatApi";
 
 //사용자 프로필 
-const UserProfile = ({ loggedInUser }) => {
+const UserProfile = ({ }) => {
     const { userId } = useParams(); // URL에서 대상 유저 아이디
     const [myId, setMyId] = useState(""); // 로그인 유저 아이디
     const [followerCount, setFollowerCount] = useState(0);//팔로워 수 저장 
     const [followingCount, setFollowingCount] = useState(0);//팔로잉 수 저장 
     const token = localStorage.getItem("accessToken");
+    const [user, setUser] = useState({});//조회 대상
+
 
     // 로그인한 내 userId 가져오기
     useEffect(() => {
@@ -21,14 +23,27 @@ const UserProfile = ({ loggedInUser }) => {
             try {
                 const res = await ChatApi.getUserInfo(token); // "/userinfo/me"
                 setMyId(res.userId);
+                console.log(token);
             } catch (err) {
                 console.error("내 userId 불러오기 실패", err);
             }
         };
-        fetchMyId();
-    }, [token]);
 
-    console.log('loggedInUser',loggedInUser)
+        //조회 대상 유저 정보 가져오기( 프로필 이미지 포함)
+        const fetchUser = async () => {
+            try {
+                const res = await MypageApi.getUserInfoById(userId); // "/userinfo/{userId}"
+
+                setUser(res); // res.profile에 S3 URL 있을 것
+            } catch (err) {
+                console.error("유저 정보 불러오기 실패", err);
+            }
+        };
+
+        fetchMyId();
+        fetchUser();
+    }, [token, userId]);
+
 
     // 팔로워 & 팔로잉 숫자 불러오기
     useEffect(() => {
@@ -52,7 +67,15 @@ const UserProfile = ({ loggedInUser }) => {
     return (
         <div className="user-profile">
             <div className={style.header}>
-                <img src="" alt="profilePic" className={style.profilePic} />
+                <img
+                    src={user.member_profile}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/images/defaultProfile.png";
+                    }}
+                    alt="profilePic"
+                    className={style.profilePic}
+                />
                 {/* <h1 className={style.userId}>{userId}</h1> */}
                 <h1 className={style.userId}>{userId}</h1>
                 <div className={style.followContainer}>
@@ -65,8 +88,11 @@ const UserProfile = ({ loggedInUser }) => {
 
             <div className={style.mypost}>
                 <h2 className={style.category}>📄 작성한 게시글</h2>
+
+                {/* {myId === userId ? <MyPost /> : <userPost />} */}
+
                 {/* <MyPost userId={userId}/> */}
-            {myId === userId ? <MyPost /> : <UserPost userId={userId}/> }
+                {myId === userId ? <MyPost /> : <UserPost userId={userId}/> }
 
 
             </div>

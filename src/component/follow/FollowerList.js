@@ -1,67 +1,62 @@
 import React, { useState, useEffect } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import ChatApi from "../../api/ChatApi";
 import style from "../../Css/BoardList.module.css";
 import FollowButton from "./FollowButton";
 
-//팔로워 목록
 const FollowerList = () => {
-    // const { userId } = useParams();
     const [followers, setFollowers] = useState([]);
     const [error, setError] = useState(null);
-    const [profilePic, setProfilePic]=useState("https://i.pinimg.com/736x/08/6f/fd/086ffdc66dc8a9e5c867d5bf26b2d8f9.jpg");
-    const [userId, setUserId]=useState("");
-
+    const [profiles, setProfiles] = useState({});
+    const [userId, setUserId] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");//사용자 토큰 확인인
+        const token = localStorage.getItem("accessToken");
         if (!token) {
-            setError(" 로그인 후 확인 가능합니다.");
+            setError("로그인 후 확인 가능합니다.");
             return;
         }
-        const fetchUserInfo = async () => {
+
+        const fetchUserInfoAndFollowers = async () => {
             try {
-                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
-                console.log("백엔드에서 가져온 userId:", res.data.nick);
-                setUserId(res.data.nick);
-            } catch (error) {
-                console.error("🚨 userId 가져오기 실패:", error);
-                Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+                // 🔹 현재 로그인한 사용자 정보 가져오기
+                const res = await ChatApi.getUserInfo(token);
+                const currentUserId = res.data.nick;
+                setUserId(currentUserId);
+
+                // 🔹 팔로워 목록 가져오기
+                const followersRes = await MypageApi.getFollowerList(currentUserId, token);
+                const followerList = Array.isArray(followersRes) ? followersRes : [];
+                setFollowers(followerList);
+
+                // 🔹 팔로워들의 프로필 이미지 정보 요청
+                const profilePromises = followerList.map(async (user) => {
+                    try {
+                        const profileData = await MypageApi.getUserInfoById(user.followerId);
+                        return { userId: user.followerId, profileImg: profileData.member_profile };
+                    } catch {
+                        return { userId: user.followerId, profileImg: null };
+                    }
+                });
+
+                const resolvedProfiles = await Promise.all(profilePromises);
+                const profileMap = {};
+                resolvedProfiles.forEach((p) => {
+                    profileMap[p.userId] = p.profileImg;
+                });
+                setProfiles(profileMap);
+
+            } catch (err) {
+                console.error("팔로워 정보 불러오기 실패:", err);
+                setError("팔로워 목록을 불러오는 중 오류가 발생했습니다.");
+                navigate("/login");
             }
         };
 
-        //서버에서 팔로워 정보를 가져옴
-        const fetchFollowers = async () => {
-            try {
-                const res = await MypageApi.getFollowerList(userId, token); //api 요청청
-                console.log("팔로워 목록:", res);
-                //서버에서 받은 데이터가 배열인지 확인 후 저장
-                setFollowers(Array.isArray(res) ? res : []);
-
-
-            } catch (error) {
-                console.error(" 팔로워 목록 불러오기 실패:", error);
-                setError(" 팔로워 목록을 불러오는 중 오류가 발생했습니다.");
-            }
-        };
-        fetchUserInfo();
-        fetchFollowers();
-    }, []);
-
-        
-
-        // axios.get(`http://localhost:8080/mymy/follow/followers?token=${token}`)
-        //     .then(response => {
-        //         console.log("팔로워 목록 응답:", response.data);
-        //         setFollowers(Array.isArray(response.data) ? response.data : []); //  응답이 배열인지 체크
-        //     })
-        //     .catch(error => {
-        //         console.error("팔로워 목록 불러오기 실패:", error);
-        //         setError("팔로워 목록을 불러오는 중 오류가 발생했습니다.");
-        //     });
-
-    
+        fetchUserInfoAndFollowers();
+    }, [navigate]);
 
     return (
         <div>
@@ -75,12 +70,29 @@ const FollowerList = () => {
                 ) : (
                     <ul>
                         {followers.map(user => (
-                            <li className={`Shadow ${style.followItem}`} key={user?.followerId || Math.random()}>
-                                <Link to={`/profile/${user?.followerId}`}>
-                                    <img src={profilePic} alt="프로필 이미지" className={style.followerPic} />
-                                    <p className={style.bookmarkUserId} >{user?.followerId}</p>
-                                </Link>
-                                <FollowButton profileUser={user?.followerId}/>
+                            <li className={`Shadow ${style.bookmarkItem}`} key={user.followerId}>
+                                <div className={style.followerPicContainer}>
+                                    <img
+                                        src={profiles[user.followerId] || "/images/defaultProfile.png"}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = "/images/defaultProfile.png";
+                                        }}
+                                        alt="프로필 이미지"
+                                        className={style.followerPic}
+                                    />
+                                </div>
+                                <div>
+                                    <Link
+                                        to={`/profile/${user.followerId}`}
+                                        className={`link ${style.bookmarkUserId}`}
+                                    >
+                                        {user.followerId}
+                                    </Link>
+                                </div>
+                                <div className={style.bmController}>
+                                    <FollowButton profileUser={user.followerId} />
+                                </div>
                             </li>
                         ))}
                     </ul>

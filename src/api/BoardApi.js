@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://3.39.66.94:8080/mymy/board";
+const domain = "http://localhost:8080/mymy/board";
 
 const BoardApi = {
 
@@ -29,10 +29,21 @@ const BoardApi = {
 
     },
 
-    // 게시글 상세 조회
     detail: async (boardNo) => {
-        return await axios.get(`${domain}/detail?boardNo=${boardNo}`);
-    },
+        const token = localStorage.getItem("accessToken");
+        const config = {
+          params: { boardNo },
+        };
+      
+        if (token) {
+          config.headers = {
+            Authorization: `Bearer ${token}`,
+          };
+        }
+      
+        return await axios.get(`${domain}/detail`, config);
+      },
+      
 
     // 게시글 저장 (글쓰기)
     writeSave: async (postData, token) => {

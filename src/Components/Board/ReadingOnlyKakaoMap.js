@@ -70,9 +70,9 @@ const ReadingOnlyKakaoMap = ({boardNo}) => {
     
 
     return (
-        <div>
-            <div id="map" className={`kakaoMap`}></div>
-        </div>
+
+        <div id="map" className={`kakaoMap`} />
+
     );
 };
 

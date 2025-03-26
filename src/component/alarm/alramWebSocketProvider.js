@@ -31,7 +31,7 @@ export const WebSocketProvider = ({ children }) => {
                 setNotifications(resAlram.data);
                 // 알림 중 읽지 않은 알림이 있으면 hasUnread를 true로 설정
                 resAlram.data.map((alram)=>{
-                    // console.log(alram)
+                    console.log(alram)
                     if(alram.isRead === 0){
                         setHasUnread(true)
                     }

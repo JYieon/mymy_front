@@ -8,7 +8,8 @@ import MypageApi from "../../api/MypageApi";
 import { useNavigate } from "react-router-dom";
 import AuthApi from "../../api/AuthApi";
 import AlarmIcon from "../../component/alarm/alarmIcon";
-import { useWebSocketContext } from "../../component/alarm/alramWebSocketProvider";
+import { useWebSocketContext } from "../../component/alarm/alramWebSocketProvider"
+
 
 
 const SidebarCom = () => {
@@ -26,6 +27,9 @@ const SidebarCom = () => {
   const [followingCount, setFollowingCount] = useState(0);
   const [level, setLevel] = useState(1); // 기본 레벨은 1로 설정
   const { hasUnread, setHasUnread } = useWebSocketContext();
+  const [profileImage, setProfileImage] = useState(""); //프로필 이미지
+  const [previewImage, setPreviewImage] = useState(null);
+
 
   // 숫자 레벨을 글자로 바꿔주는 함수
   const getLevelName = (level) => {
@@ -67,6 +71,12 @@ const SidebarCom = () => {
 
           //사용자 레벨 저장
           setLevel(res.data.level);
+
+          //프로필 이미지 받아오기
+          const profileRes = await MypageApi.getProfile(token);
+          if (profileRes && profileRes.member_profile) {
+            setProfileImage(profileRes.member_profile);
+          }
 
 
           // 팔로워 & 팔로잉 개수 가져오기 (리스트 전체 조회)
@@ -117,6 +127,35 @@ const SidebarCom = () => {
     window.location.href = "/account/login";
   };
 
+  // 유저 프로필 수정 저장 버튼
+  const ProfileEditBtn = async () => {
+    if (!ProfilePic) {
+      alert("이미지를 선택해주세요!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", ProfilePic);
+
+    try {
+      const res = await MypageApi.uploadProfile(formData); // 👈 API 함수 필요
+      setProfileImage(res.data); // 이미지 상태 변경
+      setProfileEditOpen(false); // 모달 닫기
+    } catch (error) {
+      console.error("이미지 업로드 실패", error);
+    }
+  };
+  //미리보기
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePic(file); // 기존 파일 저장
+    if (file) {
+      setProfilePic(file);
+      setPreviewImage(URL.createObjectURL(file)); // 미리보기 URL 생성
+    }
+  };
+
+
 
   // useEffect(() => {
   //     const res = ChatApi.getUserInfo(token)
@@ -129,10 +168,10 @@ const SidebarCom = () => {
     setProfileEditOpen(!ProfileEditOpen);
   };
 
-  // 유저 프로필 수정 저장 버튼
-  const ProfileEditBtn = () => {
-    setProfilePic(ProfilePic);
-  };
+  // // 유저 프로필 수정 저장 버튼
+  // const ProfileEditBtn = () => {
+  //   setProfilePic(ProfilePic);
+  // };
 
   const handleClick = () => {
 
@@ -153,15 +192,22 @@ const SidebarCom = () => {
           (<>
             <div>
               <img
-                src="https://picsum.photos/200/200"
-                alt="can't read Img"
+                src={profileImage}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/images/defaultProfile.png";
+                }}
+                alt="profilePic"
                 className={style.userProfilePic}
               />
+
             </div>
             <div className={style.headerNav}>
               <div className={style.userNickContainer}>
                 <span className={style.userNick}> {userNickname} </span>
-                  <AlarmIcon  onClick={handleClick} hasUnread={hasUnread} setHasUnread={setHasUnread} />
+
+                <AlarmIcon onClick={handleClick} hasUnread={hasUnread} setHasUnread={setHasUnread} />
+
 
 
                 {/* <svg onClick={handleClick}
@@ -225,11 +271,20 @@ const SidebarCom = () => {
               className={`Shadow modal`}
             >
               <img
-                src="https://picsum.photos/200/200"
-                alt="can't read Img"
+                src={previewImage || profileImage}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/images/defaultProfile.png";
+                }}
+                alt="profilePic"
                 className={style.userProfilePic}
               />
-              <input type="file" value={ProfilePic} onChange={(e) => setProfilePic(e.target.value)} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+
 
               <div className={style.userId}>{userNickname}</div>
               <div className={style.userLevel}>{getLevelName(level)}</div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ChatApi from "../../api/ChatApi";
 import Message from "./Messages";
 import SockJs from "sockjs-client";
@@ -26,12 +26,18 @@ const ChttingRoom = ({chatInfo, messages, chatUser, memberNum}) => {
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    
+    if(!localStorage.getItem("accessToken")){
+      alert("로그인 사용자만 이용 가능합니다")
+      navigate("/account/login");
+      return;
+    }
   }, [roomNum]);
 
   useEffect(() => {
-    const CreateWebSocket = () => new SockJs("http://3.39.66.94:8080/mymy/ws");
+    const CreateWebSocket = () => new SockJs("http://localhost:8080/mymy/ws");
     const stompClient = Stomp.over(CreateWebSocket);
     stompClient.connect({}, (frame) => {
       console.log(frame);

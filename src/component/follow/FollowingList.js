@@ -1,73 +1,98 @@
 import React, { useEffect, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MypageApi from "../../api/MypageApi";
 import ChatApi from "../../api/ChatApi";
 import style from "../../Css/BoardList.module.css";
 import FollowButton from "./FollowButton";
 
-//팔로잉 목록
 const FollowingList = () => {
-    // const { userId } = useParams(); //  URL에서 userId 가져오기
     const [following, setFollowing] = useState([]);
     const [error, setError] = useState(null);
-    const [profilePic, setProfilePic]=useState("https://i.pinimg.com/736x/08/6f/fd/086ffdc66dc8a9e5c867d5bf26b2d8f9.jpg");
-    const [userId, setUserId]=useState("");
-    
+    const [profiles, setProfiles] = useState({});
+    const [userId, setUserId] = useState("");
+    const navigate = useNavigate();
+
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");//콘솔에서 userid 확인
+        const token = localStorage.getItem("accessToken");
         if (!token) {
-            setError(" 로그인 후 확인 가능합니다.");
+            setError("로그인 후 확인 가능합니다.");
             return;
         }
 
-        const fetchUserInfo = async () => {
+        const fetchUserInfoAndFollowing = async () => {
             try {
-                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
-                // console.log("백엔드에서 가져온 userId:", res.data.nick);
-                setUserId(res.data.nick);
+                // 🔹 로그인한 사용자 정보 조회
+                const res = await ChatApi.getUserInfo(token);
+                const currentUserId = res.data.nick;
+                setUserId(currentUserId);
 
-            } catch (error) {
-                console.error("🚨 userId 가져오기 실패:", error);
-                Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+                // 🔹 팔로잉 목록 조회
+                const followingRes = await MypageApi.getFollowingList(currentUserId, token);
+                const followingList = Array.isArray(followingRes) ? followingRes : [];
+                setFollowing(followingList);
+
+                // 🔹 프로필 이미지 동시 요청
+                const profilePromises = followingList.map(async (user) => {
+                    try {
+                        const profileData = await MypageApi.getUserInfoById(user.followingId);
+                        return { userId: user.followingId, profileImg: profileData.member_profile };
+                    } catch {
+                        return { userId: user.followingId, profileImg: null };
+                    }
+                });
+
+                const resolvedProfiles = await Promise.all(profilePromises);
+                const profileMap = {};
+                resolvedProfiles.forEach((p) => {
+                    profileMap[p.userId] = p.profileImg;
+                });
+                setProfiles(profileMap);
+            } catch (err) {
+                console.error("팔로잉 목록 불러오기 실패:", err);
+                setError("팔로잉 목록을 불러오는 중 오류가 발생했습니다.");
+                navigate("/login");
             }
         };
 
-        const fetchFollowing = async () => {
-            try {
-                const res = await MypageApi.getFollowingList(userId, token);//api 요청 
-                console.log(" 팔로잉 목록:", res);
-                //서버에서 받은 데이터가 배열인지 확인 후 저장 
-                setFollowing(Array.isArray(res) ? res : []);
-                following.map(user=>{console.log("팔로워 정보",user);})
-            } catch (error) {
+        fetchUserInfoAndFollowing();
+    }, [navigate]);
 
-                console.error(" 팔로잉 목록 불러오기 실패:", error);
-                setError(" 팔로잉 목록을 불러오는 중 오류가 발생했습니다.");
-            }
-        };
-        fetchUserInfo();
-        fetchFollowing();
-    }, []);
     return (
         <div className="following-list">
             <h1>{userId}님의 팔로잉</h1>
 
-            <div className={style.bookmarkContainer}>
+            {error && <p className="error-message">{error}</p>}
 
+            <div className={style.bookmarkContainer}>
                 {following.length === 0 ? (
                     <p className={style.nonData}>팔로우한 사용자가 없습니다.</p>
                 ) : (
                     <ul>
                         {following.map(user => (
-                            <li className={`Shadow ${style.followItem}`} key={user?.followerId || Math.random()}>
-                                <Link to={`/profile/${user.followingId}`} className={`${style.followerPicContainer}`}>
-                                    <img src={profilePic} alt="프로필 이미지" className={style.followerPic}/>
-                                    <p className={style.bookmarkUserId} >{user.followingId}</p>
-                                </Link>
-                                <FollowButton profileUser={user.followingId}/>
+                            <li className={`Shadow ${style.bookmarkItem}`} key={user.followingId}>
+                                <div className={style.followerPicContainer}>
+                                    <img
+                                        src={profiles[user.followingId] || "/images/defaultProfile.png"}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = "/images/defaultProfile.png";
+                                        }}
+                                        alt="프로필 이미지"
+                                        className={style.followerPic}
+                                    />
+                                </div>
+                                <div>
+                                    <Link
+                                        to={`/profile/${user.followingId}`}
+                                        className={`link ${style.bookmarkUserId}`}
+                                    >
+                                        {user.followingId}
+                                    </Link>
+                                </div>
+                                <div className={style.bmController}>
+                                    <FollowButton profileUser={user.followingId} />
+                                </div>
                             </li>
-
-                            
                         ))}
                     </ul>
                 )}

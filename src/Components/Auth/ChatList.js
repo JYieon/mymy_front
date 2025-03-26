@@ -6,12 +6,19 @@ import style from "../../Css/BoardList.module.css";
 function ChatList() {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
+    
+    if(!localStorage.getItem("accessToken")){
+      alert("로그인 사용자만 이용 가능합니다")
+      navigate("/account/login");
+      return;
+    }
+
     // 서버로부터 채팅방 목록을 가져오는 API 호출
     const getChatRoom = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
         const res = await ChatApi.getChatList(token);
         console.log(res.data);
         setChatRooms(res.data);

@@ -47,6 +47,7 @@ const HeaderCom = ({ headerDisplay }) => {
                 setUserId(res.data.id);
                 setUserNick(res.data.nick);
                 setUserLevel(getLevelName(res.data.level))
+
                 const resAlram = await MypageApi.getAlarms(token);
                 console.log("🔹 받아온 알람 데이터:", resAlram.data);
                 setNotifications(resAlram.data);
@@ -121,7 +122,7 @@ const HeaderCom = ({ headerDisplay }) => {
         //     alert("로그인이 필요합니다.");
         //     return;
         // }
-        setHasUnread(false); // 알림 아이콘 클릭 시 읽지 않은 알림 상태 초기화
+        // setHasUnread(false); // 알림 아이콘 클릭 시 읽지 않은 알림 상태 초기화
     };
 
     return (
@@ -212,8 +213,12 @@ const HeaderCom = ({ headerDisplay }) => {
                                         </div>
                                     </div>
                                     <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick}>
-                                    <AlarmIcon hasUnread={hasUnread} setHasUnread={setHasUnread} />
+                                        {/* <AlarmIcon hasUnread={hasUnread} setHasUnread={setHasUnread} />
+                                    </li> */}
+                                        <AlarmIcon hasUnread={hasUnread} style={style} />
                                     </li>
+
+
                                 </>) :
                                 //로그아웃 상태일 시 보여지는 헤더
                                 (<div>

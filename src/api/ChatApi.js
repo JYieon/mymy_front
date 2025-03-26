@@ -1,7 +1,7 @@
 import axios from "axios";
 import { param } from "jquery";
 
-const domain = "http://3.39.66.94:8080/mymy/chat";
+const domain = "http://localhost:8080/mymy/chat";
 
 const ChatApi =  {
     getChatList : async (token) => {
@@ -125,21 +125,22 @@ const ChatApi =  {
         })
     },
 
-    getBankServiceList : async (roomNum) => {
+    getBankServiceList : async (bankNum) => {
         return await axios.get(domain + "/bank/service/info", {
             params: {
-                roomNum: roomNum
+                bankNum: bankNum
             }
         })
     },
 
-    updateBank : async (token, roomNum, type, money) => {
+    updateBank : async (token, bankNum, roomNum, type, money) => {
         return await axios.post(domain + "/bank/service", null,  {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
             params: {
+                bankNum: bankNum,
                 roomNum: roomNum,
                 type: type,
                 money: money

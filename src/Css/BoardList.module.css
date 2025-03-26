@@ -64,7 +64,7 @@
   border-radius: 10px;
 }
 
-/* 게시글 제목 */
+/* 게시글 제목 */ㄴ
 .PostTitle {
   /* background-color: aqua; */
 
@@ -153,21 +153,34 @@
 /* 페이지 넘기는 바 */
 
 .Pagination {
-  justify-items: flex-end;
-  float: right;
-  /* 임시 */
-  position: fixed;
-
-  margin: 20px;
-  background-color: antiquewhite;
-  button {
-    background-color: white;
-    margin: 10px;
-    border-style: none;
-    color: #00284c;
-    font-weight: 800;
-  }
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
 }
+
+.Pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  color: #00284c;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.Pagination button:hover {
+  background-color: #e0e0e0;
+}
+
+.currentPage {
+  background-color: #00284c;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #00284c;
+}
+
 
 /* 테이블 */
 
@@ -290,3 +303,11 @@ td {
     margin: 5px;
   }
 }
+
+.currentPage {
+  background-color: #00284c;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
