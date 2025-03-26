@@ -263,7 +263,7 @@ const Reply = ({ boardNo, category }) => {
                     onChange={(e) => setNewReply(e.target.value)}
                     placeholder="댓글을 입력하세요"
                 />
-                <button onClick={() => handleAddReply(0)}>등록</button>
+                <button onClick={() => handleAddReply(0)} className={style.newReplyBtn}>등록</button>
             </div>
         </div>
     );

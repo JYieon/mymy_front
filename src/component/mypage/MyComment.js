@@ -14,6 +14,7 @@ const MyComment = () => {
             try {
                 const response = await MypageApi.getMyComments(token);//api요청
                 setComments(response || []);//댓글 데이터가 없으면 빈 배열로 저장
+                console.log('댓글 불러오기',response)
 
                 // 게시글 가져오기
                 const postResponse = await MypageApi.getMyPosts(token);
@@ -29,22 +30,23 @@ const MyComment = () => {
     return (
 
         <div className="mycomment-container">
-            <h2>📄내가 쓴 댓글</h2>
+            <h1>📄내가 쓴 댓글</h1>
             <table className="mycomment-table">
                 <thead>
                     <tr>
                         <th className={style.bmNo}>번호</th>
-                        <th>게시글 제목</th>
-                        <th>댓글 내용</th>
+                        <th className={style.bmContent}>원본 게시글</th>
+                        <th className={style.bmTitle}>댓글 내용</th>
+                        <th className={style.bmDate}>작성 날짜</th>
                     </tr>
                 </thead>
                 <tbody>
                     {comments.map((comment) => (
                         <tr>
                             <td>{comment.boardNo}</td>
-                            <td>{comment.title}</td>
                             <td>{comment.originalPost}</td>
                             <td>{comment.content}</td>
+                            <td>{comment.boardDate}</td>
                         </tr>
 
                     ))}
