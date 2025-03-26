@@ -16,6 +16,13 @@
   justify-content: center;
 }
 
+.post {
+  img {
+    width: 100%;
+    
+  }
+}
+
 .postInfo {
   font-size: 13px;
 }
