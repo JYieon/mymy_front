@@ -46,6 +46,8 @@
     float: right;
     padding: 5px 10px;
     font-size:13px;
+    width: auto;
+    height: fit-content;
 }
 
 .mypost {

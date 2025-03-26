@@ -7,9 +7,11 @@ import FollowButton from "./FollowButton";
 
 //팔로워 목록
 const FollowerList = () => {
-    const { userId } = useParams();
+    // const { userId } = useParams();
     const [followers, setFollowers] = useState([]);
     const [error, setError] = useState(null);
+    const [profilePic, setProfilePic]=useState("https://i.pinimg.com/736x/08/6f/fd/086ffdc66dc8a9e5c867d5bf26b2d8f9.jpg");
+    const [userId, setUserId]=useState("");
 
 
     useEffect(() => {
@@ -21,8 +23,8 @@ const FollowerList = () => {
         const fetchUserInfo = async () => {
             try {
                 const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
-                console.log("백엔드에서 가져온 userId:", res.data);
-                // setUserId(res.data.id);
+                console.log("백엔드에서 가져온 userId:", res.data.nick);
+                setUserId(res.data.nick);
             } catch (error) {
                 console.error("🚨 userId 가져오기 실패:", error);
                 Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
@@ -47,19 +49,19 @@ const FollowerList = () => {
         fetchFollowers();
     }, []);
 
+        
 
+        // axios.get(`http://localhost:8080/mymy/follow/followers?token=${token}`)
+        //     .then(response => {
+        //         console.log("팔로워 목록 응답:", response.data);
+        //         setFollowers(Array.isArray(response.data) ? response.data : []); //  응답이 배열인지 체크
+        //     })
+        //     .catch(error => {
+        //         console.error("팔로워 목록 불러오기 실패:", error);
+        //         setError("팔로워 목록을 불러오는 중 오류가 발생했습니다.");
+        //     });
 
-    // axios.get(`http://3.39.66.94:8080/mymy/follow/followers?token=${token}`)
-    //     .then(response => {
-    //         console.log("팔로워 목록 응답:", response.data);
-    //         setFollowers(Array.isArray(response.data) ? response.data : []); //  응답이 배열인지 체크
-    //     })
-    //     .catch(error => {
-    //         console.error("팔로워 목록 불러오기 실패:", error);
-    //         setError("팔로워 목록을 불러오는 중 오류가 발생했습니다.");
-    //     });
-
-
+    
 
     return (
         <div>
@@ -73,21 +75,12 @@ const FollowerList = () => {
                 ) : (
                     <ul>
                         {followers.map(user => (
-                            <li className={`Shadow ${style.bookmarkItem}`} key={user?.followerId || Math.random()}>
-                            <div className={style.followerPicContainer}>
-                                    <img src="../../Assets/temPic.jpg" alt="프로필 이미지" className={style.followerPic} />
-                                    </div>
-                                <div>
-                                    <Link to={`/profile/${user?.followerId}`}
-                                        className={`link ${style.bookmarkUserId}`}>
-                                        {user?.followerId}
-                                        <p className={style.bookmarkUserId} ></p>
-                                    </Link>
-                                </div>
-                                <div className={style.bmController}>
-                                        <FollowButton profileUser={user?.followingId} />
-                                    </div>
-
+                            <li className={`Shadow ${style.followItem}`} key={user?.followerId || Math.random()}>
+                                <Link to={`/profile/${user?.followerId}`}>
+                                    <img src={profilePic} alt="프로필 이미지" className={style.followerPic} />
+                                    <p className={style.bookmarkUserId} >{user?.followerId}</p>
+                                </Link>
+                                <FollowButton profileUser={user?.followerId}/>
                             </li>
                         ))}
                     </ul>

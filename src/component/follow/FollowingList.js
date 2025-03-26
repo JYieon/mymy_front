@@ -7,11 +7,12 @@ import FollowButton from "./FollowButton";
 
 //팔로잉 목록
 const FollowingList = () => {
-    const { userId } = useParams(); //  URL에서 userId 가져오기
+    // const { userId } = useParams(); //  URL에서 userId 가져오기
     const [following, setFollowing] = useState([]);
     const [error, setError] = useState(null);
-
-
+    const [profilePic, setProfilePic]=useState("https://i.pinimg.com/736x/08/6f/fd/086ffdc66dc8a9e5c867d5bf26b2d8f9.jpg");
+    const [userId, setUserId]=useState("");
+    
     useEffect(() => {
         const token = localStorage.getItem("accessToken");//콘솔에서 userid 확인
         if (!token) {
@@ -19,16 +20,17 @@ const FollowingList = () => {
             return;
         }
 
-        // const fetchUserInfo = async () => {
-        //     try {
-        //         const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
-        //         console.log("백엔드에서 가져온 userId:", res.data.id);
-        //         setUserId(res.data.id);
-        //     } catch (error) {
-        //         console.error("🚨 userId 가져오기 실패:", error);
-        //         Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
-        //     }
-        // };
+        const fetchUserInfo = async () => {
+            try {
+                const res = await ChatApi.getUserInfo(token); // ✅ 로그인한 사용자 정보 가져오기
+                // console.log("백엔드에서 가져온 userId:", res.data.nick);
+                setUserId(res.data.nick);
+
+            } catch (error) {
+                console.error("🚨 userId 가져오기 실패:", error);
+                Navigate("/login"); // ✅ 실패하면 로그인 페이지로 이동
+            }
+        };
 
         const fetchFollowing = async () => {
             try {
@@ -36,13 +38,14 @@ const FollowingList = () => {
                 console.log(" 팔로잉 목록:", res);
                 //서버에서 받은 데이터가 배열인지 확인 후 저장 
                 setFollowing(Array.isArray(res) ? res : []);
+                following.map(user=>{console.log("팔로워 정보",user);})
             } catch (error) {
 
                 console.error(" 팔로잉 목록 불러오기 실패:", error);
                 setError(" 팔로잉 목록을 불러오는 중 오류가 발생했습니다.");
             }
         };
-
+        fetchUserInfo();
         fetchFollowing();
     }, []);
     return (
@@ -56,13 +59,15 @@ const FollowingList = () => {
                 ) : (
                     <ul>
                         {following.map(user => (
-                            <li className={`Shadow ${style.followItem}`} key={user?.followingId || Math.random()}>
-                                <Link to={`/profile/${user?.followingId}`} className={`link`}>
-                                    <img src="profile.jpg" alt="프로필 이미지" />
-                                    <p>{user?.followingId}</p>
+                            <li className={`Shadow ${style.followItem}`} key={user?.followerId || Math.random()}>
+                                <Link to={`/profile/${user.followingId}`} className={`${style.followerPicContainer}`}>
+                                    <img src={profilePic} alt="프로필 이미지" className={style.followerPic}/>
+                                    <p className={style.bookmarkUserId} >{user.followingId}</p>
                                 </Link>
-                                <FollowButton profileUser={user?.followingId}/>
+                                <FollowButton profileUser={user.followingId}/>
                             </li>
+
+                            
                         ))}
                     </ul>
                 )}
