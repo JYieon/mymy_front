@@ -288,7 +288,7 @@ const ChatSidebarCom = () => {
 
       {/* 콘텐츠 영역 */}
       <div className="ContentSection Shadow">
-        <Link to={`../chat/list`} className={style.Back}>
+        <Link to={`../chatlist`} className={style.Back}>
           <span>뒤로가기</span>
         </Link>
         {/* 사이드메뉴 오픈 */}
@@ -431,7 +431,7 @@ const ChatSidebarCom = () => {
               src={filteredUser?.profile}
               style={{
                 marginRight: "10px",
-                width: "50px",
+                width: "40px",
                 borderRadius: "50%",
                 border: filteredUser?.role === "방장" ? "5px solid yellow" : "none",  // 조건부로 노란 테두리 추가
               }}
@@ -447,7 +447,7 @@ const ChatSidebarCom = () => {
                 src={user.profile}
                 style={{
                   marginRight: "10px",
-                  width: "50px",
+                  width: "40px",
                   borderRadius: "50%",
                   border: user.role === "방장" ? "5px solid yellow" : "none",  // 조건부로 노란 테두리 추가
                 }}
@@ -464,7 +464,7 @@ const ChatSidebarCom = () => {
 
 
 
-        <button  onClick={endChat}>채팅방 나가기</button>
+        <button  onClick={endChat} style={{color:"white", background:"#00284c", fontSize:"16px", marginTop: "auto"}} >채팅방 나가기</button>
       </motion.div>
     </>
   );

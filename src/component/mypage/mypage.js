@@ -213,25 +213,30 @@ const MyPage=({ userData })=> {
       <button type="button" onClick={openDeleteModalBtn} className={style.deleteAccountBtn}>
       회원 탈퇴</button>
     </div>
-      <Modal
-        isOpen={openDeleteModal}
-        ariaHideApp={true}
-        onRequestClose={openDeleteModalBtn}
-        className={`Shadow modal`}
-      >
-        <label className={style.label}>게시글을 남기고 탈퇴하시겠습니까?</label>
-        <span>게시글 삭제를 원하신다면 체크를 풀어주세요!</span>
-        <input
-          type="checkbox"
-          checked={keepPosts}
-          onChange={() => setKeepPosts(!keepPosts)}
-        />
-
-        {deleteError && <lebel className={`${style.label} ${style.error}`}>{deleteError}</lebel>}
-
-        <button type="button" onClick={handleDeleteAccount} className={style.deleteAccountBtn}>
-          탈퇴</button>
-      </Modal>
+    <Modal
+  isOpen={openDeleteModal}
+  ariaHideApp={true}
+  onRequestClose={openDeleteModalBtn}
+  className={`Shadow modal`}
+>
+  <label className={style.label}>게시글을 남기고 탈퇴하시겠습니까?</label>
+  <span>게시글 삭제를 원하신다면 체크를 풀어주세요!</span>
+  
+  <div className={style.checkboxAndButton}>
+  <span>게시글 남기기</span>
+    <input
+      type="checkbox"
+      checked={keepPosts}
+      onChange={() => setKeepPosts(!keepPosts)}
+      className={style.checkbox}
+    />
+    
+  </div>
+  <button type="button" onClick={handleDeleteAccount} className={style.ModalBtn} style={{marginTop:"0px", fontSize:"20px", padding:"10px 10px"}}>
+      탈퇴하기
+    </button>
+  {deleteError && <label className={`${style.label} ${style.error}`}>{deleteError}</label>}
+</Modal>
     </div>
   );
 };

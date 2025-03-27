@@ -47,7 +47,8 @@ const ChttingRoom = ({chatInfo, roomNum, chatUser, memberNum}) => {
                 msg: element.msg,
                 type: element.type,
                 nick: element.nick,
-                profile: element.profile
+                profile: element.profile,
+                date: element.msgDate
               }));
               if (JSON.stringify(chatMessages) !== JSON.stringify(newMessages)) {
                 setChatMessages(newMessages);
@@ -66,6 +67,10 @@ const ChttingRoom = ({chatInfo, roomNum, chatUser, memberNum}) => {
         getChatRoom();
 
   }, [roomNum]);
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [chatMessages])
 
   useEffect(() => {
     const CreateWebSocket = () => new SockJs("http://3.39.66.94:8080/mymy/ws");
@@ -108,7 +113,7 @@ const ChttingRoom = ({chatInfo, roomNum, chatUser, memberNum}) => {
     const chatMessage = {
       msg: message,
       roomNum,
-      member: userId,
+      member: userId
     };
 
     if (!message) {
@@ -221,13 +226,15 @@ const ChttingRoom = ({chatInfo, roomNum, chatUser, memberNum}) => {
     // <>
       <div className={style.ChatLayoutWrap}>
         <div className={style.GroupChatContiner}>
-          <h1 className={style.RoomTitle}>{chatInfo.roomName} {memberNum}</h1>
+          <h1 className={style.RoomTitle}>
+            {chatInfo.roomName}
+            <span>{memberNum}</span></h1>
 
         {/* ✅ 메시지 리스트가 스크롤 가능하도록 ChatList 사용 */}
-        <ul className={style.MessageList}>
-          <Message chatMessages={chatMessages} />
-          <li ref={bottomRef} />
-        </ul>
+          <ul className={style.MessageList}>
+            <Message chatMessages={chatMessages} />
+            <li ref={bottomRef} />
+          </ul>
         <div className={style.Mymessages}>
           <textarea
             rows="3"

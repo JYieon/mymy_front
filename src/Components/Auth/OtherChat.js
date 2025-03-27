@@ -56,6 +56,13 @@ const ProfileImage = styled.img`
   bottom: -5px; /* 말풍선 하단과 겹치도록 위치 조정 */
 `;
 
+const ChatTime = styled.span`
+  font-size: 12px;
+  color: gray;
+  margin-top: 5px;
+  align-self: flex-end;
+`;
+
 const NickName = styled.span`
   font-size: 14px;
   font-weight: bold;
@@ -75,7 +82,7 @@ export default function OtherChat({ chatMessage }) {
         {/* <NickName>{chatMessage.nick}</NickName> */}
       </UserProfile>
       <ChatBubble>
-        <ChatMessage>{chatMessage.msg}</ChatMessage>
+        <ChatMessage>{chatMessage.msg.substring(0, 16)}</ChatMessage>
       </ChatBubble>
     </ChatContainer>
   );

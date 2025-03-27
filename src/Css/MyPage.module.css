@@ -3,6 +3,28 @@
   width: 90%;
 }
 
+.checkboxAndButton {
+  height: 60px;
+  display: flex;
+  align-items: center; /* 수평 중앙 정렬 */
+  gap: 10px; /* 체크박스와 버튼 사이의 간격 */
+}
+
+.checkbox {
+  margin: 0; /* 체크박스 주변의 여백 제거 */
+  transform: scale(1.6);
+}
+
+.deleteAccountBtn {
+  /* padding: 8px 0px; */
+  margin-top: 0px;
+  background-color: #00284c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 30px;
+}
+
 .grid {
   display: grid;
   grid-template-rows: repeat(6, 1fr);

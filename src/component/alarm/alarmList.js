@@ -92,15 +92,6 @@ const AlarmList = () => {
             <div className="alarm-content">
                 <h1 className="alarm-title">내 알림</h1>
                 <table className="alarm-table">
-                    <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>내용</th>
-                            <th>원본 글</th>
-                            <th>작성일자</th>
-                            <th>댓글</th>
-                        </tr>
-                    </thead>
                     <tbody>
                         {alarms.length > 0 ? (
                             alarms.map((alarm, index) => (
@@ -108,8 +99,7 @@ const AlarmList = () => {
                                     <td>{index + 1}</td>
                                     <td>{alarm.senderId + alarm.alarmContent}</td>
                                     <td onClick={() => handleClick(alarm.alarmTypeId, alarm.addr, alarm.alarmNo)}>바로가기</td>
-                                    <td>{alarm?.createdAt || "날짜 없음"}</td>
-                                    <td>{alarm?.commentCount || 0}</td>
+                                    <td>{alarm?.createdAt ? alarm.createdAt.substring(0, 10) : "날짜 없음"}</td>
                                 </tr>
                             ))
                         ) : (
@@ -122,7 +112,7 @@ const AlarmList = () => {
                 </table>
 
                 {/* 페이지네이션 */}
-                <div className="pagination">
+                <div className="pagination" style={{position: "absolute", bottom:"1%", left: "65%" }}>
                     {Array.from({ length: Math.ceil(alarms.length / alarmsPerPage) }, (_, i) => (
                         <button key={i} onClick={() => paginate(i + 1)} className={currentPage === i + 1 ? "active" : ""}>
                             {i + 1}

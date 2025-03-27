@@ -99,7 +99,7 @@ const AdjustmentListModal = ({isOpen, onRequestClose, adList, sendAdjustment, ad
             <div className={style.AdjustmentContainer}>
                 <div className={style.TopSection}>
                     <div className={style.MemberContainer}>
-                        <img src={`/images/${adjustment.profile}.jpg`} className={style.ProfileImage} />
+                        <img src={adjustment.profile} className={style.ProfileImage} />
                         <span className={style.Nickname}>{adjustment.toMember}</span>
                     </div>
                     <div className={style.AdjustmentAmount}>
@@ -114,7 +114,7 @@ const AdjustmentListModal = ({isOpen, onRequestClose, adList, sendAdjustment, ad
                     const isSettled = adService.some((adSer) => adSer.sender === member.nick);
                     return (
                         <div key={member.nick} className={style.MemberContainer}>
-                            <img src={`/images/${member.profile}.jpg`} className={`${style.ProfileImageMember} ${isSettled ? style.BorderGreen : style.BorderRed}`}></img>
+                            <img src={member.profile} className={`${style.ProfileImageMember} ${isSettled ? style.BorderGreen : style.BorderRed}`}></img>
                             <span className={style.NicknameMember}>{member.nick}</span>
                         </div>
                     )

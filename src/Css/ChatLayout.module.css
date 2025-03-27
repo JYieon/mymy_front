@@ -71,9 +71,10 @@ hr {
 
 .lastChatDate {
   font-size: 15px;
-  margin: auto;
-  margin-bottom: 0px;
-
+  margin-top: 20px;
+  margin-left: auto; 
+  text-align: right;
+  display: block;
 }
 
 .createChatRoomBtn {
@@ -110,9 +111,17 @@ hr {
 
 .RoomTitle {
   width: max-content;
-  margin: auto;
+  margin: 0;
+  margin-left: 30%;
+  margin-bottom: 20px;
   color: #00284c;
   font-weight: 900;
+  font-size: 40px;
+  & span{
+    margin: 15px 10px;
+    color: gray;
+    font-size: 35px;
+  }
 }
 
 .ChatContainer {

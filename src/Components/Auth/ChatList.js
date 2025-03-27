@@ -48,7 +48,7 @@ function ChatList() {
         {chatRooms.map((room) => (
           <li key={room.roomNum} onClick={() => enterChatRoom(room.roomNum)} className={`Shadow ${chatStyle.ChatroomItem}`}>
             <span className={chatStyle.ChatroomTitle}>{room.roomName}</span>
-            <span className={chatStyle.lastChatDate}>마지막 채팅 | {room.lastChat}</span>
+            <span className={chatStyle.lastChatDate}>{room.lastChat.substring(0, 16)}</span>
           </li>
         ))}
       </ul>

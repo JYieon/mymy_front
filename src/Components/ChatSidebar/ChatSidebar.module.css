@@ -159,8 +159,9 @@
 /* 지연 */
 
 .AdList {
-  border-bottom: 1px solid #ddd; /* 각 항목을 구분하는 선 */
-  padding: 10px 0; /* 상하 패딩을 추가하여 여백을 줌 */
+  padding-left: 100px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   cursor: pointer; /* 클릭할 수 있다는 느낌을 주기 위해 포인터 커서 */
 }
 
@@ -252,11 +253,11 @@
 
 /* 정산해야 할 멤버 프로필 */
 .BorderGreen {
-  border: 2px solid rgb(0, 255, 0);
+  border: 5px solid rgb(0, 255, 0);
 }
 
 .BorderRed {
-  border: 2px solid red;
+  border: 5px solid red;
 }
 
 /* 챗 사이드 바*/
@@ -278,8 +279,8 @@
 }
 
 .GroupMemNick{
-  font-size: 35px;
-  margin-bottom: 5px;
+  font-size: 25px;
+  margin-bottom: 10px;
 }
 
 .GroupMemMan {
