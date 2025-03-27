@@ -27,11 +27,11 @@
 }
 
 .TestLink {
-    width: 350px; height: 150px;
+    width: 300px; height: 125px;
     background-color: gold;
     padding: 50px;
     /* border: 3px solid tomato; */
-    background-image: url("https://i.ibb.co/tTSbzSxH/image.jpg");
+    background-image: url("https://mymtbucket0124.s3.ap-northeast-2.amazonaws.com/profile/image.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 20px;
@@ -44,7 +44,7 @@
 }
 
 .Lastest{
-    width: 350px; height: 150px;
+    width: 300px; height: 125px;
     /* position: relative; */
     padding: 50px;
 

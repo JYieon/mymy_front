@@ -141,6 +141,7 @@ const MyPage=({ userData })=> {
       if (res.status === 200) {
         alert("회원 탈퇴가 완료되었습니다.");
         // 탈퇴 후 로그인 화면으로 리디렉션 또는 홈으로 이동
+        localStorage.removeItem("accessToken")
         window.location.href = '/';  // 탈퇴 후 로그인 화면으로 이동
       }
     } catch (err) {

@@ -152,11 +152,11 @@ hr {
     resize: none;
     border: 1pxd;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 20px;
   }
 
   .SendBtn {
-    margin-right: 30px;
+    margin-right: 40px;
     background-color: #00284c;
     width: 50px;
     height: 50px;

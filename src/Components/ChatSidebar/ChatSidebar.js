@@ -205,7 +205,8 @@ const ChatSidebarCom = () => {
 
   const fetchBankList = async () => {
     const resBank = await ChatApi.getBankList(roomNum);
-    const resSer = await ChatApi.getBankServiceList(roomNum);
+    const resSer = await ChatApi.getBankServiceList(resBank.data.bankNum);
+    // console.log("{{{{{{{{{{{{{{{{{{", resSer.data)
     setBankList(resBank.data)
     setBankServiceList(resSer.data)
     console.log(bankServiceList)
@@ -214,7 +215,7 @@ const ChatSidebarCom = () => {
   // 모임 통장 모달 여는 버튼
   const JointAccountOpenBtn = () => {
     // console.log("모임통장")
-    console.log(filteredOther)
+    // console.log(filteredOther)
     fetchBankList();
     setJointAccountOpen(!JointAccountOpen);
   };
@@ -250,6 +251,10 @@ const ChatSidebarCom = () => {
 
   const VerfiyUserCheck = async () => {
     const res = await ChatApi.checkUserBank(token, selectedBankCode, bankNum);
+    if(res.status === 200){
+      setBankStatus(true)
+      VerfiyInputOpenBtn()
+    }
     console.log(res);
   }
 
@@ -283,7 +288,7 @@ const ChatSidebarCom = () => {
 
       {/* 콘텐츠 영역 */}
       <div className="ContentSection Shadow">
-        <Link to={`../chatlist`} className={style.Back}>
+        <Link to={`../chat/list`} className={style.Back}>
           <span>뒤로가기</span>
         </Link>
         {/* 사이드메뉴 오픈 */}
@@ -359,7 +364,7 @@ const ChatSidebarCom = () => {
           className={`Shadow modal ${style.JointAccountModal}`}
         >
           <h1 className={style.Title}>통장 본인확인</h1>
-          <input type="text" placeholder="계좌번호" onChange={(e) => setBankNum(e.target.value)}></input>
+          <input type="text" placeholder="계좌번호" onChange={(e) => setBankNum(e.target.value)} placeholder="- 제외" style={{marginBottom:"20px"}}></input>
           <select value={selectedBankCode} onChange={(e) => setSelectedBankCode(e.target.value)}>
             <option value="">은행 선택</option>
             {bankCodeList.map((bank) => (
@@ -371,9 +376,10 @@ const ChatSidebarCom = () => {
           <button onClick={VerfiyUserCheck} className={style.ModalBtn}>
             본인확인 하기
           </button>
-          <h3 className={style.SubTitle}>
+          <h3 className={style.SubTitle} style={{color:"dimgray"}}>
             본인확인이 계속 실패한다면
-            <br />
+          </h3>
+          <h3  className={style.SubTitle} style={{marginTop: 0, color:"dimgray"}}>
             저장된 이름 정보가 실명인지 확인하세요.
           </h3>
         </Modal>
@@ -412,6 +418,7 @@ const ChatSidebarCom = () => {
             type="text"
             onChange={(e) => setInvite(e.target.value)}
             value={invite}
+            placeholder="초대할 회원의 **ID**를 입력해주세요"
           />
           <button onClick={inviteChatUser} className={style.ModalBtn}>
             초대하기버튼
@@ -426,7 +433,7 @@ const ChatSidebarCom = () => {
                 marginRight: "10px",
                 width: "50px",
                 borderRadius: "50%",
-                border: filteredUser?.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
+                border: filteredUser?.role === "방장" ? "5px solid yellow" : "none",  // 조건부로 노란 테두리 추가
               }}
               alt={filteredUser?.nick}
             />
@@ -435,15 +442,14 @@ const ChatSidebarCom = () => {
           <hr />
           {filteredOther.map((user) => (
             <div >
-            <li key={user.id} className={style.GrounpMem}>
+            <li key={user.id} className={style.GrounpMem} style={{marginTop:"20px"}}>
               <img
                 src={user.profile}
                 style={{
-                  paddingTop: "10px",
                   marginRight: "10px",
                   width: "50px",
                   borderRadius: "50%",
-                  border: user.role === "방장" ? "2px solid yellow" : "none",  // 조건부로 노란 테두리 추가
+                  border: user.role === "방장" ? "5px solid yellow" : "none",  // 조건부로 노란 테두리 추가
                 }}
                 alt={user.nick}
               />

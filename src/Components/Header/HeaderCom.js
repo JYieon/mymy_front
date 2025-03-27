@@ -212,7 +212,7 @@ const HeaderCom = ({ headerDisplay }) => {
                                             </li>
                                         </div>
                                     </div>
-                                    <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick}>
+                                    <li className={`${style.mypage} ${style.headerMenu}`} id="알람 아이콘" onClick={handleClick} style={{paddingRight:0}}>
                                         {/* <AlarmIcon hasUnread={hasUnread} setHasUnread={setHasUnread} />
                                     </li> */}
                                         <AlarmIcon hasUnread={hasUnread} style={style} />

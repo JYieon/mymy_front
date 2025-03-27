@@ -206,7 +206,7 @@ const SidebarCom = () => {
               <div className={style.userNickContainer}>
                 <span className={style.userNick}> {userNickname} </span>
 
-                <AlarmIcon onClick={handleClick} hasUnread={hasUnread} setHasUnread={setHasUnread} />
+                <AlarmIcon hasUnread={hasUnread}/>
 
 
 

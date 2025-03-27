@@ -32,9 +32,9 @@ const FindIdPage = () => {
 
     return (
         <form className={style.form}>
-            <h2>아이디 찾기</h2>
-            {userId && <div style={{ color: "white" }}>{userId}</div>} 
-            {error && <div style={{ color: "red" }}>{error}</div>}
+            <h2 style={{color:"white", marginBottom:"30px"}}>아이디 찾기</h2>
+            {userId && <div style={{ color: "white", textAlign:"center", marginBottom:"10px"}}>{userId}</div>} 
+            {error && <div style={{ color: "red", textAlign:"center", marginBottom:"10px" }}>{error}</div>}
             <input
                 type="text"
                 placeholder="이름"

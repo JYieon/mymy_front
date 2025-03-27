@@ -12,6 +12,7 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
     const [targetMoney, setTargetMoney] = useState("")
     const [sendType, setSendType] = useState("")
     const [sendMoney, setSendMoney] = useState(0)
+    const [activeTab, setActiveTab] = useState("target"); 
     const bankMoney = 0
     
     const handlleMakeBank = async () => {
@@ -64,6 +65,14 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
         }
     }
 
+    // 버튼 클릭 시 상태 변경
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
+
+    const progressPercentage = Math.min((bankList.total / bankList.target) * 100, 100);
+
+
     return(<>
         <Modal
           isOpen={JointAccountOpen}
@@ -74,9 +83,9 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
             {bankList.length === 0 ? (
                 // 모임통장이 없을 경우
                 <div className={style.NoAccountArea}>
-                    <h3>모임통장이 없습니다.</h3>
+                    <h1>모임통장이 없습니다.</h1>
                     {isHost && (
-                        <button className={style.ModalBtn} onClick={() =>  setAddModalOpen(true)}>
+                        <button className={style.ModalBtn} onClick={() =>  setAddModalOpen(true)} style={{marginLeft:"110px"}}>
                             모임통장 만들기
                         </button>
                     )}
@@ -89,7 +98,7 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
                 {/* 현재 잔고 */}
                 <h1 className={style.Title}>{bankList.total}</h1>
                 {/* 이체 버튼 */}
-                <button className={style.ModalBtn} onClick={() => sendMoneyModal("+")}>
+                <button className={style.ModalBtn} onClick={() => sendMoneyModal("+")} style={{marginRight:"10px"}}>
                 이체하기
                 </button>
                 {/* 출금 버튼 */}
@@ -101,28 +110,45 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
                 }
                 
             </div>
-            <button onClick={TargetAmountOpenBtn}>목표 금액</button>
-            {/* <button onClick={TargetAmountOpenBtn}>거래 내역</button> */}
-            {/* 이체 내역 및 목표 금액 */}
+            <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+                <button 
+                    onClick={() => handleTabClick("target")} 
+                    style={{ backgroundColor: activeTab === "target" ? "#00284c" : "#ddd" }}
+                >
+                    목표 금액
+                </button>
+                <button 
+                    onClick={() => handleTabClick("transaction")} 
+                    style={{ backgroundColor: activeTab === "transaction" ? "#00284c" : "#ddd" }}
+                >
+                    거래 내역
+                </button>
+            </div>
             {/* 목표 금액 */}
             <motion.div
                 className={`${style.TargetAmount} ${style.JointAccountDetailedArea}`}
                 initial={{
-                display: "none",
+                display: "none"
                 }}
                 animate={{
-                height: TargetAmountOpen ? "auto" : 0,
-                display: TargetAmountOpen ? "block" : "none"
+                height: activeTab === "target" ? "auto" : 0,
+                display: activeTab === "target" ? "block" : "none"
                 }}
+                style={{width:"60%", marginLight:"10px"}}
             >
                 <div>
                 {/* 목표 금액 */}
-                <h1 className={style.Goal}>{formatTargetMoney(bankList.target)}</h1>
-                <div>게이지바</div>
+                <h1 style={{marginTop:"30px", marginBottom:"20px"}}>{formatTargetMoney(bankList.target)}</h1>
+                {/* <div className={style.ProgressBarContainer}>
+                    <div 
+                        className={style.ProgressBar} 
+                        style={{ width: `${progressPercentage}%` }}
+                    ></div>
+                </div> */}
                 <ul className={style.UserTargetAmountList}>
                     {/* 본인 */}
                     <li>
-                    <img src={`/images/${filteredUser.profile}.jpg`} className={style.UserPic} alt="" />
+                    <img src={filteredUser.profile} className={style.UserPic} alt="" />
                     <div className={style.UserAmountWrap}>
                         <span>
                             {(() => {
@@ -134,12 +160,12 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
                         <span className={style.UserTargetAmount}>/ {formatPersonMoney()}</span>
                     </div>
                     </li>
-                    <hr />
+                    <hr style={{width:"80%"}}/>
                     {/* 멤버 */}
                     {filteredOther && filteredOther.map((user) => {
                         return(
                             <li>
-                                <img src={`/images/${user.profile}.jpg`} className={style.UserPic} alt="" />
+                                <img src={user.profile} className={style.UserPic} alt="" />
                                 <div className={style.UserAmountWrap}>
                                     <span>
                                     {(() => {
@@ -160,18 +186,19 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
             {/* 이체 내역 */}
             <motion.div className={`${style.JointAccountDetailedArea}`}
                 initial={{
-                display: "none",
+                display: "none"
                 }}
                 animate={{
-                height: !TargetAmountOpen ? "auto" : 0,
-                display: !TargetAmountOpen ? "block" : "none"
+                height: activeTab === "transaction" ? "auto" : 0,
+                display: activeTab === "transaction" ? "block" : "none"
                 }}
+                style={{width:"60%"}}
             >
-                <ul className={style.TransactionHistoryList}>
+                <ul className={style.TransactionHistoryList} >
                 {/* 출금 */}
                 {bankServiceList && bankServiceList.map((ser) => {
                     return(
-                        <li>
+                        <li style={{padding:"0"}}>
                             {/* 거래자 정보 */}
                             <div className={style.UserInfo}>
                             <span>{ser.member}</span>
@@ -201,19 +228,26 @@ const BankModal = ({JointAccountOpen, JointAccountOpenBtn, TargetAmountOpenBtn, 
             className={`Shadow modal ${style.JointAccountModal}`}>
             <h1 className={style.Title}>모임통장 만들기</h1>
                 <div>
-                    <label>모임통장 이름</label>
+                    <h3 style={{textAlign:"center"}}>모임통장 이름</h3>
                     <input 
                         type="text" 
                         value={bankName} 
                         onChange={(e) => setBankName(e.target.value)} 
+                        style={{marginBottom:"0", marginLeft:"35px"}}
                     />
-                    <label>목표 금액</label>
+                    <h3 style={{textAlign:"center", marginBottom:"10px"}}>목표 금액</h3>
                     <input
                         type="number"
                         value={targetMoney}
                         onChange={(e) => setTargetMoney(e.target.value)}
+                        style={{marginBottom:"10px", marginLeft:"23px", height:"30px"}}
                     />
-                    <button onClick={handlleMakeBank}>만들기</button>
+                    <br/>
+                    <button 
+                        className={style.ModalBtn} 
+                        onClick={handlleMakeBank}
+                        style={{marginLeft:"90px", marginTop:"10px"}}    
+                    >만들기</button>
                 </div>
         </Modal>
 

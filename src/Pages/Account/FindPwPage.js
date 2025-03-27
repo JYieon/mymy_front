@@ -12,7 +12,7 @@ const FindPwPage=()=>{
     const [buttonText, setButtonText] = useState("발송"); // 버튼 텍스트 (발송 → 인증)
     const [isVerified, setIsVerified] = useState(false); // 인증 여부
     const [authError, setAuthError] = useState(""); // 인증 실패 메시지
-
+    const [isSecondFormVisible, setIsSecondFormVisible] = useState(false);
 //  pwdReset
     const [pwd, setPwd] = useState("");
     const [pwd2, setPwd2] = useState("");
@@ -54,6 +54,7 @@ const FindPwPage=()=>{
                 if(res.status === 200) {
                     setIsVerified(true); // 인증 성공
                     setAuthError(""); // 인증 오류 메시지 초기화
+                    setIsSecondFormVisible(!isSecondFormVisible);
                 }
             }catch{
                 setAuthNum(""); // 인증번호 칸 비우기
@@ -68,6 +69,7 @@ const FindPwPage=()=>{
 
         if (!id || !email || !isVerified) {
             setError("아이디, 이메일, 인증을 모두 완료하세요.");
+            
             return;
         }
 
@@ -120,10 +122,9 @@ const FindPwPage=()=>{
         
     return(
         <>
-        <form className={style.form} onSubmit={handlePassword}>
-            {authError && <div style={{ color: "red" }}>{authError}</div>}
-            {isVerified && <div style={{ color: "green" }}>인증되었습니다.</div>}
-            <div>사용자 아이디 표시 부분</div>
+        <form className={style.form} onSubmit={handlePassword} style={{ display: isSecondFormVisible ? "none" : "block" }}>
+            
+            <h2 style={{color:"white", marginBottom:"30px"}}>비밀번호 찾기</h2>
             <input 
                 type="text" 
                 placeholder="아이디"
@@ -151,7 +152,8 @@ const FindPwPage=()=>{
                 )}
         </form>
 
-        <form className={style.form} onSubmit={handlePasswordReset}>
+        <form className={style.form} onSubmit={handlePasswordReset} style={{ display: isSecondFormVisible ? "block" : "none" }}>
+            <h2 style={{color:"white", marginBottom:"30px"}}>비밀번호 재설정</h2>
             <input 
                 type="password" 
                 placeholder="새 비밀번호"
@@ -164,9 +166,9 @@ const FindPwPage=()=>{
                 value={pwd2}
                 onChange={(e) => setPwd2(e.target.value)}
                 />
-            {pwdError && <p style={{ color: "red" }}>{pwdError}</p>}
             <input type="submit" value="변경"/>
-
+            {pwdError && <p style={{ color: "red", fontSize:"14px"}}>{pwdError}</p>}
+            {authError && <div style={{ color: "red" }}>{authError}</div>}
         </form>
         </>
     )

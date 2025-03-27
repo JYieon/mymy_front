@@ -26,9 +26,9 @@ const RegiCom = () => {
     const [authTime, setAuthTime] = useState(300); // 5분 (300초)
     const [isAuthTimeOver, setIsAuthTimeOver] = useState(false); // 시간 만료 여부
     const [showResendButton, setShowResendButton] = useState(false); // 재전송 버튼 표시 여부
-
+    const [isSecondFormVisible, setIsSecondFormVisible] = useState(false); 
     const [testOpen, setTestOpen] = useState(false);
-
+    const [ok, setOk] = useState("")
     const navigate = useNavigate();
 
     // 인증번호 발송 타이머
@@ -136,7 +136,7 @@ const RegiCom = () => {
             const res = await AuthApi.checkId(id);
             console.log("checkID: ", res)
             if (res.status === 200) {
-                setError("");
+                setOk("사용 가능한 아이디입니다.");
             }
         } catch (err) {
             setError("이미 사용 중인 아이디입니다.");
@@ -198,20 +198,13 @@ const RegiCom = () => {
     const SecondForm = useRef(null);
 
     const onClick = async () => {
-        //닉네임 유효성 검사
         try {
             const res = await AuthApi.checkNick(nick);
             console.log(res);
-
+    
             if (res.status === 200) {
-                if (SecondForm.current.style.display === "none") {
-                    SecondForm.current.style.display = "block";
-                    FirstForm.current.style.display = "none";
-                    setNickError("")
-                } else {
-                    SecondForm.current.style = "display:none;";
-                    FirstForm.current.style.display = "block";
-                }
+                setNickError("");  // 닉네임 에러 초기화
+                setIsSecondFormVisible(!isSecondFormVisible);  // 두 번째 폼 보이기/숨기기 토글
             } else {
                 setNickError("닉네임 검증에 실패했습니다.");
             }
@@ -222,7 +215,7 @@ const RegiCom = () => {
                 setNickError("서버 오류가 발생했습니다.");
             }
         }
-    }
+    };
 
     // 회원가입 폼 제출
     const handleSignup = async (e) => {
@@ -238,7 +231,8 @@ const RegiCom = () => {
             console.log("회원가입 res : ", res.status)
             if (res.status === 200) {
                 alert("회원가입 성공하셨습니다!");
-                TestOpenBtn();
+                // TestOpenBtn();
+                window.location.href = "/"
             } else {
                 setError("회원가입에 실패했습니다.");
             }
@@ -271,7 +265,7 @@ const RegiCom = () => {
             </Modal>
 
             <form className={styles.form} onSubmit={handleSignup} >
-                <div className={styles.FirstForm} ref={FirstForm}>
+                <div className={styles.FirstForm} ref={FirstForm} style={{ display: isSecondFormVisible ? "none" : "block" }}>
                     <input type="text" name="Name" placeholder="이름" onChange={(e) => setName(e.target.value)} />
                     <input type="text" name="nickName" placeholder="닉네임" onChange={(e) => setNick(e.target.value)} />
                     {nickError && <div style={{ color: "red", marginTop: "5px", fontSize: "12px", marginLeft: "5px", marginBottom: "10px", marginTop: "0px" }}>{nickError}</div>}
@@ -318,7 +312,7 @@ const RegiCom = () => {
                     )}
 
                 </div>
-                <div className={styles.SecondForm} ref={SecondForm}>
+                <div className={styles.SecondForm} ref={SecondForm} style={{ display: isSecondFormVisible ? "block" : "none" }}>
                     <input type="button" value="이전" onClick={onClick} />
                     <div className={styles.Id}>
                         <input type="text" name="Id" placeholder="아이디" onChange={(e) => setId(e.target.value)} />
@@ -326,6 +320,7 @@ const RegiCom = () => {
                             중복 확인
                         </button>
                     </div>
+                    {ok && <div style={{ color: "lightgreen", marginLeft: "5px", marginBottom: "10px", fontSize: "12px" }}>{ok}</div>}
                     {error && <div style={{ color: "red", marginLeft: "5px", marginBottom: "10px", fontSize: "12px" }}>{error}</div>}
                     <input type="password" name="Pwd" placeholder="비밀번호 (8자 이상, 숫자 포함)" onChange={(e) => setPwd(e.target.value)} />
                     {pwdError && <div style={{ color: "red", marginLeft: "5px", marginBottom: "10px", fontSize: "12px" }}>{pwdError}</div>}

@@ -15,7 +15,7 @@ const MainPage = () => {
                     바쁜 현대인을 위한 통합 여행 계획 플랫폼.
                 </div>
             </div>
-            <div className={`${style.Bottom} ${style.Section}`}>
+            <div className={`${style.Bottom}`}>
                     <Link to="/test" className={style.TestLink}/>
                 <Link className={style.Lastest} to="/" />
             </div>

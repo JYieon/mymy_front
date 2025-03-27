@@ -83,8 +83,8 @@
   background-color: whitesmoke;
   max-height: 400px;
   overflow-y: auto;
-  margin: 0px;
-  padding: 0px 50px;
+  padding-left: 0px;
+  width: 100%;
 
   li {
     margin: 10px;
@@ -119,10 +119,11 @@
 
 .TransactionHistoryList {
   background-color: whitesmoke;
+  width: 100%;
   max-height: 400px;
   overflow-y: auto;
-  margin: 0px;
-  padding: 0px 50px;
+  margin: 0 0;
+  padding: 0px 0px;
   li {
     margin: 10px;
     display: flex;
@@ -292,9 +293,25 @@
 }
 
 .Back{
-  margin: 20px;
+  font-size: 25px;
+  margin: 30px;
   float: left;
   text-decoration: none;
   color: #00284c;
   padding-left: 20px;
+}
+
+.ProgressBarContainer {
+  width: 80%;
+  height: 15px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px auto;
+}
+
+.ProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #81c784);
+  transition: width 0.5s ease-in-out;
 }

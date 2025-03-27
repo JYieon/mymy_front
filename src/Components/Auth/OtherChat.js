@@ -24,7 +24,7 @@ const ChatBubble = styled.div`
 `;
 
 const ChatMessage = styled.p`
-  font-size: 14px;
+  font-size: 20px;
   line-height: 1.4;
   color: #333;
   margin: 0;
@@ -32,7 +32,7 @@ const ChatMessage = styled.p`
 
 const NoticeMessage = styled.div`
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   color: #666;
   font-weight: bold;
   background-color: #f1f1f1;

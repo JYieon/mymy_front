@@ -130,27 +130,58 @@ const AdjustmentListModal = ({isOpen, onRequestClose, adList, sendAdjustment, ad
             </button>
             </Modal>
 
-        <Modal 
-            isOpen={addModalOpen} 
-            onRequestClose={() => setAddModalOpen(false)} 
-            className={`Shadow modal ${style.JointAccountModal}`}
-            >
-            <h1 className={style.Title}>새 정산 추가</h1>
-            <div>
-                <label>정산 금액</label>
-                <input 
-                    type="number" 
-                    value={amount} 
-                    onChange={(e) => setAmount(e.target.value)} 
-                />
-                <label>받는 사람</label>
-                <input
-                    type="text"
-                    value={toMember}
-                    onChange={(e) => setToMember(e.target.value)}
-                />
-            </div>
-            <button className={style.ModalBtn} onClick={handleAddAdjustment}>
+            <Modal 
+    isOpen={addModalOpen} 
+    onRequestClose={() => setAddModalOpen(false)} 
+    className={`Shadow modal ${style.JointAccountModal}`}
+>
+    <h1 
+        className={style.Title} 
+        style={{ textAlign: "center", marginBottom: "20px" }}
+    >
+        새 정산 추가
+    </h1>
+
+    <div 
+        style={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            alignItems: "center", 
+            gap: "15px" 
+        }}
+    >
+        <label style={{ fontWeight: "bold" }}>정산 금액</label>
+        <input 
+            type="number" 
+            value={amount} 
+            onChange={(e) => setAmount(e.target.value)} 
+            style={{ 
+                width: "80%", 
+                padding: "10px", 
+                border: "1px solid #ccc", 
+                borderRadius: "5px", 
+                textAlign: "center" 
+            }}
+        />
+
+        <label style={{ fontWeight: "bold"}}>받는 사람</label>
+        <input
+            type="text"
+            value={toMember}
+            onChange={(e) => setToMember(e.target.value)}
+            style={{ 
+                width: "80%", 
+                padding: "10px", 
+                border: "1px solid #ccc", 
+                borderRadius: "5px", 
+                textAlign: "center" ,
+                marginBottom:"0",
+                marginTop:"0"
+                }}
+            placeholder="닉네임 임력"
+            />
+        </div>
+            <button className={style.ModalBtn} onClick={handleAddAdjustment} style={{marginBottom:"30px"}}>
                 추가
             </button>
             </Modal>

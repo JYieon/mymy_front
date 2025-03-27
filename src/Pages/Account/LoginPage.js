@@ -84,11 +84,15 @@ const LoginPage=()=>{
             <input type="password" value={pwd} onChange={(e) => setPwd(e.target.value)} placeholder="비밀번호"/>
             {/* 계정 찾기 및 회원가입 */}
             <div className="anotherOption">
-            <Link to="/account/find" className={styles.AnotherOption}>계정을 잃어버렸나요?</Link>
+                <div style={{ flexDirection: "row", alignItems: "center" }}>
+                <Link to="/account/find/id" className={styles.AnotherOption} style={{marginLeft:"45px"}}>아이디 찾기 </Link>  
+                <span style={{color:"white", fontWeight:"lighter"}}>|</span>
+                <Link to="/account/find/pw" className={styles.AnotherOption} style={{marginLeft:"5px"}}>비밀번호 찾기</Link>
+                </div>
             <Link to="/account/register" className={styles.AnotherOption}>아직 회원이 아니신가요?</Link>
             </div>
             {error && <div style={{color:"red"}}>{error}</div>}
-            <input type="submit" value="로그인"/>
+            <input type="submit" value="로그인" style={{marginTop:"10px", marginBottom:"0"}}/>
 
             {/* 카카오톡 로그인 */}
             <KakaoSyncCom />
