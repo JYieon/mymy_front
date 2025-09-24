@@ -16,7 +16,7 @@
 //         } else {
 //             // console.log("카카오맵 스크립트 추가 중...");
 //             const script = document.createElement("script");
-//             script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=2439a6057eda75a5be91df36deba63d4&autoload=false&libraries=services,clusterer,drawing`;
+//             script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=&autoload=false&libraries=services,clusterer,drawing`;
 //             script.async = true;
 //             document.head.appendChild(script);
 
